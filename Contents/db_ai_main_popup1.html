@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<HtmL lang="ko">
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="db_ai_main.html">
+
+
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+        .db_search_table1 {
+            display: none;
+        }
+
+        .db_search_table2 {
+            display: none;
+        }
+
+
+
+        
+        .db_search_table1 thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+                
+        .db_search_table2 thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        tbody:nth-child(even) {
+            background-color: #cfcfcfd7;
+            /* 원하는 배경색으로 설정하세요 */
+        }
+
+    </style>
+
+    <script>
+
+        function quitImages() {
+            window.close();
+        }
+
+        function toggleSearch1() {
+            var table1 = document.querySelector('.db_search_table1'); // Use . to select by class name
+            var tableStyle1 = table1.style;
+
+            var table2 = document.querySelector('.db_search_table2'); // Use . to select by class name
+            var tableStyle2 = table2.style;
+
+            tableStyle1.display = 'table';
+            tableStyle2.display = 'none';
+
+        }
+
+        function toggleSearch2() {
+            var table1 = document.querySelector('.db_search_table1'); // Use . to select by class name
+            var tableStyle1 = table1.style;
+
+            var table2 = document.querySelector('.db_search_table2'); // Use . to select by class name
+            var tableStyle2 = table2.style;
+
+            tableStyle1.display = 'none';
+            tableStyle2.display = 'table';
+        }
+
+
+
+        function checkAndSaveImages() {
+
+            console.log('send 1111')
+            var valueToSend = '1111';
+            window.opener.postMessage(valueToSend, '*');
+            window.close();
+        }
+
+
+    </script>
+
+
+
+</head>
+
+
+
+<body>
+    <title>자제코드 조회</title>
+
+    <tr>
+        <th height="200" colspan="3">
+            <table border="2" width="300px" class="main_table">
+
+                <br>
+                <label>
+                    <span style="font-size: 14px; font-weight: bold;">원재료명:</span>
+                    <input type="text" name="inputField" style="width: 200px;" placeholder="검색어를 입력해주세요.">
+                    <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                        onclick="toggleSearch1();">
+                </label>
+
+                <br>
+
+                <label>
+                    <span style="font-size: 14px; font-weight: bold;"> 원재료코드:</span>
+                    <input type="text" name="inputField" style="width: 200px;" placeholder="검색어를 입력해주세요.">
+                    <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                        onclick="toggleSearch2();">
+                </label>
+
+                <br>
+                <br>
+            </table>
+
+
+            <table border="2" width="300px" class="db_search_table1">
+                <colgroup>
+                    <col width="150" />
+                    <col width="150" />
+                    <col width="150" />
+
+
+
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th style="font-size: 12px;">선택</th>
+                        <th style="font-size: 12px;">원재료코드</th>
+                        <th style="font-size: 12px;">원재료명</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <th><input type="radio" name="yourRadioGroupName" value="1"></th>
+                        <th style="font-size: 10px;">1000658</th>
+                        <th style="font-size: 10px;">채종유C(CANOLA)</th>
+
+                    </tr>
+                </tbody>
+
+      
+
+            </table>
+
+
+            <table border="2" width="300px" class="db_search_table2">
+                <colgroup>
+                    <col width="150" />
+                    <col width="150" />
+                    <col width="150" />
+
+
+
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th style="font-size: 12px;">선택</th>
+                        <th style="font-size: 12px;">원재료코드</th>
+                        <th style="font-size: 12px;">원재료명</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <th><input type="radio" name="yourRadioGroupName" value="1"></th>
+                        <th style="font-size: 10px;">1000658</th>
+                        <th style="font-size: 10px;">채종유C(CANOLA)</th>
+                    </tr>
+                </tbody>
+
+
+
+            </table>
+
+
+
+
+        </th>
+
+        <th height="200" colspan="3" align=>
+            <div align="right">
+                <button type="button" onclick="checkAndSaveImages()">확인</button>
+                <button type="button" onclick="quitImages()">닫기</button>
+            </div>
+
+        </th>
+
+    </tr>
+
+
+
+
+
+
+
+
+    </form>
+
+</body>
+
+</htmL>

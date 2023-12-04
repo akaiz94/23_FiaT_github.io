@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<HtmL lang="ko">
+
+<head>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="db_search.html">
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+
+
+        .db_search_table thead th {
+            background-color: #00478a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        tbody:nth-child(even) {
+            background-color: #cfcfcfd7;
+            /* 원하는 배경색으로 설정하세요 */
+        } 
+
+
+        .confirm-button {
+            margin-top: 10px;
+            padding: 8px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #006ed5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+
+        .confirm-button:hover {
+            background-color: #001f3f; /* Hover 시 색상 변경 */
+        }
+
+        span.page-title {
+            font-size: 30px;
+            color: rgb(48, 48, 48);
+            font-weight: 600;
+            text-align: center;
+            display: block; /* 중요: 중앙 정렬을 위해 display를 block으로 설정합니다. */
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+
+
+
+    </style>
+
+    <script>
+
+        function quitImages() {
+            window.close();
+        }
+
+
+    </script>
+
+
+
+</head>
+
+
+
+<body>
+    <title>원재료 상세 이력조회 (DB조회)</title>
+    <header>
+        <span class="page-title">원재료 상세 이력조회</span>
+    </header>
+
+    <tr>
+        <th height="200" colspan="3">
+            <table border="1" style="border-collapse: collapse; width: 1300px;" width="1300px" class="db_search_table">
+                <colgroup>
+                    <col width="150" />
+                    <col width="150" />
+                    <col width="150" />
+                    <col width="100" />
+                    <col width="100" />
+                    <col width="100" />
+                    <col width="100" />
+                    <col width="150" />
+
+
+
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>원재료코드</th>
+                        <th>유형</th>
+                        <th>원재료명</th>
+                        <th>제조사<br>(국내원료)</th>
+                        <th>제조국가<br>(수입원료)</th>
+                        <th>원료표시사항</th>
+                        <th>알러지유발물질</th>
+                        <th>등록일자</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <th>1001341</th>
+                        <th>수산물가공품</th>
+                        <th>멸치분말2호</th>
+                        <th></th>
+                        <th>베트남</th>
+                        <th>멸치90%<br>
+                            정제염10%
+                        </th>
+                        <th></th>
+                        <th>
+                            &nbsp;2023.10.10&nbsp;
+                        </th>
+                    </tr>
+                </tbody>
+
+
+                <tbody>
+                    <tr>
+                        <th>1001341</th>
+                        <th>수산물가공품</th>
+                        <th>멸치분말2호</th>
+                        <th></th>
+                        <th>베트남</th>
+                        <th>멸치100%</th>
+                        <th></th>
+                        <th>
+                            &nbsp;2022.09.10&nbsp;
+                        </th>
+                    </tr>
+                </tbody>
+
+
+                <tbody>
+                    <tr>
+                        <th>1001341</th>
+                        <th>수산물가공품</th>
+                        <th>멸치분말2호</th>
+                        <th></th>
+                        <th>베트남</th>
+                        <th>멸치85%<br>
+                            정제염15%
+                        </th>
+                        <th></th>
+                        <th>
+                            &nbsp;2019.12.11&nbsp;
+                        </th>
+                    </tr>
+                </tbody>
+
+            </table>
+        </th>
+
+        <th height="200" colspan="3" align=>
+            <div align="right">
+                <button class="confirm-button" type="button" onclick="quitImages()">확 인</button>
+            </div>
+        </th>
+
+    </tr>
+
+
+
+
+
+
+
+
+    </form>
+
+</body>
+
+</htmL>

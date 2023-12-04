@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 달력 위젯을 사용하기 위한 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+        /* 초기에 숨길 서브 카테고리 */
+        .sub-menu {
+            display: block;
+        }
+
+        .sub-menu1 {
+            display: none;
+        }
+
+
+
+
+        /* db_enroll.html 파일의 스타일 시트에 추가 */
+        .db_search_table {
+            display: none;
+            /* 초기에는 숨김 처리 */
+        }
+
+
+
+        .cursor_wasteback_site {
+            display: none;
+        }
+
+        .rounded-box {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 30px;
+            /* 너비 설정 */
+            height: 15px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 6px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 15px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+
+
+        }
+
+
+
+
+        ul li a {
+            text-decoration: none;
+            /* 밑줄 제거 */
+            color: black;
+            /* 기본 글자색을 검은색으로 설정 */
+            font-weight: 600;
+            /* 세미 볼드로 설정 */
+        }
+
+        ul li a[href="./db_enroll.html"] {
+            color: #006ed5;
+            /* 특정 링크에 대한 글자색을 남색으로 설정 */
+            font-weight: 700;
+            /* 더 볼드한 글꼴로 설정 */
+            font-size: 20px;
+            /* 글자 크기를 28px로 설정 */
+        }
+
+
+
+        .db_search_table thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        tbody:nth-child(even) {
+            background-color: #cfcfcfd7;
+            /* 원하는 배경색으로 설정하세요 */
+        }
+        
+    </style>
+
+
+
+    <script>
+        function toggleSubMenu() {
+            var subMenu = document.querySelector('.sub-menu');
+            var image = document.querySelector('img[alt="이미지"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+        function toggleSubMenu1() {
+            var subMenu = document.querySelector('.sub-menu1');
+            var image = document.querySelector('img[alt="이미지1"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+
+
+        function changeFontColor(link) {
+            var links = document.querySelectorAll("ul li a"); // 모든 링크 요소 선택
+
+            for (var i = 0; i < links.length; i++) {
+                if (links[i] === link) {
+                    // 클릭된 링크는 파란색으로 변경
+                    link.style.color = 'blue';
+                } else {
+                    // 다른 링크는 검은색으로 변경
+                    links[i].style.color = 'black';
+                }
+            }
+        }
+
+
+        /*
+        $(function () {
+            $("#datepicker1, #datepicker2").datepicker();
+
+            // 달력 아이콘을 클릭하여 달력 표시
+            $("#datepicker1-icon").click(function () {
+                $("#datepicker1").datepicker("show");
+            });
+        });
+        */
+
+        function toggleSearch() {
+            var table = document.querySelector('.db_search_table'); // Use . to select by class name
+            var tableStyle = table.style;
+
+            if (tableStyle.display === 'none' || tableStyle.display === '') {
+                tableStyle.display = 'table'; // Make the table visible
+            } else {
+                tableStyle.display = 'none'; // Hide the table
+            }
+
+            /*
+            var cursorWastebackTable = document.querySelector('.cursor_wasteback_site'); // .cursor_wasteback_site 클래스를 가진 테이블 선택
+            var cursorWastebackTableStyle = cursorWastebackTable.style;
+
+            if (cursorWastebackTableStyle.display === 'none' || cursorWastebackTableStyle.display === '') {
+                cursorWastebackTableStyle.display = 'table'; // .cursor_wasteback_site 테이블을 보이게 함
+            } else {
+                cursorWastebackTableStyle.display = 'none'; // .cursor_wasteback_site 테이블을 숨김
+            }
+            */
+        }
+
+
+
+
+        var popupWindow; // 팝업 창 변수
+
+        function openImageUploadPopup(e) {
+
+            console.log("ffffff팝업창1")
+
+
+            var popupWidth = 1600;
+            var popupHeight = 1000;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "./db_enroll_upload.html"; // 변경 필요
+
+            // 고유한 이름으로 팝업 창 열기
+            popupWindow = window.open(uploadPageURL, "ImageUploadPopup", popupOptions);
+
+
+            /*
+            // db_enroll.html 로드 시 enroll_1211 변수를 확인하고 처리
+            window.onload = function () {
+                if (typeof window.enroll_1211 !== 'undefined') {
+                    var enrollValue = window.enroll_1211;
+                    console.log("enroll_1211 값: " + enrollValue);
+
+                    // 여기서 enrollValue 값을 저장하거나 처리하는 로직을 추가합니다.
+                }
+            }
+            */
+
+        }
+
+        window.addEventListener('message', receiveMessage, false);
+        var receivedValue
+
+
+        function receiveMessage(event) {
+            // 이 함수는 메시지를 수신하는 함수입니다.
+            if (event.data === '7777') {
+                // 전달된 값이 '7777'이면 변수에 저장
+                receivedValue = event.data;
+                console.log('받은 값test: ' + receivedValue);
+
+                // '7777'을 받았을 때 db_search_table 클래스의 display를 'block'으로 변경
+                var dbSearchTable = document.querySelector(".db_search_table");
+                if (dbSearchTable) {
+                    dbSearchTable.style.display = "block";
+                }
+
+
+                // 이제 receivedValue를 원하는 변수에 저장하거나 처리할 수 있습니다.
+            }
+        }
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const value_enroll_1 = urlParams.get('value');
+        console.log("Params_value : " + value_enroll_1)
+
+
+        if (value_enroll_1 !== null) {
+            // 값이 존재하면 저장할 수 있습니다.
+            // 예를 들어, 이 값을 어딘가에 저장하려면 다음과 같이 할 수 있습니다.
+            // localStorage에 저장
+            console.log("Params_value22 : " + value_enroll_1)
+
+            // 페이지가 로드되기 전에 스크립트가 실행되는 경우, 해당 요소를 찾을 수 없음. 이 경우, DOMContentLoaded 이벤트 내에서 코드를 실행하여 페이지가 로드된 후에 실행
+            document.addEventListener('DOMContentLoaded', function () {
+                var dbSearchTable = document.querySelector(".db_search_table");
+                if (dbSearchTable !== null) {
+                    dbSearchTable.style.display = "block";
+                }
+            });
+
+        }
+
+
+
+
+        /*
+
+        function saveImages() {
+            var fileInput = document.getElementById("imageUpload");
+            fileInput.setAttribute("title", "이미지 선택");
+
+            if (fileInput.files.length > 0) {
+                // 모든 선택한 파일에 대해 업로드 작업 수행
+                for (var i = 0; i < fileInput.files.length; i++) {
+                    var selectedFile = fileInput.files[i];
+
+                    if (selectedFile.type.startsWith("image/")) {
+                        // 각 이미지 업로드 처리 로직을 여기에 추가
+
+                        // 이미지 파일 이름 출력
+                        var imageName = selectedFile.name;
+                        var imageInfo = popupWindow.document.createElement("div");
+                        imageInfo.textContent = "업로드된 이미지 파일 이름: " + imageName;
+                        popupWindow.document.body.appendChild(imageInfo);
+                    } else {
+                        alert("이미지 파일을 선택해주세요.");
+                        return; // 이미지가 아닌 파일이 있을 경우 업로드 중단
+                    }
+                }
+
+                // 이미지 업로드 후, db_search_table_2 클래스를 가진 요소를 보이도록 변경
+                var dbSearchTable2 = popupWindow.opener.document.querySelector(".db_search_table_2");
+                dbSearchTable2.style.display = "block";
+
+                // 팝업 창 닫기
+                popupWindow.close();
+            } else {
+                alert("파일을 선택해주세요.");
+            }
+        }
+
+
+        function quitImages() {
+            var fileInput = document.getElementById("imageUpload");
+            fileInput.setAttribute("title", "이미지 선택");
+
+            if (fileInput.files.length > 0) {
+                // 모든 선택한 파일에 대해 업로드 작업 수행
+                for (var i = 0; i < fileInput.files.length; i++) {
+                    var selectedFile = fileInput.files[i];
+
+                    if (selectedFile.type.startsWith("image/")) {
+                        // 각 이미지 업로드 처리 로직을 여기에 추가
+
+                        // 이미지 파일 이름 출력
+                        var imageName = selectedFile.name;
+                        var imageInfo = popupWindow.document.createElement("div");
+                        imageInfo.textContent = "업로드된 이미지 파일 이름: " + imageName;
+                        popupWindow.document.body.appendChild(imageInfo);
+
+
+                    } else {
+                        alert("이미지 파일을 선택해주세요.");
+                        return; // 이미지가 아닌 파일이 있을 경우 업로드 중단
+                    }
+                }
+
+                // 이미지 업로드 후, db_search_table_2 클래스를 가진 요소를 보이도록 변경
+                var dbSearchTable2 = document.querySelector(".db_search_table_2");
+                dbSearchTable2.style.display = "block";
+
+                // 팝업 창 닫기
+                popupWindow.close();
+            } else {
+                alert("파일을 선택해주세요.");
+            }
+        }
+
+        */
+
+        function selectAllCheckboxes(checkbox) {
+            var checkboxes = document.querySelectorAll('[name^="list"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = checkbox.checked;
+            }
+        }
+
+
+
+
+        /*
+        function delete_rows() {
+            var checkboxes = document.querySelectorAll('[name^="list"]');
+            var tableBody = document.querySelector('.db_search_table tbody');
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    // 체크된 체크박스의 부모 행(tr)을 가져옴
+                    var row = checkboxes[i].closest('tr');
+
+                    // 해당 행을 테이블 본문에서 제거
+                    tableBody.removeChild(row);
+                }
+            }
+        }
+        */
+
+        function delete_rows() {
+
+            var checkboxes = document.querySelectorAll('[name^="list"]');
+            var tableBody = document.querySelector('.db_search_table tbody');
+            var deletedCount = 0;
+
+            for (var i = checkboxes.length - 1; i >= 0; i--) {
+                if (checkboxes[i].checked) {
+                    // 체크된 체크박스의 부모 행(tr)을 가져옴
+                    var row = checkboxes[i].closest('tr');
+
+                    // 해당 행을 테이블 본문에서 제거
+                    if (row) {
+                        row.parentNode.removeChild(row);
+                        deletedCount++;
+                    }
+                }
+            }
+
+            // 삭제된 개수를 알려주는 알림창
+            if (deletedCount > 0) {
+                alert(deletedCount + '개의 원재료가 삭제되었습니다.');
+            } else {
+                alert('선택된 원재료가 없습니다.');
+            }
+        }
+
+
+        function enroll_data() {
+            var checkboxes = document.querySelectorAll('[name^="list"]');
+            var checkedCount = 0;
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checkedCount++;
+                }
+            }
+
+            if (checkedCount > 0) {
+                alert(checkedCount + '개의 원재료가 DB등록 되었습니다.');
+            } else {
+                alert('선택된 원재료가 없습니다.');
+            }
+        }
+
+
+    </script>
+
+
+</head>
+
+
+
+
+
+
+
+
+<body>
+    <style>
+        li {
+            list-style: none;
+        }
+    </style>
+
+
+
+
+
+
+    <table border="0" width="250" height="900" align="left">
+        <tr>
+            <th height="100" colspan="1">
+                <a href="../index.html">
+                    <img src="../Images/농심태경로고.png" alt="로고" style="width: 60%; height: auto;" align="left">
+                </a>
+            </th>
+        </tr>
+
+        <tr>
+            <td height="30" style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 마이너스.png" alt="이미지"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu();"> <strong style="font-size: 1.2em;">원재료DB</strong></a>
+
+                <div class="sub-menu">
+                    <ul>
+                        <li><a href="./db_search.html" onclick="changeFontColor(this);">- DB조회</a></li>
+                        <li><a href="./db_enroll.html" onclick="changeFontColor(this);">- DB등록</a></li>
+                        <li><a href="./db_reform.html" onclick="changeFontColor(this);">- DB개정</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 플러스.png" alt="이미지1"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu1();"> <strong style="font-size: 1.2em;">디자인
+                        회람</strong></a>
+
+                <div class="sub-menu1">
+                    <ul>
+                        <li><a href="./de_ai_main.html" onclick="changeFontColor(this);">- AI표시사항 자동완성</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+
+    <table border="0" width="1300" height="900">
+        <tr>
+            <th height="100" colspan="5">
+         
+                <span style="font-size: 50px; color: #006ed5;">DB등록</span>
+                <img src="../Images/피아뜨.png" alt="피아뜨 이미지" style="float: right; width: 80px; height: 80px; margin-left: 0px; margin-top: 20px; ">
+
+                <br>
+                <span style="font-size: 15px; color: black;">F</span><span style="font-size: 13px; color: grey;">ood</span>
+                <span style="font-size: 15px; color: black;">I</span><span style="font-size: 13px; color: grey;">ndication</span>
+                <span style="font-size: 15px; color: black;">A</span><span style="font-size: 13px; color: grey;">utocomplete system of 
+                <span style="font-size: 15px; color: black;">T</span><span style="font-size: 13px; color: grey;">aekyung</span>                
+              
+                <hr  size=2 color=#006ed5 style="margin-top: 20px;">
+            </th>
+        </tr>
+
+
+
+        <!--이미지 업로드 ,조회, 삭제 아이콘  -->
+        <tr>
+            <th height="40" colspan="3" align="right">
+                <table class="image_cursor_wasteback_site">
+                    <label style="margin-right: 58px; cursor:pointer;">
+                        <a onclick="openImageUploadPopup();">
+                            <img src="../Images/이미지업로드_아이콘.png" width="auto" height="38px" alt="커서" id="cursor_icon">
+                        </a>
+
+                    </label>
+
+                    <label style="margin-right: 20px; cursor:pointer;">
+                        <img src="../Images/쓰레기통.png" width="auto" height="40px" alt="쓰레기통" id="wasteback_icon"
+                            onclick="delete_rows();">
+                    </label>
+
+                    <label style="margin-right: 45px; cursor:pointer;">
+                        <img src="../Images/등록_아이콘_2.png" width="auto" height="35px" alt="등록" id="wasteback_icon"
+                            onclick="enroll_data();">
+                    </label>
+
+
+
+                    <br>
+                    <label class="rounded-box" style="margin-right: 58px; width:60px;">이미지 업로드</label>
+                    <label class="rounded-box" style="margin-right: 30px;">삭제</label>
+                    <label class="rounded-box" style="margin-right: 50px;">등록</label>
+
+                </table>
+            </th>
+        </tr>
+
+
+
+
+        <tr>
+            <th height="200" colspan="3">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="db_search_table">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="100" />
+                        <col width="200" />
+                        <col width="150" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="auto" />
+                        <col width="120" />
+                        <col width="150" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick="selectAllCheckboxes(this)">
+                            </th>
+                            <th>원재료코드</th>
+                            <th>원재료명</th>
+                            <th>유형</th>
+                            <th>제조사<br>(국내원료)</th>
+                            <th>제조국가<br>(수입원료)</th>
+                            <th>원료표시사항</th>
+                            <th>알러지유발물질</th>
+                            <th>등록일자</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list1"> </th>
+                            <th>1000658</th>
+                            <th>채종유C(CANOLA)
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>채종유</th>
+                            <th>롯데푸드</th>
+                            <th>대한민국</th>
+                            <th>채종유</th>
+                            <th></th>
+                            <th>
+                                2023.10.10
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list2"> </th>
+                            <th>1001686</th>
+                            <th>토마토케찹(하인즈)
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon" style="cursor:pointer"
+                                    onclick="location.href='./db_enroll_1.html'">
+                            </th>
+                            <th>토마토케첩</th>
+                            <th>H.J. HEINZ MANUFACTURING SPAIN SL</th>
+                            <th>스페인</th>
+                            <th>
+                                토마토,식초,설탕,정제소금,
+                                <br>계피추출물,샐러리추출물
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list3"> </th>
+                            <th>1002091</th>
+                            <th>현미식초
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon" style="cursor:pointer"
+                                onclick="location.href='./db_enroll_2.html'">
+                            </th>
+                            <th>발효식초</th>
+                            <th>대상</th>
+                            <th>대한민국</th>
+                            <th>
+                                정제수,주요,현미당화농축액,주정,물엿,올리고당,구연산,효모추출물,합성향료(사과향)
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list4"> </th>
+                            <th>1000608</th>
+                            <th>정제수
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th>대한민국</th>
+                            <th>
+                                정제수
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list5"> </th>
+                            <th>1000097</th>
+                            <th>고과당
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>기타과당</th>
+                            <th>대상</th>
+                            <th>대한민국</th>
+                            <th>
+                                포도당액
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list6"> </th>
+                            <th>1002090</th>
+                            <th>할라피뇨(렐리쉬)
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>절임식품</th>
+                            <th>엔엘푸드</th>
+                            <th>대한민국</th>
+                            <th>
+                                염장고추,정제수,기타과당,발효식초,로얄믹스,소브산칼륨(보존료),염화칼슘,팽창제,폴리소르베이트80,심황색소,사카린나트륨(감미료)
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list7"> </th>
+                            <th>1002093</th>
+                            <th>이집트콩분말
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>두류가공품</th>
+                            <th>태광푸드</th>
+                            <th>대한민국</th>
+                            <th>
+                                이집트콩
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list8"> </th>
+                            <th>1000606</th>
+                            <th>정백당
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>백설탕</th>
+                            <th>삼양사</th>
+                            <th>대한민국</th>
+                            <th>
+                                원당
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list9"> </th>
+                            <th>1000609</th>
+                            <th>정제염(가는염, 지대)
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>정제소금</th>
+                            <th>한주</th>
+                            <th>대한민국</th>
+                            <th>
+                                염화나트륨
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list10"> </th>
+                            <th>1000395</th>
+                            <th>산탄검
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>잔탄검</th>
+                            <th>(주)주피터인터내셔널</th>
+                            <th>미국</th>
+                            <th>
+                                잔탄검
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list11"> </th>
+                            <th>1002094</th>
+                            <th>퀼라야추출분말
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>퀼라야추출물</th>
+                            <th>세림향료</th>
+                            <th>대한민국</th>
+                            <th>
+                                퀄라야추출물,덱스트린
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list12"> </th>
+                            <th>3000179</th>
+                            <th>칠리맛풍미분TK
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>기타가공품</th>
+                            <th>농심태경</th>
+                            <th>대한민국</th>
+                            <th>
+                                덱스트린,변성전분,파프리카추출색소,올레오레진캪시컴,로즈마리엑기스
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list13"> </th>
+                            <th>1002092</th>
+                            <th>겨자분#601
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>천연향신료</th>
+                            <th>(주)신승하이켐</th>
+                            <th>캐나다</th>
+                            <th>
+                                겨자씨
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list14"> </th>
+                            <th>1000732</th>
+                            <th>펌텍스
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>변성전분</th>
+                            <th></th>
+                            <th>미국</th>
+                            <th>
+                                찰옥수수전분
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list15"> </th>
+                            <th>1000803</th>
+                            <th>히코리스모크오일
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>스모크향</th>
+                            <th>(주)카스 인 바이오</th>
+                            <th>미국</th>
+                            <th>
+                                대두유,히코리스모크향
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list16"> </th>
+                            <th>1000008</th>
+                            <th>DL-메티오닌
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>DL-메티오닌</th>
+                            <th></th>
+                            <th>중국</th>
+                            <th>
+                                DL-메티오닌
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list17"> </th>
+                            <th>1002411</th>
+                            <th>올레오레진로즈마리D
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>향신료올레오레진류</th>
+                            <th>다인소재</th>
+                            <th>대한민국</th>
+                            <th>
+                                올레오레진로즈메리,해바라기유
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="checkbox" name="list18"> </th>
+                            <th>1001444</th>
+                            <th>건조파슬리
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                    onclick="">
+                            </th>
+                            <th>천연향신료</th>
+                            <th>(주)트라이코</th>
+                            <th>네델란드</th>
+                            <th>
+                                파슬리
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.10.08
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+
+
+                </table>
+
+            </th>
+        </tr>
+
+
+
+
+        <tr>
+            <th height="300" colspan="3">
+                <div class="db_search_table_3">
+                    <!-- 이 부분에 이미지 업로드 후 표시할 내용을 추가 -->
+
+
+
+                </div>
+            </th>
+        </tr>
+
+
+    </table>
+</body>
+
+</html>

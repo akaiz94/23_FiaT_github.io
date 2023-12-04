@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        #dropArea {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            margin: 20px;
+            border-radius: 8px;
+        }
+
+        #fileListContainer {
+            display: none;
+            margin: 20px;
+        }
+
+        .fileItem {
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #428bca;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #3071a9;
+        }
+
+        #modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        #modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        #caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+        .second_view {
+            display: flex;
+            /* 초기에는 숨겨진 상태로 설정 */
+
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100vh;
+        }
+
+
+
+        .progress-container {
+            width: 30%;
+            background-color: #e3e3e3;
+            margin: auto;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            position: absolute;
+        }
+
+         .button-container {
+            margin-top: 20px;
+            
+        }
+
+     
+        
+
+
+
+
+
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+    <script>
+        function init() {
+            var dropArea = document.getElementById("dropArea");
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            dropArea.addEventListener('drop', handleDrop, false);
+
+            // 파일 선택 이벤트에 대한 리스너 추가
+            document.getElementById('imageUpload').addEventListener('change', handleFileSelect, false);
+        }
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight() {
+            document.getElementById("dropArea").style.border = "2px solid #39b54a";
+        }
+
+        function unhighlight() {
+            document.getElementById("dropArea").style.border = "2px dashed #ccc";
+        }
+
+        function handleDrop(e) {
+            var dt = e.dataTransfer;
+            var files = dt.files;
+
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            var files = e.target.files;
+
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            var formData = new FormData();
+
+            for (var i = 0; i < files.length; i++) {
+                formData.append("files[]", files[i]);
+            }
+
+            displayFileNames(files);
+
+            highlight();
+        }
+
+        function displayFileNames(files) {
+            var fileNamesContainer = document.getElementById("fileList");
+
+            for (var i = 0; i < files.length; i++) {
+                var fileItem = document.createElement("div");
+                fileItem.className = "fileItem";
+                fileItem.textContent = "이미지 " + (i + 1) + ": " + files[i].name;
+                fileItem.setAttribute('onclick', 'openModal("' + files[i].name + '")');
+                fileNamesContainer.appendChild(fileItem);
+            }
+
+            // Display total number of files
+            var totalFiles = document.createElement("div");
+            totalFiles.textContent = "업로드된 이미지 개수: " + files.length;
+            fileNamesContainer.appendChild(totalFiles);
+
+            // Hide the drop area
+            document.getElementById("dropArea").style.display = "none";
+
+            // Show the file list container
+            document.getElementById("fileListContainer").style.display = "block";
+        }
+
+
+        var uploadPath = "./Images/"; //이미지 경로 수정
+
+
+
+        function openModal(imageName) {
+            console.log("이미지경로1 : " + uploadPath)
+
+
+
+            var modal = document.getElementById('modal');
+            var modalImg = document.getElementById('modal-content');
+            var captionText = document.getElementById('caption');
+
+            modal.style.display = 'block';
+            modalImg.src = uploadPath + imageName; //수정된 이미지 경로
+
+            captionText.innerHTML = '이미지 미리보기';
+            console.log("이미지경로2 : " + uploadPath + imageName)
+
+
+            var span = document.getElementsByClassName('close')[0];
+
+            span.onclick = function () {
+                modal.style.display = 'none';
+            };
+        }
+
+        function checkAndSaveImages() {
+            // Handle the FormData object here or pass it to your upload function
+            // var formData = ...;
+
+            // '7777' 값을 db_enroll.html로 전달
+            var valueToSend = '7777';
+            window.opener.postMessage(valueToSend, '*'); // '*'는 모든 창에 메시지를 보냄
+
+            window.close(); // 창 닫기
+        }
+
+        function ocr_click() {
+            // 두 번째 뷰를 보여줍니다.
+            document.querySelector('.second_view').style.display = 'block';
+
+            // 첫 번째 뷰를 숨깁니다.
+            document.querySelector('.first_view').style.display = 'none';
+
+            startProgressBarAnimation();
+
+        }
+
+
+        function quitImages() {
+            window.close();
+        }
+
+
+        // Initialize drag-and-drop functionality on page load
+        document.addEventListener("DOMContentLoaded", init);
+
+
+
+
+        function startProgressBarAnimation() {
+            var progressBar = document.getElementById("progress-bar");
+            var width = 0;
+            var interval = setInterval(frame, 100);
+
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    progressBar.style.width = width + "%";
+                    progressBar.innerHTML = width + "%";
+                }
+            }
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <title>(DB등록)이미지 업로드 창</title>
+    <h1>(DB등록)이미지 업로드</h1>
+
+    <!-- 드래그 앤 드롭을 위한 영역 -->
+    <div class="first_view">
+        <div id="dropArea">
+            이미지를 드래그 앤 드롭하세요.<br><br>또는
+            <br><br>
+            <input type="file" id="imageUpload" accept="image/*" multiple><br>를 클릭하여 업로드하세요.
+        </div>
+
+        <!-- 파일 목록을 표시할 컨테이너 -->
+        <div id="fileListContainer">
+            <div id="fileList"></div>
+        </div>
+
+        <!-- 모달 영역 -->
+        <div id="modal">
+            <span class="close">&times;</span>
+            <img id="modal-content" style="width:50%">
+            <div id="caption"></div>
+        </div>
+
+        <button type="button" onclick="ocr_click()">OCR시작</button>
+        <button type="button" onclick="quitImages()">닫기</button>
+
+
+
+    </div>
+
+    <div class="second_view" style="display: none; ">
+        <div class="progress-container">            
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+
+
+        <div class="images-container" style="margin-top: 10px;">
+            <img src="../design/change.gif" alt="자동완성 이미지">
+      
+        </div>
+    
+
+
+
+
+
+        <!-- 완료 및 닫기 버튼 -->
+        <div class="button-container" >
+            <button type="button" onclick="checkAndSaveImages()">완료</button>
+            <button type="button" onclick="quitImages()">닫기</button>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

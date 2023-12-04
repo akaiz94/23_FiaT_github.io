@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 달력 위젯을 사용하기 위한 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+        /* 초기에 숨길 서브 카테고리 */
+        .sub-menu {
+            display: none;
+        }
+
+        .db_search_table {
+            display: block;
+        }
+
+
+
+        .cursor_wasteback_site {
+            display: none;
+        }
+
+        .rounded-box {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 30px;
+            /* 너비 설정 */
+            height: 15px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 6px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 15px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+
+        }
+
+        .rounded-box1 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 300px;
+            /* 너비 설정 */
+            height: 40px;
+            /* 높이 설정 */
+            background-color: #00478a;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 20px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 40px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+
+        .rounded-box1_1 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 300px;
+            /* 너비 설정 */
+            height: 40px;
+            /* 높이 설정 */
+            background-color: #00174a;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 20px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 40px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+
+
+        .rounded-box2 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 200px;
+            /* 너비 설정 */
+            height: 30px;
+            /* 높이 설정 */
+            background-color: #00478a;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 10px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 30px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+            cursor: pointer;
+        }
+
+        .rounded-box2:hover {
+            background-color: black;
+            /* Hover 시 색상 변경 */
+        }
+
+
+        .db_search_table thead th {
+            background-color: #00478a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .two_DB_table thead th {
+            background-color: #00174a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .two_DB_table1 thead th {
+            background-color: #00174a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+
+        tbody:nth-child(even) {
+            background-color: #cfcfcfd7;
+            /* 원하는 배경색으로 설정하세요 */
+        }
+    </style>
+
+
+
+    <script>
+        function toggleSubMenu() {
+            var subMenu = document.querySelector('.sub-menu');
+            var image = document.querySelector('img[alt="이미지"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+        function changeFontColor(link) {
+            var links = document.querySelectorAll("ul li a"); // 모든 링크 요소 선택
+
+            for (var i = 0; i < links.length; i++) {
+                if (links[i] === link) {
+                    // 클릭된 링크는 파란색으로 변경
+                    link.style.color = 'blue';
+                } else {
+                    // 다른 링크는 검은색으로 변경
+                    links[i].style.color = 'black';
+                }
+            }
+        }
+
+        // 달력 위젯을 활성화
+        $(function () {
+            $("#datepicker1").datepicker();
+        });
+
+        // 달력 위젯을 활성화2
+        $(function () {
+            $("#datepicker2").datepicker();
+        });
+
+        /*
+        $(function () {
+            $("#datepicker1, #datepicker2").datepicker();
+
+            // 달력 아이콘을 클릭하여 달력 표시
+            $("#datepicker1-icon").click(function () {
+                $("#datepicker1").datepicker("show");
+            });
+        });
+        */
+
+        function two_DB_Search() {
+            var table = document.querySelector('.two_DB_table'); // Use . to select by class name
+            var table1 = document.querySelector('.two_DB_table1'); // Use . to select by class name
+
+
+            var tableStyle = table.style;
+            var tableStyle1 = table1.style;
+
+            tableStyle.display = 'table';
+            tableStyle1.display = 'none';
+
+
+        }
+
+        function two_DB_Search1() {
+            var table = document.querySelector('.two_DB_table'); // Use . to select by class name
+            var table1 = document.querySelector('.two_DB_table1'); // Use . to select by class name
+
+
+            var tableStyle = table.style;
+            var tableStyle1 = table1.style;
+
+            tableStyle.display = 'none';
+            tableStyle1.display = 'table';
+
+
+        }
+
+
+
+        function goToDBEnrollPage() {
+            // 원하는 페이지로 이동
+            //window.location.href = './db_enroll.html';
+
+            // 매개변수를 포함한 URL을 생성합니다.
+            const url = './db_reform.html?value=' + 7777;
+
+            // Redirect to the new URL
+            window.location.href = url;
+
+
+        }
+
+
+        function change_rows() {
+            // 수정 모드를 활성화하여 지정된 행을 수정 가능하게 만듭니다.
+
+
+            alert("1차 하부원재료 DB를 '수정'합니다.")
+            enableEditingMode('db_search_table');
+        }
+
+
+        function change_rows1() {
+            // 수정 모드를 활성화하여 지정된 행을 수정 가능하게 만듭니다.
+            alert("2차 하부원재료 DB를 '수정'합니다.")
+
+            var table = document.querySelector('.two_DB_table');
+            var table1 = document.querySelector('.two_DB_table1');
+
+
+            var select_table;
+            if (table.style.display === 'table') {
+                // 표시 중인 테이블이 있으면 해당 테이블을 수정하는 로직을 추가
+                // 예를 들어, 각 셀을 클릭할 때 수정 가능하도록 contentEditable 속성을 추가할 수 있습니다.
+                select_table = 'two_DB_table';
+            } else if (table1.style.display === 'table') {
+                // 다른 테이블도 수정 로직을 추가
+                select_table = 'two_DB_table1';
+            }
+
+            console.log(select_table);
+
+            enableEditingMode(select_table);
+        }
+
+
+
+        function enableEditingMode(tableClassName) {
+
+            var table = document.querySelector('.' + tableClassName);
+            var rows = table.querySelectorAll('tbody tr');
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].querySelectorAll('th');
+                for (var j = 0; j < cells.length; j++) {
+                    cells[j].contentEditable = true;
+                }
+            }
+        }
+
+
+
+
+        function save_data() {
+            alert("1차 하부원재료 DB가  '저장'되었습니다.")
+            // 데이터를 저장하는 로직을 여기에 추가합니다.           
+
+
+            // 저장 후 수정 모드를 비활성화합니다.
+            disableEditingMode('db_search_table');
+        }
+
+
+        function save_data1() {
+            alert("2차 하부원재료 DB가  '저장'되었습니다.")
+            // 데이터를 저장하는 로직을 여기에 추가합니다.   
+
+            var table = document.querySelector('.two_DB_table');
+            var table1 = document.querySelector('.two_DB_table1');
+
+
+            var select_table;
+            if (table.style.display === 'table') {
+                // 표시 중인 테이블이 있으면 해당 테이블을 수정하는 로직을 추가
+                // 예를 들어, 각 셀을 클릭할 때 수정 가능하도록 contentEditable 속성을 추가할 수 있습니다.
+                select_table = 'two_DB_table';
+            } else if (table1.style.display === 'table') {
+                // 다른 테이블도 수정 로직을 추가
+                select_table = 'two_DB_table1';
+            }
+
+
+            // 저장 후 수정 모드를 비활성화합니다.
+            disableEditingMode(select_table);
+        }
+
+
+
+        function disableEditingMode(tableClassName) {
+            var table = document.querySelector('.' + tableClassName);
+            var rows = table.querySelectorAll('tbody tr');
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].querySelectorAll('th');
+                for (var j = 0; j < cells.length; j++) {
+                    cells[j].contentEditable = false;
+                }
+            }
+        }
+
+
+
+
+
+
+
+    </script>
+</head>
+
+
+
+
+
+
+<body>
+    <style>
+        li {
+            list-style: none;
+        }
+    </style>
+
+
+
+
+    <table border="0" width="200" height="900" align="left">
+        <tr>
+            <th height="100" colspan="1">
+                <img src="../Images/농심태경로고.png" alt="로고" style="width: 60%; height: auto;" align="left">
+            </th>
+        </tr>
+
+        <tr>
+            <td style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 플러스.png" alt="이미지"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu();"> <strong style="font-size: 1.2em;">원재료DB</strong></a>
+
+                <div class="sub-menu">
+                    <ul>
+                        <li><a href="./db_search.html" onclick="changeFontColor(this);">- DB조회</a></li>
+                        <li><a href="./db_enroll.html" onclick="changeFontColor(this);">- DB등록</a></li>
+                        <li><a href="./db_reform.html" onclick="changeFontColor(this);">- DB개정</a></li>
+                    </ul>
+                </div>
+
+            </td>
+        </tr>
+
+    </table>
+
+
+    <table border="0" width="1300" height="900">
+        <tr>
+            <th height="100" colspan="5">
+                <hr color=006ed5 size=4>
+                <span style="font-size: 50px; color: #006ed5;">DB개정</span>
+                <hr color=006ed5 size=4>
+            </th>
+        </tr>
+
+        <tr>
+            <th height="50" colspan="2" align="left">
+                <table class="1st_one">
+
+                    <div class="rounded-box1" style="margin-bottom: 10px; font-size: 20px;">1차 하부원재료 DB</div>
+                </table>
+
+            </th>
+
+            <th height="50" colspan="2" align="right">
+                <table class="image_cursor_wasteback_site">
+
+                    <label style="margin-right: 20px;">
+                        <img src="../Images/수정아이콘2.png" width="auto" height="35px" alt="수정" id="edit_icon"
+                            style="cursor: pointer;" onclick="change_rows();">
+                    </label>
+
+                    <label style="margin-right: 45px;">
+                        <img src="../Images/저장아이콘.png" width="auto" height="40px" alt="저장" id="save_icon"
+                            style="cursor: pointer;" onclick="save_data();">
+                    </label>
+
+
+
+                    <br>
+                    <label class="rounded-box" style="margin-right: 35px;">수정</label>
+                    <label class="rounded-box" style="margin-right: 50px;">저장</label>
+
+                </table>
+
+            </th>
+
+
+        </tr>
+
+
+        <tr>
+            <th height="200" colspan="3" align="left">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" width="1300px"
+                    class="db_search_table">
+                    <colgroup>
+                        <col width="250" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="250" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>원재료코드</th>
+                            <th>원재료명</th>
+                            <th>1차하부원재료순위</th>
+                            <th>1차하부원재료코드</th>
+                            <th>1차하부원재료명</th>
+                            <th>1차하부원재료제조국가<br>
+                                (원산지)
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th>1001361</th>
+                            <th>멸치분말2호</th>
+                            <th>1</th>
+                            <th>300001</th>
+                            <th>멸치
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="1st_DB"
+                                    style="cursor:pointer" onclick="two_DB_Search();">
+                            </th>
+                            <th>베트남</th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th>1001361</th>
+                            <th>멸치분말2호</th>
+                            <th>1</th>
+                            <th>300002</th>
+                            <th>정제수
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="1st_DB_1"
+                                    style="cursor:pointer" onclick="two_DB_Search1();">
+                            </th>
+                            <th>국내산</th>
+                        </tr>
+                    </tbody>
+
+                    <th height="50" colspan="6" align="right">
+                        <div class="db_search_table_2">
+                            <label class="rounded-box2" style="margin-right: 10px; font-size: 15px; width: 150px;"
+                                onclick="goToDBEnrollPage()">DB개정 메인으로</label>
+                        </div>
+                    </th>
+
+
+                </table>
+
+                <hr size=2 color=#b6b6b6 style="margin-top: 50px;">
+
+            </th>
+        </tr>
+
+
+        <tr>
+            <th height="50" colspan="2" align="left">
+
+                <div class="rounded-box1_1" style="margin-bottom: 10px; font-size: 20px;">2차 하부원재료 DB</div>
+
+            </th>
+
+            <th height="50" colspan="2" align="right">
+                <table class="image_cursor_wasteback_site">
+
+                    <label style="margin-right: 20px;">
+                        <img src="../Images/수정아이콘2.png" width="auto" height="35px" alt="수정" id="edit_icon" style="cursor: pointer;"
+                            onclick="change_rows1();">
+                    </label>
+
+                    <label style="margin-right: 45px;">
+                        <img src="../Images/저장아이콘.png" width="auto" height="40px" alt="저장" id="save_icon" style="cursor: pointer;"
+                            onclick="save_data1();"> 
+                    </label>
+
+
+
+                    <br>
+                    <label class="rounded-box" style="margin-right: 35px;">수정</label>
+                    <label class="rounded-box" style="margin-right: 50px;">저장</label>
+
+                </table>
+
+            </th>
+
+
+        </tr>
+
+
+        <tr>
+            <th height="200" colspan="3" align="left">
+                <table border="1" style="border-collapse: collapse; width: 1300px; display: none;" class="two_DB_table">
+                    <colgroup>
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="250" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>2차하부원재료코드</th>
+                            <th>원재료명</th>
+                            <th>2차하부원재료순위</th>
+                            <th>2차하부원재료코드</th>
+                            <th>2차하부원재료명</th>
+                            <th>2차하부원재료제조국가<br>
+                                (원산지)
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th>300001</th>
+                            <th>멸치</th>
+                            <th>1</th>
+                            <th>500001</th>
+                            <th>멸치가루
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon">
+
+                            </th>
+                            <th>베트남</th>
+                        </tr>
+                    </tbody>
+
+                    <!--
+                    <th height="50" colspan="6" align="right">
+                        <div class="db_search_table_2">
+                            <label class="rounded-box2" style="margin-right: 10px; font-size: 15px; width: 150px;" onclick="goToDBEnrollPage()">DB등록 메인으로</label>
+
+                        </div>
+                    </th>
+                -->
+                </table>
+
+
+                <table border="1" style="border-collapse: collapse; width: 1300px; display: none;"
+                    class="two_DB_table1">
+                    <colgroup>
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="250" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>2차하부원재료코드</th>
+                            <th>원재료명</th>
+                            <th>2차하부원재료순위</th>
+                            <th>2차하부원재료코드</th>
+                            <th>2차하부원재료명</th>
+                            <th>2차하부원재료제조국가<br>
+                                (원산지)
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th>300002</th>
+                            <th>정제수</th>
+                            <th>1</th>
+                            <th>500002</th>
+                            <th>증류수
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon">
+
+                            </th>
+                            <th>베트남</th>
+                        </tr>
+                    </tbody>
+
+                    <!--
+                    <th height="50" colspan="6" align="right">
+                        <div class="db_search_table_2">
+                            <label class="rounded-box2" style="margin-right: 10px; font-size: 15px; width: 150px;" onclick="goToDBEnrollPage()">DB등록 메인으로</label>
+
+                        </div>
+                    </th>
+                -->
+                </table>
+
+            </th>
+        </tr>
+
+
+
+
+        <tr>
+            <th height="300" colspan="3">
+                <div class="db_search_table_3">
+                    <!-- 이 부분에 이미지 업로드 후 표시할 내용을 추가 -->
+
+
+                </div>
+            </th>
+        </tr>
+
+
+
+
+
+
+    </table>
+</body>
+
+</html>

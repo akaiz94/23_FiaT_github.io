@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 달력 위젯을 사용하기 위한 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';
+        }
+
+        input[type=text] {
+            border: 2px solid skyblue;
+            border-radius: 5px;
+        }
+
+        input[type=text]:hover {
+            background-color: aliceblue;
+            color: aliceblue;
+        }
+
+        input[type=text]:focus {
+            font-size: 100%;
+            color: black;
+        }
+
+        /* 초기에 숨길 서브 카테고리 */
+        .sub-menu1 {
+            display: none;
+        }
+
+        .db_search_table {
+            display: none;
+        }
+
+        .db_search_table1 {
+            display: none;
+        }
+
+        .db_reform_table {
+            display: none;
+
+        }
+
+        .db_reform_table1 {
+            display: none;
+
+        }
+
+
+        ul li a {
+            text-decoration: none;
+            /* 밑줄 제거 */
+            color: black;
+            /* 기본 글자색을 검은색으로 설정 */
+            font-weight: 600;
+            /* 세미 볼드로 설정 */
+        }
+
+        ul li a[href="./db_reform.html"] {
+            color: #006ed5;
+            /* 특정 링크에 대한 글자색을 남색으로 설정 */
+            font-weight: 700;
+            /* 더 볼드한 글꼴로 설정 */
+            font-size: 20px;
+            /* 글자 크기를 28px로 설정 */
+        }
+
+
+
+        .db_search_table thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .db_search_table1 thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .db_reform_table thead th {
+            background-color: #00478a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .db_reform_table1 thead th {
+            background-color: #002c54;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+
+
+        tbody:nth-child(even) {
+            background-color: #cfcfcfd7;
+            /* 원하는 배경색으로 설정하세요 */
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        .cursor_wasteback_site {
+            display: none;
+        }
+
+        .rounded-box {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 30px;
+            /* 너비 설정 */
+            height: 15px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 6px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 15px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+
+        }
+
+        .rounded-box1 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 300px;
+            /* 너비 설정 */
+            height: 40px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 20px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 40px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+
+        .rounded-box2 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 200px;
+            /* 너비 설정 */
+            height: 30px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 10px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 30px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+    </style>
+
+    <script>
+
+        // 달력 위젯을 활성화
+        $(function () {
+            $("#datepicker1").datepicker();
+        });
+
+        // 달력 위젯을 활성화2
+        $(function () {
+            $("#datepicker2").datepicker();
+        });
+
+
+
+        function toggleSubMenu() {
+            var subMenu = document.querySelector('.sub-menu');
+            var image = document.querySelector('img[alt="이미지"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+        function toggleSubMenu1() {
+            var subMenu = document.querySelector('.sub-menu1');
+            var image = document.querySelector('img[alt="이미지1"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+
+
+        function changeFontColor(link) {
+            var links = document.querySelectorAll("ul li a"); // 모든 링크 요소 선택
+
+            for (var i = 0; i < links.length; i++) {
+                if (links[i] === link) {
+                    // 클릭된 링크는 파란색으로 변경
+                    link.style.color = 'blue';
+                } else {
+                    // 다른 링크는 검은색으로 변경
+                    links[i].style.color = 'black';
+                }
+            }
+        }
+
+
+
+        function openImageUploadPopup(e) {
+
+            console.log("ffffff팝업창1")
+
+
+            var popupWidth = 800;
+            var popupHeight = 600;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "./db_reform_upload.html"; // 변경 필요
+
+            // 고유한 이름으로 팝업 창 열기
+            popupWindow = window.open(uploadPageURL, "ImageUploadPopup", popupOptions);
+
+
+            /*
+            // db_enroll.html 로드 시 enroll_1211 변수를 확인하고 처리
+            window.onload = function () {
+                if (typeof window.enroll_1211 !== 'undefined') {
+                    var enrollValue = window.enroll_1211;
+                    console.log("enroll_1211 값: " + enrollValue);
+            
+                    // 여기서 enrollValue 값을 저장하거나 처리하는 로직을 추가합니다.
+                }
+            }
+            */
+
+        }
+
+
+        window.addEventListener('message', receiveMessage, false);
+        var receivedValue
+
+
+        function receiveMessage(event) {
+            // 이 함수는 메시지를 수신하는 함수입니다.
+            if (event.data === '8888') {
+                // 전달된 값이 '7777'이면 변수에 저장
+                receivedValue = event.data;
+                console.log('받은 값test: ' + receivedValue);
+
+                // '7777'을 받았을 때 db_search_table 클래스의 display를 'block'으로 변경
+                var dbSearchTable = document.querySelector(".db_reform_table");
+                var dbSearchTable1 = document.querySelector(".db_reform_table1");
+
+                dbSearchTable.style.display = "none";
+                dbSearchTable1.style.display = "block";
+
+
+                // 이제 receivedValue를 원하는 변수에 저장하거나 처리할 수 있습니다.
+            }
+        }
+
+
+
+        function toggleSearch() {
+            var table = document.querySelector('.db_search_table'); // 테이블 요소 선택
+            var tableStyle = table.style;
+            var searchInput = document.getElementsByName("inputField")[0]; // 검색 입력 필드 선택
+
+            // 입력 필드의 값이 '멸치분말*'을 포함하는지 확인
+            if (searchInput.value.includes('멸치분말*')) {
+                // 테이블이 숨겨져 있거나 보이지 않는 상태인 경우, 테이블을 보이게 함
+                if (tableStyle.display === 'none' || tableStyle.display === '') {
+                    tableStyle.display = 'table';
+                } else {
+                    // 테이블이 보이는 상태인 경우, 테이블을 숨김
+                    tableStyle.display = 'none';
+                }
+            } else {
+                // '멸치분말*'을 입력하도록 알리는 알림 메시지 표시
+                alert("검색항목을 입력해주세요.");
+            }
+        }
+
+        function enroll_data() {
+            var dbSearchTable = document.querySelector(".db_search_table");
+            var dbSearchTable1 = document.querySelector(".db_search_table1");
+
+            var tableStyle = dbSearchTable.style;
+            var tableStyle1 = dbSearchTable1.style;
+
+            tableStyle.display = "none"; // "none"으로 설정
+            tableStyle1.display = "table"; // "table"로 설정
+
+            // 추가: 텍스트 색상 변경
+            var targetElement = document.getElementById("colorChangeTarget");
+
+            function changeColor() {
+                // Change text color to red
+                targetElement.style.color = "red";
+
+                // After 3 seconds, revert to black
+                setTimeout(function () {
+                    targetElement.style.color = "black";
+                }, 2000);
+            }
+
+            // Call the function when the page loads
+            changeColor();
+        }
+
+
+
+        function openPopup() {
+            // 팝업 창의 크기 및 속성을 정의합니다.
+            var popupWidth = 400;
+            var popupHeight = 200;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+
+            // 화면 가운데 정렬을 위한 위치 계산
+            var left = (window.innerWidth - popupWidth) / 2;
+            var top = (window.innerHeight - popupHeight) / 2;
+
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "./db_reform_popup.html";
+
+            // 고유한 이름으로 팝업 창 열기 및 위치 설정
+            popupWindow = window.open(uploadPageURL, "ImageUploadPopup", popupOptions + ",top=" + top + ",left=" + left);
+        }
+
+
+
+
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const value_enroll_1 = urlParams.get('value');
+        console.log("reform_Params_value : " + value_enroll_1)
+
+
+
+        if (value_enroll_1 === '7777') {
+            // 값이 존재하면 저장할 수 있습니다.
+            // 예를 들어, 이 값을 어딘가에 저장하려면 다음과 같이 할 수 있습니다.
+            // localStorage에 저장
+            console.log("reform_Params_value22 : " + value_enroll_1)
+
+            // 페이지가 로드되기 전에 스크립트가 실행되는 경우, 해당 요소를 찾을 수 없음. 이 경우, DOMContentLoaded 이벤트 내에서 코드를 실행하여 페이지가 로드된 후에 실행
+            document.addEventListener('DOMContentLoaded', function () {
+
+                var dbSearchTable = document.querySelector(".db_search_table");
+
+                if (dbSearchTable !== null) {
+                    dbSearchTable.style.display = "block";
+                }
+
+                var dbSearchTable = document.querySelector(".db_reform_table");
+                if (dbSearchTable !== null) {
+                    dbSearchTable.style.display = "block";
+                }
+
+
+            });
+
+        }
+
+
+        if (value_enroll_1 === '8888') {
+            // 값이 존재하면 저장할 수 있습니다.
+            // 예를 들어, 이 값을 어딘가에 저장하려면 다음과 같이 할 수 있습니다.
+            // localStorage에 저장
+            console.log("reform_Params_value22 : " + value_enroll_1)
+
+            // 페이지가 로드되기 전에 스크립트가 실행되는 경우, 해당 요소를 찾을 수 없음. 이 경우, DOMContentLoaded 이벤트 내에서 코드를 실행하여 페이지가 로드된 후에 실행
+            document.addEventListener('DOMContentLoaded', function () {
+
+                var dbSearchTable1 = document.querySelector(".db_search_table");
+
+                if (dbSearchTable1 !== null) {
+                    dbSearchTable1.style.display = "block";
+                }
+
+                var dbSearchTable1 = document.querySelector(".db_reform_table1");
+                if (dbSearchTable1 !== null) {
+                    dbSearchTable1.style.display = "block";
+                }
+
+
+            });
+
+        }
+
+
+
+
+
+
+        /*
+        if (value_enroll_1 !== null) {
+            // 값이 존재하면 저장할 수 있습니다.
+            // 예를 들어, 이 값을 어딘가에 저장하려면 다음과 같이 할 수 있습니다.
+            // localStorage에 저장
+            console.log("reform_Params_value22 : " + value_enroll_1)
+
+            // 페이지가 로드되기 전에 스크립트가 실행되는 경우, 해당 요소를 찾을 수 없음. 이 경우, DOMContentLoaded 이벤트 내에서 코드를 실행하여 페이지가 로드된 후에 실행
+            document.addEventListener('DOMContentLoaded', function () {
+                var dbSearchTable = document.querySelector(".db_search_table");
+                if (dbSearchTable !== null) {
+                    dbSearchTable.style.display = "block";
+                }
+
+                var dbSearchTable = document.querySelector(".db_reform_table");
+                if (dbSearchTable !== null) {
+                    dbSearchTable.style.display = "block";
+                }
+            });
+
+        }
+        */
+
+
+
+
+
+        // 이벤트 핸들러 함수
+        function reform_detail() {
+            // db_search_table 클래스를 가진 요소를 찾아서 스타일을 변경하여 보이게 함
+            var dbSearchTable = document.querySelector('.db_reform_table');
+            var dbSearchTable1 = document.querySelector('.db_reform_table1');
+
+            var radio = document.getElementById("reform_check1");
+
+
+
+            if (dbSearchTable) {
+                dbSearchTable.style.display = 'block';
+            }
+            if (dbSearchTable1) {
+                dbSearchTable1.style.display = 'none';
+            }
+
+        }
+
+
+
+
+    </script>
+</head>
+
+
+
+<body>
+    <style>
+        li {
+            list-style: none;
+        }
+    </style>
+
+
+
+
+    <table border="0" width="250" height="900" align="left">
+        <tr>
+            <th height="100" colspan="1">
+                <a href="../index.html">
+                    <img src="../Images/농심태경로고.png" alt="로고" style="width: 60%; height: auto;" align="left">
+                </a>
+            </th>
+        </tr>
+
+        <tr>
+            <td height="30" style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 마이너스.png" alt="이미지"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu();" style="cursor: pointer;"> <strong
+                        style="font-size: 1.2em;">원재료DB</strong></a>
+
+                <div class="sub-menu">
+                    <ul>
+                        <li><a href="./db_search.html" onclick="changeFontColor(this);" style="cursor: pointer;">-
+                                DB조회</a></li>
+                        <li><a href="./db_enroll.html" onclick="changeFontColor(this);" style="cursor: pointer;">-
+                                DB등록</a></li>
+                        <li><a href="./db_reform.html" onclick="changeFontColor(this);" style="cursor: pointer;">-
+                                DB개정</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 플러스.png" alt="이미지1"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu1();" style="cursor: pointer;"> <strong
+                        style="font-size: 1.2em;">디자인
+                        회람</strong></a>
+
+                <div class="sub-menu1">
+                    <ul>
+                        <li><a href="./de_ai_main.html" onclick="changeFontColor(this);" style="cursor: pointer;">-
+                                AI표시사항 자동완성</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+    <table border="0" width="1300" height="900">
+        <tr>
+            <th height="100" colspan="5">
+
+                <span style="font-size: 50px; color: #006ed5;">DB개정</span>
+                <img src="../Images/피아뜨.png" alt="피아뜨 이미지"
+                    style="float: right; width: 80px; height: 80px; margin-left: 0px; margin-top: 20px;">
+
+                <br>
+                <span style="font-size: 15px; color: black;">F</span><span
+                    style="font-size: 13px; color: grey;">ood</span>
+                <span style="font-size: 15px; color: black;">I</span><span
+                    style="font-size: 13px; color: grey;">ndication</span>
+                <span style="font-size: 15px; color: black;">A</span><span
+                    style="font-size: 13px; color: grey;">utocomplete system of
+                    <span style="font-size: 15px; color: black;">T</span><span
+                        style="font-size: 13px; color: grey;">aekyung</span>
+
+                    <hr size=2 color=#006ed5 style="margin-top: 20px;">
+            </th>
+        </tr>
+
+        <!-- 등록기간 및 검색항목  -->
+
+        <tr align="left">
+            <th height="100" width="700">
+                <span style="margin-left: 20px;">● 조회기간</span>
+                <label for="datepicker1" style="margin-left: 10px; color: gray;">start</label>
+                <input type="text" id="datepicker1" style="margin-left: 5px;">
+                <span style="margin-left: 10px;">~</span>
+                <label for="datepicker2" style="margin-left: 5px; color: gray;">end</label>
+                <input type="text" id="datepicker2" style="margin-left: 5px;">
+            </th>
+
+
+            <th height="60" width="200" align="right">● 검색항목 &nbsp;&nbsp;<p>
+            </th>
+
+            <th height="60" width="auto">
+                <label>
+                    <input type="radio" name="radioGroup" value="원재료코드">
+                    <span>원재료코드 &nbsp;</span>
+                </label>
+                <label>
+                    <input type="radio" name="radioGroup" value="원재료">
+                    <span>원재료 &nbsp;</span>
+                </label>
+                <label>
+                    <input type="radio" name="radioGroup" value="등록자">
+                    <span>등록자 &nbsp;</span>
+                </label>
+
+                <br>
+                <label>
+                    <input type="text" name="inputField" style="width: 300px;" placeholder="검색어를 입력해주세요.">
+                    <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                        style="cursor: pointer;" onclick="toggleSearch();">
+                </label>
+            </th>
+        </tr>
+
+
+        <!-- 개정, 삭제 아이콘  -->
+        <tr>
+            <th height="40" colspan="3" align="right">
+                <table class="cursor_wasteback_site">
+                    <label style="margin-right: 20px;">
+                        <img src="../Images/커서아이콘.png" width="auto" height="40px" alt="커서" id="cursor_icon"
+                            style="cursor: pointer;" onclick="reform_detail();">
+                    </label>
+
+
+
+                    <br>
+                    <label class="rounded-box" style="margin-right: 20px;">조회</label>
+
+                </table>
+            </th>
+        </tr>
+
+
+
+
+
+
+        <tr>
+            <th height="200" colspan="3">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="db_search_table">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="150" />
+                        <col width="150" />
+                        <col width="200" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="250" />
+                        <col width="150" />
+                        <col width="150" />
+
+
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>원재료코드</th>
+                            <th>유형</th>
+                            <th>원재료명</th>
+                            <th>제조사<br>(국내원료)</th>
+                            <th>제조국가<br>(수입원료)</th>
+                            <th>원료표시사항</th>
+                            <th>알러지유발물질</th>
+                            <th>등록일자</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="radio" name="list" id="reform_check1"> </th>
+                            <th>1001341</th>
+                            <th>수산물가공품</th>
+                            <th>멸치분말</th>
+                            <th></th>
+                            <th>베트남</th>
+                            <th>멸치100%</th>
+                            <th></th>
+                            <th>
+                                2023.10.10
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="radio" name="list" id="reform_check1"> </th>
+                            <th>1001350</th>
+                            <th>복합조미식</th>
+                            <th>멸치분말2호</th>
+                            <th>세우</th>
+                            <th></th>
+                            <th>
+                                멸치90% <br>
+                                정제염10%
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.11.02
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="radio" name="list" id="reform_check1"> </th>
+                            <th>1001350</th>
+                            <th>복합조미식</th>
+                            <th>멸치분말3호</th>
+                            <th>세우</th>
+                            <th></th>
+                            <th>
+                                멸치90% <br>
+                                정제염10%
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.11.02
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+                </table>
+
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="db_search_table1">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="150" />
+                        <col width="150" />
+                        <col width="200" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="250" />
+                        <col width="150" />
+                        <col width="150" />
+
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>원재료코드</th>
+                            <th>유형</th>
+                            <th>원재료명</th>
+                            <th>제조사<br>(국내원료)</th>
+                            <th>제조국가<br>(수입원료)</th>
+                            <th>원료표시사항</th>
+                            <th>알러지유발물질</th>
+                            <th>등록일자</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="radio" name="list" id="reform_check1"> </th>
+                            <th>1001341</th>
+                            <th>수산물가공품</th>
+                            <th>멸치분말</th>
+                            <th></th>
+                            <th>베트남</th>
+                            <th>멸치100%</th>
+                            <th></th>
+                            <th>
+                                2023.10.10
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="radio" name="list" id="reform_check1"> </th>
+                            <th>1001350</th>
+                            <th>복합조미식</th>
+                            <th>멸치분말2호</th>
+                            <th>세우</th>
+                            <th></th>
+                            <th id="colorChangeTarget">
+                                멸치92% <br>
+                                정제염3%<br>
+                                후추5%
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.11.05
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+                    <tbody>
+                        <tr>
+                            <th> <input type="radio" name="list" id="reform_check1"> </th>
+                            <th>1001350</th>
+                            <th>복합조미식</th>
+                            <th>멸치분말3호</th>
+                            <th>세우</th>
+                            <th></th>
+                            <th>
+                                멸치90% <br>
+                                정제염10%
+
+                            </th>
+                            <th></th>
+                            <th>
+                                2023.11.02
+
+                            </th>
+                        </tr>
+                    </tbody>
+
+
+                </table>
+
+
+
+
+            </th>
+        </tr>
+
+        <tr>
+            <th height="40" colspan="3" align="right">
+                <table class="image_cursor_wasteback_site">
+
+
+                    <hr size=2 color=#b6b6b6 style="margin-top: 0px;">
+
+
+                    <label style="margin-right: 58px;">
+                        <a onclick="openImageUploadPopup();">
+                            <img src="../Images/이미지업로드_아이콘.png" width="auto" height="38px" alt="커서" id="cursor_icon"
+                                style="cursor: pointer;">
+                        </a>
+
+                    </label>
+
+                    <label style="margin-right: 20px; margin-top: 10px">
+                        <img src="../Images/저장아이콘.png" width="auto" height="40px" alt="저장" id="wasteback_icon"
+                            style="cursor: pointer;" onclick="openPopup();">
+                    </label>
+
+
+                    <label style="margin-right: 45px;">
+                        <img src="../Images/개정업데이트.png" width="auto" height="35px" alt="개정" id="wasteback_icon"
+                            style="cursor: pointer;" onclick="enroll_data();">
+                    </label>
+
+                    <br>
+                    <label class="rounded-box" style="margin-right: 62px; width:60px;">이미지 업로드</label>
+                    <label class="rounded-box" style="margin-right: 41px;">저장</label>
+                    <label class="rounded-box" style="margin-right: 53px;">개정</label>
+
+                </table>
+
+
+
+            </th>
+        </tr>
+
+        <tr>
+            <th height="200" colspan="3">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="db_reform_table">
+                    <colgroup>
+                        <col width="200" />
+                        <col width="150" />
+                        <col width="150" />
+                        <col width="150" />
+                        <col width="100" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="150" />
+
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>원재료코드</th>
+                            <th>유형</th>
+                            <th>원재료명</th>
+                            <th>제조사<br>(국내원료)</th>
+                            <th>제조국가<br>(수입원료)</th>
+                            <th>원료표시사항</th>
+                            <th>알러지유발물질</th>
+                            <th>등록일자</th>
+                        </tr>
+                    </thead>
+
+
+                    <tr>
+                        <th>1001350</th>
+                        <th>복합조미식</th>
+                        <th>멸치분말2호
+                            <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                style="cursor: pointer;" onclick="location.href='./db_reform_0.html'">
+                        </th>
+
+                        <th>세우</th>
+                        <th></th>
+                        <th>
+                            멸치90% <br>
+                            정제염10%
+                        </th>
+                        <th></th>
+                        <th>
+                            2023.11.02
+
+                        </th>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="db_reform_table1">
+                    <colgroup>
+                        <col width="200" />
+                        <col width="150" />
+                        <col width="150" />
+                        <col width="150" />
+                        <col width="100" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="150" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>원재료코드</th>
+                            <th>유형</th>
+                            <th>원재료명</th>
+                            <th>제조사<br>(국내원료)</th>
+                            <th>제조국가<br>(수입원료)</th>
+                            <th>원료표시사항</th>
+                            <th>알러지유발물질</th>
+                            <th>등록일자</th>
+                        </tr>
+                    </thead>
+
+
+                    <tr>
+                        <th>1001350</th>
+                        <th>복합조미식</th>
+                        <th>멸치분말2호
+                            <img src="../Images/돋보기 아이콘.png" width="20px" height="15px" alt="돋보기" id="searchIcon"
+                                style="cursor: pointer;" onclick="location.href='./db_reform_1.html'">
+                        </th>
+
+                        <th>세우</th>
+                        <th></th>
+                        <th>
+                            멸치92% <br>
+                            정제염3%<br>
+                            후추5%
+                        </th>
+                        <th></th>
+                        <th>
+                            2023.11.05
+
+                        </th>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+            </th>
+        </tr>
+    </table>
+</body>

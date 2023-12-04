@@ -1,0 +1,12 @@
+        /* 초기에 숨길 서브 카테고리 */
+        .sub-menu {
+            display: none;
+        }
+
+        .db_search_table {
+            display: none;
+        }
+
+        .sub-menu1 {
+            display: none;
+        }

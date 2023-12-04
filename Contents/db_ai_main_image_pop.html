@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>표시사항 저장</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="db_reform.html">
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .image-container {
+            position: relative;
+        }
+
+        .image_text {
+            position: absolute;
+            top: 36.5%;
+            left: 1%;
+            right: 30%;
+            text-align: left;
+
+            background-color: transparent;
+            padding: 5px;
+        }
+
+
+
+        .first_table {
+            text-align: center;
+            /* 가운데 정렬을 위해 부모 요소의 텍스트 정렬을 사용합니다. */
+        }
+
+
+        .complete_table {
+            display: none;
+        }
+        .complete_table1 {
+            display: none;
+        }
+
+        .complete_table1 {
+            text-align: center;
+            padding: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+
+
+
+        p {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+
+
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image-container {
+            position: relative;
+        }
+    </style>
+
+    <script>
+        function typeText(element, text, speed) {
+            var i = 0;
+            var interval = setInterval(function () {
+                element.textContent += text[i];
+                i++;
+                if (i > text.length - 1) {
+                    clearInterval(interval);
+                }
+            }, speed);
+        }
+
+        // 페이지 로드 시 typeText 함수 호출
+        document.addEventListener("DOMContentLoaded", function () {
+            var element = document.getElementById("image_text"); // ID가 image_text인 요소 가져오기
+            var text = element.textContent; // 요소의 텍스트 내용 가져오기
+            var speed = 50; // 속도 (필요에 따라 조절)
+
+            // 기존 텍스트 내용 비우기
+            element.textContent = "";
+
+            // typeText 함수 호출
+            typeText(element, text, speed);
+        });
+
+
+        function showCompleteTable() {
+        var firstTable = document.querySelector('.first_table');
+        var completeTable = document.querySelector('.complete_table');
+
+        // Hide the first_table
+        firstTable.style.display = 'none';
+        // Show the complete_table
+        completeTable.style.display = 'block';
+
+        // Wait for 2 seconds before showing complete_table1
+        setTimeout(function () {
+            completeTable.style.display = 'none';
+            showCompleteTable1();
+        }, 3000);
+    }
+
+    function showCompleteTable1() {
+        // Show the complete_table1
+        document.querySelector('.complete_table1').style.display = 'block';
+    }
+
+        function closePopup() {
+            window.close();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="first_table">
+        <div class="image-container">
+            <img src="../Images/vege.png" alt="Vege" class="vege">
+            <div id="image_text" class="image_text" style="font-size: 13px; font-weight: 600;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;채종유C(CANOLA)(채종유:국내산),
+                토마토케찹(하인즈)(스<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;페인산/토마토,식초,설탕,정제소금,계피추출물),
+                현미식초[주요(포도당,주요발효영양원),현미당화농축액(현미:외국산),주정,물엿,올리고당],
+                정제수,
+                고과당,
+                할라피뇨(렐리쉬)[염장고추(중국산)],
+                이집트콩분말,
+                정백당,
+                정제염(가는염, 지대),
+                잔탄검,
+                퀼라야추출물,
+                칠리맛풍미분TK,
+                겨자분#601,
+                변성전분,
+                스모크향,
+                DL-메티오닌,
+                향신료올레오레진류
+            </div>
+        </div>
+
+        <br>
+        <button onclick="showCompleteTable();" style="width: 400;">표시사항 확인</button>
+    </div>
+
+
+    <div class="complete_table">
+        <img src="../Images/loading.gif" alt="로딩중" class="loading1">
+    </div>
+    
+    
+
+
+    <div class="complete_table1">
+        <img src="../Images/농심태경로고.png" alt="농심태경로고" class="logo">
+        <h1>AI 표시사항 저장 완료</h1>
+        <p>변경 사항이 성공적으로 저장되었습니다.</p>
+        <button onclick="closePopup();">확인</button>
+    </div>
+</body>
+
+</html>

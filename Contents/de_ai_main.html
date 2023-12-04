@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 달력 위젯을 사용하기 위한 라이브러리 추가 -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'BadFont';
+            src: local('아리따-돋움4.0(OTF)-Medium'), url('./font/BMDOHYEON_ttf.ttf') format('truetype');
+        }
+
+        body {
+            font-family: 'BadFont';           
+        }
+
+        /* 초기에 숨길 서브 카테고리 */
+        .sub-menu {
+            display: none;
+        }
+
+
+
+        .db_reform_table {
+            display: none;
+        }
+
+        .check_view {
+            display: none;
+        }
+
+
+        .check_view_table {
+            display: none;
+        }
+
+        .check_view_table1 {
+            display: none;
+        }
+
+        .raw_3button {
+            display: none;
+        }
+        .raw_3button1 {
+            display: none;
+        }
+
+
+        .raw_4button {
+            display: none;
+        }
+
+        .raw_4button1 {
+            display: none;
+        }
+
+
+
+
+
+        .raw_4button_text {
+            display: none;
+        }
+
+        .Main_indication {
+            display: none;
+        }
+
+        .ai_main_ingredient {
+            display: none;
+        }
+
+        .ai_main_ingredient1 {
+            display: none;
+        }
+
+
+
+        .cursor_wasteback_site {
+            display: none;
+        }
+
+        .rounded-box {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 30px;
+            /* 너비 설정 */
+            height: 15px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 6px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 15px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+
+
+        }
+
+
+        .rounded-box2_up {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 250px;
+            /* 너비 설정 */
+            height: 30px;
+            /* 높이 설정 */
+            background-color: #00478a;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 10px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 30px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+
+
+        .rounded-box2 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 250px;
+            /* 너비 설정 */
+            height: 30px;
+            /* 높이 설정 */
+            background-color: #002c54;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 10px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 30px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+
+
+        .rounded-box3 {
+            display: inline-block;
+            /* 가로로 나란히 배치 */
+            width: 250px;
+            /* 너비 설정 */
+            height: 30px;
+            /* 높이 설정 */
+            background-color: black;
+            /* 배경색을 검은색으로 설정 */
+            border-radius: 10px;
+            /* 라운딩 처리를 적용 */
+            text-align: center;
+            /* 텍스트 가운데 정렬 */
+            color: white;
+            /* 텍스트 색상을 흰색으로 설정 */
+            line-height: 10px;
+            /* 텍스트를 상하 가운데 정렬 */
+            font-size: 7px;
+            /* 글꼴 크기를 10px로 설정 */
+        }
+
+
+        ul li a {
+            text-decoration: none;
+            /* 밑줄 제거 */
+            color: black;
+            /* 기본 글자색을 검은색으로 설정 */
+            font-weight: 600;
+            /* 세미 볼드로 설정 */
+        }
+
+        ul li a[href="./de_ai_main.html"] {
+            color: #006ed5;
+            /* 특정 링크에 대한 글자색을 남색으로 설정 */
+            font-weight: 700;
+            /* 더 볼드한 글꼴로 설정 */
+            font-size: 19px;
+            /* 글자 크기를 28px로 설정 */
+        }
+        
+        .db_search_table thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+                
+        .check_view_table thead th {
+            background-color: #00478a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .check_view_table1 thead th {
+            background-color: #00478a;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        
+                
+        .raw_3button thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        .raw_3button1 thead th {
+            background-color: #006ed5;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+        
+                
+        .Main_indication thead th {
+            background-color: #002c54;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }
+
+
+        .ai_main_ingredient thead th {
+            background-color: #002c54;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }    
+
+        .ai_main_ingredient1 thead th {
+            background-color: #002c54;
+            color: white;
+            /* 글자 색상을 흰색으로 지정 */
+        }    
+        
+        
+        tbody:nth-child(even) {
+            background-color: #cfcfcfd7;
+            /* 원하는 배경색으로 설정하세요 */
+        }
+
+
+        [id^="editableCell_"] {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        [id^="editableCell"]:hover {
+            background-color: rgb(187, 236, 255);
+        }
+
+        [id^="editableCell"]:focus {
+            background-color: rgb(187, 236, 255);
+        }
+
+
+
+        [id^="itemMark_"] {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        [id^="itemMark_"]:hover {
+            background-color: rgb(187, 236, 255);
+        }
+
+        [id^="itemMark_"]:focus {
+            background-color: rgb(187, 236, 255);
+        }
+
+
+
+
+
+
+    </style>
+
+
+
+    <script>
+
+        function openPopup() {
+
+
+            var sumMixValueSpan = document.getElementById('sumMixValue');
+            
+            if(sumMixValueSpan.textContent !== '100')
+            {
+                console.log(`배합비율의 합 : ${sumMixValueSpan.textContent}`);
+            
+                alert('배합비율 합이 100이 아닙니다. 다시한번 확인해주세요.')
+            }
+
+            else{
+                
+            // 팝업 창의 크기 및 속성을 정의합니다.
+            var popupWidth = 800;
+            var popupHeight = 600;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+
+            // 화면 가운데 정렬을 위한 위치 계산
+            var left = (window.innerWidth - popupWidth) / 2;
+            var top = (window.innerHeight - popupHeight) / 2;
+
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "./db_ai_main_pop.html";
+
+            // 고유한 이름으로 팝업 창 열기 및 위치 설정
+            popupWindow = window.open(uploadPageURL, "ImageUploadPopup", popupOptions + ",top=" + top + ",left=" + left);
+
+            }
+
+
+
+        }
+
+
+
+        function openPopup1() {
+
+
+            var sumMixValueSpan = document.getElementById('sumMixValue1');
+            
+            if(parseInt(sumMixValueSpan.textContent) !== 100)   //string을 int형식으로 강제 변환함 (중요)
+            {
+                console.log(`배합비율의 합 : ${sumMixValueSpan.textContent}`);
+                alert('배합비율 합이 100이 아닙니다. 다시한번 확인해주세요.')
+            }
+
+            else{
+                
+            // 팝업 창의 크기 및 속성을 정의합니다.
+            var popupWidth = 800;
+            var popupHeight = 700;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+
+            // 화면 가운데 정렬을 위한 위치 계산
+            var left = (window.innerWidth - popupWidth) / 2;
+            var top = (window.innerHeight - popupHeight) / 2;
+
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "./db_ai_main_image_pop.html";
+
+            // 고유한 이름으로 팝업 창 열기 및 위치 설정
+            popupWindow = window.open(uploadPageURL, "ImageUploadPopup", popupOptions + ",top=" + top + ",left=" + left);
+
+            }
+
+
+
+        }
+
+
+
+
+        window.addEventListener('message', receiveMessage, false);
+        var receivedValue
+
+
+        function receiveMessage(event) {
+            console.log('ai popup받은 값: ' + receivedValue);
+            // 이 함수는 메시지를 수신하는 함수입니다.
+            if (event.data === '1111') {
+                // 전달된 값이 '1111'이면 변수에 저장
+                receivedValue = event.data;
+
+                console.log('ai popup받은 값: ' + receivedValue);
+                // 아이디가 nameCell_1인 td 엘리먼트 가져오기
+                var nameCell = document.getElementById('nameCell_1');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (nameCell) {
+                    nameCell.textContent = '채종유C(CANOLA)';
+                }
+
+                // 아이디가 codeCell_1인 td 엘리먼트 가져오기
+                var codeCell = document.getElementById('codeCell_1');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (codeCell) {
+                    codeCell.textContent = '1000658';
+                }
+
+                // 아이디가 oneMarkCell_1 td 엘리먼트 가져오기
+                var oneMarkCell = document.getElementById('oneMarkCell_1');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (oneMarkCell) {
+                    oneMarkCell.textContent = '채종유';
+                }
+
+            }
+
+            // 이 함수는 메시지를 수신하는 함수입니다.
+            if (event.data === '2222') {
+                // 전달된 값이 '1111'이면 변수에 저장
+                receivedValue = event.data;
+
+                console.log('ai popup받은 값: ' + receivedValue);
+                // 아이디가 nameCell_1인 td 엘리먼트 가져오기
+                var nameCell = document.getElementById('nameCell_2');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (nameCell) {
+                    nameCell.textContent = '토마토케찹(하인즈)';
+                }
+
+                // 아이디가 codeCell_1인 td 엘리먼트 가져오기
+                var codeCell = document.getElementById('codeCell_2');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (codeCell) {
+                    codeCell.textContent = '1001686';
+                }
+
+                // 아이디가 oneMarkCell_1 td 엘리먼트 가져오기
+                var oneMarkCell = document.getElementById('oneMarkCell_2');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (oneMarkCell) {
+                    oneMarkCell.textContent = '토마토,식초,설탕,정제소금,계피추출물,샐러리추출물';
+                }
+
+            }
+
+            // 이 함수는 메시지를 수신하는 함수입니다.
+            if (event.data === '3333') {
+                // 전달된 값이 '1111'이면 변수에 저장
+                receivedValue = event.data;
+
+                console.log('ai popup받은 값: ' + receivedValue);
+                // 아이디가 nameCell_1인 td 엘리먼트 가져오기
+                var nameCell = document.getElementById('nameCell_3');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (nameCell) {
+                    nameCell.textContent = '현미식초';
+                }
+
+                // 아이디가 codeCell_1인 td 엘리먼트 가져오기
+                var codeCell = document.getElementById('codeCell_3');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (codeCell) {
+                    codeCell.textContent = '1002091';
+                }
+
+                // 아이디가 oneMarkCell_1 td 엘리먼트 가져오기
+                var oneMarkCell = document.getElementById('oneMarkCell_3');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (oneMarkCell) {
+                    oneMarkCell.textContent = '정제수,주요,현미당화농축액,주정,물엿,올리고당,구연산,효모추출물,합성향료(사과향)';
+                }
+
+           
+
+            }
+
+             // 이 함수는 메시지를 수신하는 함수입니다.
+             if (event.data === '11111') {
+                // 전달된 값이 '1111'이면 변수에 저장
+                receivedValue = event.data;
+
+                console.log('ai popup받은 값: ' + receivedValue);
+                // 아이디가 nameCell_1인 td 엘리먼트 가져오기
+                var nameCell = document.getElementById('nameCell_17');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (nameCell) {
+                    nameCell.textContent = '건조파슬리';
+                }
+
+                // 아이디가 codeCell_1인 td 엘리먼트 가져오기
+                var codeCell = document.getElementById('codeCell_17');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (codeCell) {
+                    codeCell.textContent = '1001444';
+                }
+
+                // 아이디가 oneMarkCell_1 td 엘리먼트 가져오기
+                var oneMarkCell = document.getElementById('oneMarkCell_17');
+                // 만약 해당 엘리먼트가 존재하면 내용을 '들꺠가루'로 설정
+                if (oneMarkCell) {
+                    oneMarkCell.textContent = '파슬리';
+                }
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+        }
+
+        function toggleSubMenu() {
+            var subMenu = document.querySelector('.sub-menu');
+            var image = document.querySelector('img[alt="이미지"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+        function toggleSubMenu1() {
+            var subMenu = document.querySelector('.sub-menu1');
+            var image = document.querySelector('img[alt="이미지1"]');
+
+            if (subMenu.style.display === 'none') {
+                subMenu.style.display = 'block';
+                image.src = '../Images/카테고리 마이너스.png';
+            } else {
+                subMenu.style.display = 'none';
+                image.src = '../Images/카테고리 플러스.png';
+            }
+        }
+
+
+
+        function changeFontColor(link) {
+            var links = document.querySelectorAll("ul li a"); // 모든 링크 요소 선택
+
+            for (var i = 0; i < links.length; i++) {
+                if (links[i] === link) {
+                    // 클릭된 링크는 파란색으로 변경
+                    link.style.color = 'blue';
+                } else {
+                    // 다른 링크는 검은색으로 변경
+                    links[i].style.color = 'black';
+                }
+            }
+        }
+
+
+        /*
+        function toggleTableVisibility() {
+            var aiMainTable1 = document.querySelector('.check_view');
+            if (aiMainTable1.style.display === 'none' || aiMainTable1.style.display === '') {
+                aiMainTable1.style.display = 'block'; // 보이도록 설정
+            } else {
+                aiMainTable1.style.display = 'none'; // 숨기도록 설정
+            }
+
+            var aiMainTable2 = document.querySelector('.check_view_table');
+            if (aiMainTable2.style.display === 'none' || aiMainTable2.style.display === '') {
+                aiMainTable2.style.display = 'block'; // 보이도록 설정
+            } else {
+                aiMainTable2.style.display = 'none'; // 숨기도록 설정
+            }
+
+            var aiMainTable3 = document.querySelector('.raw_3button');
+            if (aiMainTable3.style.display === 'none' || aiMainTable3.style.display === '') {
+                aiMainTable3.style.display = 'block'; // 보이도록 설정
+            } else {
+                aiMainTable3.style.display = 'none'; // 숨기도록 설정
+            }
+
+
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            if (aiMainTable4.style.display === 'none' || aiMainTable4.style.display === '') {
+                aiMainTable4.style.display = 'block'; // 보이도록 설정
+            } else {
+                aiMainTable4.style.display = 'none'; // 숨기도록 설정
+            }
+
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            if (aiMainTable4.style.display === 'none' || aiMainTable4.style.display === '') {
+                aiMainTable4.style.display = 'block'; // 보이도록 설정
+            } else {
+                aiMainTable4.style.display = 'none'; // 숨기도록 설정
+            }
+
+            var ingredient = document.querySelector('.ai_main_ingredient');
+            ingredient.style.display = 'none';
+        }
+        */
+
+        function toggleTableVisibility() {
+            var aiMainTable1 = document.querySelector('.check_view');
+            aiMainTable1.style.display = 'block'; // 보이도록 설정
+
+            var aiMainTable2 = document.querySelector('.check_view_table');
+            aiMainTable2.style.display = 'block'; // 보이도록 설정
+
+            var aiMainTable2_1 = document.querySelector('.check_view_table1');
+            aiMainTable2_1.style.display = 'none'; // 보이도록 설정
+
+            var aiMainTable3 = document.querySelector('.raw_3button');
+            aiMainTable3.style.display = 'block'; // 보이도록 설정
+
+            var aiMainTable3_1 = document.querySelector('.raw_3button1');
+            aiMainTable3_1.style.display = 'none'; // 보이도록 설정
+          
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            aiMainTable4.style.display = 'block'; // 보이도록 설정         
+            
+
+       
+            var ingredient = document.querySelector('.ai_main_ingredient');
+            var ingredient1 = document.querySelector('.ai_main_ingredient1');
+
+            ingredient.style.display = 'none';
+            ingredient1.style.display = 'none';
+
+            var aiMainTable3_1 = document.querySelector('.raw_4button');
+            var aiMainTable3_1_1 = document.querySelector('.raw_4button1');
+            var aiMainTable3_2 = document.querySelector('.raw_4button_text');
+
+            aiMainTable3_1.style.display = 'none';
+            aiMainTable3_1_1.style.display = 'none';
+            aiMainTable3_2.style.display = 'none';
+        }
+
+        
+
+        function toggleTableVisibility1() {
+            var aiMainTable1 = document.querySelector('.check_view');
+            aiMainTable1.style.display = 'block'; // 보이도록 설정
+
+            var aiMainTable2 = document.querySelector('.check_view_table');
+            aiMainTable2.style.display = 'none'; // 보이도록 설정
+
+            var aiMainTable2_1 = document.querySelector('.check_view_table1');
+            aiMainTable2_1.style.display = 'block'; // 보이도록 설정
+
+            var aiMainTable3 = document.querySelector('.raw_3button');
+            aiMainTable3.style.display = 'none'; // 보이도록 설정
+
+            var aiMainTable3_1 = document.querySelector('.raw_3button1');
+            aiMainTable3_1.style.display = 'block'; // 보이도록 설정
+
+          
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            aiMainTable4.style.display = 'block'; // 보이도록 설정         
+
+       
+            var ingredient = document.querySelector('.ai_main_ingredient');
+            var ingredient1 = document.querySelector('.ai_main_ingredient1');
+
+            ingredient.style.display = 'none';
+            ingredient1.style.display = 'none';
+
+            var aiMainTable3_1 = document.querySelector('.raw_4button');
+            var aiMainTable3_1_1 = document.querySelector('.raw_4button1');
+            var aiMainTable3_2 = document.querySelector('.raw_4button_text');
+
+            aiMainTable3_1.style.display = 'none';
+            aiMainTable3_1_1.style.display = 'none';
+            aiMainTable3_2.style.display = 'none';
+        }
+
+
+
+
+
+        function top_Visibility() {
+            var ingredient = document.querySelector('.ai_main_ingredient');
+            var ingredient1 = document.querySelector('.ai_main_ingredient1');
+
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            var aiMainTable3_1 = document.querySelector('.raw_4button');
+            var aiMainTable3_1_1 = document.querySelector('.raw_4button1');
+            var aiMainTable3_2 = document.querySelector('.raw_4button_text');
+
+
+            ingredient.style.display = 'none'; // 보이도록 설정
+            ingredient1.style.display = 'none'; 
+
+            aiMainTable4.style.display = 'block'; // 숨기도록 설정
+            aiMainTable3_1.style.display = 'none';
+            aiMainTable3_1_1.style.display = 'none';
+            aiMainTable3_2.style.display = 'none';
+
+        }
+
+
+
+        function ingredient_Visibility() {
+            var ingredient = document.querySelector('.ai_main_ingredient');
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            var aiMainTable3_1 = document.querySelector('.raw_4button');
+            var aiMainTable3_2 = document.querySelector('.raw_4button_text');
+
+            ingredient.style.display = 'block'; // 보이도록 설정
+            aiMainTable4.style.display = 'none'; // 숨기도록 설정
+            aiMainTable3_1.style.display = 'block';
+            aiMainTable3_2.style.display = 'block';
+
+
+
+            /*
+            if (ingredient.style.display === 'none' || ingredient.style.display === '') {
+                ingredient.style.display = 'block'; // 보이도록 설정
+            } else {
+                ingredient.style.display = 'none'; // 숨기도록 설정
+            }
+
+            var aiMainTable4 = document.querySelector('.Main_indication');
+            if (aiMainTable4.style.display === 'block' || aiMainTable4.style.display === '') {
+                aiMainTable4.style.display = 'none'; // 보이도록 설정
+            } else {
+                aiMainTable4.style.display = 'block'; // 숨기도록 설정
+            }
+            */
+
+        }
+
+        function ingredient_Visibility1() {
+            var ingredient1 = document.querySelector('.ai_main_ingredient1');
+            var aiMainTable4 = document.querySelector('.Main_indication');
+
+            var aiMainTable3_1 = document.querySelector('.raw_4button');    
+            var aiMainTable3_1_1 = document.querySelector('.raw_4button1');
+            var aiMainTable3_2 = document.querySelector('.raw_4button_text');
+
+            ingredient1.style.display = 'block'; // 보이도록 설정
+            aiMainTable4.style.display = 'none'; // 숨기도록 설정
+
+            aiMainTable3_1.style.display = 'none';
+            aiMainTable3_1_1.style.display = 'block';
+            aiMainTable3_2.style.display = 'block';
+
+
+        }
+
+
+
+
+        function addTableRow() {
+            // 테이블의 <tbody> 요소를 선택
+            var tbody = document.getElementById("tableBody");
+
+            // 새로운 <tr> 요소 생성
+            var newRow = document.createElement("tr");
+
+            // 첫 번째 칸: 체크박스 추가
+            var checkboxCell = document.createElement("td");
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = "checkbox_id" + tbody.getElementsByTagName("tr").length;
+            checkboxCell.appendChild(checkbox);
+            newRow.appendChild(checkboxCell);
+
+            // 두 번째 칸: 넘버링 추가
+            var numberingCell = document.createElement("td");
+            numberingCell.textContent = tbody.getElementsByTagName("tr").length; // 행 번호는 현재 행 수에 따라 자동 증가
+            newRow.appendChild(numberingCell);
+
+            // 세 번째 칸: 돋보기 아이콘 이미지 추가
+            var searchIconCell = document.createElement("td");
+            searchIconCell.id = "nameCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+
+            var searchIcon = document.createElement("img");
+            searchIcon.src = "../Images/돋보기 아이콘.png";
+            searchIcon.width = "20";
+            searchIcon.height = "13";
+            searchIcon.alt = "돋보기";
+            searchIcon.id = "searchIcon_detail" + tbody.getElementsByTagName("tr").length;
+            searchIcon.style.cursor = "pointer"; // 커서를 포인터로 변경
+
+            // 각 돋보기 아이콘에 고유한 클릭 이벤트 할당
+            searchIcon.onclick = function () {
+                openPopupForCell(this);
+            };
+
+            searchIconCell.appendChild(searchIcon);
+
+            
+            newRow.appendChild(searchIconCell);
+
+
+            // 네 번째 칸: code 값 넣기
+            var cell = document.createElement("td");
+            cell.id = "codeCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element      
+
+
+            cell.textContent = "";
+            newRow.appendChild(cell);
+
+
+
+
+
+            // 다섯 번째 칸: 더블클릭 편집 기능 추가
+
+            var editableCell = document.createElement("td");
+            editableCell.id = "editableCell_" + tbody.getElementsByTagName("tr").length;
+
+
+            editableCell.textContent = "0"; // 초기값 설정
+            editableCell.style.cursor = "pointer"; // 커서를 포인터로 변경
+
+            //editableCell.classList = "mix_value";
+
+            editableCell.addEventListener("dblclick", function () {
+                var text = this.textContent; // 현재 내용 가져오기
+                var input = document.createElement("input");
+                input.value = text;
+                this.textContent = ""; // 셀 내용 비우기
+                this.appendChild(input);
+                input.focus(); // 입력 필드에 포커스 설정
+
+                // 입력 필드에서 엔터 키를 누를 때 저장
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        var newText = this.value;
+                        editableCell.textContent = newText;
+                    }
+                });
+
+
+
+                // 입력 필드에서 포커스를 잃었을 때 저장
+                //input.addEventListener("blur", function () {
+                //    var newText = this.value;
+                //    editableCell.textContent = newText;
+                //})
+
+
+            });            
+            newRow.appendChild(editableCell);
+
+
+            // 여섯 번째 칸: 원료 표시사항
+            var oneMarkCell = document.createElement("td");
+            oneMarkCell.id = "oneMarkCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            oneMarkCell.textContent = "";
+            newRow.appendChild(oneMarkCell);
+
+
+            // 일곱 번째 칸: 제품 표시사항
+            var itemMarkCell = document.createElement("td");
+            itemMarkCell.id = "itemMark_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            itemMarkCell.textContent = ""; //초기값 설정
+
+            itemMarkCell.style.cursor = "pointer"; // 커서를 포인터로 변경
+
+            //itemMarkCell.classList = "mix_value";
+
+            itemMarkCell.addEventListener("dblclick", function () {
+                var text = this.textContent; // 현재 내용 가져오기
+                var input = document.createElement("input");
+                input.value = text;
+                this.textContent = ""; // 셀 내용 비우기
+                this.appendChild(input);
+                input.focus(); // 입력 필드에 포커스 설정
+
+                // 입력 필드에서 엔터 키를 누를 때 저장
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        var newText = this.value;
+                        itemMarkCell.textContent = newText;
+                    }
+                });
+
+                // 입력 필드에서 포커스를 잃었을 때 저장
+                //input.addEventListener("blur", function () {
+                //    var newText = this.value;
+                //    itemMarkCell.textContent = newText;
+                //})
+            });     
+
+
+
+            newRow.appendChild(itemMarkCell);
+
+
+
+
+
+
+
+            // 여덟 번째 칸: 알러지유발물질
+            var allergyCell = document.createElement("td");
+            allergyCell.id = "allergyCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            allergyCell.textContent = "";
+            newRow.appendChild(allergyCell);
+
+
+
+
+
+            /*
+          
+            // 나머지 셀(컬럼) 추가
+            for (var i = 0; i < 3; i++) {
+                var cell = document.createElement("td");
+                cell.textContent = "null";
+                newRow.appendChild(cell);
+            }
+            */
+
+
+            // 행의 높이를 10px로 설정
+            newRow.style.height = "10px";
+
+            // <tr> 요소를 <tbody>에 추가
+            tbody.appendChild(newRow);
+        }
+
+
+        
+
+        function addTableRow1() {
+            // 테이블의 <tbody> 요소를 선택
+            var tbody = document.getElementById("tableBody1");
+
+            // 새로운 <tr> 요소 생성
+            var newRow = document.createElement("tr");
+
+            // 첫 번째 칸: 체크박스 추가
+            var checkboxCell = document.createElement("td");
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = "checkbox_id" + tbody.getElementsByTagName("tr").length;
+            checkboxCell.appendChild(checkbox);
+            newRow.appendChild(checkboxCell);
+
+            // 두 번째 칸: 넘버링 추가
+            var numberingCell = document.createElement("td");
+            numberingCell.textContent = tbody.getElementsByTagName("tr").length; // 행 번호는 현재 행 수에 따라 자동 증가
+            newRow.appendChild(numberingCell);
+
+            // 세 번째 칸: 돋보기 아이콘 이미지 추가
+            var searchIconCell = document.createElement("td");
+            searchIconCell.id = "nameCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+
+            var searchIcon = document.createElement("img");
+            searchIcon.src = "../Images/돋보기 아이콘.png";
+            searchIcon.width = "20";
+            searchIcon.height = "13";
+            searchIcon.alt = "돋보기";
+            searchIcon.id = "searchIcon_detail" + tbody.getElementsByTagName("tr").length;
+            searchIcon.style.cursor = "pointer"; // 커서를 포인터로 변경
+
+            // 각 돋보기 아이콘에 고유한 클릭 이벤트 할당
+            searchIcon.onclick = function () {
+                openPopupForCell1(this);
+            };
+
+            searchIconCell.appendChild(searchIcon);
+            newRow.appendChild(searchIconCell);
+
+
+            // 네 번째 칸: code 값 넣기
+            var cell = document.createElement("td");
+            cell.id = "codeCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            cell.textContent = "";
+            newRow.appendChild(cell);
+
+
+
+
+
+            // 다섯 번째 칸: 더블클릭 편집 기능 추가
+
+            var editableCell = document.createElement("td");
+            editableCell.id = "editableCell_" + tbody.getElementsByTagName("tr").length;
+
+
+            editableCell.textContent = "0"; // 초기값 설정
+            editableCell.style.cursor = "pointer"; // 커서를 포인터로 변경
+
+            //editableCell.classList = "mix_value";
+
+            editableCell.addEventListener("dblclick", function () {
+                var text = this.textContent; // 현재 내용 가져오기
+                var input = document.createElement("input");
+                input.value = text;
+                this.textContent = ""; // 셀 내용 비우기
+                this.appendChild(input);
+                input.focus(); // 입력 필드에 포커스 설정
+
+                // 입력 필드에서 엔터 키를 누를 때 저장
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        var newText = this.value;
+                        editableCell.textContent = newText;
+                    }
+                });
+
+
+
+                // 입력 필드에서 포커스를 잃었을 때 저장
+                //input.addEventListener("blur", function () {
+                //    var newText = this.value;
+                //    editableCell.textContent = newText;
+                //})
+
+
+            });
+            newRow.appendChild(editableCell);
+
+
+            // 여섯 번째 칸: 원료 표시사항
+            var oneMarkCell = document.createElement("td");
+            oneMarkCell.id = "oneMarkCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            oneMarkCell.textContent = "";
+
+            newRow.appendChild(oneMarkCell);
+
+
+            // 일곱 번째 칸: 제품 표시사항
+            var itemMarkCell = document.createElement("td");
+            itemMarkCell.id = "itemMark_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            itemMarkCell.textContent = "";
+
+            itemMarkCell.style.cursor = "pointer"; // 커서를 포인터로 변경
+
+            //itemMarkCell.classList = "mix_value";
+
+            itemMarkCell.addEventListener("dblclick", function () {
+                var text = this.textContent; // 현재 내용 가져오기
+                var input = document.createElement("input");
+                input.value = text;
+                this.textContent = ""; // 셀 내용 비우기
+                this.appendChild(input);
+                input.focus(); // 입력 필드에 포커스 설정
+
+                // 입력 필드에서 엔터 키를 누를 때 저장
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        var newText = this.value;
+                        itemMarkCell.textContent = newText;
+                    }
+                });
+
+                // 입력 필드에서 포커스를 잃었을 때 저장
+                //input.addEventListener("blur", function () {
+                //    var newText = this.value;
+                //    itemMarkCell.textContent = newText;
+                //})
+            });     
+
+            newRow.appendChild(itemMarkCell);
+
+
+            // 여덟 번째 칸: 알러지유발물질
+            var allergyCell = document.createElement("td");
+            allergyCell.id = "allergyCell_" + tbody.getElementsByTagName("tr").length; // Set id for the td element
+
+            allergyCell.textContent = "";
+            newRow.appendChild(allergyCell);
+
+
+
+
+
+            /*
+          
+            // 나머지 셀(컬럼) 추가
+            for (var i = 0; i < 3; i++) {
+                var cell = document.createElement("td");
+                cell.textContent = "null";
+                newRow.appendChild(cell);
+            }
+            */
+
+
+            // 행의 높이를 10px로 설정
+            newRow.style.height = "10px";
+
+            // <tr> 요소를 <tbody>에 추가
+            tbody.appendChild(newRow);
+        }
+
+
+
+
+
+
+        //두번쨰 제품포시사항 크릵시 수정 가능하도록.
+        document.addEventListener('DOMContentLoaded', function () {
+            var elements = document.querySelectorAll('[id^="itemMark_"]');
+            elements.forEach(function (element) {
+                element.addEventListener('dblclick', function () {
+                    makeEditable(this);
+                });
+
+                element.addEventListener('keydown', function (event) {
+                    if (event.key === 'Enter') {
+                        saveContent(this);
+                        event.preventDefault(); // Enter 키의 기본 동작을 막음
+                    }
+                });
+            });
+        });
+
+        function makeEditable(element) {
+            element.contentEditable = true;
+            element.focus();
+        }
+
+        function saveContent(element) {
+            element.contentEditable = false;
+            // 내용을 어딘가에 저장하고 싶다면 여기에 추가
+        }
+
+
+
+
+
+
+
+
+        // 각 돋보기 아이콘 셀을 클릭할 때 실행되는 함수
+        function openPopupForCell(icon) {
+            // 여기에 각 셀에 대한 고유한 클릭 이벤트 작업을 추가합니다.
+            console.log("클릭된 돋보기 아이콘 ID: " + icon.id);
+
+            // 돋보기 아이콘 ID에서 숫자 추출
+            var iconNumber = icon.id.replace("searchIcon_detail", "");
+
+            console.log("팝업창 번호 : " + iconNumber)
+
+            var popupWidth = 320;
+            var popupHeight = 400;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "./db_ai_main_popup" + iconNumber + ".html"; // 변경 필요
+
+            // 고유한 이름으로 팝업 창 열기
+            popupWindow = window.open(uploadPageURL, "자제코드 조회", popupOptions);
+
+
+        }
+
+
+        function openPopupForCell1(icon) {
+            // 여기에 각 셀에 대한 고유한 클릭 이벤트 작업을 추가합니다.
+            console.log("클릭된 돋보기 아이콘 ID: " + icon.id);
+
+            console.log("수정 팝업창 오픈")
+
+            var popupWidth = 320;
+            var popupHeight = 400;
+            var popupOptions = "width=" + popupWidth + ",height=" + popupHeight;
+            // 이미지 업로드 페이지의 URL을 여기에 지정해야 합니다.
+            var uploadPageURL = "db_ai_main1_popup1.html"; // 변경 필요
+
+            // 고유한 이름으로 팝업 창 열기
+            popupWindow = window.open(uploadPageURL, "자제코드 조회", popupOptions);
+
+
+        }
+
+
+
+
+        /*
+        function deleteLastTableRow() {
+            // 테이블의 <tbody> 요소를 선택
+            var tbody = document.getElementById("tableBody");
+
+            // <tbody> 내의 모든 <tr> 요소를 선택
+            var rows = tbody.getElementsByTagName("tr");
+
+
+            // 테이블에 최소 한 행이 있어야 합니다
+            if (rows.length > 1) {
+                // 마지막 <tr> 요소를 삭제
+                tbody.removeChild(rows[rows.length - 1]);
+            }
+        }
+        */
+
+
+        function deleteSelectedRow() {
+            // 테이블의 <tbody> 요소를 선택
+            var tbody = document.getElementById("tableBody");
+
+            // <tbody> 내의 모든 <tr> 요소를 선택
+            var rows = tbody.getElementsByTagName("tr");
+
+
+            // 반복문을 통해 모든 행을 확인
+            for (var i = rows.length - 1; i >= 0; i--) {
+                // 현재 행에서 체크박스 요소를 선택
+                var checkbox = rows[i].getElementsByTagName("input")[0];
+
+                // 체크박스가 체크되어 있으면 해당 행 삭제
+                if (checkbox.checked) {
+                    tbody.removeChild(rows[i]);
+                }
+            }
+        }
+
+        
+        function deleteSelectedRow1() {
+            // 테이블의 <tbody> 요소를 선택
+            var tbody = document.getElementById("tableBody1");
+
+            // <tbody> 내의 모든 <tr> 요소를 선택
+            var rows = tbody.getElementsByTagName("tr");
+
+
+            // 반복문을 통해 모든 행을 확인
+            for (var i = rows.length - 1; i >= 0; i--) {
+                // 현재 행에서 체크박스 요소를 선택
+                var checkbox = rows[i].getElementsByTagName("input")[0];
+
+                // 체크박스가 체크되어 있으면 해당 행 삭제
+                if (checkbox.checked) {
+                    tbody.removeChild(rows[i]);
+                }
+            }
+        }
+
+
+
+
+        function typeText(element, text, speed) {
+            var i = 0;
+            var interval = setInterval(function () {
+                element.textContent += text[i];
+                i++;
+                if (i > text.length - 1) {
+                    clearInterval(interval);
+                }
+            }, speed);
+        }
+
+
+
+
+        function ai_auto() {
+            var sumMixValueSpan = document.getElementById('sumMixValue');
+            
+            if(sumMixValueSpan.textContent !== '100')
+            {
+                alert('배합비율 합이 100이 아닙니다. 다시한번 확인해주세요.')
+            }
+
+            else{
+            var itemMark_1 = document.getElementById('itemMark_1');
+            var textToType1 = '채종유C(CANOLA)(채종유:호주산)';
+            itemMark_1.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_1, textToType1, 100); // 타이핑 속도를 필요에 맞게 조절하세요
+
+
+
+            var itemMark_2 = document.getElementById('itemMark_2');
+            var textToType2 = '토마토케찹(하인즈)(스페인산/토마토,식초,설탕,정제소금,계피추출물)';
+            itemMark_2.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_2, textToType2, 100); // 타이핑 속도를 필요에 맞게 조절하세요
+
+
+
+
+            var itemMark_3 = document.getElementById('itemMark_3');
+            var textToType3 = '현미식초[주요';
+            itemMark_3.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_3, textToType3, 50); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var textToType3_1 = '(포도당,주요발효영양원),현미당화농축액(현미:외국산),주정,물엿,올리고당]';
+            typeText(itemMark_3, textToType3_1, 400); // 타이핑 속도를 필요에 맞게 조절하세요     
+            }
+
+
+        }
+
+        
+        function ai_auto1() {
+
+            var sumMixValueSpan = document.getElementById('sumMixValue1');
+            
+            if(sumMixValueSpan.textContent !== '100')
+            {
+                alert('배합비율 합이 100이 아닙니다. 다시한번 확인해주세요.')
+            }
+
+            else{
+            var itemMark_0 = document.getElementById('itemMark_0');
+            var textToType0 = '채종유C(CANOLA)(채종유:호주산)';
+            itemMark_0.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_0, textToType0, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+
+
+            var itemMark_1 = document.getElementById('itemMark_1');
+            var textToType1 = '토마토케찹(하인즈)(스페인산/토마토,식초,설탕,정제소금,계피추출물)';
+            itemMark_1.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_1, textToType1, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+
+
+
+            var itemMark_2 = document.getElementById('itemMark_2');
+            var textToType2 = '현미식초[주요';
+            itemMark_2.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_2, textToType2, 50); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var textToType2_1 = '(포도당,주요발효영양원),현미당화농축액(현미:외국산),주정,물엿,올리고당]';
+            typeText(itemMark_2, textToType2_1, 400); // 타이핑 속도를 필요에 맞게 조절하세요 
+            
+
+            var itemMark_3 = document.getElementById('itemMark_3');
+            var textToType3 = '정제수';
+            itemMark_3.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_3, textToType3, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+
+            var itemMark_4 = document.getElementById('itemMark_4');
+            var textToType4 = '고과당';
+            itemMark_4.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_4, textToType4, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_5 = document.getElementById('itemMark_5');
+            var textToType5 = '할라피뇨(렐리쉬)[염장고추(중국산)]';
+            itemMark_5.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_5, textToType5, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_6 = document.getElementById('itemMark_6');
+            var textToType6 = '이집트콩분말';
+            itemMark_6.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_6, textToType6, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_7 = document.getElementById('itemMark_7');
+            var textToType7 = '정백당';
+            itemMark_7.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_7, textToType7, 100); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_8 = document.getElementById('itemMark_8');
+            var textToType8 = '정제염(가는염, 지대)';
+            itemMark_8.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_8, textToType8, 100); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_9 = document.getElementById('itemMark_9');
+            var textToType9 = '잔탄검';
+            itemMark_9.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_9, textToType9, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_10 = document.getElementById('itemMark_10');
+            var textToType10 = '퀼라야추출물';
+            itemMark_10.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_10, textToType10, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_11 = document.getElementById('itemMark_11');
+            var textToType11 = '칠리맛풍미분TK';
+            itemMark_11.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_11, textToType11, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_12 = document.getElementById('itemMark_12');
+            var textToType12 = '겨자분#601';
+            itemMark_12.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_12, textToType12, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_13 = document.getElementById('itemMark_13');
+            var textToType13 = '변성전분';
+            itemMark_13.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_13, textToType13, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_14 = document.getElementById('itemMark_14');
+            var textToType14 = '스모크향';
+            itemMark_14.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_14, textToType14, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_15 = document.getElementById('itemMark_15');
+            var textToType15 = 'DL-메티오닌';
+            itemMark_15.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_15, textToType15, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_16 = document.getElementById('itemMark_16');
+            var textToType16 = '향신료올레오레진류';
+            itemMark_16.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_16, textToType16, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            var itemMark_17 = document.getElementById('itemMark_17');
+            var textToType17 = '건조파슬리';
+            itemMark_17.textContent = ''; // 기존 내용을 지우고
+            typeText(itemMark_17, textToType17, 200); // 타이핑 속도를 필요에 맞게 조절하세요
+
+            }           
+
+
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // DOMContentLoaded 이벤트 발생 시 실행될 코드
+            document.getElementById('calculateMixValueButton').addEventListener('click', function () {
+                console.log("버튼 클릭됨");
+
+                // 가져올 테이블과 결과를 표시할 div 요소들
+                var tbody = document.getElementById('tableBody'); // 여기서 'tableBody'는 실제 테이블의 tbody ID로 대체되어야 합니다.
+                var totalValueDiv = document.getElementById('totalValue');
+                var sumMixValueSpan = document.getElementById('sumMixValue');
+
+                // 모든 editableCell의 값을 합산할 변수
+                var sum = 0;
+
+                // 모든 editableCell을 순회하며 값을 합산
+                var cells = tbody.querySelectorAll('[id^="editableCell_"]');
+                cells.forEach(function (cell) {
+                    var value = parseFloat(cell.textContent) || 0; // 텍스트를 숫자로 변환, 실패 시 0으로 처리
+                    sum += value;
+                });
+
+                // 결과를 화면에 표시
+                sumMixValueSpan.textContent = sum;
+                totalValueDiv.style.display = 'block'; // 결과를 보이게 하기
+            });
+
+
+            document.getElementById('calculateMixValueButton1').addEventListener('click', function () {
+                console.log("테이블2 버튼 클릭됨");
+
+                // 가져올 테이블과 결과를 표시할 div 요소들
+                var tbody = document.getElementById('tableBody1'); // 여기서 'tableBody'는 실제 테이블의 tbody ID로 대체되어야 합니다.
+                var totalValueDiv = document.getElementById('totalValue1');
+                var sumMixValueSpan = document.getElementById('sumMixValue1');
+
+                // 모든 editableCell의 값을 합산할 변수
+                var sum = 0;
+
+                // 모든 editableCell을 순회하며 값을 합산
+                var cells = tbody.querySelectorAll('[id^="editableCell_"]');
+                cells.forEach(function (cell) {
+                    var value = parseFloat(cell.textContent) || 0; // 텍스트를 숫자로 변환, 실패 시 0으로 처리
+                    sum += value;
+                });
+
+                // 결과를 화면에 표시
+                sumMixValueSpan.textContent = sum;
+                totalValueDiv.style.display = 'block'; // 결과를 보이게 하기
+            });
+
+
+
+
+
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+        var cells = document.querySelectorAll("[id^='editableCell_']");
+        var sumMixValue = 0;
+
+        cells.forEach(function (editableCell) {
+            editableCell.addEventListener("dblclick", function () {
+                var text = this.textContent;
+                var input = document.createElement("input");
+                input.value = text;
+                this.textContent = "";
+                this.appendChild(input);
+                input.focus();
+
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        var newText = parseFloat(this.value) || 0; // Convert input value to a number or default to 0
+                        editableCell.textContent = newText;
+
+                        // Recalculate the sum when a value changes
+                        sumMixValue = calculateSum();
+                        updateTotal();
+                    }
+                });
+            });
+        });
+        
+
+        // Function to calculate the sum of values
+        function calculateSum() {
+            var sum = 0;
+            cells.forEach(function (editableCell) {
+                sum += parseFloat(editableCell.textContent) || 0;
+            });
+            return sum;
+        }
+
+        // Function to update the total in the footer
+        function updateTotal() {
+            var sumMixValueElement = document.getElementById("sumMixValue1");
+            if (sumMixValueElement) {
+                //sumMixValueElement.textContent = sumMixValue.toFixed(2); // 소수점 2자리 표시
+                sumMixValueElement.textContent = sumMixValue;
+            }
+        }
+
+        // Calculate initial sum on page load
+        sumMixValue = calculateSum();
+        updateTotal();
+    });
+
+
+
+
+    </script>
+</head>
+
+
+
+<body>
+    <style>
+        li {
+            list-style: none;
+        }
+    </style>
+
+
+
+
+    <table border="0" width="250" height="900" align="left">
+        <tr>
+            <th height="100" colspan="1">
+                <a href="../index.html">
+                    <img src="../Images/농심태경로고.png" alt="로고" style="width: 60%; height: auto;" align="left">
+                </a>
+            </th>
+        </tr>
+
+        <tr>
+            <td height="30" style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 플러스.png" alt="이미지"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu();"> <strong style="font-size: 1.2em;">원재료DB</strong></a>
+
+                <div class="sub-menu">
+                    <ul>
+                        <li><a href="./db_search.html" onclick="changeFontColor(this);">- DB조회</a></li>
+                        <li><a href="./db_enroll.html" onclick="changeFontColor(this);">- DB등록</a></li>
+                        <li><a href="./db_reform.html" onclick="changeFontColor(this);">- DB개정</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="vertical-align: top; text-align: left;">
+                <img src="../Images/카테고리 마이너스.png" alt="이미지1"
+                    style="width: 1.3em; height: auto; vertical-align: text-bottom;">
+                <a javascript:void(0); onclick="toggleSubMenu1();"> <strong style="font-size: 1.2em;">디자인
+                        회람</strong></a>
+
+                <div class="sub-menu1">
+                    <ul>
+                        <li><a href="./de_ai_main.html" onclick="changeFontColor(this);">- AI표시사항 자동완성</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+
+
+    <table border="0" width="1300" height="300">
+        <tr>
+            <th height="100" colspan="5">
+         
+                <span style="font-size: 50px; color: #006ed5;">AI표시사항 자동완성</span>
+                <img src="../Images/피아뜨.png" alt="피아뜨 이미지" style="float: right; width: 80px; height: 80px; margin-left: 0px; margin-top: 20px;">
+
+                <br>
+                <span style="font-size: 15px; color: black;">F</span><span style="font-size: 13px; color: grey;">ood</span>
+                <span style="font-size: 15px; color: black;">I</span><span style="font-size: 13px; color: grey;">ndication</span>
+                <span style="font-size: 15px; color: black;">A</span><span style="font-size: 13px; color: grey;">utocomplete system of 
+                <span style="font-size: 15px; color: black;">T</span><span style="font-size: 13px; color: grey;">aekyung</span>                
+              
+                <hr  size=2 color=#006ed5 style="margin-top: 20px;">
+            </th>
+        </tr>
+
+
+        <tr>
+            <th height="200" colspan="3">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="db_search_table">
+                    <colgroup>
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="250" />
+                        <col width="150" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="150" />
+                        <col width="200" />
+                        <col width="150" />
+                        <col width="50" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>의뢰번호</th>
+                            <th>제품코드</th>
+                            <th>제품명</th>
+                            <th>버전<br>M &nbsp;&nbsp;&nbsp; m </th>
+                            <th>의뢰유형</th>
+                            <th>의뢰부서</th>
+                            <th>의뢰자</th>
+                            <th>의뢰일</th>
+                            <th>디자인출고예정일</th>
+                            <th>진행상태</th>
+                            <th>조회</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th>DSR000000070</th>
+                            <th>801993</th>
+                            <th>베지가든 치폴레소스(250g)</th>
+                            <th>1 &nbsp;&nbsp;&nbsp; 01 </th>
+
+                            <th>신규</th>
+                            <th>마케팅팀</th>
+                            <th>장은서</th>
+                            <th>2021-10-13</th>
+                            <th>2021-10-18</th>
+                            <th>표시사항요청</th>
+                            <th>
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="13px" alt="돋보기" style="cursor: pointer;"
+                                    id="searchIcon_detail" onclick="toggleTableVisibility()">
+
+                            </th>
+
+
+                        </tr>
+                    </tbody>
+
+
+                    <tbody>
+                        <tr>
+                            <th>DSR000000071</th>
+                            <th>801993</th>
+                            <th>베지가든 치폴레소스(1kg)</th>
+                            <th>1 &nbsp;&nbsp;&nbsp; 01 </th>
+                            <th>수정</th>
+                            <th>마케팅팀</th>
+                            <th>장은서</th>
+                            <th>2021-10-15</th>
+                            <th>2021-10-21</th>
+                            <th>표시사항요청</th>
+                            <th>
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="13px" alt="돋보기" style="cursor: pointer;"
+                                    id="searchIcon_detail1" onclick="toggleTableVisibility1()">
+
+                            </th>
+
+                        </tr>
+                    </tbody>
+                </table>
+
+            </th>
+        </tr>
+
+        <th height="50" colspan="6" align="left">
+            
+            <div class="check_view">
+                <hr  size=2 color=#b6b6b6 style="margin-top: 10px;">
+
+                <label class="rounded-box2_up" style="margin-top:10px; margin-right: 10px; font-size: 15px; width: 150px;">표시사항ViEW</label>
+            </div>
+
+        </th>
+
+
+        <tr>
+            <th height="50" colspan="3">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="check_view_table">
+                    <colgroup>
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="100" />
+                        <col width="150" />
+                        <col width="300" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="150" />
+
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>의뢰번호</th>
+                            <th>의뢰일</th>
+                            <th>의뢰자</th>
+                            <th>의뢰유형</th>
+                            <th>제품명</th>
+                            <th>영양성분자료</th>
+                            <th>검토담당자*</th>
+                            <th>Version</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th>DSR000000070</th>
+                            <th>2021-10-13</th>
+                            <th>장은서</th>
+                            <th>신규</th>
+                            <th>베지가든 치폴레소스(250g)</th>
+                            <th></th>
+                            <th></th>
+                            <th>1</th>
+
+                        </tr>
+                    </tbody>
+
+                    <table border="1" style="border-collapse: collapse; width: 1300px;" class="check_view_table1">
+                        <colgroup>
+                            <col width="100" />
+                            <col width="100" />
+                            <col width="100" />
+                            <col width="150" />
+                            <col width="300" />
+                            <col width="200" />
+                            <col width="200" />
+                            <col width="150" />
+    
+                        </colgroup>
+    
+                        <thead>
+                            <tr>
+                                <th>의뢰번호</th>
+                                <th>의뢰일</th>
+                                <th>의뢰자</th>
+                                <th>의뢰유형</th>
+                                <th>제품명</th>
+                                <th>영양성분자료</th>
+                                <th>검토담당자*</th>
+                                <th>Version</th>
+    
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            <tr>
+                                <th>DSR000000071</th>
+                                <th>2021-10-13</th>
+                                <th>장은서</th>
+                                <th>수정</th>
+                                <th>베지가든 치폴레소스(1kg)</th>
+                                <th></th>
+                                <th></th>
+                                <th>2</th>
+    
+                            </tr>
+                        </tbody>
+
+
+
+                </table>
+
+            </th>
+        </tr>
+
+        <th height="50" colspan="6">
+            <inline>
+                <div class="raw_3button" align="left">
+                    <hr  size=2 color=#b6b6b6 style="margin-top: 50px;">
+
+                    <label class="rounded-box2" style="margin-top: 10px; margin-right: 2px; font-size: 13px; width: 90px; cursor: pointer;"
+                        onclick="top_Visibility()">주표시면</label>
+                    <label class="rounded-box2" style="margin-top: 10px; margin-right: 2px; font-size: 13px; width: 100px;">정보표시면</label>
+                    <label class="rounded-box2" style="margin-top: 10px; margin-right: 2px; font-size: 13px; width: 140px; cursor: pointer;"
+                        onclick="ingredient_Visibility()">
+                        원재료명 및 함량
+                    </label>
+
+                </div>
+
+                <div class="raw_3button1" align="left">
+                    <hr  size=2 color=#b6b6b6 style="margin-top: 50px;">
+
+                    <label class="rounded-box2" style="margin-top: 10px; margin-right: 2px; font-size: 13px; width: 90px; cursor: pointer;"
+                        onclick="top_Visibility()">주표시면</label>
+                    <label class="rounded-box2" style="margin-top: 10px; margin-right: 2px; font-size: 13px; width: 100px;">정보표시면</label>
+                    <label class="rounded-box2" style="margin-top: 10px; margin-right: 2px; font-size: 13px; width: 140px; cursor: pointer;"
+                        onclick="ingredient_Visibility1()">
+                        원재료명 및 함량
+                    </label>
+
+                </div>
+
+
+
+
+
+                <div class="raw_4button" align="right">
+                    <label style="margin-right: 20px; cursor: pointer;">
+                        <a onclick="addTableRow(); ">
+                            <img src="../Images/더하기 하기콘.png" width="auto" height="38px" alt="행추가" id="plus_row_icon">
+                        </a>
+                    </label>
+
+                    <label style="margin-right: 54px; cursor: pointer;">
+                        <a onclick="deleteSelectedRow();">
+                            <img src="../Images/빼기 아이콘.png" width="auto" height="38px" alt="행삭제" id="minus_row_icon">
+                        </a>
+                    </label>
+
+                    <label style="margin-right: 37px; cursor: pointer;">
+                        <a onclick="ai_auto();">
+                            <img src="../Images/AI아이콘.png" width="auto" height="46px" alt="자동완성" id="ai_logic_icon">
+                        </a>
+                    </label>
+
+                    <label style="margin-right: 30px; cursor: pointer;">
+                        <a onclick="openPopup()">
+                            <img src="../Images/체크아이콘.png" width="auto" height="38px" alt="표시사항적용" id="ai_apply_icon">
+                        </a>
+                    </label>
+
+
+                </div>
+
+
+                <div class="raw_4button1" align="right">
+                    <label style="margin-right: 20px; cursor: pointer;">
+                        <a onclick="addTableRow1(); ">
+                            <img src="../Images/더하기 하기콘.png" width="auto" height="38px" alt="행추가" id="plus_row_icon">
+                        </a>
+                    </label>
+
+                    <label style="margin-right: 54px; cursor: pointer;">
+                        <a onclick="deleteSelectedRow1();">
+                            <img src="../Images/빼기 아이콘.png" width="auto" height="38px" alt="행삭제" id="minus_row_icon">
+                        </a>
+                    </label>
+
+                    <label style="margin-right: 37px; cursor: pointer;">
+                        <a onclick="ai_auto1();">
+                            <img src="../Images/AI아이콘.png" width="auto" height="46px" alt="자동완성" id="ai_logic_icon">
+                        </a>
+                    </label>
+
+                    <label style="margin-right: 30px; cursor: pointer;">
+                        <a onclick="openPopup1()">
+                            <img src="../Images/체크아이콘.png" width="auto" height="38px" alt="표시사항적용" id="ai_apply_icon">
+                        </a>
+                    </label>
+
+
+                </div>
+
+
+
+            </inline>
+            <div class="raw_4button_text" align="right">
+
+                <label class="rounded-box3"
+                    style="margin-right: 2px; font-size: 8px; width: 40px; height: 12px; margin-right: 18px; ">행추가</label>
+                <label class="rounded-box3"
+                    style="margin-right: 2px; font-size: 8px; width: 40px; height: 12px; margin-right: 46px;">행삭제</label>
+                <label class="rounded-box3"
+                    style="font-size: 10px; width: 60px; height: 15px; margin-right: 10px; line-height: 14px">
+                    자동완성
+                </label>
+                <label class="rounded-box3"
+                    style="font-size:10px; width: 80px; height: 15px; margin-right: 10px; line-height: 15px">
+                    표시사항적용</label>
+
+            </div>
+        </th>
+
+
+
+
+        <tr>
+            <th height="100" colspan="3">
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="Main_indication">
+                    <colgroup>
+                        <col width="300" />
+                        <col width="500" />
+                        <col width="500" />
+
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>표시사항</th>
+                            <th>확인사항</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <th>제품명</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th>내용량 (열량)</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th>축산물가공품의 유형</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th>주요 원재료명 및 함량</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+
+                    <tbody>
+                        <tr>
+                            <th>기타문구</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="ai_main_ingredient">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="50" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="100" />
+                        <col width="300" />
+                        <col width="250" />
+                        <col width="150" />
+
+
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>test</th>
+                            <th>원재료명</th>
+                            <th>원재료코드</th>
+                            <th>배합 비율(%)</th>
+                            <th>원료표시사항</th>
+                            <th>제품표시사항</th>
+                            <th>알러지유발물질</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- 기존 행 -->
+                        <tr>
+                            <!-- 각 셀 내용 -->
+                        </tr>
+                    </tbody>
+
+
+
+
+
+
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+
+                                <button id="calculateMixValueButton">배합 비율 합 계산하기</button>
+                                <div id="totalValue">배합비율 합 : <span id="sumMixValue">0</span></div>
+
+
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+
+
+
+                <table border="1" style="border-collapse: collapse; width: 1300px;" class="ai_main_ingredient1">
+                    <colgroup>
+                        <col width="50" />
+                        <col width="50" />
+                        <col width="200" />
+                        <col width="200" />
+                        <col width="100" />
+                        <col width="300" />
+                        <col width="250" />
+                        <col width="150" />
+
+
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>test</th>
+                            <th>원재료명</th>
+                            <th>원재료코드</th>
+                            <th>배합 비율(%)</th>
+                            <th>원료표시사항</th>
+                            <th>제품표시사항</th>
+                            <th>알러지유발물질</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody id="tableBody1">
+                        <!-- 기존 행 -->
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>0</th>
+                            <th>채종유C(CANOLA)
+                               
+                            </th>
+                            <th>1000658</th>
+                            <th id = "editableCell_0">50.84</th>
+                            <th>채종유</th>
+                            <th id="itemMark_0"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>1</th>
+                            <th>하인즈 볼팍 토마토 케찹
+                              
+                            </th>
+                            <th>1001686</th>
+                            <th id = "editableCell_1">12.56</th>
+                            <th>토마토, 식초(옥수수주정50%, 정제수), 설탕, 정제소금, 계피추출물, 셀러리추출물, 마늘</th>
+                            <th id="itemMark_1"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>2</th>
+                            <th>현미식초
+                              
+                            </th>
+                            <th>1002091</th>
+                            <th id = "editableCell_2">12.00</th>
+                            <th>정제수,주요,현미당화농축액,주정,물엿,올리고당,구연산,효모추출물,합성향료(사과향)</th>
+                            <th id="itemMark_2"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>3</th>
+                            <th>정제수
+                            
+                            </th>
+                            <th>1000608</th>
+                            <th id = "editableCell_3">7.09</th>
+                            <th>정제수</th>
+                            <th id="itemMark_3"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>4</th>
+                            <th>고과당
+                               
+                            </th>
+                            <th>1000097</th>
+                            <th id = "editableCell_4">5.93</th>
+                            <th>포도당액</th>
+                            <th id="itemMark_4"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>5</th>
+                            <th>할라피뇨(렐리쉬)
+                             
+                            </th>
+                            <th>1000097</th>
+                            <th id = "editableCell_5">4.91</th>
+                            <th>염장고추,정제수,기타과당,발효식초,로얄믹스,소브산칼륨(보존료),염화칼슘,팽창제,폴리소르베이트80,심황색소,사카린나트륨(감미료)</th>
+                            <th id="itemMark_5"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>6</th>
+                            <th>이집트콩분말
+                            
+                            </th>
+                            <th>1002093</th>
+                            <th id = "editableCell_6">2.20</th>
+                            <th>이집트콩</th>
+                            <th id="itemMark_6"></th>
+                            <th></th>
+                        </tr>
+
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>7</th>
+                            <th>정백당
+                               
+                            </th>
+                            <th>1000606</th>
+                            <th id = "editableCell_7">1.41</th>
+                            <th>원당</th>
+                            <th id="itemMark_7"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>8</th>
+                            <th>정제염(가는염, 지대)
+                               
+                            </th>
+                            <th>1000609</th>
+                            <th id = "editableCell_8">1.05</th>
+                            <th>염화나트륨</th>
+                            <th id="itemMark_8"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>9</th>
+                            <th>산탄검
+                                
+                            </th>
+                            <th>1000395</th>
+                            <th id = "editableCell_9">0.45</th>
+                            <th>잔탄검</th>
+                            <th id="itemMark_9"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>10</th>
+                            <th>퀼라야추출분말
+                               
+                            </th>
+                            <th>1002094</th>
+                            <th id = "editableCell_10">0.42</th>
+                            <th>퀄라야추출물,덱스트린</th>
+                            <th id="itemMark_10"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>11</th>
+                            <th>칠리맛풍미분TK
+                                
+                            </th>
+                            <th>3000179</th>
+                            <th id = "editableCell_11">0.28</th>
+                            <th>덱스트린,변성전분,파프리카추출색소,올레오레진캪시컴,로즈마리엑기스</th>
+                            <th id="itemMark_11"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>12</th>
+                            <th>겨자#601
+                             
+                            </th>
+                            <th>1002092</th>
+                            <th id = "editableCell_12">0.56</th>
+                            <th>겨자씨</th>
+                            <th id="itemMark_12"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>13</th>
+                            <th>펌텍스
+                             
+                            </th>
+                            <th>1000732</th>
+                            <th id = "editableCell_13">0.10</th>
+                            <th>찰옥수수전분</th>
+                            <th id="itemMark_13"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>14</th>
+                            <th>히코리스모크오일
+                            
+                            </th>
+                            <th>1000803</th>
+                            <th id = "editableCell_14">0.08</th>
+                            <th>대두유,히코리스모크향</th>
+                            <th id="itemMark_14"></th>
+                            <th></th>
+                        </tr>
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>15</th>
+                            <th>DL-메티오닌
+                             
+                            </th>
+                            <th>1000008</th>
+                            <th id = "editableCell_15">0.05</th>
+                            <th>DL-메티오닌</th>
+                            <th id="itemMark_15"></th>
+                            <th></th>
+                        </tr>
+
+
+                        <tr>
+                            <th> <input type="checkbox" name="list0" id="list0" onclick=""></th>
+                            <th>16</th>
+                            <th>올레오레진로즈마리D
+                                <!--
+                                <img src="../Images/돋보기 아이콘.png" width="20px" height="13px" alt="돋보기" id="searchIcon"
+                                    onclick="toggleSearch();">
+                                    -->
+                            </th>
+                            <th>1002411</th>
+                            <th id = "editableCell_16">0.05</th>
+                            <th>올레오레진로즈메리,해바라기유</th>
+                            <th id="itemMark_16"></th>
+                            <th></th>
+                        </tr>
+
+
+
+
+                    </tbody>
+
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                            
+                                <button id="calculateMixValueButton1">배합 비율 합 계산하기</button>
+                                <div id="totalValue1">배합비율 합 : <span id="sumMixValue1">0</span></div>
+
+
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </th>
+            </tbody>
+
+            
+
+    </table>
+
+
+
+
+</body>
+
+</html>
