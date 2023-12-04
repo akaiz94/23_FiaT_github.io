@@ -337,7 +337,7 @@ button {
 /** banner section **/
 
 .full_bg {
-     background: url(../images/banner1.jpg);
+     background: url(./Images/banner1.jpg);
      background-size: cover;
      background-position: center;
      background-repeat: no-repeat;
@@ -403,7 +403,7 @@ button {
 /** about section **/
 
 .about {
-     background: url(../images/about_bg.jpg);
+     background: url(./Images/about_bg.jpg);
      background-size: 100% 100%;
      background-position: center;
      background-repeat: no-repeat;
