@@ -267,3 +267,75 @@ function calculateAge(birthdate) {
         return 0;
     }
 }
+
+
+
+
+
+
+
+/** 
+ * 24.05. 13
+ * @description 피부 항목별 점수 계산 로직 (마크뷰 값 기준)
+ **/
+function GetGubunByAverage(markvu, vapometer_C_Left, vapometer_C_Right, cutometer_cheek, gubun){
+    let result = 0;
+
+    switch (gubun)
+            {
+                case "모공":
+                    result = (markvu.FPore_A + markvu.FPore_B + markvu.FPore_G + markvu.FPore_H) / 4;
+                    break;
+                case "주름":
+                    result = (markvu.FWrinkle_A + markvu.FWrinkle_C + markvu.FWrinkle_D + markvu.FWrinkle_E + markvu.FWrinkle_F) / 5;
+                    break;
+                case "미래주름":
+                    result = (markvu.FFutureWrinkle_A + markvu.FFutureWrinkle_E + markvu.FFutureWrinkle_F + markvu.FFutureWrinkle_G + markvu.FFutureWrinkle_H) / 5;
+                    break;
+                case "색소침착":
+                    result = (markvu.FPigmentation_A + markvu.FPigmentation_B + markvu.FPigmentation_E + markvu.FPigmentation_F + markvu.FPigmentation_G + markvu.FPigmentation_H) / 6;
+                    break;
+                case "멜라닌":
+                    if(markvu.Sex==="M")
+                        result = (markvu.FMelanin_A + markvu.FMelanin_B + markvu.FMelanin_E + markvu.FMelanin_F + markvu.FMelanin_G + markvu.FMelanin_H) / 6;
+                    else
+                        result = (markvu.FMelanin_A + markvu.FMelanin_G + markvu.FMelanin_H) / 3;
+                    break;
+                case "붉은기":
+                    result = (markvu.FRedness_A + markvu.FRedness_B + markvu.FRedness_E + markvu.FRedness_F + markvu.FRedness_G + markvu.FRedness_H) / 6;
+                    break;
+                case "포피린":
+                    result = (markvu.FPorphyrin_A + markvu.FPorphyrin_B + markvu.FPorphyrin_G + markvu.FPorphyrin_H) / 4;
+                    break;
+            
+                //바포미터
+                case "경피수분손실도":
+                    if (vapometer_C_Left !== null)
+                    {
+                        result = (vapometer_C_Left + vapometer_C_Right)/2 ;
+                    }
+                    else
+                    {           
+                        result = -1;
+                    }
+                    break;
+
+                //큐토미터
+                case "탄력":
+                    if (cutometer_cheek !== null)
+                    {
+
+                        result = cutometer_cheek;
+                    }
+                    else
+                    {
+                        //측정을 안했을경우 보통 표기
+                        result = -1;
+                    }
+                    //탄력값
+                    break;
+            }
+
+            return result;
+
+}
