@@ -1,102 +1,217 @@
-var page_param = {
-    totalCount: 5,
-    currentPage: 1,
-    pageSize: 5,
-    startIndex: 0,
+var t_zone_data = {   
+    datasets: [{
+        label: '데이터',
+        data: [{x: 10,y: 20}],
+        backgroundColor: 'rgba(200, 200, 200, 0.8)',          
+    }]
 }
-$(document).ready(function () {
 
-    console.log('analysis_result page start -> ')
+
+var ctx = document.getElementById('t_zone_chart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'scatter',
+    data: t_zone_data,
+    options: {
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+                min: 0,
+                max: 60,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)' // grid 색상
+                }
+            },
+            y: {
+                type: 'linear',
+                position: 'left',
+                min: 0,
+                max: 60,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)' // grid 색상
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // 범례 숨기기
+            }
+        }
+    }
+});
+
+function updatTZoneData(tzone_subun_result,tzone_ubun_result){
+t_zone_data.datasets.data[0]=tzone_subun_result;
+t_zone_data.datasets.data[1]=tzone_ubun_result;
+t_zone_chart.update();
+}
+
+
+
+
+
+
+
+$(document).ready(function () {   
+console.log('analysis_result page start -> ')
 });
 
 
-public double GetSkinConcernScore(string _gender, int _age, string _gubun, double _value)
-        {           
-            double result = 0;
+/** 
+* 24.05. 13
+* @description 
+**/
+$(document).ready(function () {
+var surveyNo = $('#survey-value').val();
+console.log("surveyNo : ", surveyNo);
 
-            int age_area = GetAgeArea(_age);
+$('#survey-value').on('input', function(){
+    surveyNo = $(this).val();
+    //console.log('입력된 Survey Value 값 : ',surveyNo);
+})
 
-            IEnumerable<Result_Concern_Entity> from_rce = list_rce.Where(item => item.gender == _gender && item.gubun == _gubun && item.age == age_area);
 
-            if (_gubun == "탄력" && _value == -1)
+$('#submit-button').click(function(){
+
+    // #1 Scalp Type, Hair Conditions, hair Density Type 부분 API 값요청
+    var ResultMarkvu_API_URL = 'http://127.0.0.1:8000/v1/skin/markvu/result/' + surveyNo;
+    $.ajax({
+        url: ResultMarkvu_API_URL,
+        type: 'GET',
+        success: function(markvu){
+            console.log('ResultMarkvu_API_URL2 응답 : ', markvu);    
+
+            //T존
+            var tzone_subun_value = markvu.FSubun_A;
+            var tzone_ubun_value = (markvu.FSebum_A + markvu.FSebum_B) / 2;
+            var t_zone_subun = tzone_subun_value;
+            var t_zone_ubun = tzone_ubun_value;
+
+            //U존
+            var uzone_subun_value = (markvu.FSubun_G + markvu.FSubun_H) / 2;
+            var uzone_ubun_value = (markvu.FSebum_G + markvu.FSebum_H) / 2;
+            var u_zone_subun = uzone_subun_value;
+            var u_zone_ubun = uzone_ubun_value;
+
+            // console.log("t_zone_subun :",t_zone_subun );
+            // console.log("t_zone_ubun :",t_zone_ubun );
+            // console.log("u_zone_subun :",u_zone_subun );
+            // console.log("u_zone_ubun :",u_zone_ubun );
+
+
+
+            var tzone_subun_result = null;
+            var tzone_ubun_result = null;
+
+            //T존 수분위치
+            if (tzone_subun_value < 20)
             {
-                result = 50;
-                //result = -1;
+                tzone_subun_result = "수분부족";
             }
-            else if (_gubun == "탄력" && _value > -1)
+            else if (20 <= tzone_subun_value && tzone_subun_value < 40)
             {
-                foreach (Result_Concern_Entity rce in from_rce)
-                {
-
-                    double 총범위;
-                    double 특정값;
-                    result = 100;
-
-                    if (_value >= rce.sixth)
-                    {
-                        총범위 = rce.sixth - rce.fifth;
-                        특정값 = _value - rce.fifth;
-                        result -= (특정값 / 총범위 * 20 + 80);
-                    }
-                    else
-                    {
-                        result = -1;
-                    }
-                }
-            }else if (_gubun == "경피수분손실도" && _value == -1)
-            {
-                result = 50;
+                tzone_subun_result = "수분적당";
             }
-            else
+            else if (40 <= tzone_subun_value)
             {
-                foreach (Result_Concern_Entity rce in from_rce)
-                {
-
-                    double 총범위;
-                    double 특정값;
-                    result = 100;
-                    if (_value >= rce.fifth)
-                    {
-                        총범위 = rce.sixth - rce.fifth;
-                        특정값 = _value - rce.fifth;
-                        result -= (특정값 / 총범위 * 20 + 80);
-                    }
-                    else if (_value >= rce.fourth)
-                    {
-                        총범위 = rce.fifth - rce.fourth;
-                        특정값 = _value - rce.fourth;
-                        result -= (특정값 / 총범위 * 20 + 60);
-                    }
-                    else if (_value >= rce.third)
-                    {
-                        총범위 = rce.fourth - rce.third;
-                        특정값 = _value - rce.third;
-                        result -= (특정값 / 총범위 * 20 + 40);
-                    }
-                    else if (_value >= rce.second)
-                    {
-                        총범위 = rce.third - rce.second;
-                        특정값 = _value - rce.second;
-                        result -= (특정값 / 총범위 * 20 + 20);
-                    }
-                    else if (_value >= rce.first)
-                    {
-                        총범위 = rce.second - rce.first;
-                        특정값 = _value - rce.first;
-                        result -= (특정값 / 총범위 * 20);
-                    }
-
-                }
+                tzone_subun_result = "수분충분";
             }
+            //T존 유분위치
 
-            if (result > 100)
+            if (tzone_ubun_value < 9)
             {
-                return 100;
+                tzone_ubun_result = "유분부족";
             }
-            else if (result < 0)
+            else if (9 <= tzone_ubun_value && tzone_ubun_value < 19)
+
             {
-                return 0;
+                tzone_ubun_result = "유분적당";
+            }
+            else if (19 <= tzone_ubun_value)
+            {
+                tzone_ubun_result = "유분과다";
+            }
+            
+            if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분과다") { t_zone_position_num = 1; t_zone_result = "수분부족 유분과다 지성"; }
+            if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분적당") { t_zone_position_num = 2; t_zone_result = "수분 부족 건성"; }
+            if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분부족") { t_zone_position_num = 3; t_zone_result = "유수분 부족 건성"; }
+            if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분과다") { t_zone_position_num = 4; t_zone_result = "유분 과다 지성"; }
+            if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분적당") { t_zone_position_num = 5; t_zone_result = "유수분 균형 중성"; }
+            if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분부족") { t_zone_position_num = 6; t_zone_result = "유분 부족 건성"; }
+            if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분과다") { t_zone_position_num = 7; t_zone_result = "유분 과다 지성"; }
+            if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분적당") { t_zone_position_num = 8; t_zone_result = "유수분 균형 중성"; }
+            if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분부족") { t_zone_position_num = 9; t_zone_result = "유분 부족 건성"; }
+
+
+
+
+            var uzone_subun_result = null;
+            var uzone_ubun_result = null;
+
+            //U존 수분위치
+            if (uzone_subun_value < 20)
+            {
+                uzone_subun_result = "수분부족";
+            }
+            else if (20 <= uzone_subun_value && uzone_subun_value < 40)
+            {
+                uzone_subun_result = "수분적당";
+            }
+            else if (40 <= uzone_subun_value)
+            {
+                uzone_subun_result = "수분충분";
+            }
+            //U존 유분위치
+            if (uzone_ubun_value <= 5.5)
+            {
+                uzone_ubun_result = "유분부족";
+            }
+            else if (5.5 < uzone_ubun_value && uzone_ubun_value < 12 )
+            {
+                uzone_ubun_result = "유분적당";
+            }
+            else if (12 <= uzone_ubun_value)
+            {
+                uzone_ubun_result = "유분과다";
             }
 
-            return result;
-        }
+            if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분과다") {  u_zone_position_num = 1; u_zone_result = "수분부족 유분과다 지성"; }
+            if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분적당") {  u_zone_position_num = 2; u_zone_result = "수분 부족 건성"; }
+            if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분부족") {  u_zone_position_num = 3; u_zone_result = "유수분 부족 건성"; }
+            if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분과다") {  u_zone_position_num = 4; u_zone_result = "유분 과다 지성"; }
+            if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분적당") {  u_zone_position_num = 5; u_zone_result = "유수분 균형 중성"; }
+            if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분부족") {  u_zone_position_num = 6; u_zone_result = "유분 부족 건성"; }
+            if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분과다") {  u_zone_position_num = 7; u_zone_result = "유분 과다 지성"; }
+            if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분적당") {  u_zone_position_num = 8; u_zone_result = "유수분 균형 중성"; }
+            if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분부족") {  u_zone_position_num = 9; u_zone_result = "유분 부족 건성"; }
+
+            
+            console.log("tzone_subun_result : ",tzone_subun_result);
+            console.log("tzone_ubun_result : ",tzone_ubun_result);
+            console.log("t_zone_result : ",t_zone_result);
+            console.log("**************************");
+
+            console.log("uzone_subun_result : ",uzone_subun_result);
+            console.log("uzone_ubun_result : ",uzone_ubun_result);
+            console.log("u_zone_result : ",u_zone_result);
+
+            $('#t_zone_result').text(t_zone_result);
+            $('#u_zone_result').text(u_zone_result);
+
+            //updatTZoneData(tzone_subun_result, tzone_ubun_result);
+
+           
+
+
+
+        },
+        error: function(xhr, status, error){
+
+            console.error('에러 : ', error);
+        }            
+    })        
+})
+})
+
+
+
