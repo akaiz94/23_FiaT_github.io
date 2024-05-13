@@ -49,6 +49,42 @@ t_zone_chart.update();
 
 
 
+function setSkinScore(markvu, course_flg) {
+    let score = 0;
+    let list_avr_score_data = {};
+
+    for (let str_gubun of str_list) {
+        if (str_gubun !== "탄력") {
+            let avr_value = getGubunByAverage(markvu, str_gubun);
+            score = rl.getSkinConcernScore(LoginSession.SelectedMember.sex, LoginSession.SelectedMember.AgeReal, str_gubun, avr_value);
+            list_avr_score_data[str_gubun] = score;
+        } else {
+            if (course_flg === "I") {
+                let avr_value = getGubunByAverage(markvu, str_gubun);
+                score = rl.getSkinConcernScore(LoginSession.SelectedMember.sex, LoginSession.SelectedMember.AgeReal, str_gubun, avr_value);
+                list_avr_score_data[str_gubun] = score;
+            }
+        }
+    }
+
+    let rsr_list = new Result_SkinConcern_Rpt();
+    rsr_list.pore = parseFloat(list_avr_score_data["모공"].toFixed(1));
+    rsr_list.wrinkle = parseFloat(list_avr_score_data["주름"].toFixed(1));
+    rsr_list.futurewrinkles = parseFloat(list_avr_score_data["미래주름"].toFixed(1));
+    rsr_list.pigmentation = parseFloat(list_avr_score_data["색소침착"].toFixed(1));
+    rsr_list.melanin = parseFloat(list_avr_score_data["멜라닌"].toFixed(1));
+    rsr_list.transdermal = parseFloat(list_avr_score_data["경피수분손실도"].toFixed(1));
+    rsr_list.redness = parseFloat(list_avr_score_data["붉은기"].toFixed(1));
+    rsr_list.porphyrin = parseFloat(list_avr_score_data["포피린"].toFixed(1));
+    rsr_list.elasticity = list_avr_score_data.length === 9 ? parseFloat(list_avr_score_data["탄력"].toFixed(1)) : 0;
+
+    LoginSession.Result_SkinConcern_Rpt = rsr_list;
+    skin_score = Math.floor(Object.values(list_avr_score_data).reduce((total, current) => total + current) / Object.keys(list_avr_score_data).length);
+}
+
+
+
+
 
 
 
@@ -219,37 +255,21 @@ $('#submit-button').click(function(){
 
 
 
-
-
-function setSkinScore(markvu, course_flg) {
-    let score = 0;
-    let list_avr_score_data = {};
-
-    for (let str_gubun of str_list) {
-        if (str_gubun !== "탄력") {
-            let avr_value = getGubunByAverage(markvu, str_gubun);
-            score = rl.getSkinConcernScore(LoginSession.SelectedMember.sex, LoginSession.SelectedMember.AgeReal, str_gubun, avr_value);
-            list_avr_score_data[str_gubun] = score;
-        } else {
-            if (course_flg === "I") {
-                let avr_value = getGubunByAverage(markvu, str_gubun);
-                score = rl.getSkinConcernScore(LoginSession.SelectedMember.sex, LoginSession.SelectedMember.AgeReal, str_gubun, avr_value);
-                list_avr_score_data[str_gubun] = score;
+public int AgeReal
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(birthdate))
+                {
+                    int iNow = Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));
+                    int iBirthDay = Convert.ToInt32(birthdate);
+                    string sAge = (iNow - iBirthDay).ToString();
+                    if (sAge.Length > 4)
+                        return Convert.ToInt32(sAge.Substring(0, sAge.Length - 4));
+                    else
+                        return 0;
+                }
+                else
+                    return 0;
             }
         }
-    }
-
-    let rsr_list = new Result_SkinConcern_Rpt();
-    rsr_list.pore = parseFloat(list_avr_score_data["모공"].toFixed(1));
-    rsr_list.wrinkle = parseFloat(list_avr_score_data["주름"].toFixed(1));
-    rsr_list.futurewrinkles = parseFloat(list_avr_score_data["미래주름"].toFixed(1));
-    rsr_list.pigmentation = parseFloat(list_avr_score_data["색소침착"].toFixed(1));
-    rsr_list.melanin = parseFloat(list_avr_score_data["멜라닌"].toFixed(1));
-    rsr_list.transdermal = parseFloat(list_avr_score_data["경피수분손실도"].toFixed(1));
-    rsr_list.redness = parseFloat(list_avr_score_data["붉은기"].toFixed(1));
-    rsr_list.porphyrin = parseFloat(list_avr_score_data["포피린"].toFixed(1));
-    rsr_list.elasticity = list_avr_score_data.length === 9 ? parseFloat(list_avr_score_data["탄력"].toFixed(1)) : 0;
-
-    LoginSession.Result_SkinConcern_Rpt = rsr_list;
-    skin_score = Math.floor(Object.values(list_avr_score_data).reduce((total, current) => total + current) / Object.keys(list_avr_score_data).length);
-}
