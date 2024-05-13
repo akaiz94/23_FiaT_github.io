@@ -253,23 +253,17 @@ $('#submit-button').click(function(){
 
 
 
-
-
-public int AgeReal
-        {
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(birthdate))
-                {
-                    int iNow = Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));
-                    int iBirthDay = Convert.ToInt32(birthdate);
-                    string sAge = (iNow - iBirthDay).ToString();
-                    if (sAge.Length > 4)
-                        return Convert.ToInt32(sAge.Substring(0, sAge.Length - 4));
-                    else
-                        return 0;
-                }
-                else
-                    return 0;
-            }
-        }
+function calculateAge(birthdate) {
+    if (birthdate) {
+        let now = new Date();
+        let iNow = parseInt(now.toISOString().slice(0, 10).replace(/-/g, ''));
+        let iBirthDay = parseInt(birthdate);
+        let sAge = (iNow - iBirthDay).toString();
+        if (sAge.length > 4)
+            return parseInt(sAge.substring(0, sAge.length - 4));
+        else
+            return 0;
+    } else {
+        return 0;
+    }
+}
