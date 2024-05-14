@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bar Chart Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+<canvas id="myChart"></canvas>
+
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['좌 ①', '우 ②', '앞 ③', '중앙 ④', '정수리 ⑤', '뒤 ⑥'],
+            datasets: [{
+                label: '굵기(mm)',
+                data: [0.057, 0.070, 0.066, 0.065, 0.067, 0.022],
+                backgroundColor: 'rgba(200, 200, 200, 0.8)',
+                borderColor: 'rgba(200, 200, 200, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 0.08,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                y: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

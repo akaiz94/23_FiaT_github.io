@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Scatter Plot with Chart.js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<canvas id="myChart"></canvas>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: '데이터 포인트',
+                data: [
+                    { x: 0.077, y: 50, label: '⑥ 뒤' },
+                    { x: 0.065, y: 90, label: '③ 우' },
+                    { x: 0.06, y: 70, label: '⑤ 정수리' },
+                    { x: 0.06, y: 60, label: '② 앞' },
+                    { x: 0.065, y: 40, label: '④ 중앙' },
+                    { x: 0.07, y: 75, label: '① 좌' }
+                ],
+                backgroundColor: 'rgba(159, 159, 159, 0.5)', // 데이터 포인트 색상
+                pointRadius: 8,
+                pointHoverRadius: 10
+            }]
+        },
+        options: {
+            plugins: {
+                annotation: {
+                    annotations: {
+                        circle: {
+                            type: 'ellipse',
+                            xMin: 0.045,
+                            xMax: 0.085,
+                            yMin: 40,
+                            yMax: 100,
+                            backgroundColor: 'rgba(255, 192, 203, 0.3)', // 원형 영역 색상
+                            borderColor: 'transparent',
+                            borderWidth: 0
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: '굵기',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    min: 0,
+                    max: 0.15,
+                    ticks: {
+                        stepSize: 0.075
+                    },
+                    grid: {
+                        color: '#ddd',
+                        borderDash: [5, 5]
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: '밀도',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    min: 0,
+                    max: 240,
+                    ticks: {
+                        stepSize: 120
+                    },
+                    grid: {
+                        color: '#ddd',
+                        borderDash: [5, 5]
+                    }
+                }
+            },
+            elements: {
+                point: {
+                    borderWidth: 0, // 데이터 포인트 테두리 제거
+                }
+            },
+            layout: {
+                padding: {
+                    right: 30 // 오른쪽 여백 조정
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.data[context.dataIndex].label; // 툴팁에 레이블 표시
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart.js Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<canvas id="myChart"></canvas>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: '데이터',
+                data: [{ x: 34, y: 6 }], // 이미지의 점 위치에 맞게 데이터 수정
+                backgroundColor: 'rgba(255, 99, 132, 0.8)' // 점 색상
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    min: 0,
+                    max: 60,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)' // grid 색상
+                    }
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left',
+                    min: 0,
+                    max: 60,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)' // grid 색상
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // 범례 숨기기
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

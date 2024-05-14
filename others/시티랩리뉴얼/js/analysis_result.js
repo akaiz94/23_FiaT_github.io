@@ -339,3 +339,94 @@ function GetGubunByAverage(markvu, vapometer_C_Left, vapometer_C_Right, cutomete
             return result;
 
 }
+
+
+
+
+
+/*
+24. 05. 14 #1 Aging차트 생성 및 업데이트
+*/
+var aging_data = {
+    labels: ['탄력', '주름', '미래주름'],
+    datasets: [{
+      label: '', // 범례 레이블 없음
+      data: [24, 50, 100],
+      backgroundColor: function(context){
+        return context.raw < 60? '#e7c1da' : '#d98cbf';
+      },   
+    },
+      // {
+      //     label: '', // 범례 레이블 없음
+      //     data: [40, 2, 80],
+      //     backgroundColor: ['#e67e98', '#e67e98', '#e67e98'],
+      //     borderColor: ['#e67e98', '#e67e98', '#e67e98'],
+      //     borderWidth: 1
+      // }
+    ]
+  }
+  var min_aging_data = Math.min(...aging_data.datasets[0].data);
+  var ctx3 = document.getElementById('aging_chart').getContext('2d');
+  var aging_chart = new Chart(ctx3, {
+    type: 'bar',
+    data: aging_data,
+    plugins:[ChartDataLabels],
+    options: {
+      responsive: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 110,
+          min: min_aging_data-10,
+          ticks: {
+            stepSize: 20,
+            //최댓값을 안보이도록 해주는 call back 함수
+            callback: function(value, index, values){
+              return value === 110 ? '':value;
+            }
+          },
+          grid: {
+            drawBorder: false,
+            color: '#ddd',
+            lineWidth: 1,
+            display: false
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false // 범례 숨기기
+        },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          color: '#333',
+          font: {
+            weight: 'bold'
+          },
+          formatter: function (value, context) {
+            return value;
+          }
+        }
+      },
+      barThickness: 25
+  
+    }
+  });
+  
+  
+  function updateAgingData(elasticity, wrinkle, futurewrinkles ) {
+    aging_data.datasets[0].data[0] = elasticity; // 탄력
+    aging_data.datasets[0].data[1] = wrinkle; // 주름
+    aging_data.datasets[0].data[2] = futurewrinkles; // 미래주름
+  
+    aging_chart.update();
+  }
+  
+  
+  
