@@ -130,34 +130,9 @@ var densityChart = new Chart(ctx2, {
             legend: {
                 display: false
             },
-            // annotation:{
-            //     annotation:{
-            //         line1:{
-            //             type: 'line',
-            //             mode: 'vertical',
-            //             scaleID: 'x',
-            //             value:100,
-            //             borderColor: 'red',
-            //             borderWidth: 1,
-            //             borderDash: [5,5]
-            //         }
-            //     }
-            // }
+  
         },
-        // onRender: function(chart){
-        //     var ctx = chart.ctx;
-        //     chart.data.datasets.array.forEach(function(dataset, datasetIndex) {
-        //         var meta = chart.getDatasetMeta (datasetIndex);
-        //         meta.data.forEach(function(bar,index){
-        //             var data = dataset.data[index];
-        //             ctx.fillStyle = '#000';
-        //             ctx.font = '12px Arial';
-        //             ctx.textAlign = 'center';
-        //             ctx.textBaseline = 'bottom';
-        //             ctx.fillText(data, bar.x, bar.y -5);
-        //         });                    
-        //     });
-        // }
+   
     }
 });
 
