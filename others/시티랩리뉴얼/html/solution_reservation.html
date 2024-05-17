@@ -812,3 +812,57 @@
 
 <!--페이지 스크립트-->
 <script type="text/javascript" src="/dev/solution_reservation.js"></script>
+
+
+
+
+
+
+
+
+<div class="table-box marginTop30">
+    <table>
+        <button class="button grid-item-2 colorWithe" data-event="popup" data-target=".user-modify-layer" data-action="open">등록</button>
+        <thead>
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+                <col style="width: 15%;">
+                <col style="width: 15%;">
+                <col style="width: auto">
+                <col style="width: 10%;">
+                <col style="width: 10%;">
+            </colgroup>
+            <tr>
+                <th>No</th>
+                <th>시간</th>
+                <th>이름</th>
+                <th>전화번호</th>
+                <th>프로그램명</th>
+                <th>방문회차</th>
+                <th>상태</th>
+            </tr>
+        </thead>
+        <tbody id="visit-list"></tbody>
+
+        <!--게시판 목록 동적할당-->
+        <script id="visit-item" type="text/x-handlebars-template">
+            <tr>
+                <td>{{ this.visitkey }}</td>
+                <td>{{ this.rsvn_date }}</td>
+                <td><a href="javascript:fnGetVisitDetail({{ this.visitkey }}, {{ this.skey }})" 
+                    onclick="openMsgLayer('{{this.name}}','{{this.m_usekey}}', '{{this.m_surveyNo}}')">{{this.name}}</a></td>
+                <td><button class="button grid-item-2 colorWithe" data-event="popup" data-target=".user-modify-layer" data-action="open">{{this.name}}</button></td>
+                <td>{{ this.phone }}</td>
+                <td>{{ this.prog_name }}</td>
+                <td>{{ this.progress_flg}}회차</td>
+                <td>
+                    <p class="state-item completion">
+                        <span class="state-icon ">{{ this.rsvn_flg}}완료</span>
+                    </p>
+                </td>
+            </tr>
+        </script>
+
+    </table>
+</div>
