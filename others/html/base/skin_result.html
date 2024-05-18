@@ -1,0 +1,383 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>목록</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="surveyno">설문 고유번호</th>
+                    <th data-id="surveydate">설문 일자</th>
+                    <th data-id="userkey">사용자 키</th>
+                    <th data-id="name">이름</th>
+                    <th data-id="skin_score">피부점수</th>
+                    <th data-id="skin_gomin">피부고민</th>
+                    <th data-id="iscomplexity">복합성여부</th>
+                    <th data-id="t_zone_result ">T존결과</th>
+                    <th data-id="t_zone_position_num">T존위치</th>
+                    <th data-id="u_zone_result">U존결과</th>
+                    <th data-id="u_zone_position_num">U존위치</th>
+                    <th data-id="fizpatrick_color_point">Fitzpatrick 척도</th>
+                    <th data-id="solution_type_number">솔루션_타입_번호</th>
+                    <th data-id="sensitive_type_number">민감도_타입_번호</th>
+                    <th data-id="specialtip_img">분석결과페이지_메모_이미지1</th>
+                    <th data-id="specialtip_stoke_img">분석결과페이지_메모_이미지2</th>
+                    <th data-id="specialtip_memo">분석결과페이지_메모_이미지3</th>
+                    <th data-id="manager_value">담당 연구원</th>
+                    <th data-id="create_dt">생성일자</th>
+                    <th data-id="update_dt">업데이트 일자</th>
+                </tr>
+                </thead>
+                <tbody id="skin_result_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="skin_result_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.surveyno}}</td><!-- 설문 고유번호 -->
+                        <td>{{this.surveydate}}</td><!-- 설문 일자 -->
+                        <td>{{this.userkey}}</td><!-- 사용자 키 -->
+                        <td>{{this.name}}</td><!-- 이름 -->
+                        <td>{{this.skin_score}}</td><!-- 피부점수 -->
+                        <td>{{this.skin_gomin}}</td><!-- 피부고민 -->
+                        <td>{{this.iscomplexity}}</td><!-- 복합성여부 -->
+                        <td>{{this.t_zone_result }}</td><!-- T존결과 -->
+                        <td>{{this.t_zone_position_num}}</td><!-- T존위치 -->
+                        <td>{{this.u_zone_result}}</td><!-- U존결과 -->
+                        <td>{{this.u_zone_position_num}}</td><!-- U존위치 -->
+                        <td>{{this.fizpatrick_color_point}}</td><!-- Fitzpatrick 척도 -->
+                        <td>{{this.solution_type_number}}</td><!-- 솔루션_타입_번호 -->
+                        <td>{{this.sensitive_type_number}}</td><!-- 민감도_타입_번호 -->
+                        <td>{{this.specialtip_img}}</td><!-- 분석결과페이지_메모_이미지1 -->
+                        <td>{{this.specialtip_stoke_img}}</td><!-- 분석결과페이지_메모_이미지2 -->
+                        <td>{{this.specialtip_memo}}</td><!-- 분석결과페이지_메모_이미지3 -->
+                        <td>{{this.manager_value}}</td><!-- 담당 연구원 -->
+                        <td>{{this.create_dt}}</td><!-- 생성일자 -->
+                        <td>{{this.update_dt}}</td><!-- 업데이트 일자 -->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveyno">설문 고유번호:</label>
+                        <span data-id="surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveydate">설문 일자:</label>
+                        <span data-id="surveydate"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="userkey">사용자 키:</label>
+                        <span data-id="userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">이름:</label>
+                        <span data-id="name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="skin_score">피부점수:</label>
+                        <span data-id="skin_score"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="skin_gomin">피부고민:</label>
+                        <span data-id="skin_gomin"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="iscomplexity">복합성여부:</label>
+                        <span data-id="iscomplexity"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="t_zone_result ">T존결과:</label>
+                        <span data-id="t_zone_result "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="t_zone_position_num">T존위치:</label>
+                        <span data-id="t_zone_position_num"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="u_zone_result">U존결과:</label>
+                        <span data-id="u_zone_result"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="u_zone_position_num">U존위치:</label>
+                        <span data-id="u_zone_position_num"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fizpatrick_color_point">Fitzpatrick 척도:</label>
+                        <span data-id="fizpatrick_color_point"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="solution_type_number">솔루션_타입_번호:</label>
+                        <span data-id="solution_type_number"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="sensitive_type_number">민감도_타입_번호:</label>
+                        <span data-id="sensitive_type_number"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="specialtip_img">분석결과페이지_메모_이미지1:</label>
+                        <span data-id="specialtip_img"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="specialtip_stoke_img">분석결과페이지_메모_이미지2:</label>
+                        <span data-id="specialtip_stoke_img"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="specialtip_memo">분석결과페이지_메모_이미지3:</label>
+                        <span data-id="specialtip_memo"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="manager_value">담당 연구원:</label>
+                        <span data-id="manager_value"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">생성일자:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="update_dt">업데이트 일자:</label>
+                        <span data-id="update_dt"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="skin_result_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="surveyno">설문 고유번호</label>
+                            <input type="text" class="form-control" id="surveyno" name='surveyno' minlength=2 required
+                                   placeholder="설문 고유번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="surveydate">설문 일자</label>
+                            <input type="text" class="form-control" id="surveydate" name='surveydate' minlength=2
+                                   required
+                                   placeholder="설문 일자">
+                        </div>
+                        <div class="form-group">
+                            <label for="userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="userkey" name='userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" id="name" name='name' minlength=2 required
+                                   placeholder="이름">
+                        </div>
+                        <div class="form-group">
+                            <label for="skin_score">피부점수</label>
+                            <input type="text" class="form-control" id="skin_score" name='skin_score' minlength=2
+                                   required
+                                   placeholder="피부점수">
+                        </div>
+                        <div class="form-group">
+                            <label for="skin_gomin">피부고민</label>
+                            <input type="text" class="form-control" id="skin_gomin" name='skin_gomin' minlength=2
+                                   required
+                                   placeholder="피부고민">
+                        </div>
+                        <div class="form-group">
+                            <label for="iscomplexity">복합성여부</label>
+                            <input type="text" class="form-control" id="iscomplexity" name='iscomplexity' minlength=2
+                                   required
+                                   placeholder="복합성여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="t_zone_result ">T존결과</label>
+                            <input type="text" class="form-control" id="t_zone_result " name='t_zone_result '
+                                   minlength=2 required
+                                   placeholder="T존결과">
+                        </div>
+                        <div class="form-group">
+                            <label for="t_zone_position_num">T존위치</label>
+                            <input type="text" class="form-control" id="t_zone_position_num" name='t_zone_position_num'
+                                   minlength=2 required
+                                   placeholder="T존위치">
+                        </div>
+                        <div class="form-group">
+                            <label for="u_zone_result">U존결과</label>
+                            <input type="text" class="form-control" id="u_zone_result" name='u_zone_result' minlength=2
+                                   required
+                                   placeholder="U존결과">
+                        </div>
+                        <div class="form-group">
+                            <label for="u_zone_position_num">U존위치</label>
+                            <input type="text" class="form-control" id="u_zone_position_num" name='u_zone_position_num'
+                                   minlength=2 required
+                                   placeholder="U존위치">
+                        </div>
+                        <div class="form-group">
+                            <label for="fizpatrick_color_point">Fitzpatrick 척도</label>
+                            <input type="text" class="form-control" id="fizpatrick_color_point"
+                                   name='fizpatrick_color_point' minlength=2 required
+                                   placeholder="Fitzpatrick 척도">
+                        </div>
+                        <div class="form-group">
+                            <label for="solution_type_number">솔루션_타입_번호</label>
+                            <input type="text" class="form-control" id="solution_type_number"
+                                   name='solution_type_number' minlength=2 required
+                                   placeholder="솔루션_타입_번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="sensitive_type_number">민감도_타입_번호</label>
+                            <input type="text" class="form-control" id="sensitive_type_number"
+                                   name='sensitive_type_number' minlength=2 required
+                                   placeholder="민감도_타입_번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="specialtip_img">분석결과페이지_메모_이미지1</label>
+                            <input type="text" class="form-control" id="specialtip_img" name='specialtip_img'
+                                   minlength=2 required
+                                   placeholder="분석결과페이지_메모_이미지1">
+                        </div>
+                        <div class="form-group">
+                            <label for="specialtip_stoke_img">분석결과페이지_메모_이미지2</label>
+                            <input type="text" class="form-control" id="specialtip_stoke_img"
+                                   name='specialtip_stoke_img' minlength=2 required
+                                   placeholder="분석결과페이지_메모_이미지2">
+                        </div>
+                        <div class="form-group">
+                            <label for="specialtip_memo">분석결과페이지_메모_이미지3</label>
+                            <input type="text" class="form-control" id="specialtip_memo" name='specialtip_memo'
+                                   minlength=2 required
+                                   placeholder="분석결과페이지_메모_이미지3">
+                        </div>
+                        <div class="form-group">
+                            <label for="manager_value">담당 연구원</label>
+                            <input type="text" class="form-control" id="manager_value" name='manager_value' minlength=2
+                                   required
+                                   placeholder="담당 연구원">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">생성일자</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="생성일자">
+                        </div>
+                        <div class="form-group">
+                            <label for="update_dt">업데이트 일자</label>
+                            <input type="text" class="form-control" id="update_dt" name='update_dt' minlength=2 required
+                                   placeholder="업데이트 일자">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/skin_result.js"></script>

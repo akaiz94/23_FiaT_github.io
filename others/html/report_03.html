@@ -16,56 +16,27 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
     <script type="module" src="./js/ngrid.2.1.0.js"></script>
     <script type="module" src="./resource/js/ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <style>
-        canvas {
-            width: 390px;           
-            margin: 0px auto;
-        }
-    </style>
-
-    <style>
-        ::placeholder{
-            color: grey;            
-        }
-    </style>
 </head>
-
-
 <body class="sub">
 <div class="wrap">
     <header class="site-header" id="top_menu">       
     </header>
     <main>
         <!--top-title-->
-        <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+        <section class="top-banner statistics"><h1>통계</h1></section>
         <!--top-title-->
-
         <div class="content-box content-padding">
             <div class="container">
                 <h2 class="title-box">분석</h2>
-                <div class="tab-box marginTop70">
-                    <a href="./analysis.html" class="tab-item">피부 측정</a>
-                    <a href="./analysis_result.html" class="tab-item">피부 측정 결과</a>
-                    <a href="./analysis2.html" class="tab-item">두피<i class="dat"></i>모발 측정</a>
-                    <a href="./analysis2_result.html" class="tab-item active">두피<i class="dat"></i>모발 측정 결과</a>
-                    <a href="./analysis3_result.html" class="tab-item">마이 스킨 DNA 결과</a>
-                </div>
                 <!--리포트 부분 스타일 분리 했습니다 -->
                 <link href="./resource/css/report.css" rel="stylesheet"/>
                 <section class="report-wrapper marginTop70">
                     <header class="header-box">
-                        <div class="header-lift-box">HAIR&SCALP SOLUTION FOR : </div>
-                        <div class="user-name">
-                            <div class="name">
-                                전지현
-                            </div>
-                        </div>
+                        <div class="header-lift-box">My Skin Solution Analysis for : </div>
+                        <div class="user-name">전지현</div>
                         <div class="header-right-box">
-                            <span>HAIR&SCALP SOLUTION ㅣ 고은비</span>
-                            <span style="margin-right: 92px;">측정일자 : 2024.01.22</span>
-                            <span style="margin-right: 133px;">방문회차 : 2회차</span>
+                            <span>측정일자 : 2024.01.22</span>
+                            <span>방문회차 : 2회차</span>
                         </div>
                     </header>
                     <div class="report-content">
@@ -80,13 +51,13 @@
                                                 <td><span class="type-item">지성</span></td>
                                                 <td><span class="type-item">지성비듬성</span></td>
                                                 <td><span class="type-item">트러블성</span></td>
-                                                <td><span class="type-item">지루성</span></td>
+                                                <td><span class="type-item">지루</span></td>
                                             </tr>
                                             <tr>
-                                                <td><span class="type-item">건성</span></td>
-                                                <td><span class="type-item">건성비듬성</span></td>
-                                                <td><span class="type-item">민감성</span></td>
-                                                <td><span class="type-item">아토피성</span></td>
+                                                <td><span class="type-item">지성</span></td>
+                                                <td><span class="type-item active">지성비듬성</span></td>
+                                                <td><span class="type-item">트러블성</span></td>
+                                                <td><span class="type-item">지루</span></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -97,9 +68,9 @@
                                         <div class="hair-condition">
                                             <img src="./resource/images/img-hair.png" alt="모발 이미지">
                                             <ul class="hair-condition-list">
-                                                <li class="condition-item" id="haircondition_tips">약손상</li>
-                                                <li class="condition-item" id="haircondition_mid">건강</li>
-                                                <li class="condition-item" id="haircondition_root">건강</li>
+                                                <li class="condition-item">약손상</li>
+                                                <li class="condition-item">건강</li>
+                                                <li class="condition-item">건강</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -112,17 +83,15 @@
                                         <div class="flexColumnWrapper rowGap20">
                                             <div>
                                                 <h3>굵기(㎟)</h3>
-                                                <canvas id="thicknessChart"></canvas>
-                                                <!-- <div class="graph-item">
+                                                <div class="graph-item">
                                                     <img src="./resource/images/graph/graph-021.svg" alt="Predicted Skin Analysis Results 그래프">
-                                                </div> -->
+                                                </div>
                                             </div>
                                             <div>
                                                 <h3>밀도(hairs/㎠)</h3>
-                                                <canvas id="densityChart"></canvas>
-                                                <!-- <div class="graph-item">
+                                                <div class="graph-item">
                                                     <img src="./resource/images/graph/graph-022.svg" alt="Predicted Skin Analysis Results 그래프">
-                                                </div> -->
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
@@ -141,17 +110,17 @@
                                     </div>
                                     <div class="diagram-wrapper flexWrapper marginTop20">
                                         <dl class="diagram-item noTitle column gap30 ">
-                                            <dd class="gray" id="HairlossType_Basic">
+                                            <dd class="gray">
                                                 M3
                                             </dd>
                                         </dl>
                                         <dl class="diagram-item noTitle column gap30">
-                                            <dd class="gray" id="HairlossType_Center">
+                                            <dd class="gray">
                                                 V1
                                             </dd>
                                         </dl>
                                         <dl class="diagram-item noTitle column gap30">
-                                            <dd class="gray" id="HairlossType_FrontCenter">
+                                            <dd class="gray">
                                                 F1
                                             </dd>
                                         </dl>
@@ -163,11 +132,9 @@
                         <div class="col-item">
                             <div class="row-item">
                                 <h2 class="title">Detailed Information On hair Thickness & Density</h2>
-                                <input id = "survey-value" style=" width: 150px;"  placeholder="SurveyKey입력"></input>
-                                <button id="submit-button" style="border: 1px solid black; width: 70px; font-weight: 700;">Submit</button>
                                 <div class="row-item-content flexWrapper gap50">
                                    <div class="hair-skin-grid">
-                                       <div class="grid-item" id="hairLeftHairLine">
+                                       <div class="grid-item">
                                            <h3>좌측 헤어라인</h3>
                                            <div class="hair-skin-info">
                                                <div class="img-box"><img src="./resource/images/hair-skin-img001.png"></div>
@@ -184,7 +151,7 @@
                                        <div class="hair-model">
                                             <img src="./resource/images/hair-skin-model.png">
                                        </div>
-                                       <div class="grid-item" id="hairFrontCenter">
+                                       <div class="grid-item">
                                            <h3>앞 중앙</h3>
                                            <div class="hair-skin-info">
                                                <div class="img-box"><img src="./resource/images/hair-skin-img002.png"></div>
@@ -198,7 +165,7 @@
                                                </dl>
                                            </div>
                                        </div>
-                                       <div class="grid-item" id="hairFrontHairLine">
+                                       <div class="grid-item">
                                            <h3>앞 헤어라인</h3>
                                            <div class="hair-skin-info">
                                                <div class="img-box"><img src="./resource/images/hair-skin-img003.png"></div>
@@ -212,7 +179,7 @@
                                                </dl>
                                            </div>
                                        </div>
-                                       <div class="grid-item" id="hairCenter">
+                                       <div class="grid-item">
                                            <h3>정수리</h3>
                                            <div class="hair-skin-info">
                                                <div class="img-box"><img src="./resource/images/hair-skin-img004.png"></div>
@@ -226,7 +193,7 @@
                                                </dl>
                                            </div>
                                        </div>
-                                       <div class="grid-item" id="hairRightHairLine">
+                                       <div class="grid-item">
                                            <h3>우측 헤어라인</h3>
                                            <div class="hair-skin-info">
                                                <div class="img-box"><img src="./resource/images/hair-skin-img005.png"></div>
@@ -240,7 +207,7 @@
                                                </dl>
                                            </div>
                                        </div>
-                                       <div class="grid-item" id="hairBack">
+                                       <div class="grid-item">
                                            <h3>후두부</h3>
                                            <div class="hair-skin-info">
                                                <div class="img-box"><img src="./resource/images/hair-skin-img006.png"></div>
@@ -283,13 +250,9 @@
                     </div>
                 </section>
                 <div class="button-box textAlignCenter grid-wrap justifyContentCenter marginTop70">
-                    <li class="submenu2-item">
-                        <a class="button radius w150 colorWithe" href="./analysis2_result_history.html">히스토리</a>
-                    </li>
+                    <button class="button radius w150 colorWithe">히스토리</button>
                     <button class="button radius w150 colorActive">저장</button>
-                    <li class="submenu2-item">
-                        <a class="button radius w150 colorWithe" href="./print003.html">출력</a>
-                    </li>
+                    <button class="button radius w150">출력</button>
                 </div>
             </div>
         </div>
@@ -298,6 +261,3 @@
 
 </body>
 </html>
-<!--페이지 스크립트-->
-<script type="text/javascript" src="/dev/analysis2_result.js"></script>
-

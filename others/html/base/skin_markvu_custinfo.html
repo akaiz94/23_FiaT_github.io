@@ -1,0 +1,1109 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>목록</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="surveyno">고유번호</th>
+                    <th data-id="userkey">사용자 키</th>
+                    <th data-id="dbid">마크뷰DB 식별키</th>
+                    <th data-id="custname">고객명</th>
+                    <th data-id="sex">성별</th>
+                    <th data-id="birthday">생년월일</th>
+                    <th data-id="patno">PatNo</th>
+                    <th data-id="phone">핸드폰번호</th>
+                    <th data-id="asistname">상담사명</th>
+                    <th data-id="care">Care</th>
+                    <th data-id="etc">Etc</th>
+                    <th data-id="z1x">Z1X</th>
+                    <th data-id="z1y">Z1Y</th>
+                    <th data-id="z1w">Z1W</th>
+                    <th data-id="z1h">Z1H</th>
+                    <th data-id="z2x">Z2X</th>
+                    <th data-id="z2y">Z2Y</th>
+                    <th data-id="z2w">Z2W</th>
+                    <th data-id="z2h">Z2H</th>
+                    <th data-id="z3x">Z3X</th>
+                    <th data-id="z3y">Z3Y</th>
+                    <th data-id="z3w">Z3W</th>
+                    <th data-id="z3h">Z3H</th>
+                    <th data-id="z4x">Z4X</th>
+                    <th data-id="z4y">Z4Y</th>
+                    <th data-id="z4w">Z4W</th>
+                    <th data-id="z4h">Z4H</th>
+                    <th data-id="z5x">Z5X</th>
+                    <th data-id="z5y">Z5Y</th>
+                    <th data-id="z5w">Z5W</th>
+                    <th data-id="z5h">Z5H</th>
+                    <th data-id="z6x">Z6X</th>
+                    <th data-id="z6y">Z6Y</th>
+                    <th data-id="z6w">Z6W</th>
+                    <th data-id="z6h">Z6H</th>
+                    <th data-id="z7x">Z7X</th>
+                    <th data-id="z7y">Z7Y</th>
+                    <th data-id="z7w">Z7W</th>
+                    <th data-id="z7h">Z7H</th>
+                    <th data-id="z8x">Z8X</th>
+                    <th data-id="z8y">Z8Y</th>
+                    <th data-id="z8w">Z8W</th>
+                    <th data-id="z8h">Z8H</th>
+                    <th data-id="l1x">L1X</th>
+                    <th data-id="l1y">L1Y</th>
+                    <th data-id="l1w">L1W</th>
+                    <th data-id="l1h">L1H</th>
+                    <th data-id="l2x">L2X</th>
+                    <th data-id="l2y">L2Y</th>
+                    <th data-id="l2w">L2W</th>
+                    <th data-id="l2h">L2H</th>
+                    <th data-id="l3x">L3X</th>
+                    <th data-id="l3y">L3Y</th>
+                    <th data-id="l3w">L3W</th>
+                    <th data-id="l3h">L3H</th>
+                    <th data-id="l4x">L4X</th>
+                    <th data-id="l4y">L4Y</th>
+                    <th data-id="l4w">L4W</th>
+                    <th data-id="l4h">L4H</th>
+                    <th data-id="r1x">R1X</th>
+                    <th data-id="r1y">R1Y</th>
+                    <th data-id="r1w">R1W</th>
+                    <th data-id="r1h">R1H</th>
+                    <th data-id="r2x">R2X</th>
+                    <th data-id="r2y">R2Y</th>
+                    <th data-id="r2w">R2W</th>
+                    <th data-id="r2h">R2H</th>
+                    <th data-id="r3x">R3X</th>
+                    <th data-id="r3y">R3Y</th>
+                    <th data-id="r3w">R3W</th>
+                    <th data-id="r3h">R3H</th>
+                    <th data-id="r4x">R4X</th>
+                    <th data-id="r4y">R4Y</th>
+                    <th data-id="r4w">R4W</th>
+                    <th data-id="r4h">R4H</th>
+                    <th data-id="create_dt">create_dt</th>
+                    <th data-id="updtea_dt">updtea_dt</th>
+                </tr>
+                </thead>
+                <tbody id="skin_markvu_custInfo_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="skin_markvu_custInfo_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.surveyno}}</td><!-- 고유번호 -->
+                        <td>{{this.userkey}}</td><!-- 사용자 키 -->
+                        <td>{{this.dbid}}</td><!-- 마크뷰DB 식별키 -->
+                        <td>{{this.custname}}</td><!-- 고객명 -->
+                        <td>{{this.sex}}</td><!-- 성별 -->
+                        <td>{{this.birthday}}</td><!-- 생년월일 -->
+                        <td>{{this.patno}}</td><!-- PatNo -->
+                        <td>{{this.phone}}</td><!-- 핸드폰번호 -->
+                        <td>{{this.asistname}}</td><!-- 상담사명 -->
+                        <td>{{this.care}}</td><!-- Care -->
+                        <td>{{this.etc}}</td><!-- Etc -->
+                        <td>{{this.z1x}}</td><!-- Z1X -->
+                        <td>{{this.z1y}}</td><!-- Z1Y -->
+                        <td>{{this.z1w}}</td><!-- Z1W -->
+                        <td>{{this.z1h}}</td><!-- Z1H -->
+                        <td>{{this.z2x}}</td><!-- Z2X -->
+                        <td>{{this.z2y}}</td><!-- Z2Y -->
+                        <td>{{this.z2w}}</td><!-- Z2W -->
+                        <td>{{this.z2h}}</td><!-- Z2H -->
+                        <td>{{this.z3x}}</td><!-- Z3X -->
+                        <td>{{this.z3y}}</td><!-- Z3Y -->
+                        <td>{{this.z3w}}</td><!-- Z3W -->
+                        <td>{{this.z3h}}</td><!-- Z3H -->
+                        <td>{{this.z4x}}</td><!-- Z4X -->
+                        <td>{{this.z4y}}</td><!-- Z4Y -->
+                        <td>{{this.z4w}}</td><!-- Z4W -->
+                        <td>{{this.z4h}}</td><!-- Z4H -->
+                        <td>{{this.z5x}}</td><!-- Z5X -->
+                        <td>{{this.z5y}}</td><!-- Z5Y -->
+                        <td>{{this.z5w}}</td><!-- Z5W -->
+                        <td>{{this.z5h}}</td><!-- Z5H -->
+                        <td>{{this.z6x}}</td><!-- Z6X -->
+                        <td>{{this.z6y}}</td><!-- Z6Y -->
+                        <td>{{this.z6w}}</td><!-- Z6W -->
+                        <td>{{this.z6h}}</td><!-- Z6H -->
+                        <td>{{this.z7x}}</td><!-- Z7X -->
+                        <td>{{this.z7y}}</td><!-- Z7Y -->
+                        <td>{{this.z7w}}</td><!-- Z7W -->
+                        <td>{{this.z7h}}</td><!-- Z7H -->
+                        <td>{{this.z8x}}</td><!-- Z8X -->
+                        <td>{{this.z8y}}</td><!-- Z8Y -->
+                        <td>{{this.z8w}}</td><!-- Z8W -->
+                        <td>{{this.z8h}}</td><!-- Z8H -->
+                        <td>{{this.l1x}}</td><!-- L1X -->
+                        <td>{{this.l1y}}</td><!-- L1Y -->
+                        <td>{{this.l1w}}</td><!-- L1W -->
+                        <td>{{this.l1h}}</td><!-- L1H -->
+                        <td>{{this.l2x}}</td><!-- L2X -->
+                        <td>{{this.l2y}}</td><!-- L2Y -->
+                        <td>{{this.l2w}}</td><!-- L2W -->
+                        <td>{{this.l2h}}</td><!-- L2H -->
+                        <td>{{this.l3x}}</td><!-- L3X -->
+                        <td>{{this.l3y}}</td><!-- L3Y -->
+                        <td>{{this.l3w}}</td><!-- L3W -->
+                        <td>{{this.l3h}}</td><!-- L3H -->
+                        <td>{{this.l4x}}</td><!-- L4X -->
+                        <td>{{this.l4y}}</td><!-- L4Y -->
+                        <td>{{this.l4w}}</td><!-- L4W -->
+                        <td>{{this.l4h}}</td><!-- L4H -->
+                        <td>{{this.r1x}}</td><!-- R1X -->
+                        <td>{{this.r1y}}</td><!-- R1Y -->
+                        <td>{{this.r1w}}</td><!-- R1W -->
+                        <td>{{this.r1h}}</td><!-- R1H -->
+                        <td>{{this.r2x}}</td><!-- R2X -->
+                        <td>{{this.r2y}}</td><!-- R2Y -->
+                        <td>{{this.r2w}}</td><!-- R2W -->
+                        <td>{{this.r2h}}</td><!-- R2H -->
+                        <td>{{this.r3x}}</td><!-- R3X -->
+                        <td>{{this.r3y}}</td><!-- R3Y -->
+                        <td>{{this.r3w}}</td><!-- R3W -->
+                        <td>{{this.r3h}}</td><!-- R3H -->
+                        <td>{{this.r4x}}</td><!-- R4X -->
+                        <td>{{this.r4y}}</td><!-- R4Y -->
+                        <td>{{this.r4w}}</td><!-- R4W -->
+                        <td>{{this.r4h}}</td><!-- R4H -->
+                        <td>{{this.create_dt}}</td><!-- create_dt -->
+                        <td>{{this.updtea_dt}}</td><!-- updtea_dt -->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveyno">고유번호:</label>
+                        <span data-id="surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="userkey">사용자 키:</label>
+                        <span data-id="userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dbid">마크뷰DB 식별키:</label>
+                        <span data-id="dbid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="custname">고객명:</label>
+                        <span data-id="custname"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="sex">성별:</label>
+                        <span data-id="sex"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="birthday">생년월일:</label>
+                        <span data-id="birthday"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="patno">PatNo:</label>
+                        <span data-id="patno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phone">핸드폰번호:</label>
+                        <span data-id="phone"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="asistname">상담사명:</label>
+                        <span data-id="asistname"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="care">Care:</label>
+                        <span data-id="care"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="etc">Etc:</label>
+                        <span data-id="etc"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z1x">Z1X:</label>
+                        <span data-id="z1x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z1y">Z1Y:</label>
+                        <span data-id="z1y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z1w">Z1W:</label>
+                        <span data-id="z1w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z1h">Z1H:</label>
+                        <span data-id="z1h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z2x">Z2X:</label>
+                        <span data-id="z2x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z2y">Z2Y:</label>
+                        <span data-id="z2y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z2w">Z2W:</label>
+                        <span data-id="z2w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z2h">Z2H:</label>
+                        <span data-id="z2h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z3x">Z3X:</label>
+                        <span data-id="z3x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z3y">Z3Y:</label>
+                        <span data-id="z3y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z3w">Z3W:</label>
+                        <span data-id="z3w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z3h">Z3H:</label>
+                        <span data-id="z3h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z4x">Z4X:</label>
+                        <span data-id="z4x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z4y">Z4Y:</label>
+                        <span data-id="z4y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z4w">Z4W:</label>
+                        <span data-id="z4w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z4h">Z4H:</label>
+                        <span data-id="z4h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z5x">Z5X:</label>
+                        <span data-id="z5x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z5y">Z5Y:</label>
+                        <span data-id="z5y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z5w">Z5W:</label>
+                        <span data-id="z5w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z5h">Z5H:</label>
+                        <span data-id="z5h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z6x">Z6X:</label>
+                        <span data-id="z6x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z6y">Z6Y:</label>
+                        <span data-id="z6y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z6w">Z6W:</label>
+                        <span data-id="z6w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z6h">Z6H:</label>
+                        <span data-id="z6h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z7x">Z7X:</label>
+                        <span data-id="z7x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z7y">Z7Y:</label>
+                        <span data-id="z7y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z7w">Z7W:</label>
+                        <span data-id="z7w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z7h">Z7H:</label>
+                        <span data-id="z7h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z8x">Z8X:</label>
+                        <span data-id="z8x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z8y">Z8Y:</label>
+                        <span data-id="z8y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z8w">Z8W:</label>
+                        <span data-id="z8w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="z8h">Z8H:</label>
+                        <span data-id="z8h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l1x">L1X:</label>
+                        <span data-id="l1x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l1y">L1Y:</label>
+                        <span data-id="l1y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l1w">L1W:</label>
+                        <span data-id="l1w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l1h">L1H:</label>
+                        <span data-id="l1h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l2x">L2X:</label>
+                        <span data-id="l2x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l2y">L2Y:</label>
+                        <span data-id="l2y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l2w">L2W:</label>
+                        <span data-id="l2w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l2h">L2H:</label>
+                        <span data-id="l2h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l3x">L3X:</label>
+                        <span data-id="l3x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l3y">L3Y:</label>
+                        <span data-id="l3y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l3w">L3W:</label>
+                        <span data-id="l3w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l3h">L3H:</label>
+                        <span data-id="l3h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l4x">L4X:</label>
+                        <span data-id="l4x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l4y">L4Y:</label>
+                        <span data-id="l4y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l4w">L4W:</label>
+                        <span data-id="l4w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="l4h">L4H:</label>
+                        <span data-id="l4h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r1x">R1X:</label>
+                        <span data-id="r1x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r1y">R1Y:</label>
+                        <span data-id="r1y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r1w">R1W:</label>
+                        <span data-id="r1w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r1h">R1H:</label>
+                        <span data-id="r1h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r2x">R2X:</label>
+                        <span data-id="r2x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r2y">R2Y:</label>
+                        <span data-id="r2y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r2w">R2W:</label>
+                        <span data-id="r2w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r2h">R2H:</label>
+                        <span data-id="r2h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r3x">R3X:</label>
+                        <span data-id="r3x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r3y">R3Y:</label>
+                        <span data-id="r3y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r3w">R3W:</label>
+                        <span data-id="r3w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r3h">R3H:</label>
+                        <span data-id="r3h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r4x">R4X:</label>
+                        <span data-id="r4x"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r4y">R4Y:</label>
+                        <span data-id="r4y"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r4w">R4W:</label>
+                        <span data-id="r4w"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="r4h">R4H:</label>
+                        <span data-id="r4h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">create_dt:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="updtea_dt">updtea_dt:</label>
+                        <span data-id="updtea_dt"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="skin_markvu_custInfo_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="surveyno">고유번호</label>
+                            <input type="text" class="form-control" id="surveyno" name='surveyno' minlength=2 required
+                                   placeholder="고유번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="userkey" name='userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="dbid">마크뷰DB 식별키</label>
+                            <input type="text" class="form-control" id="dbid" name='dbid' minlength=2 required
+                                   placeholder="마크뷰DB 식별키">
+                        </div>
+                        <div class="form-group">
+                            <label for="custname">고객명</label>
+                            <input type="text" class="form-control" id="custname" name='custname' minlength=2 required
+                                   placeholder="고객명">
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">성별</label>
+                            <input type="text" class="form-control" id="sex" name='sex' minlength=2 required
+                                   placeholder="성별">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">생년월일</label>
+                            <input type="text" class="form-control" id="birthday" name='birthday' minlength=2 required
+                                   placeholder="생년월일">
+                        </div>
+                        <div class="form-group">
+                            <label for="patno">PatNo</label>
+                            <input type="text" class="form-control" id="patno" name='patno' minlength=2 required
+                                   placeholder="PatNo">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">핸드폰번호</label>
+                            <input type="text" class="form-control" id="phone" name='phone' minlength=2 required
+                                   placeholder="핸드폰번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="asistname">상담사명</label>
+                            <input type="text" class="form-control" id="asistname" name='asistname' minlength=2 required
+                                   placeholder="상담사명">
+                        </div>
+                        <div class="form-group">
+                            <label for="care">Care</label>
+                            <input type="text" class="form-control" id="care" name='care' minlength=2 required
+                                   placeholder="Care">
+                        </div>
+                        <div class="form-group">
+                            <label for="etc">Etc</label>
+                            <input type="text" class="form-control" id="etc" name='etc' minlength=2 required
+                                   placeholder="Etc">
+                        </div>
+                        <div class="form-group">
+                            <label for="z1x">Z1X</label>
+                            <input type="text" class="form-control" id="z1x" name='z1x' minlength=2 required
+                                   placeholder="Z1X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z1y">Z1Y</label>
+                            <input type="text" class="form-control" id="z1y" name='z1y' minlength=2 required
+                                   placeholder="Z1Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z1w">Z1W</label>
+                            <input type="text" class="form-control" id="z1w" name='z1w' minlength=2 required
+                                   placeholder="Z1W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z1h">Z1H</label>
+                            <input type="text" class="form-control" id="z1h" name='z1h' minlength=2 required
+                                   placeholder="Z1H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z2x">Z2X</label>
+                            <input type="text" class="form-control" id="z2x" name='z2x' minlength=2 required
+                                   placeholder="Z2X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z2y">Z2Y</label>
+                            <input type="text" class="form-control" id="z2y" name='z2y' minlength=2 required
+                                   placeholder="Z2Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z2w">Z2W</label>
+                            <input type="text" class="form-control" id="z2w" name='z2w' minlength=2 required
+                                   placeholder="Z2W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z2h">Z2H</label>
+                            <input type="text" class="form-control" id="z2h" name='z2h' minlength=2 required
+                                   placeholder="Z2H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z3x">Z3X</label>
+                            <input type="text" class="form-control" id="z3x" name='z3x' minlength=2 required
+                                   placeholder="Z3X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z3y">Z3Y</label>
+                            <input type="text" class="form-control" id="z3y" name='z3y' minlength=2 required
+                                   placeholder="Z3Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z3w">Z3W</label>
+                            <input type="text" class="form-control" id="z3w" name='z3w' minlength=2 required
+                                   placeholder="Z3W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z3h">Z3H</label>
+                            <input type="text" class="form-control" id="z3h" name='z3h' minlength=2 required
+                                   placeholder="Z3H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z4x">Z4X</label>
+                            <input type="text" class="form-control" id="z4x" name='z4x' minlength=2 required
+                                   placeholder="Z4X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z4y">Z4Y</label>
+                            <input type="text" class="form-control" id="z4y" name='z4y' minlength=2 required
+                                   placeholder="Z4Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z4w">Z4W</label>
+                            <input type="text" class="form-control" id="z4w" name='z4w' minlength=2 required
+                                   placeholder="Z4W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z4h">Z4H</label>
+                            <input type="text" class="form-control" id="z4h" name='z4h' minlength=2 required
+                                   placeholder="Z4H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z5x">Z5X</label>
+                            <input type="text" class="form-control" id="z5x" name='z5x' minlength=2 required
+                                   placeholder="Z5X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z5y">Z5Y</label>
+                            <input type="text" class="form-control" id="z5y" name='z5y' minlength=2 required
+                                   placeholder="Z5Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z5w">Z5W</label>
+                            <input type="text" class="form-control" id="z5w" name='z5w' minlength=2 required
+                                   placeholder="Z5W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z5h">Z5H</label>
+                            <input type="text" class="form-control" id="z5h" name='z5h' minlength=2 required
+                                   placeholder="Z5H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z6x">Z6X</label>
+                            <input type="text" class="form-control" id="z6x" name='z6x' minlength=2 required
+                                   placeholder="Z6X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z6y">Z6Y</label>
+                            <input type="text" class="form-control" id="z6y" name='z6y' minlength=2 required
+                                   placeholder="Z6Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z6w">Z6W</label>
+                            <input type="text" class="form-control" id="z6w" name='z6w' minlength=2 required
+                                   placeholder="Z6W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z6h">Z6H</label>
+                            <input type="text" class="form-control" id="z6h" name='z6h' minlength=2 required
+                                   placeholder="Z6H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z7x">Z7X</label>
+                            <input type="text" class="form-control" id="z7x" name='z7x' minlength=2 required
+                                   placeholder="Z7X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z7y">Z7Y</label>
+                            <input type="text" class="form-control" id="z7y" name='z7y' minlength=2 required
+                                   placeholder="Z7Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z7w">Z7W</label>
+                            <input type="text" class="form-control" id="z7w" name='z7w' minlength=2 required
+                                   placeholder="Z7W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z7h">Z7H</label>
+                            <input type="text" class="form-control" id="z7h" name='z7h' minlength=2 required
+                                   placeholder="Z7H">
+                        </div>
+                        <div class="form-group">
+                            <label for="z8x">Z8X</label>
+                            <input type="text" class="form-control" id="z8x" name='z8x' minlength=2 required
+                                   placeholder="Z8X">
+                        </div>
+                        <div class="form-group">
+                            <label for="z8y">Z8Y</label>
+                            <input type="text" class="form-control" id="z8y" name='z8y' minlength=2 required
+                                   placeholder="Z8Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="z8w">Z8W</label>
+                            <input type="text" class="form-control" id="z8w" name='z8w' minlength=2 required
+                                   placeholder="Z8W">
+                        </div>
+                        <div class="form-group">
+                            <label for="z8h">Z8H</label>
+                            <input type="text" class="form-control" id="z8h" name='z8h' minlength=2 required
+                                   placeholder="Z8H">
+                        </div>
+                        <div class="form-group">
+                            <label for="l1x">L1X</label>
+                            <input type="text" class="form-control" id="l1x" name='l1x' minlength=2 required
+                                   placeholder="L1X">
+                        </div>
+                        <div class="form-group">
+                            <label for="l1y">L1Y</label>
+                            <input type="text" class="form-control" id="l1y" name='l1y' minlength=2 required
+                                   placeholder="L1Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="l1w">L1W</label>
+                            <input type="text" class="form-control" id="l1w" name='l1w' minlength=2 required
+                                   placeholder="L1W">
+                        </div>
+                        <div class="form-group">
+                            <label for="l1h">L1H</label>
+                            <input type="text" class="form-control" id="l1h" name='l1h' minlength=2 required
+                                   placeholder="L1H">
+                        </div>
+                        <div class="form-group">
+                            <label for="l2x">L2X</label>
+                            <input type="text" class="form-control" id="l2x" name='l2x' minlength=2 required
+                                   placeholder="L2X">
+                        </div>
+                        <div class="form-group">
+                            <label for="l2y">L2Y</label>
+                            <input type="text" class="form-control" id="l2y" name='l2y' minlength=2 required
+                                   placeholder="L2Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="l2w">L2W</label>
+                            <input type="text" class="form-control" id="l2w" name='l2w' minlength=2 required
+                                   placeholder="L2W">
+                        </div>
+                        <div class="form-group">
+                            <label for="l2h">L2H</label>
+                            <input type="text" class="form-control" id="l2h" name='l2h' minlength=2 required
+                                   placeholder="L2H">
+                        </div>
+                        <div class="form-group">
+                            <label for="l3x">L3X</label>
+                            <input type="text" class="form-control" id="l3x" name='l3x' minlength=2 required
+                                   placeholder="L3X">
+                        </div>
+                        <div class="form-group">
+                            <label for="l3y">L3Y</label>
+                            <input type="text" class="form-control" id="l3y" name='l3y' minlength=2 required
+                                   placeholder="L3Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="l3w">L3W</label>
+                            <input type="text" class="form-control" id="l3w" name='l3w' minlength=2 required
+                                   placeholder="L3W">
+                        </div>
+                        <div class="form-group">
+                            <label for="l3h">L3H</label>
+                            <input type="text" class="form-control" id="l3h" name='l3h' minlength=2 required
+                                   placeholder="L3H">
+                        </div>
+                        <div class="form-group">
+                            <label for="l4x">L4X</label>
+                            <input type="text" class="form-control" id="l4x" name='l4x' minlength=2 required
+                                   placeholder="L4X">
+                        </div>
+                        <div class="form-group">
+                            <label for="l4y">L4Y</label>
+                            <input type="text" class="form-control" id="l4y" name='l4y' minlength=2 required
+                                   placeholder="L4Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="l4w">L4W</label>
+                            <input type="text" class="form-control" id="l4w" name='l4w' minlength=2 required
+                                   placeholder="L4W">
+                        </div>
+                        <div class="form-group">
+                            <label for="l4h">L4H</label>
+                            <input type="text" class="form-control" id="l4h" name='l4h' minlength=2 required
+                                   placeholder="L4H">
+                        </div>
+                        <div class="form-group">
+                            <label for="r1x">R1X</label>
+                            <input type="text" class="form-control" id="r1x" name='r1x' minlength=2 required
+                                   placeholder="R1X">
+                        </div>
+                        <div class="form-group">
+                            <label for="r1y">R1Y</label>
+                            <input type="text" class="form-control" id="r1y" name='r1y' minlength=2 required
+                                   placeholder="R1Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="r1w">R1W</label>
+                            <input type="text" class="form-control" id="r1w" name='r1w' minlength=2 required
+                                   placeholder="R1W">
+                        </div>
+                        <div class="form-group">
+                            <label for="r1h">R1H</label>
+                            <input type="text" class="form-control" id="r1h" name='r1h' minlength=2 required
+                                   placeholder="R1H">
+                        </div>
+                        <div class="form-group">
+                            <label for="r2x">R2X</label>
+                            <input type="text" class="form-control" id="r2x" name='r2x' minlength=2 required
+                                   placeholder="R2X">
+                        </div>
+                        <div class="form-group">
+                            <label for="r2y">R2Y</label>
+                            <input type="text" class="form-control" id="r2y" name='r2y' minlength=2 required
+                                   placeholder="R2Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="r2w">R2W</label>
+                            <input type="text" class="form-control" id="r2w" name='r2w' minlength=2 required
+                                   placeholder="R2W">
+                        </div>
+                        <div class="form-group">
+                            <label for="r2h">R2H</label>
+                            <input type="text" class="form-control" id="r2h" name='r2h' minlength=2 required
+                                   placeholder="R2H">
+                        </div>
+                        <div class="form-group">
+                            <label for="r3x">R3X</label>
+                            <input type="text" class="form-control" id="r3x" name='r3x' minlength=2 required
+                                   placeholder="R3X">
+                        </div>
+                        <div class="form-group">
+                            <label for="r3y">R3Y</label>
+                            <input type="text" class="form-control" id="r3y" name='r3y' minlength=2 required
+                                   placeholder="R3Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="r3w">R3W</label>
+                            <input type="text" class="form-control" id="r3w" name='r3w' minlength=2 required
+                                   placeholder="R3W">
+                        </div>
+                        <div class="form-group">
+                            <label for="r3h">R3H</label>
+                            <input type="text" class="form-control" id="r3h" name='r3h' minlength=2 required
+                                   placeholder="R3H">
+                        </div>
+                        <div class="form-group">
+                            <label for="r4x">R4X</label>
+                            <input type="text" class="form-control" id="r4x" name='r4x' minlength=2 required
+                                   placeholder="R4X">
+                        </div>
+                        <div class="form-group">
+                            <label for="r4y">R4Y</label>
+                            <input type="text" class="form-control" id="r4y" name='r4y' minlength=2 required
+                                   placeholder="R4Y">
+                        </div>
+                        <div class="form-group">
+                            <label for="r4w">R4W</label>
+                            <input type="text" class="form-control" id="r4w" name='r4w' minlength=2 required
+                                   placeholder="R4W">
+                        </div>
+                        <div class="form-group">
+                            <label for="r4h">R4H</label>
+                            <input type="text" class="form-control" id="r4h" name='r4h' minlength=2 required
+                                   placeholder="R4H">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">create_dt</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="create_dt">
+                        </div>
+                        <div class="form-group">
+                            <label for="updtea_dt">updtea_dt</label>
+                            <input type="text" class="form-control" id="updtea_dt" name='updtea_dt' minlength=2 required
+                                   placeholder="updtea_dt">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/skin_markvu_custInfo.js"></script>

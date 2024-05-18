@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+        <!--top-title-->
+
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">분석</h2>
+                <div class="tab-box marginTop70">
+                    <a href="./analysis.html" class="tab-item">피부 측정</a>
+                    <a href="./analysis_result.html" class="tab-item">피부 측정 결과</a>
+                    <a href="./analysis2.html" class="tab-item active">두피<i class="dat"></i>모발 측정</a>
+                    <a href="./analysis2_result.html" class="tab-item">두피<i class="dat"></i>모발 측정 결과</a>
+                    <a href="./analysis3_result.html" class="tab-item">마이 스킨 DNA 결과</a>
+                </div>
+                <div class="product-box marginTop70">
+                    <ul class="product-list justifyContentCenter">
+                        <li class="product-item">
+                            <div class="img-box">
+                                <img src="./resource/images/product-image-5.jpg" alt="Mark-VU">
+                            </div>
+                            <h2 class="product-name marginTop50">ASM 두피 & 모발 측정기</h2>
+                            <div class="text-box marginTop20">
+                                <p>
+                                    모발 밀도 및 굵기, 두피 상태, 탈모 유형 등 측정
+                                </p>
+                                <p>
+                                    고 배율, 자동 초점 방식의 렌즈를 적용하여<br>
+                                    정확한 이미지 제공<br>
+                                    Total pixel : 5,038,848 Pixel/<br>
+                                    Effextive Pixel : 4,915,200 Pixel
+                                </p>
+                            </div>
+                            <button class="button w150 radius small" id="asm_searchButton" >조회</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!--메시지 박스 커스텀 공통 영역에 넣어주세요-->
+<div class="alert-layer layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header header-auto">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title"></h2>
+        </header>
+        <div class="layer-content">
+            <p>
+                피부와 마주하는 순간,<br>
+                여기는 아모레 시티랩입니다.
+            </p>
+        </div>
+        <div class="button-box grid-wrap justifyContentCenter">
+            <button class="button grid-item-2" data-event="popup" data-target=".alert-layer" data-action="close">확인</button>
+        </div>
+    </div>
+</div>
+<!--메시지 박스 커스텀-->
+
+</body>
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/analysis2.js"></script>

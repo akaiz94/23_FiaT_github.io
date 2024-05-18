@@ -1,0 +1,759 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>예약 방문스케쥴</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="visitkey">예약 고유키</th>
+                    <th data-id="skey">고유키</th>
+                    <th data-id="reg_date">등록일</th>
+                    <th data-id="rsvn_date">예약일</th>
+                    <th data-id="rsvn_time">예약시각</th>
+                    <th data-id="name">이름</th>
+                    <th data-id="course_flg ">코스</th>
+                    <th data-id="phone">전화번호</th>
+                    <!--<th data-id="sex">성별</th>
+                    <th data-id="birthdate">생일</th>
+                    <th data-id="birthdatetp">음/양</th>
+                    <th data-id="cstmid">통합고객아이디</th>
+                    <th data-id="ucstmid">통합고객번호</th>
+                    <th data-id="m_userkey">사용자 키</th>
+                    <th data-id="m_surveyno">설문번호</th>
+                    <th data-id="m_memoyn">메모 저장 여부</th>
+                    <th data-id="vstflg">동반여부</th>
+                    <th data-id="progress_flg ">진행상태</th>
+                    <th data-id="c_name">동반자 이름</th>
+                    <th data-id="c_phone">동반자 전화번호</th>
+                    <th data-id="c_sex">동반자 성별</th>
+                    <th data-id="c_birthdate">동반자 생년월일</th>
+                    <th data-id="c_progress_flg ">진행상태</th>
+                    <th data-id="c_cstmid">통합고객아이디</th>
+                    <th data-id="c_ucstmid">통합고객번호</th>
+                    <th data-id="c_userkey">사용자 키</th>
+                    <th data-id="c_surveyno">설문번호</th>
+                    <th data-id="c_memoyn">메모 저장 여부</th>
+                    <th data-id="cancelyn">취소 여부</th>
+                    <th data-id="rsvn_flg">예약 형태</th>
+                    <th data-id="vst_path ">방문경로</th>
+                    <th data-id="vst_txt">방문경로 _텍스트</th>
+                    <th data-id="c_vst_path ">방문경로</th>
+                    <th data-id="c_vst_txt">방문경로 _텍스트</th>
+                    <th data-id="create_dt">생성일</th>
+                    <th data-id="update_dt">수정일</th>
+                    <th data-id="email">이메일</th>
+                    <th data-id="comment">코멘트</th>
+                    <th data-id="programcode">프로그램코드</th>
+                    <th data-id="prog_name">프로그램이름</th>
+                    <th data-id="prog_cd">프로그램 코드</th>
+                    <th data-id="gene_kit">유전자바코드</th>
+                    <th data-id="reservation_num">예약번호</th>
+                    <th data-id="agree_flag">동의여부</th>
+                    <th data-id="agree_flag_date">동의일자</th>
+                    <th data-id="dormancy_flag">휴면여부</th>
+                    <th data-id="dormancy_flag_date">휴면일자</th>
+                    <th data-id="withdraw_flag">탈퇴여부</th>
+                    <th data-id="withdraw_flag_date">탈퇴일자</th>-->
+                </tr>
+                </thead>
+                <tbody id="sch_visit_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="sch_visit_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.visitkey}}</td><!-- 예약 고유키 -->
+                        <td>{{this.skey}}</td><!-- 고유키 -->
+                        <td>{{this.reg_date}}</td><!-- 등록일 -->
+                        <td>{{this.rsvn_date}}</td><!-- 예약일 -->
+                        <td>{{this.rsvn_time}}</td><!-- 예약시각 -->
+                        <td>{{this.name}}</td><!-- 이름 -->
+                        <td>{{this.course_flg }}</td><!-- 코스 -->
+                        <td>{{this.phone}}</td><!-- 전화번호 -->
+                        <!--<td>{{this.sex}}</td>&lt;!&ndash; 성별 &ndash;&gt;
+                        <td>{{this.birthdate}}</td>&lt;!&ndash; 생일 &ndash;&gt;
+                        <td>{{this.birthdatetp}}</td>&lt;!&ndash; 음/양 &ndash;&gt;
+                        <td>{{this.cstmid}}</td>&lt;!&ndash; 통합고객아이디 &ndash;&gt;
+                        <td>{{this.ucstmid}}</td>&lt;!&ndash; 통합고객번호 &ndash;&gt;
+                        <td>{{this.m_userkey}}</td>&lt;!&ndash; 사용자 키 &ndash;&gt;
+                        <td>{{this.m_surveyno}}</td>&lt;!&ndash; 설문번호 &ndash;&gt;
+                        <td>{{this.m_memoyn}}</td>&lt;!&ndash; 메모 저장 여부 &ndash;&gt;
+                        <td>{{this.vstflg}}</td>&lt;!&ndash; 동반여부 &ndash;&gt;
+                        <td>{{this.progress_flg }}</td>&lt;!&ndash; 진행상태 &ndash;&gt;
+                        <td>{{this.c_name}}</td>&lt;!&ndash; 동반자 이름 &ndash;&gt;
+                        <td>{{this.c_phone}}</td>&lt;!&ndash; 동반자  전화번호 &ndash;&gt;
+                        <td>{{this.c_sex}}</td>&lt;!&ndash; 동반자 성별 &ndash;&gt;
+                        <td>{{this.c_birthdate}}</td>&lt;!&ndash; 동반자 생년월일 &ndash;&gt;
+                        <td>{{this.c_progress_flg }}</td>&lt;!&ndash; 진행상태 &ndash;&gt;
+                        <td>{{this.c_cstmid}}</td>&lt;!&ndash; 통합고객아이디 &ndash;&gt;
+                        <td>{{this.c_ucstmid}}</td>&lt;!&ndash; 통합고객번호 &ndash;&gt;
+                        <td>{{this.c_userkey}}</td>&lt;!&ndash; 사용자 키 &ndash;&gt;
+                        <td>{{this.c_surveyno}}</td>&lt;!&ndash; 설문번호 &ndash;&gt;
+                        <td>{{this.c_memoyn}}</td>&lt;!&ndash; 메모 저장 여부 &ndash;&gt;
+                        <td>{{this.cancelyn}}</td>&lt;!&ndash; 취소 여부 &ndash;&gt;
+                        <td>{{this.rsvn_flg}}</td>&lt;!&ndash; 예약 형태 &ndash;&gt;
+                        <td>{{this.vst_path }}</td>&lt;!&ndash; 방문경로 &ndash;&gt;
+                        <td>{{this.vst_txt}}</td>&lt;!&ndash; 방문경로 _텍스트 &ndash;&gt;
+                        <td>{{this.c_vst_path }}</td>&lt;!&ndash; 방문경로 &ndash;&gt;
+                        <td>{{this.c_vst_txt}}</td>&lt;!&ndash; 방문경로 _텍스트 &ndash;&gt;
+                        <td>{{this.create_dt}}</td>&lt;!&ndash; 생성일 &ndash;&gt;
+                        <td>{{this.update_dt}}</td>&lt;!&ndash; 수정일 &ndash;&gt;
+                        <td>{{this.email}}</td>&lt;!&ndash; 이메일 &ndash;&gt;
+                        <td>{{this.comment}}</td>&lt;!&ndash; 코멘트 &ndash;&gt;
+                        <td>{{this.programcode}}</td>&lt;!&ndash; 프로그램코드 &ndash;&gt;
+                        <td>{{this.prog_name}}</td>&lt;!&ndash; 프로그램이름 &ndash;&gt;
+                        <td>{{this.prog_cd}}</td>&lt;!&ndash; 프로그램 코드 &ndash;&gt;
+                        <td>{{this.gene_kit}}</td>&lt;!&ndash; 유전자바코드 &ndash;&gt;
+                        <td>{{this.reservation_num}}</td>&lt;!&ndash; 예약번호 &ndash;&gt;
+                        <td>{{this.agree_flag}}</td>&lt;!&ndash; 동의여부 &ndash;&gt;
+                        <td>{{this.agree_flag_date}}</td>&lt;!&ndash; 동의일자 &ndash;&gt;
+                        <td>{{this.dormancy_flag}}</td>&lt;!&ndash; 휴면여부 &ndash;&gt;
+                        <td>{{this.dormancy_flag_date}}</td>&lt;!&ndash; 휴면일자 &ndash;&gt;
+                        <td>{{this.withdraw_flag}}</td>&lt;!&ndash; 탈퇴여부 &ndash;&gt;
+                        <td>{{this.withdraw_flag_date}}</td>&lt;!&ndash; 탈퇴일자 &ndash;&gt;-->
+                    </tr>
+                </script>
+            </table>
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="visitkey">예약 고유키:</label>
+                        <span data-id="visitkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="skey">고유키:</label>
+                        <span data-id="skey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reg_date">등록일:</label>
+                        <span data-id="reg_date"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rsvn_date">예약일:</label>
+                        <span data-id="rsvn_date"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rsvn_time">예약시각:</label>
+                        <span data-id="rsvn_time"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">이름:</label>
+                        <span data-id="name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="course_flg ">코스:</label>
+                        <span data-id="course_flg "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phone">전화번호:</label>
+                        <span data-id="phone"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="sex">성별:</label>
+                        <span data-id="sex"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="birthdate">생일:</label>
+                        <span data-id="birthdate"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="birthdatetp">음/양:</label>
+                        <span data-id="birthdatetp"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cstmid">통합고객아이디:</label>
+                        <span data-id="cstmid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ucstmid">통합고객번호:</label>
+                        <span data-id="ucstmid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="m_userkey">사용자 키:</label>
+                        <span data-id="m_userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="m_surveyno">설문번호:</label>
+                        <span data-id="m_surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="m_memoyn">메모 저장 여부:</label>
+                        <span data-id="m_memoyn"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="vstflg">동반여부:</label>
+                        <span data-id="vstflg"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="progress_flg ">진행상태:</label>
+                        <span data-id="progress_flg "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_name">동반자 이름:</label>
+                        <span data-id="c_name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_phone">동반자 전화번호:</label>
+                        <span data-id="c_phone"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_sex">동반자 성별:</label>
+                        <span data-id="c_sex"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_birthdate">동반자 생년월일:</label>
+                        <span data-id="c_birthdate"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_progress_flg ">진행상태:</label>
+                        <span data-id="c_progress_flg "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_cstmid">통합고객아이디:</label>
+                        <span data-id="c_cstmid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_ucstmid">통합고객번호:</label>
+                        <span data-id="c_ucstmid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_userkey">사용자 키:</label>
+                        <span data-id="c_userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_surveyno">설문번호:</label>
+                        <span data-id="c_surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_memoyn">메모 저장 여부:</label>
+                        <span data-id="c_memoyn"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cancelyn">취소 여부:</label>
+                        <span data-id="cancelyn"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rsvn_flg">예약 형태:</label>
+                        <span data-id="rsvn_flg"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="vst_path ">방문경로:</label>
+                        <span data-id="vst_path "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="vst_txt">방문경로 _텍스트:</label>
+                        <span data-id="vst_txt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_vst_path ">방문경로:</label>
+                        <span data-id="c_vst_path "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_vst_txt">방문경로 _텍스트:</label>
+                        <span data-id="c_vst_txt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">생성일:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="update_dt">수정일:</label>
+                        <span data-id="update_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email">이메일:</label>
+                        <span data-id="email"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="comment">코멘트:</label>
+                        <span data-id="comment"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="programcode">프로그램코드:</label>
+                        <span data-id="programcode"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="prog_name">프로그램이름:</label>
+                        <span data-id="prog_name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="prog_cd">프로그램 코드:</label>
+                        <span data-id="prog_cd"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="gene_kit">유전자바코드:</label>
+                        <span data-id="gene_kit"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reservation_num">예약번호:</label>
+                        <span data-id="reservation_num"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="agree_flag">동의여부:</label>
+                        <span data-id="agree_flag"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="agree_flag_date">동의일자:</label>
+                        <span data-id="agree_flag_date"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dormancy_flag">휴면여부:</label>
+                        <span data-id="dormancy_flag"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dormancy_flag_date">휴면일자:</label>
+                        <span data-id="dormancy_flag_date"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="withdraw_flag">탈퇴여부:</label>
+                        <span data-id="withdraw_flag"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="withdraw_flag_date">탈퇴일자:</label>
+                        <span data-id="withdraw_flag_date"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="sch_visit_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="visitkey">예약 고유키</label>
+                            <input type="text" class="form-control" id="visitkey" name='visitkey' minlength=2 required
+                                   placeholder="예약 고유키">
+                        </div>
+                        <div class="form-group">
+                            <label for="skey">고유키</label>
+                            <input type="text" class="form-control" id="skey" name='skey' minlength=2 required
+                                   placeholder="고유키">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_date">등록일</label>
+                            <input type="text" class="form-control" id="reg_date" name='reg_date' minlength=2 required
+                                   placeholder="등록일">
+                        </div>
+                        <div class="form-group">
+                            <label for="rsvn_date">예약일</label>
+                            <input type="text" class="form-control" id="rsvn_date" name='rsvn_date' minlength=2 required
+                                   placeholder="예약일">
+                        </div>
+                        <div class="form-group">
+                            <label for="rsvn_time">예약시각</label>
+                            <input type="text" class="form-control" id="rsvn_time" name='rsvn_time' minlength=2 required
+                                   placeholder="예약시각">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" id="name" name='name' minlength=2 required
+                                   placeholder="이름">
+                        </div>
+                        <div class="form-group">
+                            <label for="course_flg ">코스</label>
+                            <input type="text" class="form-control" id="course_flg " name='course_flg ' minlength=2
+                                   required
+                                   placeholder="코스">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">전화번호</label>
+                            <input type="text" class="form-control" id="phone" name='phone' minlength=2 required
+                                   placeholder="전화번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">성별</label>
+                            <input type="text" class="form-control" id="sex" name='sex' minlength=2 required
+                                   placeholder="성별">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">생일</label>
+                            <input type="text" class="form-control" id="birthdate" name='birthdate' minlength=2 required
+                                   placeholder="생일">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdatetp">음/양</label>
+                            <input type="text" class="form-control" id="birthdatetp" name='birthdatetp' minlength=2
+                                   required
+                                   placeholder="음/양">
+                        </div>
+                        <div class="form-group">
+                            <label for="cstmid">통합고객아이디</label>
+                            <input type="text" class="form-control" id="cstmid" name='cstmid' minlength=2 required
+                                   placeholder="통합고객아이디">
+                        </div>
+                        <div class="form-group">
+                            <label for="ucstmid">통합고객번호</label>
+                            <input type="text" class="form-control" id="ucstmid" name='ucstmid' minlength=2 required
+                                   placeholder="통합고객번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="m_userkey" name='m_userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_surveyno">설문번호</label>
+                            <input type="text" class="form-control" id="m_surveyno" name='m_surveyno' minlength=2
+                                   required
+                                   placeholder="설문번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_memoyn">메모 저장 여부</label>
+                            <input type="text" class="form-control" id="m_memoyn" name='m_memoyn' minlength=2 required
+                                   placeholder="메모 저장 여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="vstflg">동반여부</label>
+                            <input type="text" class="form-control" id="vstflg" name='vstflg' minlength=2 required
+                                   placeholder="동반여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="progress_flg ">진행상태</label>
+                            <input type="text" class="form-control" id="progress_flg " name='progress_flg ' minlength=2
+                                   required
+                                   placeholder="진행상태">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_name">동반자 이름</label>
+                            <input type="text" class="form-control" id="c_name" name='c_name' minlength=2 required
+                                   placeholder="동반자 이름">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_phone">동반자 전화번호</label>
+                            <input type="text" class="form-control" id="c_phone" name='c_phone' minlength=2 required
+                                   placeholder="동반자  전화번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_sex">동반자 성별</label>
+                            <input type="text" class="form-control" id="c_sex" name='c_sex' minlength=2 required
+                                   placeholder="동반자 성별">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_birthdate">동반자 생년월일</label>
+                            <input type="text" class="form-control" id="c_birthdate" name='c_birthdate' minlength=2
+                                   required
+                                   placeholder="동반자 생년월일">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_progress_flg ">진행상태</label>
+                            <input type="text" class="form-control" id="c_progress_flg " name='c_progress_flg '
+                                   minlength=2 required
+                                   placeholder="진행상태">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_cstmid">통합고객아이디</label>
+                            <input type="text" class="form-control" id="c_cstmid" name='c_cstmid' minlength=2 required
+                                   placeholder="통합고객아이디">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_ucstmid">통합고객번호</label>
+                            <input type="text" class="form-control" id="c_ucstmid" name='c_ucstmid' minlength=2 required
+                                   placeholder="통합고객번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="c_userkey" name='c_userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_surveyno">설문번호</label>
+                            <input type="text" class="form-control" id="c_surveyno" name='c_surveyno' minlength=2
+                                   required
+                                   placeholder="설문번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_memoyn">메모 저장 여부</label>
+                            <input type="text" class="form-control" id="c_memoyn" name='c_memoyn' minlength=2 required
+                                   placeholder="메모 저장 여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="cancelyn">취소 여부</label>
+                            <input type="text" class="form-control" id="cancelyn" name='cancelyn' minlength=2 required
+                                   placeholder="취소 여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="rsvn_flg">예약 형태</label>
+                            <input type="text" class="form-control" id="rsvn_flg" name='rsvn_flg' minlength=2 required
+                                   placeholder="예약 형태">
+                        </div>
+                        <div class="form-group">
+                            <label for="vst_path ">방문경로</label>
+                            <input type="text" class="form-control" id="vst_path " name='vst_path ' minlength=2 required
+                                   placeholder="방문경로">
+                        </div>
+                        <div class="form-group">
+                            <label for="vst_txt">방문경로 _텍스트</label>
+                            <input type="text" class="form-control" id="vst_txt" name='vst_txt' minlength=2 required
+                                   placeholder="방문경로 _텍스트">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_vst_path ">방문경로</label>
+                            <input type="text" class="form-control" id="c_vst_path " name='c_vst_path ' minlength=2
+                                   required
+                                   placeholder="방문경로">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_vst_txt">방문경로 _텍스트</label>
+                            <input type="text" class="form-control" id="c_vst_txt" name='c_vst_txt' minlength=2 required
+                                   placeholder="방문경로 _텍스트">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">생성일</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="생성일">
+                        </div>
+                        <div class="form-group">
+                            <label for="update_dt">수정일</label>
+                            <input type="text" class="form-control" id="update_dt" name='update_dt' minlength=2 required
+                                   placeholder="수정일">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="text" class="form-control" id="email" name='email' minlength=2 required
+                                   placeholder="이메일">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">코멘트</label>
+                            <input type="text" class="form-control" id="comment" name='comment' minlength=2 required
+                                   placeholder="코멘트">
+                        </div>
+                        <div class="form-group">
+                            <label for="programcode">프로그램코드</label>
+                            <input type="text" class="form-control" id="programcode" name='programcode' minlength=2
+                                   required
+                                   placeholder="프로그램코드">
+                        </div>
+                        <div class="form-group">
+                            <label for="prog_name">프로그램이름</label>
+                            <input type="text" class="form-control" id="prog_name" name='prog_name' minlength=2 required
+                                   placeholder="프로그램이름">
+                        </div>
+                        <div class="form-group">
+                            <label for="prog_cd">프로그램 코드</label>
+                            <input type="text" class="form-control" id="prog_cd" name='prog_cd' minlength=2 required
+                                   placeholder="프로그램 코드">
+                        </div>
+                        <div class="form-group">
+                            <label for="gene_kit">유전자바코드</label>
+                            <input type="text" class="form-control" id="gene_kit" name='gene_kit' minlength=2 required
+                                   placeholder="유전자바코드">
+                        </div>
+                        <div class="form-group">
+                            <label for="reservation_num">예약번호</label>
+                            <input type="text" class="form-control" id="reservation_num" name='reservation_num'
+                                   minlength=2 required
+                                   placeholder="예약번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="agree_flag">동의여부</label>
+                            <input type="text" class="form-control" id="agree_flag" name='agree_flag' minlength=2
+                                   required
+                                   placeholder="동의여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="agree_flag_date">동의일자</label>
+                            <input type="text" class="form-control" id="agree_flag_date" name='agree_flag_date'
+                                   minlength=2 required
+                                   placeholder="동의일자">
+                        </div>
+                        <div class="form-group">
+                            <label for="dormancy_flag">휴면여부</label>
+                            <input type="text" class="form-control" id="dormancy_flag" name='dormancy_flag' minlength=2
+                                   required
+                                   placeholder="휴면여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="dormancy_flag_date">휴면일자</label>
+                            <input type="text" class="form-control" id="dormancy_flag_date" name='dormancy_flag_date'
+                                   minlength=2 required
+                                   placeholder="휴면일자">
+                        </div>
+                        <div class="form-group">
+                            <label for="withdraw_flag">탈퇴여부</label>
+                            <input type="text" class="form-control" id="withdraw_flag" name='withdraw_flag' minlength=2
+                                   required
+                                   placeholder="탈퇴여부">
+                        </div>
+                        <div class="form-group">
+                            <label for="withdraw_flag_date">탈퇴일자</label>
+                            <input type="text" class="form-control" id="withdraw_flag_date" name='withdraw_flag_date'
+                                   minlength=2 required
+                                   placeholder="탈퇴일자">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/sch_visit.js"></script>

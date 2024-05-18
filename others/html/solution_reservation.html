@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+
+   
+</head>
+
+
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section>
+        <!--top-title-->
+
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">예약확인</h2>
+                <div class="filter-box marginTop70">
+                    <div class="input-box w250 small radius">
+                        <input type="date">
+                    </div>
+                    <!--
+                    팝업 오픈 버튼 처리
+                    data-event='popup'
+                    data-target="팝업 선택자"
+                    data-action="open,close"-->
+                    <button class="button small radius5" data-event="popup" data-target=".search-layer" data-action="open">검색</button>
+                    <button class="button small radius5" data-event="popup" data-target=".msg-layer" data-action="open">등록</button>                    
+                </div>
+                </div>
+                <div class="table-box marginTop30">
+                    <table>
+                        <thead>
+                            <colgroup>
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                                <col style="width: 15%;">
+                                <col style="width: 15%;">
+                                <col style="width: auto">
+                                <col style="width: 10%;">
+                                <col style="width: 10%;">
+                            </colgroup>
+                            <tr>
+                                <th>No</th>
+                                <th>시간</th>
+                                <th>이름</th>
+                                <th>전화번호</th>
+                                <th>프로그램명</th>
+                                <th>방문회차</th>
+                                <th>상태</th>
+                            </tr>
+                        </thead>
+                        <tbody id="visit-list"></tbody>
+
+                        <!--게시판 목록 동적할당-->
+                        <script id="visit-item" type="text/x-handlebars-template">
+                            <tr>
+                                <td>{{ this.visitkey }}</td>
+                                <td>{{ this.rsvn_date }}</td>
+                                <td><a href="javascript:fnGetVisitDetail({{ this.visitkey }}, {{ this.skey }})" 
+                                    onclick="openMsgLayer('{{this.name}}','{{this.phone}}','{{this.birthdate}}',
+                                    '{{this.m_userkey}}', '{{this.m_surveyno}}')">{{this.name}}</a></td>
+                                <td>{{ this.phone }}</td>
+                                <td>{{ this.prog_name }}</td>
+                                <td>{{ this.progress_flg}}회차</td>
+                                <td>
+                                    <p class="state-item completion">
+                                        <span class="state-icon ">{{ this.rsvn_flg}}완료</span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </script>
+
+                    </table>
+                </div>
+                <div id="pagination" class="pagination-box marginTop70"></div>
+
+                <!-- todo remove 임시 확인용 -->
+                <section id="content_detail" style="display: none">
+                    <!-- 게시판 상세 -->
+                    <table>
+                        <tr>
+                            <td>이름</td><td data-id="name"></td>
+                            <td>전화번호</td><td data-id="phone"></td>
+                            <td>프로그램</td><td data-id="prog_name"></td>
+                        </tr>
+                    </table>
+                </section>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+
+
+<!--메시지 박스 레이어 공통-->
+<div class="msg-layer layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">정보제공동의/고객정보수정</h2>
+        </header>
+        <div class="layer-content">
+            <p>
+                피부와 마주하는 순간,<br>
+                여기는 아모레 시티랩입니다.
+            </p>
+        </div>
+        <div class="button-box grid-wrap">
+            <a href="https://citylab.amorepacific.com/agreement_CityLab/Login.aspx" target="_blank" class="button grid-item-2 colorWithe" >정보제공 동의</a>
+            <button class="button grid-item-2" data-event="popup" data-target=".user-modify-layer" data-action="open">고객정보 확인</button>
+        </div>
+    </div>
+</div>
+<!--메시지 박스 레이어 공통-->
+
+
+<!-- 메시지 박스 복사222-->
+<div class="msg-layer2 layer-wrap" id="info-popup" style="display: none;">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">정보제공동의/고객정보수정</h2>
+        </header>
+        <div class="layer-content">
+            <p>
+                피부와 마주하는 순간,<br>
+                여기는 아모레 시티랩입니다.
+            </p>
+        </div>
+        <div class="button-box grid-wrap">
+            <a href="" class="button grid-item-2 colorWithe" >정보제공 동의</a>
+            <button class="button grid-item-2" data-event="popup" data-target=".user-modify-layer2" data-action="open">고객정보 확인</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--고객찾기 레이어-->
+<div class="search-layer layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">고객찾기</h2>
+        </header>
+        <div class="layer-content">
+            <div class="fom-box">
+                <div class="group-box marginTop30">
+                    <div class="row-group">
+                        <div class="row-box">
+                            <div class="col-item">
+                                <label class="t-box">성명</label>
+                                <div class="v-box">
+                                    <div class="input-box">
+                                        <input type="text" name="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-box">
+                            <div class="col-item">
+                                <label class="t-box">전화번호</label>
+                                <div class="v-box">
+                                    <div class="input-box grid-wrap">
+                                        <select>
+                                            <option>010</option>
+                                            <option>011</option>
+                                            <option>017</option>
+                                        </select>
+                                        <input type="text" name="">
+                                        <input type="text" name="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button-box grid-wrap justifyContentCenter">
+            <!-- 화면 확인 용으로 오픈 스크립틀를 넣었습니다-->
+            <button class="button grid-item-2" data-event="popup" data-target=".search-result-layer" data-action="open">검색</button>
+        </div>
+    </div>
+</div>
+<!--고객찾기 레이어-->
+
+<!--고객찾기 결과 레이어-->
+<div class="search-result-layer layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">고객찾기</h2>
+        </header>
+        <div class="layer-content">
+            <p>
+                고객정보가 없습니다.
+            </p>
+        </div>
+        <div class="button-box grid-wrap">
+            <button class="button grid-item-2 colorWithe" data-event="popup" data-target=".user-modify-layer" data-action="open">등록</button>
+            <button class="button grid-item-2" data-event="popup" data-target=".search-layer" data-action="open">검색</button>
+        </div>
+    </div>
+</div>
+<!--고객찾기 결과 레이어-->
+
+<!-- 고객정보 수정 레이어-->
+<!--
+[모든 레이어 공통]
+.open 붙이면 표시 됩니다
+스크롤 차단시 body.layerOpen 붙이시면 됩니다.-->
+<div class="user-modify-layer layer-wrap w1200">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">고객정보수정</h2>
+        </header>
+        <div class="layer-content autoScroll">
+            <form class="form-box">
+                <h4 class="group-title">고객정보</h4>
+                <div class="group-box marginTop30">
+                    <div class="row-group">
+                        <div class="row-box col-02">
+                            <div class="col-item">
+                                <label class="t-box">성명</label>
+                                <div class="v-box">
+                                    <div class="input-box">
+                                        <input type="text" name="" id="custom_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-item">
+                                <label class="t-box">생년월일</label>
+                                <div class="v-box">
+                                    <div class="input-box grid-wrap">
+                                        <select name="custom_year">
+                                            <option></option>
+                                        </select>
+                                        <select name="custom_month">
+                                            <option></option>
+                                        </select>
+                                        <select name="custom_day">
+                                            <option></option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-box col-02">
+                            <div class="col-item">
+                                <label  class="t-box">성별</label>
+                                <div class="v-box">
+                                    <div class="input-box grid-wrap">
+                                        <input type="radio" name="gender" id="gender_01" value="female">
+                                        <label for="gender_01">남성</label>
+                                        <input type="radio" name="gender" id="gender_02" value="male">
+                                        <label for="gender_02">여성</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-item">
+                                <label class="t-box">전화번호</label>
+                                <div class="v-box">
+                                    <div class="input-box grid-wrap">
+                                        <select>
+                                            <option>010</option>
+                                            <option>011</option>
+                                            <option>013</option>
+                                            <option>017</option>
+                                        </select>
+                                        <input type="text" name="">
+                                        <input type="text" name="">
+                                        <button >중복확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-box col-02">
+                            <div class="col-item">
+                                <label  class="t-box">국적</label>
+                                <div class="v-box">
+                                    <div class="input-box">
+                                        <input type="text" name="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-item">
+                                <label  class="t-box">인종</label>
+                                <div class="v-box">
+                                    <div class="input-box">
+                                        <select>
+                                            <option>동북아시안</option>
+                                            <option>코카시안</option>
+                                            <option>히스패닉</option>
+                                            <option>중동아시안</option>
+                                            <option>아프리칸</option>                                           
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-box col-02">
+                            <div class="col-item">
+                                <label  class="t-box">이메일</label>
+                                <div class="v-box">
+                                    <div class="input-box">
+                                        <input type="text" name="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-item">
+                                <label  class="t-box">비고</label>
+                                <div class="v-box">
+                                    <div class="input-box">
+                                        <input type="text" name="">
+                                        <input type="checkbox" name="" id="checked001">
+                                        <label for="checked001" class="noLine marginTop10" >비 회원시 체크</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-box marginTop70">
+                    <h4 class="group-title">방문경로</h4>
+                    <div class="row-group marginTop30">
+                        <div class="row-box">
+                            <div class="input-box grid-wrap grid-flexWrap">
+                                <input type="radio" name="learned" id="learned_001">
+                                <label for="learned_001" class="grid-item-6">지인</label>
+                                <input type="radio" name="learned" id="learned_002">
+                                <label for="learned_002" class="grid-item-6" >블로그</label>
+                                <input type="radio" name="learned" id="learned_003">
+                                <label for="learned_003" class="grid-item-6">커뮤니티</label>
+                                <input type="radio" name="learned" id="learned_004">
+                                <label for="learned_004" class="grid-item-6">인스타</label>
+                                <input type="radio" name="learned" id="learned_005">
+                                <label for="learned_005" class="grid-item-6">유튜브</label>
+                                <input type="radio" name="learned" id="learned_006">
+                                <label for="learned_006" class="grid-item-6">AP몰</label>
+                                <input type="radio" name="learned" id="learned_007">
+                                <label for="learned_007" class="grid-item-6">카카오채널</label>
+                                <input type="radio" name="learned" id="learned_008">
+                                <label for="learned_008" class="grid-item-6">AP직원</label>
+                            </div>
+                        </div>
+                        <div class="row-box">
+                            <div class="input-box grid-wrap grid-flexWrap">
+                                <input type="radio" name="learned" id="learned_009">
+                                <label for="learned_009" class="grid-item-2 mix-input">
+                                    <span class="t-box">브랜드 추천</span>
+                                    <input type="text">
+                                </label>
+                                <input type="radio" name="learned" id="learned_010">
+                                <label for="learned_010" class="grid-item-2 mix-input" >
+                                    <span class="t-box">기타</span>
+                                    <input type="text" >
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="button-box textAlignCenter">
+            <button class="button w300" id="custom_info_saveButton">저장</button>
+        </div>
+    </div>
+</div>
+<!-- 고객정보 수정 레이어-->
+
+
+</body>
+</html>
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/solution_reservation.js"></script>

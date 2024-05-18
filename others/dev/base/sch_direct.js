@@ -1,4 +1,4 @@
-var API_URL = 'http://127.0.0.1:8000/v1/sch/visit/';
+var API_URL = 'http://127.0.0.1:8000/v1/sch/direct/';
 var page_param = {
     totalCount: 5,
     currentPage: 1,
@@ -6,18 +6,18 @@ var page_param = {
     startIndex: 0,
 }
 $(document).ready(function () {
-    fnGetVisitList(page_param);
+    fnGetList(page_param);
+    console.log('paramObj : ', paramObj)
 });
 
-var fnGetVisitList = function (param) {
-    console.log('## fnGetVisitList call')
-    $('#visit-list > tr').remove()
+var fnGetList = function (param) {
     ajax.get(API_URL, param, function (result) {
         var list = result;
+        $('#sch_direct_list').find('tr').remove();
         $.each(list, function (idx, data) {
             page_param.totalCount = data.total_count
-            template.prepend($('#visit-item'), $('#visit-list'), data, function () {
-                // todo define
+            template.prepend($('#sch_direct_item'), $('#sch_direct_list'), data, function () {
+                // data transfer here
             });
         })
         fnSetUI('list');
@@ -25,13 +25,27 @@ var fnGetVisitList = function (param) {
     });
 }
 
-var fnGetVisitDetail = function (visitkey, skey) {
-    $('#content_detail').set(API_URL + visitkey + '/' + skey, {}, function (result) {
+var fnGetDetail = function (id) {
+    $('#content_detail').set(API_URL + id, {}, function (result) {
         fnSetUI('detail')
     });
 }
 
+var fnValidate = function () {
+    var result = $('#sch_direct_form').isValidate();
+    return result;
+}
 
+var fnPost = function () {
+    if (fnValidate()) {
+        var param = $('#sch_direct_form').json();
+        ajax.post(API_URL, param, function (result) {
+            console.log('result:', result)
+            $('#sch_direct_form').clear()
+            fnGetList()
+        });
+    }
+}
 
 var fnSetUI = function (cmd) {
     let cmds = ['list', 'detail', 'write']
@@ -51,5 +65,5 @@ var fnAddPagenation = function () {
 var fnSetCurrentPage = function (num) {
     page_param.currentPage = num
     page_param.startIndex = (num - 1) * page_param.pageSize
-    fnGetVisitList(page_param)
+    fnGetList(page_param)
 }

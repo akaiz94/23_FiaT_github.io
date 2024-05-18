@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <section class="top-banner statistics"><h1>통계</h1></section>
+        <!--top-title-->
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">실적</h2>
+                <div class="tab-box marginTop70 col-02">
+                    <a href="./statistics_result.html" class="tab-item active">실적</a>
+                    <a href="./statistics_result2.html" class="tab-item">분석</a>
+                </div>
+                <div class="filter-warp marginTop70">
+                    <div class="left-box">
+                        <div class="input-box">
+                            <input type="date">
+                        </div>
+                        <!-- <p class="text-box">3월 3일 까지 집계 결과를 출력</p> -->
+                    </div>
+                    <div class="right-box">
+                        <!-- <p class="text-box">고객 차이를 구분한 통계 출력</p> -->
+                        <span class="icon-dat-arrow"></span>
+                        <p class="text-box">All / My Skin DNA / Others</p>
+                    </div>
+                </div>
+                <div class="statistics-board marginTop30">
+                    <!--FlexContentCenter 세로 중앙 정렬-->
+                    <div class="statistics-item FlexContentCenter">
+                        <div class="text-box">
+                            <h3 class="fix-top-text">누적</h3>
+                            <h2 class="t-box t_box_fontsize">방문고객수</h2>
+                            <p class="v-box marginTop20"><em>4,238</em>명</p>
+                            <p class="marginTop20 statistics_sub_fontsize">방문 및 서비스 완료<br>고객 수</p>
+                        </div>
+                    </div>
+                    <div class="statistics-item FlexContentCenter">
+                        <div class="text-box">
+                            <h3 class="fix-top-text">누적</h3>
+                            <h2 class="t-box t_box_fontsize">서비스 완료율</h2>
+                            <p class="v-box marginTop20"><em>87.3</em>%</p>
+                            <p class="marginTop20 statistics_sub_fontsize">예약 & 방문 고객 수<br>총 구매 수 (유전자 동의 수)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="statistics-item FlexContentCenter">
+                        <div class="text-box">
+                            <h3 class="fix-top-text">누적</h3>
+                            <h2 class="t-box t_box_fontsize">통합데이터 확보 수</h2>
+                            <p class="v-box marginTop20"><em>256</em>EA</p>
+                            <p class="marginTop20 statistics_sub_fontsize">유전자, 피부, 두피 <span class="dot">&#183;</span> 모발 데이터를<br> 모두 확보한 고객 수
+                            </p>
+                        </div>
+                    </div>
+                    <div class="statistics-item FlexContentCenter">
+                        <div class="text-box">
+                            <h3 class="fix-top-text">누적</h3>
+                            <h2 class="t-box t_box_fontsize">피부데이터 확보 수</h2>
+                            <p class="v-box marginTop20"><em>4,083</em>%</p>
+                            <p class="marginTop20 statistics_sub_fontsize">피부 데이터를<br> 확보한 고객 수
+                            </p>
+                        </div>
+                    </div>
+                    <div class="statistics-item FlexContentCenter">
+                        <div class="text-box">
+                            <h3 class="fix-top-text">누적</h3>
+                            <h2 class="t-box t_box_fontsize">두피<span class="dot">&#183;</span> 모발 데이터 확보 수</h2>
+                            <p class="v-box marginTop20"><em>382</em>EA</p>
+                            <p class="marginTop20 statistics_sub_fontsize"> 두피 <span class="dot">&#183;</span> 모발 데이터를<br> 확보한 고객 수
+                            </p>
+                        </div>
+                    </div>       
+                    <div class="statistics-item FlexContentCenter">
+                        <div class="text-box">
+                            <h3 class="fix-top-text">누적</h3>
+                            <h2 class="t-box t_box_fontsize">고객 재방문</h2>
+                            <p class="v-box marginTop20"><em>76.5</em>%</p>
+                            <p class="marginTop20 statistics_sub_fontsize"> 2회 이상 방문 고객 수 /<br> 총 고객 수
+                            </p>
+                        </div>
+                    </div>            
+                    
+                    <!-- <div class="statistics-item"></div> -->
+                    <!--
+                        h600 높이 기본 250에서 600으로 변경
+                        col-1-5 영역 1부터 4까지 4칸 사용
+                        col-5-7 영역 5부터 6까지 2칸 사용
+                    -->
+                    <div class="statistics-item h600 col-1-5 paddingAll40">
+                        <div class="header-box flexBetween">
+                            <h2 class="title">방문 고객 수/월</h2>
+                            <div class="chartColor">
+                                <span class="color1 color-item">2회이상</span>
+                                <span class="color2 color-item">1회</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="statistics-item h600 col-5-7 paddingAll40">
+                        <div class="header-box flexItemBaseline">
+                            <h2 class="title">고객 분포</h2>
+                            <p>All My Skin DNA Others / 누적<span class="dat">년<span class="dat">월</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/statistics_result.js"></script>

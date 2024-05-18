@@ -19,7 +19,7 @@
 </head>
 <body class="sub">
 <div class="wrap">
-    <header class="site-header" id="top_menu">
+    <header class="site-header" id="top_menu">       
     </header>
     <main>
         <!--top-title-->
@@ -36,6 +36,7 @@
                     <a href="./analysis2_result.html" class="tab-item">두피<i class="dat"></i>모발 측정 결과</a>
                     <a href="./analysis3_result.html" class="tab-item">마이 스킨 DNA 결과</a>
                 </div>
+
                 <!--리포트 부분 스타일 분리 했습니다 -->
                 <link href="./resource/css/report.css" rel="stylesheet"/>
                 <section class="report-wrapper marginTop70">
@@ -55,126 +56,104 @@
                     <div class="report-content">
                         <div class="col-item">
                             <div class="row-item">
-                                <h2 class="title">Summary</h2>
+                                <h2 class="title">Skin Score History</h2>
                                 <div class="row-item-content">
-                                    <div class="col-4 textAlignCenter line-right">
-                                        <h3 class="font-24 marginBottom30">피부 점수</h3>
-                                        <span class="font-30"><em class="font-60 bold">84</em>/100점</span>
-                                    </div>
-                                    <div class="col-4 textAlignCenter line-right">
-                                        <h3 class="font-24 marginBottom30">관리 항목</h3>
-                                        <span><em class="font-40 bold">탄력,<br>미래 주름</em></span>
-                                    </div>
-                                    <div class="col-4 textAlignCenter">
-                                        <h3 class="font-24 marginBottom30">점수</h3>
-                                        <ul class="level-list textAlignLeft paddingLeft40">
-                                            <li class="level-color1">매우 좋음(80~100)</li>
-                                            <li class="level-color2">좋음(60~80)</li>
-                                            <li class="level-color3">보통(40~60)</li>
-                                            <li class="level-color4">관심 필요(20~40)</li>
-                                            <li class="level-color5">집중 관리(0~20)</li>
-                                        </ul>
+                                    <div class="graph-item">
+                                        <img src="./resource/images/graph/graph-006.svg" alt="Skin Score History 그래프">
                                     </div>
                                 </div>
                             </div>
                             <div class="row-item">
-                                <h2 class="title">Type</h2>
-                                <div class="row-item-content">
-                                    <div class="col-6 textAlignCenter line-right">
-                                        <h3 class="font-30">T존</h3>
-                                        <p class="font-20 marginTop10">유분 부족 건성</p>
-                                        <div class="graph-item marginTop30">
-                                            <img src="./resource/images/graph/graph-001.svg" alt="T존 그래프">
+                                <h2 class="title">Type History</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div class="flexWrapper">
+                                        <div class="col-6 textAlignCenter line-right">
+                                            <h3 class="font-30">T존</h3>
+                                            <div class="graph-item marginTop30">
+                                                <img src="./resource/images/graph/graph-007.svg" alt="T존 그래프">
+                                            </div>
+                                        </div>
+                                        <div class="col-6 textAlignCenter">
+                                            <h3 class="font-30">U존</h3>
+                                            <div class="graph-item marginTop30">
+                                                <img src="./resource/images/graph/graph-008.svg" alt="U존 그래프">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-6 textAlignCenter">
-                                        <h3 class="font-30">U존</h3>
-                                        <p class="font-20 marginTop10">유분 부족 건성</p>
-                                        <div class="graph-item marginTop30">
-                                            <img src="./resource/images/graph/graph-002.svg" alt="U존 그래프">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row-item">
-                                <h2 class="title">Results</h2>
-                                <div class="row-item-content">
-                                    <div class="col-3 textAlignCenter">
-                                        <h3 class="font-30 en">Aging</h3>
-                                        <div class="graph-item marginTop30">
-                                            <img src="./resource/images/graph/graph-003.svg" alt="Aging 그래프">
-                                        </div>
-                                    </div>
-                                    <div class="col-3 textAlignCenter">
-                                        <h3 class="font-30 en">Tone</h3>
-                                        <div class="graph-item marginTop30">
-                                            <img src="./resource/images/graph/graph-004.svg" alt="Tone 그래프">
-                                        </div>
-                                    </div>
-                                    <div class="col-3 textAlignCenter">
-                                        <h3 class="font-30 en">Sensitivity</h3>
-                                        <div class="graph-item marginTop30">
-                                            <img src="./resource/images/graph/graph-005.svg" alt="Sensitivity 그래프">
-                                        </div>
-                                    </div>
-                                </div>
+                                    <div class="diagram-wrapper marginTop100">
+                                        <dl class="diagram-item">
+                                            <dt>T존</dt>
+                                            <dd>
+                                                <span class="date">23.11.07</span>
+                                                유분 보족<br>건성
+                                            </dd>
+                                            <dd class="active">
+                                                <span class="date">24.01.22</span>
+                                                유분 보족<br>건성
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                        <dl class="diagram-item marginTop20">
+                                            <dt>U존</dt>
+                                            <dd>
+                                                적당
+                                            </dd>
+                                            <dd class="active">
+                                                유분 보족<br>건성
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
 
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-item">
                             <div class="row-item">
-                                <h2 class="title">Solution Type</h2>
-                                <div class="row-item-content flexWrapper gap50">
-                                    <div class="flex-w130 textAlignCenter">
-                                        <h3 class="font-24 grayColor en">CITY LAB No.</h3>
-                                        <p class="font-64 grayColor marginTop45">3</p>
-                                    </div>
-                                    <div>
-                                        <p class="font-24 grayColor">
-                                            각질층 수분량 부족으로 피부가 건조합니다.<br>
-                                            <br>
-                                            피부가 자외선에 계속 노출되면 콜라겐의 손상으로 주름이 증가
-                                            하고, 멜라닌 색소 세포를 자극하여 피부톤의 균일성이 낮아집니다.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row-item">
-                                <h2 class="title">Sensitive Type</h2>
-                                <div class="row-item-content flexWrapper gap50">
-                                    <div class="flex-w130 textAlignCenter">
-                                        <h3 class="font-24 grayColor en">CITY LAB No.</h3>
-                                        <p class="font-64 grayColor marginTop45">S2</p>
-                                    </div>
-                                    <div>
-                                        <p class="font-24 grayColor">
-                                            외부 환경 변화 시 트러블이 자주 발생하며 종종 가려움 혹은
-                                            속 건조 등이 동반될 수 있습니다.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row-item">
-                                <h2 class="title">Opinions</h2>
+                                <h2 class="title">Skin Characteristics History</h2>
                                 <div class="row-item-content flexColumn">
                                     <div>
-                                        <p class="font-24 pointColor textAlignCenter minHeight100"></p>
-                                    </div>
-                                    <div class="img-box marginTop30">
-                                        <img src="./resource/images/img-report001.png">
-                                    </div>
-                                    <div class="comment-box marginTop70">
-                                        <div class="input-box">
-                                            <label for="comment01">Comment 1</label>
-                                            <input type="text" id="comment01" name="comment01" placeholder="변화 루틴을 제안합니다.">
+                                        <h3 class="font-30 en">Aging</h3>
+                                        <div class="flexWrapper flexWrap gap30 marginTop30">
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6" >
+                                                <img src="./resource/images/graph/graph-009.svg" alt="Aging 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-010.svg" alt="Aging 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-011.svg" alt="Aging 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-012.svg" alt="Aging 그래프">
+                                            </div>
                                         </div>
-                                        <div class="input-box">
-                                            <label for="comment02">Comment 2</label>
-                                            <input type="text" id="comment02" name="comment03" placeholder="변화 루틴을 제안합니다.">
+                                    </div>
+                                    <div class="marginTop50">
+                                        <h3 class="font-30 en">Tone</h3>
+                                        <div class="flexWrapper flexWrap gap30 marginTop30">
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6" >
+                                                <img src="./resource/images/graph/graph-013.svg" alt="Tone 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-014.svg" alt="Tone 그래프">
+                                            </div>
                                         </div>
-                                        <div class="input-box">
-                                            <label for="comment03">Comment 3</label>
-                                            <input type="text" id="comment03" name="comment03" placeholder="변화 루틴을 제안합니다.">
+                                    </div>
+                                    <div class="marginTop50">
+                                        <h3 class="font-30 en">Sensitivity</h3>
+                                        <div class="flexWrapper flexWrap gap30 marginTop30">
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-4" >
+                                                <img src="./resource/images/graph/graph-015.svg" alt="Sensitivity 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-4">
+                                                <img src="./resource/images/graph/graph-016.svg" alt="Sensitivity 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-4">
+                                                <img src="./resource/images/graph/graph-017.svg" alt="Sensitivity 그래프">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -184,11 +163,11 @@
                 </section>
                 <div class="button-box textAlignCenter grid-wrap justifyContentCenter marginTop70">
                     <li class="submenu2-item">
-                        <a class="button radius w150 colorWithe" href="./analysis_result_history.html">히스토리</a>
+                        <a class="button radius w150 colorWithe" href="./analysis_result.html">이전</a>
                     </li>
                     <button class="button radius w150 colorActive">저장</button>
                     <li class="submenu2-item">
-                        <a class="button radius w150 colorWithe" href="./print001.html">출력</a>
+                        <a class="button radius w150 colorWithe" href="./print002.html" target="_blank">출력</a>
                     </li>
                 </div>
             </div>
@@ -285,7 +264,7 @@
                         </tr>
 
                         <tr>
-                            <td>엘라닌</td>
+                            <td>멜라닌</td>
                             <td>
                                 <div class="input-box">
                                     <input type="text">
@@ -425,92 +404,5 @@
 </div>
 <!--ANTERA 3D PRO 측정값 저장 팝업-->
 
-
-<!-- 알림 모달 버튼 -->
-<button id="openAlertModalBtn">알림 모달 열기</button>
-
-<!-- 알림 모달 -->
-<div id="alertModal" class="alert_modal">
-  <div class="modal-content">
-    <span id="closeAlertModalBtn" class="close">&times;</span>
-    <h2>알림 모달</h2>
-    <p>이것은 알림 모달 창입니다.</p>
-  </div>
-</div>
-
-
-
-
-/* 모달 스타일 */
-.alert_modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
-}
-
-/* 모달 내용 스타일 */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
-}
-
-/* 모달 닫기 버튼 스타일 */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
-
-
-
-// 알림 모달 열기 버튼 클릭 시 이벤트 처리
-$("#openAlertModalBtn").click(function() {
-    $("#alertModal").show();
-});
-
-// 알림 모달 닫기 버튼 클릭 시 이벤트 처리
-$("#closeAlertModalBtn").click(function() {
-    $("#alertModal").hide();
-});
-
-// 알림 모달 외부 클릭 시 닫기
-$(window).click(function(event) {
-    if (event.target == $("#alertModal")[0]) {
-        $("#alertModal").hide();
-    }
-});
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
-<!--페이지 스크립트-->
-<script type="text/javascript" src="/dev/analysis_result.js"></script>

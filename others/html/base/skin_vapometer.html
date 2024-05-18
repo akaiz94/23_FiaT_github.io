@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>목록</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="surveyno">고유번호</th>
+                    <th data-id="userkey">사용자 키</th>
+                    <th data-id="c_left">좌측 볼</th>
+                    <th data-id="c_right">우측 볼</th>
+                    <th data-id="create_dt">생성일</th>
+                </tr>
+                </thead>
+                <tbody id="skin_vapometer_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="skin_vapometer_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.surveyno}}</td><!-- 고유번호 -->
+                        <td>{{this.userkey}}</td><!-- 사용자 키 -->
+                        <td>{{this.c_left}}</td><!-- 좌측 볼 -->
+                        <td>{{this.c_right}}</td><!-- 우측 볼 -->
+                        <td>{{this.create_dt}}</td><!-- 생성일 -->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveyno">고유번호:</label>
+                        <span data-id="surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="userkey">사용자 키:</label>
+                        <span data-id="userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_left">좌측 볼:</label>
+                        <span data-id="c_left"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="c_right">우측 볼:</label>
+                        <span data-id="c_right"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">생성일:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="skin_vapometer_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="surveyno">고유번호</label>
+                            <input type="text" class="form-control" id="surveyno" name='surveyno' minlength=2 required
+                                   placeholder="고유번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="userkey" name='userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_left">좌측 볼</label>
+                            <input type="text" class="form-control" id="c_left" name='c_left' minlength=2 required
+                                   placeholder="좌측 볼">
+                        </div>
+                        <div class="form-group">
+                            <label for="c_right">우측 볼</label>
+                            <input type="text" class="form-control" id="c_right" name='c_right' minlength=2 required
+                                   placeholder="우측 볼">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">생성일</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="생성일">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/skin_vapometer.js"></script>

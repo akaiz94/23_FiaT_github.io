@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <section class="top-banner statistics"><h1>통계</h1></section>
+        <!--top-title-->
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">분석</h2>
+                <!--리포트 부분 스타일 분리 했습니다 -->
+                <link href="./resource/css/report.css" rel="stylesheet"/>
+                <section class="report-wrapper marginTop70">
+                    <header class="header-box">
+                        <div class="header-lift-box">My Skin Solution Analysis for : </div>
+                        <div class="user-name">전지현</div>
+                        <div class="header-right-box">
+                            <span>측정일자 : 2024.01.22</span>
+                            <span>방문회차 : 2회차</span>
+                        </div>
+                    </header>
+                    <div class="report-content">
+                        <div class="col-item">
+                            <div class="row-item">
+                                <h2 class="title">Skin Score History</h2>
+                                <div class="row-item-content">
+                                    <div class="graph-item">
+                                        <img src="./resource/images/graph/graph-006.svg" alt="Skin Score History 그래프">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-item">
+                                <h2 class="title">Type History</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div class="flexWrapper">
+                                        <div class="col-6 textAlignCenter line-right">
+                                            <h3 class="font-30">T존</h3>
+                                            <div class="graph-item marginTop30">
+                                                <img src="./resource/images/graph/graph-007.svg" alt="T존 그래프">
+                                            </div>
+                                        </div>
+                                        <div class="col-6 textAlignCenter">
+                                            <h3 class="font-30">U존</h3>
+                                            <div class="graph-item marginTop30">
+                                                <img src="./resource/images/graph/graph-008.svg" alt="U존 그래프">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="diagram-wrapper marginTop100">
+                                        <dl class="diagram-item">
+                                            <dt>T존</dt>
+                                            <dd>
+                                                <span class="date">23.11.07</span>
+                                                유분 보족<br>건성
+                                            </dd>
+                                            <dd class="active">
+                                                <span class="date">24.01.22</span>
+                                                유분 보족<br>건성
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                        <dl class="diagram-item marginTop20">
+                                            <dt>U존</dt>
+                                            <dd>
+                                                적당
+                                            </dd>
+                                            <dd class="active">
+                                                유분 보족<br>건성
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-item">
+                            <div class="row-item">
+                                <h2 class="title">Skin Characteristics History</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div>
+                                        <h3 class="font-30 en">Aging</h3>
+                                        <div class="flexWrapper flexWrap gap30 marginTop30">
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6" >
+                                                <img src="./resource/images/graph/graph-009.svg" alt="Aging 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-010.svg" alt="Aging 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-011.svg" alt="Aging 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-012.svg" alt="Aging 그래프">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="marginTop50">
+                                        <h3 class="font-30 en">Tone</h3>
+                                        <div class="flexWrapper flexWrap gap30 marginTop30">
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6" >
+                                                <img src="./resource/images/graph/graph-013.svg" alt="Tone 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-6">
+                                                <img src="./resource/images/graph/graph-014.svg" alt="Tone 그래프">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="marginTop50">
+                                        <h3 class="font-30 en">Sensitivity</h3>
+                                        <div class="flexWrapper flexWrap gap30 marginTop30">
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-4" >
+                                                <img src="./resource/images/graph/graph-015.svg" alt="Sensitivity 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-4">
+                                                <img src="./resource/images/graph/graph-016.svg" alt="Sensitivity 그래프">
+                                            </div>
+                                            <div class="graph-item line paddingAll30 textAlignCenter col-4">
+                                                <img src="./resource/images/graph/graph-017.svg" alt="Sensitivity 그래프">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="button-box textAlignCenter grid-wrap justifyContentCenter marginTop70">
+                    <button class="button radius w150 colorWithe">이전</button>
+                    <button class="button radius w150">출력</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

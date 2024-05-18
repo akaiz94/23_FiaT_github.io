@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+        <!--top-title-->
+
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">문진 (두피)</h2>
+                <div class="tab-box marginTop70 col-02">
+                    <a href="./solution_questionnaire.html" class="tab-item ">피부</a>
+                    <a href="./solution_questionnaire2.html" class="tab-item active">두피<i class="dat"></i>모발</a>
+                </div>
+                <!-- <div class="full-banner-box marginTop70">
+                    <img src="./resource/images/banner2.png">
+                </div> -->
+                <form class="survey-form-box2 marginTop45" data-question=1>
+                    <div class="question-box  active">
+                        <h4 class="question-type marginTop20">1. 두피고민</h4>
+                        <h3 class="question-title marginTop20"><span class="question-num">Q1</span>두피 고민을 선택해 주세요.</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="checkbox" name="q_start" id="S1_1">
+                                <label for="S1_1" class="grid-item-7">1.고민 없음</label>
+                                <input type="checkbox" name="q_start" id="S1_2">
+                                <label for="S1_2" class="grid-item-7">2.두피 비듬/각질</label>
+                                <input type="checkbox" name="q_start" id="S1_3">
+                                <label for="S1_3" class="grid-item-7">3.두피 가려움</label>
+                                <input type="checkbox" name="q_start" id="S1_4">
+                                <label for="S1_4" class="grid-item-7">4.두피 피지(유분)</label>
+                                <input type="checkbox" name="q_start" id="S1_5">
+                                <label for="S1_5" class="grid-item-7">5.두피 트러블/염증</label>
+                                <input type="checkbox" name="q_start" id="S1_6">
+                                <label for="S1_6" class="grid-item-7">6.두피/건조</label>
+                                <input type="checkbox" name="q_start" id="S1_7">
+                                <label for="S1_7" class="grid-item-7">7.두피 냄새</label>
+                            </div>
+                        </div>
+                        <div class="row-box marginTop40">
+                            <div class="rank-box">
+                                <div class="input-box ">
+                                    <label for="S1_First">1순위</label>
+                                    <input type="text" id="S1_First">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="question-type marginTop100">2.두피타입</h4>
+                        <h3 class="question-title marginTop20"><span class="question-num">Q1</span>평소 샴푸를 언제 하나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="checkbox" name="q1" id="S2_1_1">
+                                <label for="S2_1_1" class="grid-item-7">아침</label>
+                                <input type="checkbox" name="q1" id="S2_1_2">
+                                <label for="S2_1_2" class="grid-item-7" >외출 전</label>
+                                <input type="checkbox" name="q1" id="S2_1_3">
+                                <label for="S2_1_3" class="grid-item-7">밤</label>
+                            </div>
+                        </div>
+    
+                        <h3 class="question-title marginTop50"><span class="question-num">Q2</span>샴푸 사용 횟수는 어떻게 되나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q2" id="S2_2_001">
+                                <label for="S2_2_001" class="grid-item-7">1일 2회</label>
+                                <input type="radio" name="q2" id="S2_2_002">
+                                <label for="S2_2_002" class="grid-item-7" >1일 1회</label>
+                                <input type="radio" name="q2" id="S2_2_003">
+                                <label for="S2_2_003" class="grid-item-7">2일 1회</label>
+                                <input type="radio" name="q2" id="S2_2_004">
+                                <label for="S2_2_004" class="grid-item-7">기타</label>
+                            </div>
+                        </div>
+
+
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q3</span>샴푸 후 두피를 충분히 건조시키나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q3" id="S2_3_001">
+                                <label for="S2_3_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q3" id="S2_3_002">
+                                <label for="S2_3_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q3" id="S2_3_003">
+                                <label for="S2_3_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q3" id="S2_3_004">
+                                <label for="S2_3_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q4</span>헤어 제품을 바꾸거나 시술 후 두피가 예민하게 반응하는 편인가요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q4" id="S2_4_001">
+                                <label for="S2_4_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q4" id="S2_4_002">
+                                <label for="S2_4_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q4" id="S2_4_003">
+                                <label for="S2_4_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q4" id="S2_4_004">
+                                <label for="S2_4_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q5</span>헤어 제품을 바꾸거나 시술 후에 비듬이 생기는 편인가요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q5" id="S2_5_001">
+                                <label for="S2_5_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q5" id="S2_5_002">
+                                <label for="S2_5_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q5" id="S2_5_003">
+                                <label for="S2_5_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q5" id="S2_5_004">
+                                <label for="S2_5_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+                        <!--
+                        <h3 class="question-title marginTop50"><span class="question-num">Q5</span>헤어 제품을 바꾸거나 시술 후에 비듬이 생기는 편인가요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q5" id="q5_001">
+                                <label for="q5_001" class="grid-item-4">그렇지 않다</label>
+                                <input type="radio" name="q5" id="q5_002">
+                                <label for="q5_002" class="grid-item-4" >약간 그렇다</label>
+                                <input type="radio" name="q5" id="q5_003">
+                                <label for="q5_003" class="grid-item-4">그렇다</label>
+                                <input type="radio" name="q5" id="q5_004">
+                                <label for="q5_004" class="grid-item-4">매우 그렇다</label>
+                            </div>
+                        </div>
+                        -->
+
+
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q6</span>민감성 두피라고 생각하나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q6" id="S2_6_001">
+                                <label for="S2_6_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q6" id="S2_6_002">
+                                <label for="S2_6_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q6" id="S2_6_003">
+                                <label for="S2_6_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q6" id="S2_6_004">
+                                <label for="S2_6_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q7</span>평소 두피에 열감이 느껴지나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q7" id="S2_7_001">
+                                <label for="S2_7_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q7" id="S2_7_002">
+                                <label for="S2_7_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q7" id="S2_7_003">
+                                <label for="S2_7_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q7" id="S2_7_004">
+                                <label for="S2_7_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q8</span>평소 두피가 울긋불긋 한 편인가요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q8" id="S2_8_001">
+                                <label for="S2_8_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q8" id="S2_8_002">
+                                <label for="S2_8_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q8" id="S2_8_003">
+                                <label for="S2_8_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q8" id="S2_8_004">
+                                <label for="S2_8_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q9</span>건조, 계절 변화, 미세먼지 등 환경요인에 의해 두피가 예민하게 반응하나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q9" id="S2_9_001">
+                                <label for="S2_9_001" class="grid-item-7">그렇지 않다</label>
+                                <input type="radio" name="q9" id="S2_9_002">
+                                <label for="S2_9_002" class="grid-item-7" >약간 그렇다</label>
+                                <input type="radio" name="q9" id="S2_9_003">
+                                <label for="S2_9_003" class="grid-item-7">그렇다</label>
+                                <input type="radio" name="q9" id="S2_9_004">
+                                <label for="S2_9_004" class="grid-item-7">매우 그렇다</label>
+                            </div>
+                        </div>
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q10</span>두피에 뾰루지가 생기는 정도는 어떤가요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q10" id="S2_10_001">
+                                <label for="S2_10_001" class="grid-item-7">없다</label>
+                                <input type="radio" name="q10" id="S2_10_002">
+                                <label for="S2_10_002" class="grid-item-7" >가끔 있다</label>
+                                <input type="radio" name="q10" id="S2_10_003">
+                                <label for="S2_10_003" class="grid-item-7" >자주 있다</label>
+                                <input type="radio" name="q10" id="S2_10_004">
+                                <label for="S2_10_004" class="grid-item-7" >항상 있다</label>
+                            </div>
+                        </div>
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q11</span>평소에 두피가 가려운 정도는 어떤가요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q11" id="S2_11_001">
+                                <label for="S2_11_001" class="grid-item-3">가려움 없다</label>
+                                <input type="radio" name="q11" id="S2_11_002">
+                                <label for="S2_11_002" class="grid-item-3" >약간 가려움</label>
+                                <input type="radio" name="q11" id="S2_11_003">
+                                <label for="S2_11_003" class="grid-item-3" >견딜만한 가려움</label>
+                                <input type="radio" name="q11" id="S2_11_004">
+                                <label for="S2_11_004" class="grid-item-3" >스트레스 받는 수준의 가려움</label>
+                                <input type="radio" name="q11" id="S2_11_005">
+                                <label for="S2_11_005" class="grid-item-3" >심한 가려움</label>
+                                <input type="radio" name="q11" id="S2_11_006">
+                                <label for="S2_11_006" class="grid-item-3" >견딜 수 없는 수준의 가려움</label>
+                            </div>
+                        </div>
+
+
+                        <h4 class="question-type marginTop100">3.모발</h4>
+                        <h3 class="question-title marginTop50"><span class="question-num">Q1</span>모발 고민을 선택해 주세요.</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="checkbox" name="q3_1" id="S3_1_1">
+                                <label for="S3_1_1" class="grid-item-4">1. 고민없음</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_2">
+                                <label for="S3_1_2" class="grid-item-4" >2. 모발 끊어짐/갈라짐</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_3">
+                                <label for="S3_1_3" class="grid-item-4" >3. 가늘어진 모발</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_4">
+                                <label for="S3_1_4" class="grid-item-4" >4. 힘없이 처지는 모발(볼륨)</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_5">
+                                <label for="S3_1_5" class="grid-item-4" >5. 모발 건조/푸석거림</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_6">
+                                <label for="S3_1_6" class="grid-item-4" >6. 모발 엉킴</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_7">
+                                <label for="S3_1_7" class="grid-item-4" >7. 새치 증가</label>
+                                <input type="checkbox" name="q3_1" id="S3_1_8">
+                                <label for="S3_1_8" class="grid-item-4" >8. 모발 빠짐</label>
+                            </div>
+                        </div>
+                        <div class="row-box marginTop40">
+                            <div class="rank-box">
+                                <div class="input-box ">
+                                    <label for="S3_1_First">1순위</label>
+                                    <input type="text" id="S3_1_First">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="question-title marginTop50"><span class="question-num">Q2</span>귀하의 모발 타입은 다음 중 어디에 해당 하나요?</h3>
+                        <div class="row-box marginTop30">
+                            <div class="input-box big grid-wrap grid-flexWrap">
+                                <input type="radio" name="q13" id="S3_2_001">
+                                <label for="S3_2_001" class="grid-item-7">직모</label>
+                                <input type="radio" name="q13" id="S3_2_002">
+                                <label for="S3_2_002" class="grid-item-7" >반곱슬모</label>
+                                <input type="radio" name="q13" id="S3_2_003">
+                                <label for="S3_2_003" class="grid-item-7" >곱슬모</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                   
+
+
+                    <div class="button-box">
+                        <!-- <button class="button prev-button colorWithe w150 radius small" data-event="survey" data-action="prev">이전</button> -->
+                        <!-- <button class="button next-button w150 radius small" data-event="survey" data-action="next">다음</button> -->
+
+                        <button class="button save-button2 w150 radius small" data-event="survey" data-action="save" id="scalpSurvey_saveButton">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!--메시지 박스 커스텀 공통 영역에 넣어주세요-->
+<div class="alert-layer layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header header-auto">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title"></h2>
+        </header>
+        <div class="layer-content">
+            <p>
+                피부와 마주하는 순간,<br>
+                여기는 아모레 시티랩입니다.
+            </p>
+        </div>
+        <div class="button-box grid-wrap justifyContentCenter">
+            <button class="button grid-item-2" data-event="popup" data-target=".alert-layer" data-action="close">확인</button>
+        </div>
+    </div>
+</div>
+<!--메시지 박스 커스텀-->
+
+</body>
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/solution_questionnaire2.js"></script>

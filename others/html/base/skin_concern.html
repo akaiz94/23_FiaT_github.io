@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>목록</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="surveyno">설문 고유번호</th>
+                    <th data-id="userkey">사용자 키</th>
+                    <th data-id="name">고객명</th>
+                    <th data-id="pore">모공</th>
+                    <th data-id="wrinkle">주름</th>
+                    <th data-id="futurewrinkles">미래주름</th>
+                    <th data-id="pigmentation">색소침착</th>
+                    <th data-id="melanin">멜라닌</th>
+                    <th data-id="darkcircles">다크서클</th>
+                    <th data-id="transdermal">경피수분손실도</th>
+                    <th data-id="redness">붉은기</th>
+                    <th data-id="porphyrin">포피린</th>
+                    <th data-id="elasticity">탄력</th>
+                    <th data-id="tzone_moisture">t좀 수분</th>
+                    <th data-id="tzone_oilskin">t존 유분</th>
+                    <th data-id="uzone_moisture">u존 수분</th>
+                    <th data-id="uzone_oilskin">u존 유분</th>
+                    <th data-id="create_dt">생성일자</th>
+                    <th data-id="update_dt">업데이트 일자</th>
+                </tr>
+                </thead>
+                <tbody id="skin_concern_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="skin_concern_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.surveyno}}</td><!-- 설문 고유번호 -->
+                        <td>{{this.userkey}}</td><!-- 사용자 키 -->
+                        <td>{{this.name}}</td><!-- 고객명 -->
+                        <td>{{this.pore}}</td><!-- 모공 -->
+                        <td>{{this.wrinkle}}</td><!-- 주름 -->
+                        <td>{{this.futurewrinkles}}</td><!-- 미래주름 -->
+                        <td>{{this.pigmentation}}</td><!-- 색소침착 -->
+                        <td>{{this.melanin}}</td><!-- 멜라닌 -->
+                        <td>{{this.darkcircles}}</td><!-- 다크서클 -->
+                        <td>{{this.transdermal}}</td><!-- 경피수분손실도 -->
+                        <td>{{this.redness}}</td><!-- 붉은기 -->
+                        <td>{{this.porphyrin}}</td><!-- 포피린 -->
+                        <td>{{this.elasticity}}</td><!-- 탄력 -->
+                        <td>{{this.tzone_moisture}}</td><!-- t좀 수분 -->
+                        <td>{{this.tzone_oilskin}}</td><!-- t존 유분 -->
+                        <td>{{this.uzone_moisture}}</td><!-- u존 수분 -->
+                        <td>{{this.uzone_oilskin}}</td><!-- u존 유분 -->
+                        <td>{{this.create_dt}}</td><!-- 생성일자 -->
+                        <td>{{this.update_dt}}</td><!-- 업데이트 일자 -->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveyno">설문 고유번호:</label>
+                        <span data-id="surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="userkey">사용자 키:</label>
+                        <span data-id="userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">고객명:</label>
+                        <span data-id="name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pore">모공:</label>
+                        <span data-id="pore"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="wrinkle">주름:</label>
+                        <span data-id="wrinkle"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="futurewrinkles">미래주름:</label>
+                        <span data-id="futurewrinkles"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pigmentation">색소침착:</label>
+                        <span data-id="pigmentation"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="melanin">멜라닌:</label>
+                        <span data-id="melanin"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="darkcircles">다크서클:</label>
+                        <span data-id="darkcircles"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="transdermal">경피수분손실도:</label>
+                        <span data-id="transdermal"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="redness">붉은기:</label>
+                        <span data-id="redness"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="porphyrin">포피린:</label>
+                        <span data-id="porphyrin"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="elasticity">탄력:</label>
+                        <span data-id="elasticity"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tzone_moisture">t좀 수분:</label>
+                        <span data-id="tzone_moisture"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tzone_oilskin">t존 유분:</label>
+                        <span data-id="tzone_oilskin"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="uzone_moisture">u존 수분:</label>
+                        <span data-id="uzone_moisture"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="uzone_oilskin">u존 유분:</label>
+                        <span data-id="uzone_oilskin"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">생성일자:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="update_dt">업데이트 일자:</label>
+                        <span data-id="update_dt"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="skin_concern_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="surveyno">설문 고유번호</label>
+                            <input type="text" class="form-control" id="surveyno" name='surveyno' minlength=2 required
+                                   placeholder="설문 고유번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="userkey" name='userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">고객명</label>
+                            <input type="text" class="form-control" id="name" name='name' minlength=2 required
+                                   placeholder="고객명">
+                        </div>
+                        <div class="form-group">
+                            <label for="pore">모공</label>
+                            <input type="text" class="form-control" id="pore" name='pore' minlength=2 required
+                                   placeholder="모공">
+                        </div>
+                        <div class="form-group">
+                            <label for="wrinkle">주름</label>
+                            <input type="text" class="form-control" id="wrinkle" name='wrinkle' minlength=2 required
+                                   placeholder="주름">
+                        </div>
+                        <div class="form-group">
+                            <label for="futurewrinkles">미래주름</label>
+                            <input type="text" class="form-control" id="futurewrinkles" name='futurewrinkles'
+                                   minlength=2 required
+                                   placeholder="미래주름">
+                        </div>
+                        <div class="form-group">
+                            <label for="pigmentation">색소침착</label>
+                            <input type="text" class="form-control" id="pigmentation" name='pigmentation' minlength=2
+                                   required
+                                   placeholder="색소침착">
+                        </div>
+                        <div class="form-group">
+                            <label for="melanin">멜라닌</label>
+                            <input type="text" class="form-control" id="melanin" name='melanin' minlength=2 required
+                                   placeholder="멜라닌">
+                        </div>
+                        <div class="form-group">
+                            <label for="darkcircles">다크서클</label>
+                            <input type="text" class="form-control" id="darkcircles" name='darkcircles' minlength=2
+                                   required
+                                   placeholder="다크서클">
+                        </div>
+                        <div class="form-group">
+                            <label for="transdermal">경피수분손실도</label>
+                            <input type="text" class="form-control" id="transdermal" name='transdermal' minlength=2
+                                   required
+                                   placeholder="경피수분손실도">
+                        </div>
+                        <div class="form-group">
+                            <label for="redness">붉은기</label>
+                            <input type="text" class="form-control" id="redness" name='redness' minlength=2 required
+                                   placeholder="붉은기">
+                        </div>
+                        <div class="form-group">
+                            <label for="porphyrin">포피린</label>
+                            <input type="text" class="form-control" id="porphyrin" name='porphyrin' minlength=2 required
+                                   placeholder="포피린">
+                        </div>
+                        <div class="form-group">
+                            <label for="elasticity">탄력</label>
+                            <input type="text" class="form-control" id="elasticity" name='elasticity' minlength=2
+                                   required
+                                   placeholder="탄력">
+                        </div>
+                        <div class="form-group">
+                            <label for="tzone_moisture">t좀 수분</label>
+                            <input type="text" class="form-control" id="tzone_moisture" name='tzone_moisture'
+                                   minlength=2 required
+                                   placeholder="t좀 수분">
+                        </div>
+                        <div class="form-group">
+                            <label for="tzone_oilskin">t존 유분</label>
+                            <input type="text" class="form-control" id="tzone_oilskin" name='tzone_oilskin' minlength=2
+                                   required
+                                   placeholder="t존 유분">
+                        </div>
+                        <div class="form-group">
+                            <label for="uzone_moisture">u존 수분</label>
+                            <input type="text" class="form-control" id="uzone_moisture" name='uzone_moisture'
+                                   minlength=2 required
+                                   placeholder="u존 수분">
+                        </div>
+                        <div class="form-group">
+                            <label for="uzone_oilskin">u존 유분</label>
+                            <input type="text" class="form-control" id="uzone_oilskin" name='uzone_oilskin' minlength=2
+                                   required
+                                   placeholder="u존 유분">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">생성일자</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="생성일자">
+                        </div>
+                        <div class="form-group">
+                            <label for="update_dt">업데이트 일자</label>
+                            <input type="text" class="form-control" id="update_dt" name='update_dt' minlength=2 required
+                                   placeholder="업데이트 일자">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/skin_concern.js"></script>

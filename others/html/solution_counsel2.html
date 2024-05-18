@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+        <!--top-title-->
+
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">상담</h2>
+                <div class="tab-box marginTop70 col-02">
+                    <a href="./solution_counsel.html" class="tab-item">솔루션 제안</a>
+                    <a href="./solution_counsel2.html" class="tab-item active">보고서 제공</a>
+                </div>
+                <div class="grid-wrap gap80 marginTop50 counsel-border">
+                    <div class="grid-item-2">
+                        <div class="table-box">
+                            <table>
+                                <colgroup>
+                                    <col style="width: 10%;">
+                                    <col style="width: 30%">
+                                    <col style="width: 20%">
+                                    <col style="width: 25%;">
+                                    <col style="width: 15%;">
+                                </colgroup>
+                                <tr>
+                                    <th>No</th>
+                                    <th>시간</th>
+                                    <th>성명</th>
+                                    <th>전화번호</th>
+                                    <th>보고서</th>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>00:00~00:00</td>
+                                    <td>김*수</td>
+                                    <td>2458</td>
+                                    <td><button class="button radius list" data-event="popup" data-target="#solution_report" data-action="open">출력</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="pagination-box marginTop70">
+                            <ul class="pagination-list">
+                                <li class="pagination-item start"><a href="">처음</a></li>
+                                <li class="pagination-item prev"><a href="">이전</a></li>
+                                <li class="pagination-item"><a href="">1</a></li>
+                                <li class="pagination-item active"><a href="">2</a></li>
+                                <li class="pagination-item"><a href="">3</a></li>
+                                <li class="pagination-item"><a href="">4</a></li>
+                                <li class="pagination-item"><a href="">5</a></li>
+                                <li class="pagination-item next"><a href="">다음</a></li>
+                                <li class="pagination-item end"><a href="">끝</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="grid-item-2 list-type01">
+                        <div class="table-box marginTop30 " >
+                            <div class="function-wrap">
+                                <div class="input-box search-input">
+                                    <label for="search">성명</label>
+                                    <input type="text" name="search" id="search"><button>검색</button>
+                                </div>
+                            </div>
+                            <h2 class="title marginTop20">분석 보고서 모음</h2>
+                            <table>
+                                <tr>
+                                    <th>성명</th>
+                                    <th>생년월일</th>
+                                    <th>측정일</th>
+                                    <th>프로그램명</th>
+                                    <th>방문회차</th>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                                <tr>
+                                    <td><button data-event="popup" data-target="#solution_report" data-action="open">전지현</button></td>
+                                    <td>1981.09.23</td>
+                                    <td>2024.01.05</td>
+                                    <td>마이 스킨 솔루션</td>
+                                    <td>3회차</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="pagination-box marginTop30">
+                            <ul class="pagination-list">
+                                <li class="pagination-item start"><a href="">처음</a></li>
+                                <li class="pagination-item prev"><a href="">이전</a></li>
+                                <li class="pagination-item"><a href="">1</a></li>
+                                <li class="pagination-item active"><a href="">2</a></li>
+                                <li class="pagination-item"><a href="">3</a></li>
+                                <li class="pagination-item"><a href="">4</a></li>
+                                <li class="pagination-item"><a href="">5</a></li>
+                                <li class="pagination-item next"><a href="">다음</a></li>
+                                <li class="pagination-item end"><a href="">끝</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!--솔루션 제안-->
+<div class="proposal-layer w1200 layer-wrap"  id="solution_proposal">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header header-auto">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">솔루션 제안</h2>
+        </header>
+        <div class="layer-content">
+            <h3><em class="user-name">전지현</em> 님의 피부를 마주하는 순간, 여기는 아모레 시티랩입니다.</h3>
+            <p class="marginTop30"><em class="user-name">전지현</em> 님의 분석 보고서</p>
+            <div class="analysis-wrap marginTop50">
+                <div class="table-box bg-white">
+                    <table>
+                        <colgroup>
+                            <col style="width: 25%">
+                            <col style="width: 25%">
+                            <col style="width: 25%">
+                            <col style="width: 25%">
+                        </colgroup>
+                        <tr>
+                            <th>유전자</th>
+                            <th>현재 피부</th>
+                            <th>미래 피부</th>
+                            <th>두피<span class="dat"></span>모발</th>
+                        </tr>
+                        <tr>
+                            <td >
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution001.svg">
+                                </div>
+                                <p>유전자 분석 보고서 연결</p>
+
+                            </td>
+                            <td colspan="2" class="left-line">
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution002.svg">
+                                </div>
+                                <p>분석 -> 피부 측정 결과로 연결</p>
+                            </td>
+                            <td class="left-line">
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution003.svg">
+                                </div>
+                                <p>분석 -> 두피 모발 측정 결과로 연결</p>
+                            </td>
+
+                        </tr>
+                        <tr class="buttons">
+                            <td><button class="button w150 radius medium">살펴보기</button></td>
+                            <td class="left-line"><button class="button w150 radius medium">살펴보기</button></td>
+                            <td><button class="button w150 radius medium">살펴보기</button></td>
+                            <td class="left-line"><button class="button w150 radius medium">살펴보기</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--솔루션 제안-->
+
+<!--보고서 제안-->
+<div class="report-layer w1200 layer-wrap"  id="solution_report">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header header-auto">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">보고서 제안</h2>
+        </header>
+        <div class="layer-content">
+            <h3><em class="user-name">전지현</em> 님의 피부를 마주하는 순간, 여기는 아모레 시티랩입니다.</h3>
+            <p class="marginTop30"><em class="user-name">전지현</em> 님의 분석 보고서</p>
+            <div class="analysis-wrap marginTop50">
+                <div class="table-box bg-white">
+                    <table>
+                        <colgroup>
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                        </colgroup>
+                        <tr>
+                            <th colspan="3">피부</th>
+                            <th colspan="2">두피<span class="dat"></span>모발</th>
+                        </tr>
+                        <tr class="buttons">
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print001.html">Session</a>
+                                </li>                                
+                            </td>
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print002.html">History</a>
+                                </li>                                
+                            </td>  
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print005.html">Prediction</a>
+                                </li>                                
+                            </td>  
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print003.html">Session</a>
+                                </li>                                
+                            </td>  
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print004.html">History</a>
+                                </li>                                
+                            </td>                              
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution002.svg">
+                                </div>
+                            </td>
+                            <td colspan="2" class="left-line">
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution003.svg">
+                                </div>
+                            </td>
+                        </tr>
+                     
+                    </table>
+                </div>
+            </div>
+            <div class="button-box grid-wrap justifyContentCenter">
+                <button class="button w300">All</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--보고서 제안-->
+
+</body>
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/solution_counsel2.js"></script>

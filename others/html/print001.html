@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet" />
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet" />
+    <link href="./resource/css/common.css" rel="stylesheet" />
+    <link href="./resource/css/print.css?1" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+
+    <style>
+        .flex-container {
+            display: flex;
+            /*justify-content: space-between; 양쪽에 위치*/
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .tzone {
+            flex: 1;
+            /*왼쪽에 고정*/
+            text-align: left;
+        }
+
+        .skin-type {
+            flex: 1;
+            /*가운데에 고정*/
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body class="print">
+    <div class="print-wrap">
+        <section class="print-container">
+            <header class="print-header">
+                <div class="logo-box">
+                    <img src="./resource/images/amore_citylab_logo.png" alt="amore city lab"
+                        style="transform: scale(1.6); margin-left: 37px;">
+                </div>
+                <div class="date-box">
+                    <div class="date-item">2024.01.22</div>
+                    <div class="round-item">2회차</div>
+                </div>
+            </header>
+            <main class="print-content">
+                <div class="flexWrapper flexJustifyBetween flexAlignCenter">
+                    <h1>마이 스킨 솔루션 피부 분석 보고서</h1>
+                    <span class="name-box">전지현</span>
+                </div>
+                <div class="row-item marginTop50">
+                    <h2 class="title">1. 종합 결과</h2>
+                    <div class="row-item-content flexWrapper">
+                        <div class="col-3  line-right ">
+                            <h3 class="font-size40 font-color-gray3">피부 점수</h3>
+                            <div class="font-size50 font-color-black flexJustifyCenter height100 marginTop30"><em
+                                    class="font-size100 font-bold" id="get_skin_score">84</em>/100점</div>
+                            <p class="font-size30 default-line2 textAlignCenter marginTop30">동일 성별, 연령대 데이터의<br>
+                                정규분포 확률 활용</p>
+                        </div>
+                        <div class="col-3 paddingLeftRight line-right ">
+                            <h3 class="font-size40 font-color-gray3">관리 항목</h3>
+                            <div class="font-size60 font-color-black font-bold flexJustifyCenter height100 marginTop30">
+                                <span>
+                                    <em class="font-40 bold" id="selected_subdata">탄력</em>,
+                                    <em class="font-40 bold" id="selected_subdata2">주름</em>
+
+                                </span>
+                            </div>
+                            <p class="font-size30 default-line2 textAlignCenter marginTop30">측정 결과 기반의 상위 고민</p>
+                        </div>
+                        <div class="col-6 paddingLeftRight ">
+                            <h3 class="font-size40 font-color-gray3">현재 상태</h3>
+                            <ul id="skinScoreList" class="flexWrapper gap28 marginTop30">
+                                <li class="item-box" data-range="0-20">집중관리</li>
+                                <li class="item-box" data-range="20-40">관심필요</li>
+                                <li class="item-box" data-range="40-60">보통</li>
+                                <li class="item-box" data-range="60-80">좋음</li>
+                                <li class="item-box active" data-range="80-100">매우좋음</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-item">
+                    <h2 class="title">2. 피부 타입</h2>
+                    <div class="row-item-content flexWrapper">
+                        <div class="col-3  line-right paddingLeftRight20">
+                            <div class="flex-container">
+                                <h3 class="font-size40 font-color-gray3 tzone">T존</h3>
+                                <p class="font-size40 marginTop10 skin-type" id="t_zone_result">수분 부족 건성</p>
+                            </div>
+                            <div class="graph-item paddingLeftRight">
+                                <img src="./resource/images/print/graph-001.svg" alt="T존 그래프">
+                            </div>
+                        </div>
+                        <div class="col-3  line-right paddingLeftRight20">
+                            <div class="flex-container">
+                            <h3 class="font-size40 font-color-gray3 tzone" >U존</h3>
+                            <p class="font-size40 marginTop10 skin-type" id="u_zone_result">유수분 균형 중성</p>
+                            </div>                            
+                            <div class="graph-item paddingLeftRight">
+                                <img src="./resource/images/print/graph-001.svg" alt="U존 그래프">
+                            </div>
+                        </div>
+                        <div class="col-6  flexWrapper flexAlignCenter paddingLeftRight">
+                            <div class="img-box ">
+                                <img src="./resource/images/print/img_001.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-item">
+                    <h2 class="title">3. 분석결과</h2>
+                    <div class="row-item-content flexWrapper">
+                        <div class="col-2_5">
+                            <div class="paddingLeftRight20">
+                                <h3 class="font-size40 font-color-gray3">Aging</h3>
+                                <canvas class="canvas2" width="160" height="210" id="aging_chart" ></canvas>
+                                <!-- <div class="graph-item height520 ">
+                                    <img src="./resource/images/print/graph-003.svg" alt="Aging 그래프">
+                                </div> -->
+                            </div>
+                            <p class="font-size26 paddingLeftRight20 marginTop30">
+                                <em class="font-bold">미래주름</em> : MARK-VU 광택광으로 측정한
+                                주름으로 시간이 지나면서 생겨날 수
+                                있는 주름
+                            </p>
+                        </div>
+                        <div class="col-2_4">
+                            <div class="paddingLeftRight20 ">
+                                <h3 class="font-size40 font-color-gray3">Pigmentation</h3>
+                                <canvas class="canvas2" width="130" height="210" id="pigmentation_chart" ></canvas>
+                                <!-- <div class="graph-item height520 ">
+                                    <img src="./resource/images/print/graph-004.svg" alt="Pigmentation 그래프">
+                                </div> -->
+                            </div>
+                            <p class="font-size26 paddingLeftRight20 marginTop30">
+                                <em class="font-bold">멜라닌</em> : MARK-VU UV광으로 확인한
+                                겉으로 보이지 않는 피부 내 깊은
+                                색소 침착.
+                            </p>
+                        </div>
+                        <div class="col-2_5">
+                            <div class="paddingLeftRight20 ">
+                                <h3 class="font-size40 font-color-gray3">Sensitivity</h3>
+                                <canvas class="canvas2" width="150" height="210" id="sensitivity_chart" ></canvas>
+                                <!-- <div class="graph-item height520 ">
+                                    <img src="./resource/images/print/graph-005.svg" alt="Sensitivity 그래프">
+                                </div> -->
+                            </div>
+                            <p class="font-size26 paddingLeftRight20 marginTop30">
+                                <em class="font-bold">경피수분손실도</em> : 피부 수분 증발의 손실
+                                정도를 나타냄. 값이 낮을수록 건조, 피부
+                                장벽 손상, 민감성 피부를 나타냄
+                            </p>
+                        </div>
+                        <div class="col-2_4 ">
+                            <div class="paddingLeftRight20 line-right">
+                                <h3 class="font-size40 font-color-gray3 ">Sebum</h3>
+                                <canvas class="canvas2" width="130" height="210" id="sebum_chart" ></canvas>
+                                <!-- <div class="graph-item height520">
+                                    <img src="./resource/images/print/graph-006.svg" alt="Sebum 그래프">
+                                </div> -->
+                            </div>
+                            <p class="font-size26 paddingLeftRight20 marginTop30">                                
+                                <em class="font-bold">포피린</em> : 피지분비가 많은 곳에서 발견
+                                됨. 포피린 과다 축척은 피부 염증,
+                                여드름 발생과 연관됨
+                            </p>
+                        </div>
+                        <div class="col-2_3 paddingLeftRight">
+                            <h3 class="font-size40 font-color-gray3">
+                                Score
+                                <span class="subtext">Categorization</span>
+                            </h3>
+                            <ul class="level-list marginTop50">
+                                <li class="level-color1" style="font-size: 10px;">매우 좋음(80~100)</li>
+                                <li class="level-color2" style="font-size: 10px;">좋음(60~80)</li>
+                                <li class="level-color3" style="font-size: 10px;">보통(40~60)</li>
+                                <li class="level-color4" style="font-size: 10px;">관심 필요(20~40)</li>
+                                <li class="level-color5" style="font-size: 10px;">집중 관리(0~20)</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row-item">
+                    <h2 class="title">3. 뷰티 루틴 제안</h2>
+                    <div class="row-item-content flexWrapGap30 flexWrap">
+                        <div class="col-6">
+                            <h3 class="font-size50 font-bold">1. 스킨 케어 루틴 제안</h3>
+                            <ul class="list-style">
+                                <li>스킨→에센스(V&A 안티옥시던트 래디언스 앰플/비타티놀)</li>
+                                <li>라→크네즈림(크바쿠림치스올킨/아미토스베트리활어용)→페이스오일</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="font-size50 font-bold">3. OOO 제안</h3>
+                            <ul class="list-style">
+                                <li>관련 내용 요약 기술, 관련 내용 요약 기술,</li>
+                                <li>관련 내용 요약 기술, 관련 내용 요약 기술,</li>
+                                <li>관련 내용 요약 기술, 관련 내용 요약 기술,</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="font-size50 font-bold">2. 생활 루틴 제안</h3>
+                            <ul class="list-style">
+                                <li>카페인 줄이기(커피 1잔/일), 멀티 비타민 섭취</li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <h3 class="font-size50 font-bold">4. OOOO 제안</h3>
+                            <ul class="list-style">
+                                <li>관련 내용 요약 기술, 관련 내용 요약 기술</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+            <footer>
+                <div class="footer-box">
+                    <div class="flexWrapper flexJustifyEnd">
+                        <div class="sing-box">성명:</div>
+                    </div>
+                    <div class="copyright">Copyright 2024. Amorepacific all rights reserved.</div>
+                </div>
+            </footer>
+        </section>
+    </div>
+</body>
+
+</html>
+
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/print001.js"></script>

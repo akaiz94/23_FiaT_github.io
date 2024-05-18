@@ -1,0 +1,437 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>직접 방문</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="skey">고유키</th>
+                    <th data-id="reg_date">등록일</th>
+                    <th data-id="rsvn_date">예약일</th>
+                    <th data-id="rsvn_time">예약시각</th>
+                    <th data-id="name">이름</th>
+                    <th data-id="course_flg ">진행상태</th>
+                    <th data-id="phone">전화번호</th>
+                    <th data-id="sex">성별</th>
+                    <!--<th data-id="birthdate">생일</th>
+                    <th data-id="birthdatetp">음/양</th>
+                    <th data-id="cstmid">통합고객아이디</th>
+                    <th data-id="ucstmid">통합고객번호</th>
+                    <th data-id="userkey">사용자키</th>
+                    <th data-id="surveyno">설문번호</th>
+                    <th data-id="progress_flg ">진행상태</th>
+                    <th data-id="vst_path">방문경로</th>
+                    <th data-id="vst_txt">방문경로 _텍스트</th>
+                    <th data-id="create_dt">생성일</th>
+                    <th data-id="update_dt">수정일</th>
+                    <th data-id="email">이메일</th>
+                    <th data-id="comment">코멘트</th>
+                    <th data-id="group_id"></th>
+                    <th data-id="programcode"></th>
+                    <th data-id="apnonid">비회원 회원 구분</th>
+                    <th data-id="brandcourse">아이오페랩, 시티랩 구분</th>-->
+                </tr>
+                </thead>
+                <tbody id="sch_direct_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="sch_direct_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.skey}}</td><!-- 고유키 -->
+                        <td>{{this.reg_date}}</td><!-- 등록일 -->
+                        <td>{{this.rsvn_date}}</td><!-- 예약일 -->
+                        <td>{{this.rsvn_time}}</td><!-- 예약시각 -->
+                        <td>{{this.name}}</td><!-- 이름 -->
+                        <td>{{this.course_flg }}</td><!-- 진행상태 -->
+                        <td>{{this.phone}}</td><!-- 전화번호 -->
+                        <td>{{this.sex}}</td><!-- 성별 -->
+                        <!--<td>{{this.birthdate}}</td>&lt;!&ndash; 생일 &ndash;&gt;
+                        <td>{{this.birthdatetp}}</td>&lt;!&ndash; 음/양 &ndash;&gt;
+                        <td>{{this.cstmid}}</td>&lt;!&ndash; 통합고객아이디 &ndash;&gt;
+                        <td>{{this.ucstmid}}</td>&lt;!&ndash; 통합고객번호 &ndash;&gt;
+                        <td>{{this.userkey}}</td>&lt;!&ndash; 사용자키 &ndash;&gt;
+                        <td>{{this.surveyno}}</td>&lt;!&ndash; 설문번호 &ndash;&gt;
+                        <td>{{this.progress_flg }}</td>&lt;!&ndash; 진행상태 &ndash;&gt;
+                        <td>{{this.vst_path}}</td>&lt;!&ndash; 방문경로 &ndash;&gt;
+                        <td>{{this.vst_txt}}</td>&lt;!&ndash; 방문경로 _텍스트 &ndash;&gt;
+                        <td>{{this.create_dt}}</td>&lt;!&ndash; 생성일 &ndash;&gt;
+                        <td>{{this.update_dt}}</td>&lt;!&ndash; 수정일 &ndash;&gt;
+                        <td>{{this.email}}</td>&lt;!&ndash; 이메일 &ndash;&gt;
+                        <td>{{this.comment}}</td>&lt;!&ndash; 코멘트 &ndash;&gt;
+                        <td>{{this.group_id}}</td>&lt;!&ndash;  &ndash;&gt;
+                        <td>{{this.programcode}}</td>&lt;!&ndash;  &ndash;&gt;
+                        <td>{{this.apnonid}}</td>&lt;!&ndash; 비회원 회원 구분 &ndash;&gt;
+                        <td>{{this.brandcourse}}</td>&lt;!&ndash; 아이오페랩, 시티랩 구분 &ndash;&gt;-->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="skey">고유키:</label>
+                        <span data-id="skey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reg_date">등록일:</label>
+                        <span data-id="reg_date"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rsvn_date">예약일:</label>
+                        <span data-id="rsvn_date"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rsvn_time">예약시각:</label>
+                        <span data-id="rsvn_time"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">이름:</label>
+                        <span data-id="name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="course_flg ">진행상태:</label>
+                        <span data-id="course_flg "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phone">전화번호:</label>
+                        <span data-id="phone"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="sex">성별:</label>
+                        <span data-id="sex"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="birthdate">생일:</label>
+                        <span data-id="birthdate"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="birthdatetp">음/양:</label>
+                        <span data-id="birthdatetp"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cstmid">통합고객아이디:</label>
+                        <span data-id="cstmid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ucstmid">통합고객번호:</label>
+                        <span data-id="ucstmid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="userkey">사용자키:</label>
+                        <span data-id="userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveyno">설문번호:</label>
+                        <span data-id="surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="progress_flg ">진행상태:</label>
+                        <span data-id="progress_flg "></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="vst_path">방문경로:</label>
+                        <span data-id="vst_path"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="vst_txt">방문경로 _텍스트:</label>
+                        <span data-id="vst_txt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">생성일:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="update_dt">수정일:</label>
+                        <span data-id="update_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email">이메일:</label>
+                        <span data-id="email"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="comment">코멘트:</label>
+                        <span data-id="comment"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="group_id">:</label>
+                        <span data-id="group_id"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="programcode">:</label>
+                        <span data-id="programcode"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="apnonid">비회원 회원 구분:</label>
+                        <span data-id="apnonid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="brandcourse">아이오페랩, 시티랩 구분:</label>
+                        <span data-id="brandcourse"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="sch_direct_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="skey">고유키</label>
+                            <input type="text" class="form-control" id="skey" name='skey' minlength=2 required
+                                   placeholder="고유키">
+                        </div>
+                        <div class="form-group">
+                            <label for="reg_date">등록일</label>
+                            <input type="text" class="form-control" id="reg_date" name='reg_date' minlength=2 required
+                                   placeholder="등록일">
+                        </div>
+                        <div class="form-group">
+                            <label for="rsvn_date">예약일</label>
+                            <input type="text" class="form-control" id="rsvn_date" name='rsvn_date' minlength=2 required
+                                   placeholder="예약일">
+                        </div>
+                        <div class="form-group">
+                            <label for="rsvn_time">예약시각</label>
+                            <input type="text" class="form-control" id="rsvn_time" name='rsvn_time' minlength=2 required
+                                   placeholder="예약시각">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" id="name" name='name' minlength=2 required
+                                   placeholder="이름">
+                        </div>
+                        <div class="form-group">
+                            <label for="course_flg ">진행상태</label>
+                            <input type="text" class="form-control" id="course_flg " name='course_flg ' minlength=2
+                                   required
+                                   placeholder="진행상태">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">전화번호</label>
+                            <input type="text" class="form-control" id="phone" name='phone' minlength=2 required
+                                   placeholder="전화번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">성별</label>
+                            <input type="text" class="form-control" id="sex" name='sex' minlength=2 required
+                                   placeholder="성별">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">생일</label>
+                            <input type="text" class="form-control" id="birthdate" name='birthdate' minlength=2 required
+                                   placeholder="생일">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdatetp">음/양</label>
+                            <input type="text" class="form-control" id="birthdatetp" name='birthdatetp' minlength=2
+                                   required
+                                   placeholder="음/양">
+                        </div>
+                        <div class="form-group">
+                            <label for="cstmid">통합고객아이디</label>
+                            <input type="text" class="form-control" id="cstmid" name='cstmid' minlength=2 required
+                                   placeholder="통합고객아이디">
+                        </div>
+                        <div class="form-group">
+                            <label for="ucstmid">통합고객번호</label>
+                            <input type="text" class="form-control" id="ucstmid" name='ucstmid' minlength=2 required
+                                   placeholder="통합고객번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="userkey">사용자키</label>
+                            <input type="text" class="form-control" id="userkey" name='userkey' minlength=2 required
+                                   placeholder="사용자키">
+                        </div>
+                        <div class="form-group">
+                            <label for="surveyno">설문번호</label>
+                            <input type="text" class="form-control" id="surveyno" name='surveyno' minlength=2 required
+                                   placeholder="설문번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="progress_flg ">진행상태</label>
+                            <input type="text" class="form-control" id="progress_flg " name='progress_flg ' minlength=2
+                                   required
+                                   placeholder="진행상태">
+                        </div>
+                        <div class="form-group">
+                            <label for="vst_path">방문경로</label>
+                            <input type="text" class="form-control" id="vst_path" name='vst_path' minlength=2 required
+                                   placeholder="방문경로">
+                        </div>
+                        <div class="form-group">
+                            <label for="vst_txt">방문경로 _텍스트</label>
+                            <input type="text" class="form-control" id="vst_txt" name='vst_txt' minlength=2 required
+                                   placeholder="방문경로 _텍스트">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">생성일</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="생성일">
+                        </div>
+                        <div class="form-group">
+                            <label for="update_dt">수정일</label>
+                            <input type="text" class="form-control" id="update_dt" name='update_dt' minlength=2 required
+                                   placeholder="수정일">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="text" class="form-control" id="email" name='email' minlength=2 required
+                                   placeholder="이메일">
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">코멘트</label>
+                            <input type="text" class="form-control" id="comment" name='comment' minlength=2 required
+                                   placeholder="코멘트">
+                        </div>
+                        <div class="form-group">
+                            <label for="group_id"></label>
+                            <input type="text" class="form-control" id="group_id" name='group_id' minlength=2 required
+                                   placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="programcode"></label>
+                            <input type="text" class="form-control" id="programcode" name='programcode' minlength=2
+                                   required
+                                   placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="apnonid">비회원 회원 구분</label>
+                            <input type="text" class="form-control" id="apnonid" name='apnonid' minlength=2 required
+                                   placeholder="비회원 회원 구분">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandcourse">아이오페랩, 시티랩 구분</label>
+                            <input type="text" class="form-control" id="brandcourse" name='brandcourse' minlength=2
+                                   required
+                                   placeholder="아이오페랩, 시티랩 구분">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/sch_direct.js"></script>

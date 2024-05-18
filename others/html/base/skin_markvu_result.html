@@ -1,0 +1,1740 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>목록</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="surveyno">고유번호</th>
+                    <th data-id="userkey">사용자 키</th>
+                    <th data-id="dbid">마크뷰DB 식별키</th>
+                    <th data-id="custname">고객명</th>
+                    <th data-id="sex">성별</th>
+                    <th data-id="birthday">생년월일</th>
+                    <th data-id="fpixelno_a">픽셀_이마</th>
+                    <th data-id="fpixelno_b">픽셀_코</th>
+                    <th data-id="fpixelno_c">픽셀_눈꼬리_우</th>
+                    <th data-id="fpixelno_d">픽셀_눈꼬리_좌</th>
+                    <th data-id="fpixelno_e">픽셀_눈밑_우</th>
+                    <th data-id="fpixelno_f">픽셀_눈밑_좌</th>
+                    <th data-id="fpixelno_g">픽셀_볼_우</th>
+                    <th data-id="fpixelno_h">픽셀_볼_좌</th>
+                    <th data-id="fpore_a">모공_이마</th>
+                    <th data-id="fpore_b">모공_코</th>
+                    <th data-id="fpore_c">모공_눈꼬리_우</th>
+                    <th data-id="fpore_d">모공_눈꼬리_좌</th>
+                    <th data-id="fpore_e">모공_눈밑_우</th>
+                    <th data-id="fpore_f">모공_눈밑_좌</th>
+                    <th data-id="fpore_g">모공_볼_우</th>
+                    <th data-id="fpore_h">모공_볼_좌</th>
+                    <th data-id="fwrinkle_a">주름_이마</th>
+                    <th data-id="fwrinkle_b">주름_코</th>
+                    <th data-id="fwrinkle_c">주름_눈꼬리_우</th>
+                    <th data-id="fwrinkle_d">주름_눈꼬리_좌</th>
+                    <th data-id="fwrinkle_e">주름_눈밑_우</th>
+                    <th data-id="fwrinkle_f">주름_눈밑_좌</th>
+                    <th data-id="fwrinkle_g">주름_볼_우</th>
+                    <th data-id="fwrinkle_h">주름_볼_좌</th>
+                    <th data-id="ffuturewrinkle_a">미래주름_이마</th>
+                    <th data-id="ffuturewrinkle_b">미래주름_코</th>
+                    <th data-id="ffuturewrinkle_c">미래주름_눈꼬리_우</th>
+                    <th data-id="ffuturewrinkle_d">미래주름_눈꼬리_좌</th>
+                    <th data-id="ffuturewrinkle_e">미래주름_눈밑_우</th>
+                    <th data-id="ffuturewrinkle_f">미래주름_눈밑_좌</th>
+                    <th data-id="ffuturewrinkle_g">미래주름_볼_우</th>
+                    <th data-id="ffuturewrinkle_h">미래주름_볼_좌</th>
+                    <th data-id="fpigmentation_a">색소침착_이마</th>
+                    <th data-id="fpigmentation_b">색소침착_코</th>
+                    <th data-id="fpigmentation_c">색소침착_눈꼬리_우</th>
+                    <th data-id="fpigmentation_d">색소침착_눈꼬리_좌</th>
+                    <th data-id="fpigmentation_e">색소침착_눈밑_우</th>
+                    <th data-id="fpigmentation_f">색소침착_눈밑_좌</th>
+                    <th data-id="fpigmentation_g">색소침착_볼_우</th>
+                    <th data-id="fpigmentation_h">색소침착_볼_좌</th>
+                    <th data-id="fmelanin_a">멜라닌_이마</th>
+                    <th data-id="fmelanin_b">멜라닌_코</th>
+                    <th data-id="fmelanin_c">멜라닌_눈꼬리_우</th>
+                    <th data-id="fmelanin_d">멜라닌_눈꼬리_좌</th>
+                    <th data-id="fmelanin_e">멜라닌_눈밑_우</th>
+                    <th data-id="fmelanin_f">멜라닌_눈밑_좌</th>
+                    <th data-id="fmelanin_g">멜라닌_볼_우</th>
+                    <th data-id="fmelanin_h">멜라닌_볼_좌</th>
+                    <th data-id="fredness_a">붉은기_이마</th>
+                    <th data-id="fredness_b">붉은기_코</th>
+                    <th data-id="fredness_c">붉은기_눈꼬리_우</th>
+                    <th data-id="fredness_d">붉은기_눈꼬리_좌</th>
+                    <th data-id="fredness_e">붉은기_눈밑_우</th>
+                    <th data-id="fredness_f">붉은기_눈밑_좌</th>
+                    <th data-id="fredness_g">붉은기_볼_우</th>
+                    <th data-id="fredness_h">붉은기_볼_좌</th>
+                    <th data-id="fbrown_a">브라운색소_이마</th>
+                    <th data-id="fbrown_b">브라운색소_코</th>
+                    <th data-id="fbrown_c">브라운색소_눈꼬리_우</th>
+                    <th data-id="fbrown_d">브라운색소_눈꼬리_좌</th>
+                    <th data-id="fbrown_e">브라운색소_눈밑_우</th>
+                    <th data-id="fbrown_f">브라운색소_눈밑_좌</th>
+                    <th data-id="fbrown_g">브라운색소_볼_우</th>
+                    <th data-id="fbrown_h">브라운색소_볼_좌</th>
+                    <th data-id="fsebum_a">피지_이마</th>
+                    <th data-id="fsebum_b">피지_코</th>
+                    <th data-id="fsebum_c">피지_눈꼬리_우</th>
+                    <th data-id="fsebum_d">피지_눈꼬리_좌</th>
+                    <th data-id="fsebum_e">피지_눈밑_우</th>
+                    <th data-id="fsebum_f">피지_눈밑_좌</th>
+                    <th data-id="fsebum_g">피지_볼_우</th>
+                    <th data-id="fsebum_h">피지_볼_좌</th>
+                    <th data-id="fporphyrin_a">포피린_이마</th>
+                    <th data-id="fporphyrin_b">포피린_코</th>
+                    <th data-id="fporphyrin_c">포피린_눈꼬리_우</th>
+                    <th data-id="fporphyrin_d">포피린_눈꼬리_좌</th>
+                    <th data-id="fporphyrin_e">포피린_눈밑_우</th>
+                    <th data-id="fporphyrin_f">포피린_눈밑_좌</th>
+                    <th data-id="fporphyrin_g">포피린_볼_우</th>
+                    <th data-id="fporphyrin_h">포피린_볼_좌</th>
+                    <th data-id="fskincolor_a">피부톤_이마</th>
+                    <th data-id="fskincolor_b">피부톤_코</th>
+                    <th data-id="fskincolor_c">피부톤_눈꼬리_우</th>
+                    <th data-id="fskincolor_d">피부톤_눈꼬리_좌</th>
+                    <th data-id="fskincolor_e">피부톤_눈밑_우</th>
+                    <th data-id="fskincolor_f">피부톤_눈밑_좌</th>
+                    <th data-id="fskincolor_g">피부톤_볼_우</th>
+                    <th data-id="fskincolor_h">피부톤_볼_좌</th>
+                    <th data-id="fslarea_a">광채면적_이마</th>
+                    <th data-id="fslarea_b">광채면적_코</th>
+                    <th data-id="fslarea_c">광채면적_눈꼬리_우</th>
+                    <th data-id="fslarea_d">광채면적_눈꼬리_좌</th>
+                    <th data-id="fslarea_e">광채면적_눈밑_우</th>
+                    <th data-id="fslarea_f">광채면적_눈밑_좌</th>
+                    <th data-id="fslarea_g">광채면적_볼_우</th>
+                    <th data-id="fslarea_h">광채면적_볼_좌</th>
+                    <th data-id="fslcolor_a">광채밝기_이마</th>
+                    <th data-id="fslcolor_b">광채밝기_코</th>
+                    <th data-id="fslcolor_c">광채밝기_눈꼬리_우</th>
+                    <th data-id="fslcolor_d">광채밝기_눈꼬리_좌</th>
+                    <th data-id="fslcolor_e">광채밝기_눈밑_우</th>
+                    <th data-id="fslcolor_f">광채밝기_눈밑_좌</th>
+                    <th data-id="fslcolor_g">광채밝기_볼_우</th>
+                    <th data-id="fslcolor_h">광채밝기_볼_좌</th>
+                    <th data-id="fsubun_a">수분_이마</th>
+                    <th data-id="fsubun_b">수분_코</th>
+                    <th data-id="fsubun_c">수분_눈꼬리_우</th>
+                    <th data-id="fsubun_d">수분_눈꼬리_좌</th>
+                    <th data-id="fsubun_e">수분_눈밑_U존</th>
+                    <th data-id="fsubun_f">수분_눈밑_U존</th>
+                    <th data-id="fsubun_g">수분_볼_우</th>
+                    <th data-id="fsubun_h">수분_볼_T존</th>
+                    <th data-id="create_dt"></th>
+                    <th data-id="update_dt"></th>
+                </tr>
+                </thead>
+                <tbody id="skin_markvu_result_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="skin_markvu_result_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.surveyno}}</td><!-- 고유번호 -->
+                        <td>{{this.userkey}}</td><!-- 사용자 키 -->
+                        <td>{{this.dbid}}</td><!-- 마크뷰DB 식별키 -->
+                        <td>{{this.custname}}</td><!-- 고객명 -->
+                        <td>{{this.sex}}</td><!-- 성별 -->
+                        <td>{{this.birthday}}</td><!-- 생년월일 -->
+                        <td>{{this.fpixelno_a}}</td><!-- 픽셀_이마 -->
+                        <td>{{this.fpixelno_b}}</td><!-- 픽셀_코 -->
+                        <td>{{this.fpixelno_c}}</td><!-- 픽셀_눈꼬리_우 -->
+                        <td>{{this.fpixelno_d}}</td><!-- 픽셀_눈꼬리_좌 -->
+                        <td>{{this.fpixelno_e}}</td><!-- 픽셀_눈밑_우 -->
+                        <td>{{this.fpixelno_f}}</td><!-- 픽셀_눈밑_좌 -->
+                        <td>{{this.fpixelno_g}}</td><!-- 픽셀_볼_우 -->
+                        <td>{{this.fpixelno_h}}</td><!-- 픽셀_볼_좌 -->
+                        <td>{{this.fpore_a}}</td><!-- 모공_이마 -->
+                        <td>{{this.fpore_b}}</td><!-- 모공_코 -->
+                        <td>{{this.fpore_c}}</td><!-- 모공_눈꼬리_우 -->
+                        <td>{{this.fpore_d}}</td><!-- 모공_눈꼬리_좌 -->
+                        <td>{{this.fpore_e}}</td><!-- 모공_눈밑_우 -->
+                        <td>{{this.fpore_f}}</td><!-- 모공_눈밑_좌 -->
+                        <td>{{this.fpore_g}}</td><!-- 모공_볼_우 -->
+                        <td>{{this.fpore_h}}</td><!-- 모공_볼_좌 -->
+                        <td>{{this.fwrinkle_a}}</td><!-- 주름_이마 -->
+                        <td>{{this.fwrinkle_b}}</td><!-- 주름_코 -->
+                        <td>{{this.fwrinkle_c}}</td><!-- 주름_눈꼬리_우 -->
+                        <td>{{this.fwrinkle_d}}</td><!-- 주름_눈꼬리_좌 -->
+                        <td>{{this.fwrinkle_e}}</td><!-- 주름_눈밑_우 -->
+                        <td>{{this.fwrinkle_f}}</td><!-- 주름_눈밑_좌 -->
+                        <td>{{this.fwrinkle_g}}</td><!-- 주름_볼_우 -->
+                        <td>{{this.fwrinkle_h}}</td><!-- 주름_볼_좌 -->
+                        <td>{{this.ffuturewrinkle_a}}</td><!-- 미래주름_이마 -->
+                        <td>{{this.ffuturewrinkle_b}}</td><!-- 미래주름_코 -->
+                        <td>{{this.ffuturewrinkle_c}}</td><!-- 미래주름_눈꼬리_우 -->
+                        <td>{{this.ffuturewrinkle_d}}</td><!-- 미래주름_눈꼬리_좌 -->
+                        <td>{{this.ffuturewrinkle_e}}</td><!-- 미래주름_눈밑_우 -->
+                        <td>{{this.ffuturewrinkle_f}}</td><!-- 미래주름_눈밑_좌 -->
+                        <td>{{this.ffuturewrinkle_g}}</td><!-- 미래주름_볼_우 -->
+                        <td>{{this.ffuturewrinkle_h}}</td><!-- 미래주름_볼_좌 -->
+                        <td>{{this.fpigmentation_a}}</td><!-- 색소침착_이마 -->
+                        <td>{{this.fpigmentation_b}}</td><!-- 색소침착_코 -->
+                        <td>{{this.fpigmentation_c}}</td><!-- 색소침착_눈꼬리_우 -->
+                        <td>{{this.fpigmentation_d}}</td><!-- 색소침착_눈꼬리_좌 -->
+                        <td>{{this.fpigmentation_e}}</td><!-- 색소침착_눈밑_우 -->
+                        <td>{{this.fpigmentation_f}}</td><!-- 색소침착_눈밑_좌 -->
+                        <td>{{this.fpigmentation_g}}</td><!-- 색소침착_볼_우 -->
+                        <td>{{this.fpigmentation_h}}</td><!-- 색소침착_볼_좌 -->
+                        <td>{{this.fmelanin_a}}</td><!-- 멜라닌_이마 -->
+                        <td>{{this.fmelanin_b}}</td><!-- 멜라닌_코 -->
+                        <td>{{this.fmelanin_c}}</td><!-- 멜라닌_눈꼬리_우 -->
+                        <td>{{this.fmelanin_d}}</td><!-- 멜라닌_눈꼬리_좌 -->
+                        <td>{{this.fmelanin_e}}</td><!-- 멜라닌_눈밑_우 -->
+                        <td>{{this.fmelanin_f}}</td><!-- 멜라닌_눈밑_좌 -->
+                        <td>{{this.fmelanin_g}}</td><!-- 멜라닌_볼_우 -->
+                        <td>{{this.fmelanin_h}}</td><!-- 멜라닌_볼_좌 -->
+                        <td>{{this.fredness_a}}</td><!-- 붉은기_이마 -->
+                        <td>{{this.fredness_b}}</td><!-- 붉은기_코 -->
+                        <td>{{this.fredness_c}}</td><!-- 붉은기_눈꼬리_우 -->
+                        <td>{{this.fredness_d}}</td><!-- 붉은기_눈꼬리_좌 -->
+                        <td>{{this.fredness_e}}</td><!-- 붉은기_눈밑_우 -->
+                        <td>{{this.fredness_f}}</td><!-- 붉은기_눈밑_좌 -->
+                        <td>{{this.fredness_g}}</td><!-- 붉은기_볼_우 -->
+                        <td>{{this.fredness_h}}</td><!-- 붉은기_볼_좌 -->
+                        <td>{{this.fbrown_a}}</td><!-- 브라운색소_이마 -->
+                        <td>{{this.fbrown_b}}</td><!-- 브라운색소_코 -->
+                        <td>{{this.fbrown_c}}</td><!-- 브라운색소_눈꼬리_우 -->
+                        <td>{{this.fbrown_d}}</td><!-- 브라운색소_눈꼬리_좌 -->
+                        <td>{{this.fbrown_e}}</td><!-- 브라운색소_눈밑_우 -->
+                        <td>{{this.fbrown_f}}</td><!-- 브라운색소_눈밑_좌 -->
+                        <td>{{this.fbrown_g}}</td><!-- 브라운색소_볼_우 -->
+                        <td>{{this.fbrown_h}}</td><!-- 브라운색소_볼_좌 -->
+                        <td>{{this.fsebum_a}}</td><!-- 피지_이마 -->
+                        <td>{{this.fsebum_b}}</td><!-- 피지_코 -->
+                        <td>{{this.fsebum_c}}</td><!-- 피지_눈꼬리_우 -->
+                        <td>{{this.fsebum_d}}</td><!-- 피지_눈꼬리_좌 -->
+                        <td>{{this.fsebum_e}}</td><!-- 피지_눈밑_우 -->
+                        <td>{{this.fsebum_f}}</td><!-- 피지_눈밑_좌 -->
+                        <td>{{this.fsebum_g}}</td><!-- 피지_볼_우 -->
+                        <td>{{this.fsebum_h}}</td><!-- 피지_볼_좌 -->
+                        <td>{{this.fporphyrin_a}}</td><!-- 포피린_이마 -->
+                        <td>{{this.fporphyrin_b}}</td><!-- 포피린_코 -->
+                        <td>{{this.fporphyrin_c}}</td><!-- 포피린_눈꼬리_우 -->
+                        <td>{{this.fporphyrin_d}}</td><!-- 포피린_눈꼬리_좌 -->
+                        <td>{{this.fporphyrin_e}}</td><!-- 포피린_눈밑_우 -->
+                        <td>{{this.fporphyrin_f}}</td><!-- 포피린_눈밑_좌 -->
+                        <td>{{this.fporphyrin_g}}</td><!-- 포피린_볼_우 -->
+                        <td>{{this.fporphyrin_h}}</td><!-- 포피린_볼_좌 -->
+                        <td>{{this.fskincolor_a}}</td><!-- 피부톤_이마 -->
+                        <td>{{this.fskincolor_b}}</td><!-- 피부톤_코 -->
+                        <td>{{this.fskincolor_c}}</td><!-- 피부톤_눈꼬리_우 -->
+                        <td>{{this.fskincolor_d}}</td><!-- 피부톤_눈꼬리_좌 -->
+                        <td>{{this.fskincolor_e}}</td><!-- 피부톤_눈밑_우 -->
+                        <td>{{this.fskincolor_f}}</td><!-- 피부톤_눈밑_좌 -->
+                        <td>{{this.fskincolor_g}}</td><!-- 피부톤_볼_우 -->
+                        <td>{{this.fskincolor_h}}</td><!-- 피부톤_볼_좌 -->
+                        <td>{{this.fslarea_a}}</td><!-- 광채면적_이마 -->
+                        <td>{{this.fslarea_b}}</td><!-- 광채면적_코 -->
+                        <td>{{this.fslarea_c}}</td><!-- 광채면적_눈꼬리_우 -->
+                        <td>{{this.fslarea_d}}</td><!-- 광채면적_눈꼬리_좌 -->
+                        <td>{{this.fslarea_e}}</td><!-- 광채면적_눈밑_우 -->
+                        <td>{{this.fslarea_f}}</td><!-- 광채면적_눈밑_좌 -->
+                        <td>{{this.fslarea_g}}</td><!-- 광채면적_볼_우 -->
+                        <td>{{this.fslarea_h}}</td><!-- 광채면적_볼_좌 -->
+                        <td>{{this.fslcolor_a}}</td><!-- 광채밝기_이마 -->
+                        <td>{{this.fslcolor_b}}</td><!-- 광채밝기_코 -->
+                        <td>{{this.fslcolor_c}}</td><!-- 광채밝기_눈꼬리_우 -->
+                        <td>{{this.fslcolor_d}}</td><!-- 광채밝기_눈꼬리_좌 -->
+                        <td>{{this.fslcolor_e}}</td><!-- 광채밝기_눈밑_우 -->
+                        <td>{{this.fslcolor_f}}</td><!-- 광채밝기_눈밑_좌 -->
+                        <td>{{this.fslcolor_g}}</td><!-- 광채밝기_볼_우 -->
+                        <td>{{this.fslcolor_h}}</td><!-- 광채밝기_볼_좌 -->
+                        <td>{{this.fsubun_a}}</td><!-- 수분_이마 -->
+                        <td>{{this.fsubun_b}}</td><!-- 수분_코 -->
+                        <td>{{this.fsubun_c}}</td><!-- 수분_눈꼬리_우 -->
+                        <td>{{this.fsubun_d}}</td><!-- 수분_눈꼬리_좌 -->
+                        <td>{{this.fsubun_e}}</td><!-- 수분_눈밑_U존 -->
+                        <td>{{this.fsubun_f}}</td><!-- 수분_눈밑_U존 -->
+                        <td>{{this.fsubun_g}}</td><!-- 수분_볼_우 -->
+                        <td>{{this.fsubun_h}}</td><!-- 수분_볼_T존 -->
+                        <td>{{this.create_dt}}</td><!--  -->
+                        <td>{{this.update_dt}}</td><!--  -->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="surveyno">고유번호:</label>
+                        <span data-id="surveyno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="userkey">사용자 키:</label>
+                        <span data-id="userkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="dbid">마크뷰DB 식별키:</label>
+                        <span data-id="dbid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="custname">고객명:</label>
+                        <span data-id="custname"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="sex">성별:</label>
+                        <span data-id="sex"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="birthday">생년월일:</label>
+                        <span data-id="birthday"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_a">픽셀_이마:</label>
+                        <span data-id="fpixelno_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_b">픽셀_코:</label>
+                        <span data-id="fpixelno_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_c">픽셀_눈꼬리_우:</label>
+                        <span data-id="fpixelno_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_d">픽셀_눈꼬리_좌:</label>
+                        <span data-id="fpixelno_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_e">픽셀_눈밑_우:</label>
+                        <span data-id="fpixelno_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_f">픽셀_눈밑_좌:</label>
+                        <span data-id="fpixelno_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_g">픽셀_볼_우:</label>
+                        <span data-id="fpixelno_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpixelno_h">픽셀_볼_좌:</label>
+                        <span data-id="fpixelno_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_a">모공_이마:</label>
+                        <span data-id="fpore_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_b">모공_코:</label>
+                        <span data-id="fpore_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_c">모공_눈꼬리_우:</label>
+                        <span data-id="fpore_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_d">모공_눈꼬리_좌:</label>
+                        <span data-id="fpore_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_e">모공_눈밑_우:</label>
+                        <span data-id="fpore_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_f">모공_눈밑_좌:</label>
+                        <span data-id="fpore_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_g">모공_볼_우:</label>
+                        <span data-id="fpore_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpore_h">모공_볼_좌:</label>
+                        <span data-id="fpore_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_a">주름_이마:</label>
+                        <span data-id="fwrinkle_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_b">주름_코:</label>
+                        <span data-id="fwrinkle_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_c">주름_눈꼬리_우:</label>
+                        <span data-id="fwrinkle_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_d">주름_눈꼬리_좌:</label>
+                        <span data-id="fwrinkle_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_e">주름_눈밑_우:</label>
+                        <span data-id="fwrinkle_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_f">주름_눈밑_좌:</label>
+                        <span data-id="fwrinkle_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_g">주름_볼_우:</label>
+                        <span data-id="fwrinkle_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fwrinkle_h">주름_볼_좌:</label>
+                        <span data-id="fwrinkle_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_a">미래주름_이마:</label>
+                        <span data-id="ffuturewrinkle_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_b">미래주름_코:</label>
+                        <span data-id="ffuturewrinkle_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_c">미래주름_눈꼬리_우:</label>
+                        <span data-id="ffuturewrinkle_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_d">미래주름_눈꼬리_좌:</label>
+                        <span data-id="ffuturewrinkle_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_e">미래주름_눈밑_우:</label>
+                        <span data-id="ffuturewrinkle_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_f">미래주름_눈밑_좌:</label>
+                        <span data-id="ffuturewrinkle_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_g">미래주름_볼_우:</label>
+                        <span data-id="ffuturewrinkle_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="ffuturewrinkle_h">미래주름_볼_좌:</label>
+                        <span data-id="ffuturewrinkle_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_a">색소침착_이마:</label>
+                        <span data-id="fpigmentation_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_b">색소침착_코:</label>
+                        <span data-id="fpigmentation_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_c">색소침착_눈꼬리_우:</label>
+                        <span data-id="fpigmentation_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_d">색소침착_눈꼬리_좌:</label>
+                        <span data-id="fpigmentation_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_e">색소침착_눈밑_우:</label>
+                        <span data-id="fpigmentation_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_f">색소침착_눈밑_좌:</label>
+                        <span data-id="fpigmentation_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_g">색소침착_볼_우:</label>
+                        <span data-id="fpigmentation_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fpigmentation_h">색소침착_볼_좌:</label>
+                        <span data-id="fpigmentation_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_a">멜라닌_이마:</label>
+                        <span data-id="fmelanin_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_b">멜라닌_코:</label>
+                        <span data-id="fmelanin_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_c">멜라닌_눈꼬리_우:</label>
+                        <span data-id="fmelanin_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_d">멜라닌_눈꼬리_좌:</label>
+                        <span data-id="fmelanin_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_e">멜라닌_눈밑_우:</label>
+                        <span data-id="fmelanin_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_f">멜라닌_눈밑_좌:</label>
+                        <span data-id="fmelanin_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_g">멜라닌_볼_우:</label>
+                        <span data-id="fmelanin_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fmelanin_h">멜라닌_볼_좌:</label>
+                        <span data-id="fmelanin_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_a">붉은기_이마:</label>
+                        <span data-id="fredness_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_b">붉은기_코:</label>
+                        <span data-id="fredness_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_c">붉은기_눈꼬리_우:</label>
+                        <span data-id="fredness_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_d">붉은기_눈꼬리_좌:</label>
+                        <span data-id="fredness_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_e">붉은기_눈밑_우:</label>
+                        <span data-id="fredness_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_f">붉은기_눈밑_좌:</label>
+                        <span data-id="fredness_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_g">붉은기_볼_우:</label>
+                        <span data-id="fredness_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fredness_h">붉은기_볼_좌:</label>
+                        <span data-id="fredness_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_a">브라운색소_이마:</label>
+                        <span data-id="fbrown_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_b">브라운색소_코:</label>
+                        <span data-id="fbrown_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_c">브라운색소_눈꼬리_우:</label>
+                        <span data-id="fbrown_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_d">브라운색소_눈꼬리_좌:</label>
+                        <span data-id="fbrown_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_e">브라운색소_눈밑_우:</label>
+                        <span data-id="fbrown_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_f">브라운색소_눈밑_좌:</label>
+                        <span data-id="fbrown_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_g">브라운색소_볼_우:</label>
+                        <span data-id="fbrown_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fbrown_h">브라운색소_볼_좌:</label>
+                        <span data-id="fbrown_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_a">피지_이마:</label>
+                        <span data-id="fsebum_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_b">피지_코:</label>
+                        <span data-id="fsebum_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_c">피지_눈꼬리_우:</label>
+                        <span data-id="fsebum_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_d">피지_눈꼬리_좌:</label>
+                        <span data-id="fsebum_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_e">피지_눈밑_우:</label>
+                        <span data-id="fsebum_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_f">피지_눈밑_좌:</label>
+                        <span data-id="fsebum_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_g">피지_볼_우:</label>
+                        <span data-id="fsebum_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsebum_h">피지_볼_좌:</label>
+                        <span data-id="fsebum_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_a">포피린_이마:</label>
+                        <span data-id="fporphyrin_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_b">포피린_코:</label>
+                        <span data-id="fporphyrin_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_c">포피린_눈꼬리_우:</label>
+                        <span data-id="fporphyrin_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_d">포피린_눈꼬리_좌:</label>
+                        <span data-id="fporphyrin_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_e">포피린_눈밑_우:</label>
+                        <span data-id="fporphyrin_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_f">포피린_눈밑_좌:</label>
+                        <span data-id="fporphyrin_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_g">포피린_볼_우:</label>
+                        <span data-id="fporphyrin_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fporphyrin_h">포피린_볼_좌:</label>
+                        <span data-id="fporphyrin_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_a">피부톤_이마:</label>
+                        <span data-id="fskincolor_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_b">피부톤_코:</label>
+                        <span data-id="fskincolor_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_c">피부톤_눈꼬리_우:</label>
+                        <span data-id="fskincolor_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_d">피부톤_눈꼬리_좌:</label>
+                        <span data-id="fskincolor_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_e">피부톤_눈밑_우:</label>
+                        <span data-id="fskincolor_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_f">피부톤_눈밑_좌:</label>
+                        <span data-id="fskincolor_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_g">피부톤_볼_우:</label>
+                        <span data-id="fskincolor_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fskincolor_h">피부톤_볼_좌:</label>
+                        <span data-id="fskincolor_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_a">광채면적_이마:</label>
+                        <span data-id="fslarea_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_b">광채면적_코:</label>
+                        <span data-id="fslarea_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_c">광채면적_눈꼬리_우:</label>
+                        <span data-id="fslarea_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_d">광채면적_눈꼬리_좌:</label>
+                        <span data-id="fslarea_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_e">광채면적_눈밑_우:</label>
+                        <span data-id="fslarea_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_f">광채면적_눈밑_좌:</label>
+                        <span data-id="fslarea_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_g">광채면적_볼_우:</label>
+                        <span data-id="fslarea_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslarea_h">광채면적_볼_좌:</label>
+                        <span data-id="fslarea_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_a">광채밝기_이마:</label>
+                        <span data-id="fslcolor_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_b">광채밝기_코:</label>
+                        <span data-id="fslcolor_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_c">광채밝기_눈꼬리_우:</label>
+                        <span data-id="fslcolor_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_d">광채밝기_눈꼬리_좌:</label>
+                        <span data-id="fslcolor_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_e">광채밝기_눈밑_우:</label>
+                        <span data-id="fslcolor_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_f">광채밝기_눈밑_좌:</label>
+                        <span data-id="fslcolor_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_g">광채밝기_볼_우:</label>
+                        <span data-id="fslcolor_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fslcolor_h">광채밝기_볼_좌:</label>
+                        <span data-id="fslcolor_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_a">수분_이마:</label>
+                        <span data-id="fsubun_a"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_b">수분_코:</label>
+                        <span data-id="fsubun_b"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_c">수분_눈꼬리_우:</label>
+                        <span data-id="fsubun_c"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_d">수분_눈꼬리_좌:</label>
+                        <span data-id="fsubun_d"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_e">수분_눈밑_U존:</label>
+                        <span data-id="fsubun_e"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_f">수분_눈밑_U존:</label>
+                        <span data-id="fsubun_f"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_g">수분_볼_우:</label>
+                        <span data-id="fsubun_g"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsubun_h">수분_볼_T존:</label>
+                        <span data-id="fsubun_h"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="update_dt">:</label>
+                        <span data-id="update_dt"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="skin_markvu_result_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="surveyno">고유번호</label>
+                            <input type="text" class="form-control" id="surveyno" name='surveyno' minlength=2 required
+                                   placeholder="고유번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="userkey">사용자 키</label>
+                            <input type="text" class="form-control" id="userkey" name='userkey' minlength=2 required
+                                   placeholder="사용자 키">
+                        </div>
+                        <div class="form-group">
+                            <label for="dbid">마크뷰DB 식별키</label>
+                            <input type="text" class="form-control" id="dbid" name='dbid' minlength=2 required
+                                   placeholder="마크뷰DB 식별키">
+                        </div>
+                        <div class="form-group">
+                            <label for="custname">고객명</label>
+                            <input type="text" class="form-control" id="custname" name='custname' minlength=2 required
+                                   placeholder="고객명">
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">성별</label>
+                            <input type="text" class="form-control" id="sex" name='sex' minlength=2 required
+                                   placeholder="성별">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">생년월일</label>
+                            <input type="text" class="form-control" id="birthday" name='birthday' minlength=2 required
+                                   placeholder="생년월일">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_a">픽셀_이마</label>
+                            <input type="text" class="form-control" id="fpixelno_a" name='fpixelno_a' minlength=2
+                                   required
+                                   placeholder="픽셀_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_b">픽셀_코</label>
+                            <input type="text" class="form-control" id="fpixelno_b" name='fpixelno_b' minlength=2
+                                   required
+                                   placeholder="픽셀_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_c">픽셀_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fpixelno_c" name='fpixelno_c' minlength=2
+                                   required
+                                   placeholder="픽셀_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_d">픽셀_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fpixelno_d" name='fpixelno_d' minlength=2
+                                   required
+                                   placeholder="픽셀_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_e">픽셀_눈밑_우</label>
+                            <input type="text" class="form-control" id="fpixelno_e" name='fpixelno_e' minlength=2
+                                   required
+                                   placeholder="픽셀_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_f">픽셀_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fpixelno_f" name='fpixelno_f' minlength=2
+                                   required
+                                   placeholder="픽셀_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_g">픽셀_볼_우</label>
+                            <input type="text" class="form-control" id="fpixelno_g" name='fpixelno_g' minlength=2
+                                   required
+                                   placeholder="픽셀_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpixelno_h">픽셀_볼_좌</label>
+                            <input type="text" class="form-control" id="fpixelno_h" name='fpixelno_h' minlength=2
+                                   required
+                                   placeholder="픽셀_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_a">모공_이마</label>
+                            <input type="text" class="form-control" id="fpore_a" name='fpore_a' minlength=2 required
+                                   placeholder="모공_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_b">모공_코</label>
+                            <input type="text" class="form-control" id="fpore_b" name='fpore_b' minlength=2 required
+                                   placeholder="모공_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_c">모공_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fpore_c" name='fpore_c' minlength=2 required
+                                   placeholder="모공_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_d">모공_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fpore_d" name='fpore_d' minlength=2 required
+                                   placeholder="모공_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_e">모공_눈밑_우</label>
+                            <input type="text" class="form-control" id="fpore_e" name='fpore_e' minlength=2 required
+                                   placeholder="모공_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_f">모공_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fpore_f" name='fpore_f' minlength=2 required
+                                   placeholder="모공_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_g">모공_볼_우</label>
+                            <input type="text" class="form-control" id="fpore_g" name='fpore_g' minlength=2 required
+                                   placeholder="모공_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpore_h">모공_볼_좌</label>
+                            <input type="text" class="form-control" id="fpore_h" name='fpore_h' minlength=2 required
+                                   placeholder="모공_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_a">주름_이마</label>
+                            <input type="text" class="form-control" id="fwrinkle_a" name='fwrinkle_a' minlength=2
+                                   required
+                                   placeholder="주름_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_b">주름_코</label>
+                            <input type="text" class="form-control" id="fwrinkle_b" name='fwrinkle_b' minlength=2
+                                   required
+                                   placeholder="주름_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_c">주름_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fwrinkle_c" name='fwrinkle_c' minlength=2
+                                   required
+                                   placeholder="주름_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_d">주름_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fwrinkle_d" name='fwrinkle_d' minlength=2
+                                   required
+                                   placeholder="주름_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_e">주름_눈밑_우</label>
+                            <input type="text" class="form-control" id="fwrinkle_e" name='fwrinkle_e' minlength=2
+                                   required
+                                   placeholder="주름_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_f">주름_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fwrinkle_f" name='fwrinkle_f' minlength=2
+                                   required
+                                   placeholder="주름_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_g">주름_볼_우</label>
+                            <input type="text" class="form-control" id="fwrinkle_g" name='fwrinkle_g' minlength=2
+                                   required
+                                   placeholder="주름_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fwrinkle_h">주름_볼_좌</label>
+                            <input type="text" class="form-control" id="fwrinkle_h" name='fwrinkle_h' minlength=2
+                                   required
+                                   placeholder="주름_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_a">미래주름_이마</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_a" name='ffuturewrinkle_a'
+                                   minlength=2 required
+                                   placeholder="미래주름_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_b">미래주름_코</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_b" name='ffuturewrinkle_b'
+                                   minlength=2 required
+                                   placeholder="미래주름_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_c">미래주름_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_c" name='ffuturewrinkle_c'
+                                   minlength=2 required
+                                   placeholder="미래주름_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_d">미래주름_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_d" name='ffuturewrinkle_d'
+                                   minlength=2 required
+                                   placeholder="미래주름_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_e">미래주름_눈밑_우</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_e" name='ffuturewrinkle_e'
+                                   minlength=2 required
+                                   placeholder="미래주름_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_f">미래주름_눈밑_좌</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_f" name='ffuturewrinkle_f'
+                                   minlength=2 required
+                                   placeholder="미래주름_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_g">미래주름_볼_우</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_g" name='ffuturewrinkle_g'
+                                   minlength=2 required
+                                   placeholder="미래주름_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="ffuturewrinkle_h">미래주름_볼_좌</label>
+                            <input type="text" class="form-control" id="ffuturewrinkle_h" name='ffuturewrinkle_h'
+                                   minlength=2 required
+                                   placeholder="미래주름_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_a">색소침착_이마</label>
+                            <input type="text" class="form-control" id="fpigmentation_a" name='fpigmentation_a'
+                                   minlength=2 required
+                                   placeholder="색소침착_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_b">색소침착_코</label>
+                            <input type="text" class="form-control" id="fpigmentation_b" name='fpigmentation_b'
+                                   minlength=2 required
+                                   placeholder="색소침착_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_c">색소침착_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fpigmentation_c" name='fpigmentation_c'
+                                   minlength=2 required
+                                   placeholder="색소침착_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_d">색소침착_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fpigmentation_d" name='fpigmentation_d'
+                                   minlength=2 required
+                                   placeholder="색소침착_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_e">색소침착_눈밑_우</label>
+                            <input type="text" class="form-control" id="fpigmentation_e" name='fpigmentation_e'
+                                   minlength=2 required
+                                   placeholder="색소침착_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_f">색소침착_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fpigmentation_f" name='fpigmentation_f'
+                                   minlength=2 required
+                                   placeholder="색소침착_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_g">색소침착_볼_우</label>
+                            <input type="text" class="form-control" id="fpigmentation_g" name='fpigmentation_g'
+                                   minlength=2 required
+                                   placeholder="색소침착_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fpigmentation_h">색소침착_볼_좌</label>
+                            <input type="text" class="form-control" id="fpigmentation_h" name='fpigmentation_h'
+                                   minlength=2 required
+                                   placeholder="색소침착_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_a">멜라닌_이마</label>
+                            <input type="text" class="form-control" id="fmelanin_a" name='fmelanin_a' minlength=2
+                                   required
+                                   placeholder="멜라닌_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_b">멜라닌_코</label>
+                            <input type="text" class="form-control" id="fmelanin_b" name='fmelanin_b' minlength=2
+                                   required
+                                   placeholder="멜라닌_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_c">멜라닌_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fmelanin_c" name='fmelanin_c' minlength=2
+                                   required
+                                   placeholder="멜라닌_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_d">멜라닌_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fmelanin_d" name='fmelanin_d' minlength=2
+                                   required
+                                   placeholder="멜라닌_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_e">멜라닌_눈밑_우</label>
+                            <input type="text" class="form-control" id="fmelanin_e" name='fmelanin_e' minlength=2
+                                   required
+                                   placeholder="멜라닌_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_f">멜라닌_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fmelanin_f" name='fmelanin_f' minlength=2
+                                   required
+                                   placeholder="멜라닌_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_g">멜라닌_볼_우</label>
+                            <input type="text" class="form-control" id="fmelanin_g" name='fmelanin_g' minlength=2
+                                   required
+                                   placeholder="멜라닌_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fmelanin_h">멜라닌_볼_좌</label>
+                            <input type="text" class="form-control" id="fmelanin_h" name='fmelanin_h' minlength=2
+                                   required
+                                   placeholder="멜라닌_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_a">붉은기_이마</label>
+                            <input type="text" class="form-control" id="fredness_a" name='fredness_a' minlength=2
+                                   required
+                                   placeholder="붉은기_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_b">붉은기_코</label>
+                            <input type="text" class="form-control" id="fredness_b" name='fredness_b' minlength=2
+                                   required
+                                   placeholder="붉은기_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_c">붉은기_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fredness_c" name='fredness_c' minlength=2
+                                   required
+                                   placeholder="붉은기_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_d">붉은기_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fredness_d" name='fredness_d' minlength=2
+                                   required
+                                   placeholder="붉은기_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_e">붉은기_눈밑_우</label>
+                            <input type="text" class="form-control" id="fredness_e" name='fredness_e' minlength=2
+                                   required
+                                   placeholder="붉은기_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_f">붉은기_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fredness_f" name='fredness_f' minlength=2
+                                   required
+                                   placeholder="붉은기_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_g">붉은기_볼_우</label>
+                            <input type="text" class="form-control" id="fredness_g" name='fredness_g' minlength=2
+                                   required
+                                   placeholder="붉은기_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fredness_h">붉은기_볼_좌</label>
+                            <input type="text" class="form-control" id="fredness_h" name='fredness_h' minlength=2
+                                   required
+                                   placeholder="붉은기_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_a">브라운색소_이마</label>
+                            <input type="text" class="form-control" id="fbrown_a" name='fbrown_a' minlength=2 required
+                                   placeholder="브라운색소_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_b">브라운색소_코</label>
+                            <input type="text" class="form-control" id="fbrown_b" name='fbrown_b' minlength=2 required
+                                   placeholder="브라운색소_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_c">브라운색소_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fbrown_c" name='fbrown_c' minlength=2 required
+                                   placeholder="브라운색소_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_d">브라운색소_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fbrown_d" name='fbrown_d' minlength=2 required
+                                   placeholder="브라운색소_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_e">브라운색소_눈밑_우</label>
+                            <input type="text" class="form-control" id="fbrown_e" name='fbrown_e' minlength=2 required
+                                   placeholder="브라운색소_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_f">브라운색소_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fbrown_f" name='fbrown_f' minlength=2 required
+                                   placeholder="브라운색소_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_g">브라운색소_볼_우</label>
+                            <input type="text" class="form-control" id="fbrown_g" name='fbrown_g' minlength=2 required
+                                   placeholder="브라운색소_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fbrown_h">브라운색소_볼_좌</label>
+                            <input type="text" class="form-control" id="fbrown_h" name='fbrown_h' minlength=2 required
+                                   placeholder="브라운색소_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_a">피지_이마</label>
+                            <input type="text" class="form-control" id="fsebum_a" name='fsebum_a' minlength=2 required
+                                   placeholder="피지_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_b">피지_코</label>
+                            <input type="text" class="form-control" id="fsebum_b" name='fsebum_b' minlength=2 required
+                                   placeholder="피지_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_c">피지_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fsebum_c" name='fsebum_c' minlength=2 required
+                                   placeholder="피지_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_d">피지_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fsebum_d" name='fsebum_d' minlength=2 required
+                                   placeholder="피지_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_e">피지_눈밑_우</label>
+                            <input type="text" class="form-control" id="fsebum_e" name='fsebum_e' minlength=2 required
+                                   placeholder="피지_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_f">피지_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fsebum_f" name='fsebum_f' minlength=2 required
+                                   placeholder="피지_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_g">피지_볼_우</label>
+                            <input type="text" class="form-control" id="fsebum_g" name='fsebum_g' minlength=2 required
+                                   placeholder="피지_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsebum_h">피지_볼_좌</label>
+                            <input type="text" class="form-control" id="fsebum_h" name='fsebum_h' minlength=2 required
+                                   placeholder="피지_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_a">포피린_이마</label>
+                            <input type="text" class="form-control" id="fporphyrin_a" name='fporphyrin_a' minlength=2
+                                   required
+                                   placeholder="포피린_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_b">포피린_코</label>
+                            <input type="text" class="form-control" id="fporphyrin_b" name='fporphyrin_b' minlength=2
+                                   required
+                                   placeholder="포피린_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_c">포피린_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fporphyrin_c" name='fporphyrin_c' minlength=2
+                                   required
+                                   placeholder="포피린_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_d">포피린_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fporphyrin_d" name='fporphyrin_d' minlength=2
+                                   required
+                                   placeholder="포피린_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_e">포피린_눈밑_우</label>
+                            <input type="text" class="form-control" id="fporphyrin_e" name='fporphyrin_e' minlength=2
+                                   required
+                                   placeholder="포피린_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_f">포피린_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fporphyrin_f" name='fporphyrin_f' minlength=2
+                                   required
+                                   placeholder="포피린_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_g">포피린_볼_우</label>
+                            <input type="text" class="form-control" id="fporphyrin_g" name='fporphyrin_g' minlength=2
+                                   required
+                                   placeholder="포피린_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fporphyrin_h">포피린_볼_좌</label>
+                            <input type="text" class="form-control" id="fporphyrin_h" name='fporphyrin_h' minlength=2
+                                   required
+                                   placeholder="포피린_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_a">피부톤_이마</label>
+                            <input type="text" class="form-control" id="fskincolor_a" name='fskincolor_a' minlength=2
+                                   required
+                                   placeholder="피부톤_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_b">피부톤_코</label>
+                            <input type="text" class="form-control" id="fskincolor_b" name='fskincolor_b' minlength=2
+                                   required
+                                   placeholder="피부톤_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_c">피부톤_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fskincolor_c" name='fskincolor_c' minlength=2
+                                   required
+                                   placeholder="피부톤_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_d">피부톤_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fskincolor_d" name='fskincolor_d' minlength=2
+                                   required
+                                   placeholder="피부톤_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_e">피부톤_눈밑_우</label>
+                            <input type="text" class="form-control" id="fskincolor_e" name='fskincolor_e' minlength=2
+                                   required
+                                   placeholder="피부톤_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_f">피부톤_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fskincolor_f" name='fskincolor_f' minlength=2
+                                   required
+                                   placeholder="피부톤_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_g">피부톤_볼_우</label>
+                            <input type="text" class="form-control" id="fskincolor_g" name='fskincolor_g' minlength=2
+                                   required
+                                   placeholder="피부톤_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fskincolor_h">피부톤_볼_좌</label>
+                            <input type="text" class="form-control" id="fskincolor_h" name='fskincolor_h' minlength=2
+                                   required
+                                   placeholder="피부톤_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_a">광채면적_이마</label>
+                            <input type="text" class="form-control" id="fslarea_a" name='fslarea_a' minlength=2 required
+                                   placeholder="광채면적_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_b">광채면적_코</label>
+                            <input type="text" class="form-control" id="fslarea_b" name='fslarea_b' minlength=2 required
+                                   placeholder="광채면적_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_c">광채면적_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fslarea_c" name='fslarea_c' minlength=2 required
+                                   placeholder="광채면적_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_d">광채면적_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fslarea_d" name='fslarea_d' minlength=2 required
+                                   placeholder="광채면적_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_e">광채면적_눈밑_우</label>
+                            <input type="text" class="form-control" id="fslarea_e" name='fslarea_e' minlength=2 required
+                                   placeholder="광채면적_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_f">광채면적_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fslarea_f" name='fslarea_f' minlength=2 required
+                                   placeholder="광채면적_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_g">광채면적_볼_우</label>
+                            <input type="text" class="form-control" id="fslarea_g" name='fslarea_g' minlength=2 required
+                                   placeholder="광채면적_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslarea_h">광채면적_볼_좌</label>
+                            <input type="text" class="form-control" id="fslarea_h" name='fslarea_h' minlength=2 required
+                                   placeholder="광채면적_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_a">광채밝기_이마</label>
+                            <input type="text" class="form-control" id="fslcolor_a" name='fslcolor_a' minlength=2
+                                   required
+                                   placeholder="광채밝기_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_b">광채밝기_코</label>
+                            <input type="text" class="form-control" id="fslcolor_b" name='fslcolor_b' minlength=2
+                                   required
+                                   placeholder="광채밝기_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_c">광채밝기_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fslcolor_c" name='fslcolor_c' minlength=2
+                                   required
+                                   placeholder="광채밝기_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_d">광채밝기_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fslcolor_d" name='fslcolor_d' minlength=2
+                                   required
+                                   placeholder="광채밝기_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_e">광채밝기_눈밑_우</label>
+                            <input type="text" class="form-control" id="fslcolor_e" name='fslcolor_e' minlength=2
+                                   required
+                                   placeholder="광채밝기_눈밑_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_f">광채밝기_눈밑_좌</label>
+                            <input type="text" class="form-control" id="fslcolor_f" name='fslcolor_f' minlength=2
+                                   required
+                                   placeholder="광채밝기_눈밑_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_g">광채밝기_볼_우</label>
+                            <input type="text" class="form-control" id="fslcolor_g" name='fslcolor_g' minlength=2
+                                   required
+                                   placeholder="광채밝기_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fslcolor_h">광채밝기_볼_좌</label>
+                            <input type="text" class="form-control" id="fslcolor_h" name='fslcolor_h' minlength=2
+                                   required
+                                   placeholder="광채밝기_볼_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_a">수분_이마</label>
+                            <input type="text" class="form-control" id="fsubun_a" name='fsubun_a' minlength=2 required
+                                   placeholder="수분_이마">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_b">수분_코</label>
+                            <input type="text" class="form-control" id="fsubun_b" name='fsubun_b' minlength=2 required
+                                   placeholder="수분_코">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_c">수분_눈꼬리_우</label>
+                            <input type="text" class="form-control" id="fsubun_c" name='fsubun_c' minlength=2 required
+                                   placeholder="수분_눈꼬리_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_d">수분_눈꼬리_좌</label>
+                            <input type="text" class="form-control" id="fsubun_d" name='fsubun_d' minlength=2 required
+                                   placeholder="수분_눈꼬리_좌">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_e">수분_눈밑_U존</label>
+                            <input type="text" class="form-control" id="fsubun_e" name='fsubun_e' minlength=2 required
+                                   placeholder="수분_눈밑_U존">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_f">수분_눈밑_U존</label>
+                            <input type="text" class="form-control" id="fsubun_f" name='fsubun_f' minlength=2 required
+                                   placeholder="수분_눈밑_U존">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_g">수분_볼_우</label>
+                            <input type="text" class="form-control" id="fsubun_g" name='fsubun_g' minlength=2 required
+                                   placeholder="수분_볼_우">
+                        </div>
+                        <div class="form-group">
+                            <label for="fsubun_h">수분_볼_T존</label>
+                            <input type="text" class="form-control" id="fsubun_h" name='fsubun_h' minlength=2 required
+                                   placeholder="수분_볼_T존">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt"></label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="update_dt"></label>
+                            <input type="text" class="form-control" id="update_dt" name='update_dt' minlength=2 required
+                                   placeholder="">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/skin_markvu_result.js"></script>

@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!--  Meta -->
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=no">
+    <meta name="author" content="Home bank">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Demo">
+    <meta property="og:type" content="website">
+
+
+    <!-- Title -->
+    <title>Demo</title>
+    <!-- js -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- lodash  -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <!-- ngrid  -->
+    <script src="/resource/js/ngrid.2.1.0.js"></script>
+    <!-- handlebars  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <!-- menu.js -->
+    <script src="/resource/js/main.js"></script>
+</head>
+
+<body>
+
+<div id="warp__mian">
+    <header></header>
+
+
+    <section id="content_list">
+        <!-- 게시판 목록 -->
+        <div class="container">
+            <h2>관리자</h2>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th data-id="ManagerKey">매니저 키값</th>
+                    <th data-id="CenterCD">센터CD</th>
+                    <th data-id="ManagerID">매니저 아이디</th>
+                    <!--                    <th data-id="Password">패스워드</th>-->
+                    <th data-id="Name">이름</th>
+                    <th data-id="ManagerCD">메니저코드</th>
+                    <th data-id="RoleCD">권한코드</th>
+                    <th data-id="ResidNo">ResidNo</th>
+                    <!--                    <th data-id="PhoneNo1">전화1</th>-->
+                    <!--                    <th data-id="PhoneNo2">전화2</th>-->
+                    <!--                    <th data-id="PhoneNo3">전화3</th>-->
+                    <!--                    <th data-id="ZIP">우편번호</th>-->
+                    <!--                    <th data-id="ADDR">주소</th>-->
+                    <!--                    <th data-id="ADDR2">주소2</th>-->
+                    <!--                    <th data-id="roadFL">roadFL</th>-->
+                    <!--                    <th data-id="roadcode">roadcode</th>-->
+                    <!--                    <th data-id="MobilePhone1">핸드폰1</th>-->
+                    <!--                    <th data-id="MobilePhone2">핸드폰2</th>-->
+                    <!--                    <th data-id="MobilePhone3">핸드폰3</th>-->
+                    <!--                    <th data-id="Email">이메일</th>-->
+                    <!--                    <th data-id="CSNO">CSNO</th>-->
+                    <!--                    <th data-id="create_dt">생성일</th>-->
+                    <!--                    <th data-id="Photo">사진</th>-->
+                    <!--                    <th data-id="IsWorkStatusCode">상태코드</th>-->
+                    <!--                    <th data-id="WorkStartTime">시작일</th>-->
+                    <!--                    <th data-id="WorkEndTime">종료일</th>-->
+                    <!--                    <th data-id="pwd_upd_dt">비밀번호 업데이트날짜</th>-->
+                    <!--                    <th data-id="upd_dt">수정일</th>-->
+                    <!--                    <th data-id="PasswordLock">비밀번호 틀린횟수</th>-->
+                </tr>
+                </thead>
+                <tbody id="mb_manager_list"></tbody>
+
+                <!--게시판 목록 동적할당-->
+                <script id="mb_manager_item" type="text/x-handlebars-template">
+                    <tr>
+                        <td>{{this.ManagerKey}}</td><!-- 매니저 키값 -->
+                        <td>{{this.CenterCD}}</td><!-- 센터CD -->
+                        <td>{{this.ManagerID}}</td><!-- 매니저 아이디 -->
+                        <!--                        <td>{{this.Password}}</td>&lt;!&ndash; 패스워드 &ndash;&gt;-->
+                        <td>{{this.Name}}</td><!-- 이름 -->
+                        <td>{{this.ManagerCD}}</td><!-- 메니저코드 -->
+                        <td>{{this.RoleCD}}</td><!-- 권한코드 -->
+                        <td>{{this.ResidNo}}</td><!-- ResidNo -->
+                        <!--                        <td>{{this.PhoneNo1}}</td>&lt;!&ndash; 전화1 &ndash;&gt;-->
+                        <!--                        <td>{{this.PhoneNo2}}</td>&lt;!&ndash; 전화2 &ndash;&gt;-->
+                        <!--                        <td>{{this.PhoneNo3}}</td>&lt;!&ndash; 전화3 &ndash;&gt;-->
+                        <!--                        <td>{{this.ZIP}}</td>&lt;!&ndash; 우편번호 &ndash;&gt;-->
+                        <!--                        <td>{{this.ADDR}}</td>&lt;!&ndash; 주소 &ndash;&gt;-->
+                        <!--                        <td>{{this.ADDR2}}</td>&lt;!&ndash; 주소2 &ndash;&gt;-->
+                        <!--                        <td>{{this.roadFL}}</td>&lt;!&ndash; roadFL &ndash;&gt;-->
+                        <!--                        <td>{{this.roadcode}}</td>&lt;!&ndash; roadcode &ndash;&gt;-->
+                        <!--                        <td>{{this.MobilePhone1}}</td>&lt;!&ndash; 핸드폰1 &ndash;&gt;-->
+                        <!--                        <td>{{this.MobilePhone2}}</td>&lt;!&ndash; 핸드폰2 &ndash;&gt;-->
+                        <!--                        <td>{{this.MobilePhone3}}</td>&lt;!&ndash; 핸드폰3 &ndash;&gt;-->
+                        <!--                        <td>{{this.Email}}</td>&lt;!&ndash; 이메일 &ndash;&gt;-->
+                        <!--                        <td>{{this.CSNO}}</td>&lt;!&ndash; CSNO &ndash;&gt;-->
+                        <!--                        <td>{{this.create_dt}}</td>&lt;!&ndash; 생성일 &ndash;&gt;-->
+                        <!--                        <td>{{this.Photo}}</td>&lt;!&ndash; 사진 &ndash;&gt;-->
+                        <!--                        <td>{{this.IsWorkStatusCode}}</td>&lt;!&ndash; 상태코드 &ndash;&gt;-->
+                        <!--                        <td>{{this.WorkStartTime}}</td>&lt;!&ndash; 시작일 &ndash;&gt;-->
+                        <!--                        <td>{{this.WorkEndTime}}</td>&lt;!&ndash; 종료일 &ndash;&gt;-->
+                        <!--                        <td>{{this.pwd_upd_dt}}</td>&lt;!&ndash; 비밀번호 업데이트날짜 &ndash;&gt;-->
+                        <!--                        <td>{{this.upd_dt}}</td>&lt;!&ndash; 수정일 &ndash;&gt;-->
+                        <!--                        <td>{{this.PasswordLock}}</td>&lt;!&ndash; 비밀번호 틀린횟수 &ndash;&gt;-->
+                    </tr>
+                </script>
+            </table>
+
+            <!-- pagenation -->
+            <nav id="pagination" aria-label="Page navigation"></nav>
+
+            <button type="button" class="btn btn-primary" onclick="fnSetUI('write')">글 올리기</button>
+        </div>
+    </section>
+
+    <section id="content_detail" style="display: none">
+        <!-- 게시판 상세 -->
+        <div class="container">
+            <h2>상세</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="managerkey">매니저 키값:</label>
+                        <span data-id="managerkey"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="centercd">센터CD:</label>
+                        <span data-id="centercd"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="managerid">매니저 아이디:</label>
+                        <span data-id="managerid"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="password">패스워드:</label>
+                        <span data-id="password"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">이름:</label>
+                        <span data-id="name"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="managercd">메니저코드:</label>
+                        <span data-id="managercd"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="rolecd">권한코드:</label>
+                        <span data-id="rolecd"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="residno">ResidNo:</label>
+                        <span data-id="residno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phoneno1">전화1:</label>
+                        <span data-id="phoneno1"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phoneno2">전화2:</label>
+                        <span data-id="phoneno2"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="phoneno3">전화3:</label>
+                        <span data-id="phoneno3"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="zip">우편번호:</label>
+                        <span data-id="zip"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addr">주소:</label>
+                        <span data-id="addr"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="addr2">주소2:</label>
+                        <span data-id="addr2"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="roadfl">roadFL:</label>
+                        <span data-id="roadfl"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="roadcode">roadcode:</label>
+                        <span data-id="roadcode"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mobilephone1">핸드폰1:</label>
+                        <span data-id="mobilephone1"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mobilephone2">핸드폰2:</label>
+                        <span data-id="mobilephone2"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mobilephone3">핸드폰3:</label>
+                        <span data-id="mobilephone3"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="email">이메일:</label>
+                        <span data-id="email"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="csno">CSNO:</label>
+                        <span data-id="csno"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="create_dt">생성일:</label>
+                        <span data-id="create_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="photo">사진:</label>
+                        <span data-id="photo"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="isworkstatuscode">상태코드:</label>
+                        <span data-id="isworkstatuscode"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="workstarttime">시작일:</label>
+                        <span data-id="workstarttime"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="workendtime">종료일:</label>
+                        <span data-id="workendtime"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pwd_upd_dt">비밀번호 업데이트날짜:</label>
+                        <span data-id="pwd_upd_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="upd_dt">수정일:</label>
+                        <span data-id="upd_dt"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="passwordlock">비밀번호 틀린횟수:</label>
+                        <span data-id="passwordlock"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary"
+                        onclick="fnSetUI('list')">목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="content_write" style="display: none">
+        <!-- 게시판 등록 -->
+        <div class="container">
+            <h2>등록</h2>
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form id="mb_manager_form">
+                        <!--기본정보-->
+                        <div class="form-group">
+                            <label for="managerkey">매니저 키값</label>
+                            <input type="text" class="form-control" id="managerkey" name='managerkey' minlength=2
+                                   required
+                                   placeholder="매니저 키값">
+                        </div>
+                        <div class="form-group">
+                            <label for="centercd">센터CD</label>
+                            <input type="text" class="form-control" id="centercd" name='centercd' minlength=2 required
+                                   placeholder="센터CD">
+                        </div>
+                        <div class="form-group">
+                            <label for="managerid">매니저 아이디</label>
+                            <input type="text" class="form-control" id="managerid" name='managerid' minlength=2 required
+                                   placeholder="매니저 아이디">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">패스워드</label>
+                            <input type="text" class="form-control" id="password" name='password' minlength=2 required
+                                   placeholder="패스워드">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">이름</label>
+                            <input type="text" class="form-control" id="name" name='name' minlength=2 required
+                                   placeholder="이름">
+                        </div>
+                        <div class="form-group">
+                            <label for="managercd">메니저코드</label>
+                            <input type="text" class="form-control" id="managercd" name='managercd' minlength=2 required
+                                   placeholder="메니저코드">
+                        </div>
+                        <div class="form-group">
+                            <label for="rolecd">권한코드</label>
+                            <input type="text" class="form-control" id="rolecd" name='rolecd' minlength=2 required
+                                   placeholder="권한코드">
+                        </div>
+                        <div class="form-group">
+                            <label for="residno">ResidNo</label>
+                            <input type="text" class="form-control" id="residno" name='residno' minlength=2 required
+                                   placeholder="ResidNo">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneno1">전화1</label>
+                            <input type="text" class="form-control" id="phoneno1" name='phoneno1' minlength=2 required
+                                   placeholder="전화1">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneno2">전화2</label>
+                            <input type="text" class="form-control" id="phoneno2" name='phoneno2' minlength=2 required
+                                   placeholder="전화2">
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneno3">전화3</label>
+                            <input type="text" class="form-control" id="phoneno3" name='phoneno3' minlength=2 required
+                                   placeholder="전화3">
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">우편번호</label>
+                            <input type="text" class="form-control" id="zip" name='zip' minlength=2 required
+                                   placeholder="우편번호">
+                        </div>
+                        <div class="form-group">
+                            <label for="addr">주소</label>
+                            <input type="text" class="form-control" id="addr" name='addr' minlength=2 required
+                                   placeholder="주소">
+                        </div>
+                        <div class="form-group">
+                            <label for="addr2">주소2</label>
+                            <input type="text" class="form-control" id="addr2" name='addr2' minlength=2 required
+                                   placeholder="주소2">
+                        </div>
+                        <div class="form-group">
+                            <label for="roadfl">roadFL</label>
+                            <input type="text" class="form-control" id="roadfl" name='roadfl' minlength=2 required
+                                   placeholder="roadFL">
+                        </div>
+                        <div class="form-group">
+                            <label for="roadcode">roadcode</label>
+                            <input type="text" class="form-control" id="roadcode" name='roadcode' minlength=2 required
+                                   placeholder="roadcode">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobilephone1">핸드폰1</label>
+                            <input type="text" class="form-control" id="mobilephone1" name='mobilephone1' minlength=2
+                                   required
+                                   placeholder="핸드폰1">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobilephone2">핸드폰2</label>
+                            <input type="text" class="form-control" id="mobilephone2" name='mobilephone2' minlength=2
+                                   required
+                                   placeholder="핸드폰2">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobilephone3">핸드폰3</label>
+                            <input type="text" class="form-control" id="mobilephone3" name='mobilephone3' minlength=2
+                                   required
+                                   placeholder="핸드폰3">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">이메일</label>
+                            <input type="text" class="form-control" id="email" name='email' minlength=2 required
+                                   placeholder="이메일">
+                        </div>
+                        <div class="form-group">
+                            <label for="csno">CSNO</label>
+                            <input type="text" class="form-control" id="csno" name='csno' minlength=2 required
+                                   placeholder="CSNO">
+                        </div>
+                        <div class="form-group">
+                            <label for="create_dt">생성일</label>
+                            <input type="text" class="form-control" id="create_dt" name='create_dt' minlength=2 required
+                                   placeholder="생성일">
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">사진</label>
+                            <input type="text" class="form-control" id="photo" name='photo' minlength=2 required
+                                   placeholder="사진">
+                        </div>
+                        <div class="form-group">
+                            <label for="isworkstatuscode">상태코드</label>
+                            <input type="text" class="form-control" id="isworkstatuscode" name='isworkstatuscode'
+                                   minlength=2 required
+                                   placeholder="상태코드">
+                        </div>
+                        <div class="form-group">
+                            <label for="workstarttime">시작일</label>
+                            <input type="text" class="form-control" id="workstarttime" name='workstarttime' minlength=2
+                                   required
+                                   placeholder="시작일">
+                        </div>
+                        <div class="form-group">
+                            <label for="workendtime">종료일</label>
+                            <input type="text" class="form-control" id="workendtime" name='workendtime' minlength=2
+                                   required
+                                   placeholder="종료일">
+                        </div>
+                        <div class="form-group">
+                            <label for="pwd_upd_dt">비밀번호 업데이트날짜</label>
+                            <input type="text" class="form-control" id="pwd_upd_dt" name='pwd_upd_dt' minlength=2
+                                   required
+                                   placeholder="비밀번호 업데이트날짜">
+                        </div>
+                        <div class="form-group">
+                            <label for="upd_dt">수정일</label>
+                            <input type="text" class="form-control" id="upd_dt" name='upd_dt' minlength=2 required
+                                   placeholder="수정일">
+                        </div>
+                        <div class="form-group">
+                            <label for="passwordlock">비밀번호 틀린횟수</label>
+                            <input type="text" class="form-control" id="passwordlock" name='passwordlock' minlength=2
+                                   required
+                                   placeholder="비밀번호 틀린횟수">
+                        </div>
+
+                    </form>
+                    <div class="btn__warp">
+                        <button type="button" class="btn btn-primary" onclick="fnPost()">작성완료</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer"></footer>
+
+
+</div>
+
+</body>
+
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/mb_manager.js"></script>
