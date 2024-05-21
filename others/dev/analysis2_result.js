@@ -955,7 +955,6 @@ var scatterChart = new Chart(ctx_scatterChart, {
             },
         }
     },
-    plugins: [ChartDataLabels]
 });
 
 /** 
@@ -1045,27 +1044,26 @@ function getHaiconditionResult(score) {
 
 
 
-
-
 plugins: [{
-    id: 'custom-data-labels',
-    afterDatasetsDraw: function (chart) {
+    // 각 데이터 포인트에 대한 텍스트 커스텀 설정
+    afterDatasetsDraw: function(chart, easing) {
         var ctx = chart.ctx;
 
-        chart.data.datasets.forEach(function (dataset, i) {
+        chart.data.datasets.forEach(function(dataset, i) {
             var meta = chart.getDatasetMeta(i);
             if (!meta.hidden) {
-                meta.data.forEach(function (element, index) {
-                    // 데이터 포인트의 좌표 및 레이블 가져오기
+                meta.data.forEach(function(element, index) {
+                    // 데이터 포인트 위치 가져오기
                     var model = element._model;
-                    var label = dataset.data[index].label;
+                    var posX = model.x;
+                    var posY = model.y;
 
-                    // 데이터 포인트의 레이블을 그래프 위에 그리기
-                    ctx.fillStyle = 'black'; // 텍스트 색상
-                    ctx.font = '12px Arial'; // 텍스트 폰트
-                    ctx.textAlign = 'center'; // 텍스트 정렬
-                    ctx.textBaseline = 'middle'; // 텍스트 기준선
-                    ctx.fillText(label, model.x, model.y - 10); // 텍스트 그리기
+                    // 텍스트 표시
+                    var label = dataset.data[index].label;
+                    ctx.fillStyle = 'black';
+                    ctx.font = '14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(label, posX, posY - 10); // 조정 가능한 값으로 posY 조정
                 });
             }
         });
