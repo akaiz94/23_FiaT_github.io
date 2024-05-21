@@ -53,7 +53,7 @@ var myChart = new Chart(ctx, {
                 display: false // 범례 숨기기
             },
             tooltip: {
-                enabled: false // 툴팁 숨기기
+                enabled: true // 툴팁 숨기기
             },
             datalabels: {
                 anchor: 'end',

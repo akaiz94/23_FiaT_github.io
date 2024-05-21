@@ -954,7 +954,8 @@ var scatterChart = new Chart(ctx_scatterChart, {
                 }
             },
         }
-    }
+    },
+    plugins: [ChartDataLabels]
 });
 
 /** 
@@ -1036,3 +1037,37 @@ function getHaiconditionResult(score) {
     return haircondition;
 }
 
+
+
+
+
+
+
+
+
+
+
+plugins: [{
+    id: 'custom-data-labels',
+    afterDatasetsDraw: function (chart) {
+        var ctx = chart.ctx;
+
+        chart.data.datasets.forEach(function (dataset, i) {
+            var meta = chart.getDatasetMeta(i);
+            if (!meta.hidden) {
+                meta.data.forEach(function (element, index) {
+                    // 데이터 포인트의 좌표 및 레이블 가져오기
+                    var model = element._model;
+                    var label = dataset.data[index].label;
+
+                    // 데이터 포인트의 레이블을 그래프 위에 그리기
+                    ctx.fillStyle = 'black'; // 텍스트 색상
+                    ctx.font = '12px Arial'; // 텍스트 폰트
+                    ctx.textAlign = 'center'; // 텍스트 정렬
+                    ctx.textBaseline = 'middle'; // 텍스트 기준선
+                    ctx.fillText(label, model.x, model.y - 10); // 텍스트 그리기
+                });
+            }
+        });
+    }
+}]
