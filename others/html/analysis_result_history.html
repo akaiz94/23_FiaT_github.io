@@ -16,6 +16,12 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
     <script type="module" src="./js/ngrid.2.1.0.js"></script>
     <script type="module" src="./resource/js/ui.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    
 </head>
 <body class="sub">
 <div class="wrap">
@@ -34,7 +40,7 @@
                     <a href="./analysis_result.html" class="tab-item active">피부 측정 결과</a>
                     <a href="./analysis2.html" class="tab-item">두피<i class="dat"></i>모발 측정</a>
                     <a href="./analysis2_result.html" class="tab-item">두피<i class="dat"></i>모발 측정 결과</a>
-                    <a href="./analysis3_result.html" class="tab-item">마이 스킨 DNA 결과</a>
+                    <a href="./analysis3_result.html" class="tab-item">MY SKIN DNA</a>
                 </div>
 
                 <!--리포트 부분 스타일 분리 했습니다 -->
@@ -59,7 +65,9 @@
                                 <h2 class="title">Skin Score History</h2>
                                 <div class="row-item-content">
                                     <div class="graph-item">
-                                        <img src="./resource/images/graph/graph-006.svg" alt="Skin Score History 그래프">
+                                        <!-- <img src="./resource/images/graph/graph-006.svg" alt="Skin Score History 그래프"> -->
+                                        <canvas class="canvas2" width="900px" height="470px" id="myChart" ></canvas>
+
                                     </div>
                                 </div>
                             </div>
@@ -406,3 +414,8 @@
 
 </body>
 </html>
+
+
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/analysis_result_history.js"></script>
