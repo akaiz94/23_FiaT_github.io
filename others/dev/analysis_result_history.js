@@ -1,0 +1,71 @@
+
+
+$(document).ready(function () {
+    console.log('analysis_result page start -> ')
+    console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
+    console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
+
+
+
+});
+
+
+
+
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [1, 2, 3, 4],
+        datasets: [{
+            label: 'Ref.',
+            data: [0.073, 0.077], // 데이터 포인트 값
+            fill: false,
+            borderColor: '#e83f6f', // 라인 색상
+            borderWidth: 2,
+            pointRadius: 6, // 점 크기
+            pointBackgroundColor: ['#cccccc', '#e83f6f'], // 점 색상
+            pointHoverRadius: 8,
+            lineTension: 0.2, // 라인 부드러움 조절
+            spanGaps: true // 빈 데이터 포인트 연결
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 0.1, // y축 최대값
+                grid: {
+                    drawBorder: false, // y축 테두리 숨기기
+                    color: '#cccccc', // 그리드 색상
+                    borderDash: [5, 5] // 그리드 점선 스타일
+                }
+            },
+            x: {
+                grid: {
+                    display: false // x축 그리드 숨기기
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // 범례 숨기기
+            },
+            tooltip: {
+                enabled: false // 툴팁 숨기기
+            },
+            datalabels: {
+                anchor: 'end',
+                align: 'top',
+                color: '#666',
+                font: {
+                    weight: 'bold'
+                },
+                formatter: function (value) {
+                    return value.toFixed(3); // 데이터 라벨 형식 지정
+                }
+            }
+        }
+    }
+});
