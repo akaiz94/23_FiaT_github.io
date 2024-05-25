@@ -15,45 +15,94 @@ $(document).ready(function () {
 
 
 
-<script>
-$(document).ready(function() {
+$(document).ready(function () {
     var canvas = document.getElementById('myCanvas');
     var ctx = canvas.getContext('2d');
-    var backgroundImage = new Image();
+    var isDrawing = false;
+    var lastX = 0;
+    var lastY = 0;
 
-    // 이미지 로드 완료 시 호출되는 함수
-    backgroundImage.onload = function() {
-        // 배경 이미지를 캔버스에 그립니다
-        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    canvas.addEventListener('mousedown', function (e) {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
 
-        // 첫 번째 선: 기본 스타일
+    canvas.addEventListener('mousemove', function (e) {
+        if (!isDrawing) return;
         ctx.beginPath();
-        ctx.moveTo(50, 50);
-        ctx.lineTo(200, 200);
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
 
-        // 두 번째 선: 빨간색, 두께 5px
-        ctx.beginPath();
-        ctx.moveTo(200, 50);
-        ctx.lineTo(50, 200);
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 5;
-        ctx.stroke();
+    canvas.addEventListener('mouseup', function () {
+        isDrawing = false;
+    });
 
-        // 세 번째 선: 파란색, 두께 2px, 점선
-        ctx.beginPath();
-        ctx.moveTo(50, 250);
-        ctx.lineTo(200, 400);
-        ctx.strokeStyle = 'blue';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([5, 15]);
-        ctx.stroke();
-
-        // 점선 설정 해제
-        ctx.setLineDash([]);
-    };
-
-    // 배경 이미지 경로 설정
-    backgroundImage.src = './resource/images/img-report001-M.png';
+    canvas.addEventListener('mouseout', function () {
+        isDrawing = false;
+    });
 });
-</script>
+
+
+
+
+
+
+
+$(document).ready(function () {
+    var canvas = document.getElementById('myCanvas');
+    var ctx = canvas.getContext('2d');
+    var isDrawing = false;
+    var isErasing = false;
+    var lastX = 0;
+    var lastY = 0;
+    var selectedColor = '#000000'; // 기본색은 검은색으로 설정
+
+    $('#drawBtn').click(function () {
+        isDrawing = true;
+        isErasing = false;
+    });
+
+    $('#eraseBtn').click(function () {
+        isErasing = true;
+        isDrawing = false;
+    });
+
+    $('#colorPicker').change(function () {
+        selectedColor = $(this).val();
+    });
+
+    canvas.addEventListener('mousedown', function (e) {
+        if (isDrawing || isErasing) {
+            isDrawing ? ctx.strokeStyle = selectedColor : ctx.strokeStyle = 'white';
+            isDrawing ? ctx.globalCompositeOperation = 'source-over' : ctx.globalCompositeOperation = 'destination-out';
+            isDrawing = true;
+            isErasing = false;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+    });
+
+    canvas.addEventListener('mousemove', function (e) {
+        if (!isDrawing) return;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+
+    canvas.addEventListener('mouseup', function () {
+        isDrawing = false;
+    });
+
+    canvas.addEventListener('mouseout', function () {
+        isDrawing = false;
+    });
+});
+
+
+
+
+
