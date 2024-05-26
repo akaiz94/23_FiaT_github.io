@@ -195,36 +195,38 @@ $(document).ready(function () {
       })
 
 
-      
+
       /*
       *
       *24. 05. 25 opinion 클릭 이벤트
       */
-
       var opinionsImage = $("#opinionsImage");
       opinionsImage.hover(
-        function(){
-          $(this).css("cursor","pointer");
+        function () {
+          $(this).css("cursor", "pointer");
         },
-        function(){
-          $(this).css("cursor","auto");
+        function () {
+          $(this).css("cursor", "auto");
         },
       )
 
 
-      opinionsImage.click(function(){
+      opinionsImage.click(function () {
         console.log('이미지 클릭)');
 
         $('.user-modify-layer').addClass('open');
       })
 
 
-     /*
-      *
-      *24. 05. 25 opinion 이미지 그리기
-      */
-      var canvas = document.getElementById('opinionCanvas');
-      var ctx = canvas.getContext('2d');
+      /*
+       *
+       *24. 05. 25 opinion 이미지 그리기
+       */
+      
+
+
+      var opinionCanvas = document.getElementById('opinionCanvas');
+      var opinion_ctx = opinionCanvas.getContext('2d');
       var backgroundCanvas = document.getElementById('backgroundCanvas');
       var background_ctx = backgroundCanvas.getContext('2d');
 
@@ -233,17 +235,21 @@ $(document).ready(function () {
       var lastX = 0;
       var lastY = 0;
       var selectedColor = '#000000';
-      
+
       $("#drawBtn").click(function (event) {
         event.preventDefault(); //모달창 자동 종료 방지
         isDrawing = true;
         isErasing = false;
+        opinion_ctx.lineWidth = 3; // 선 굵기 설정       
+        // ctx.globalCompositeOperation = 'source-over'; //기본 그리기 모드
       });
 
       $("#eraseBtn").click(function (event) {
         event.preventDefault(); //모달창 자동 종료 방지
         isErasing = true;
         isDrawing = false;
+        opinion_ctx.lineWidth = 30; // 선 굵기 설정
+        // ctx.globalCompositeOperation = 'destination-out'; //그러진선 지우기
       });
 
       $('#colorPicker').change(function () {
@@ -251,7 +257,7 @@ $(document).ready(function () {
       });
 
 
-      var backgroundImage = new Image();
+      var backgroundImage = new Image();      
       if (custom_sex === 'F') {
         backgroundImage.src = './resource/images/img-report001-F.png';
       } else if (custom_sex === 'M') {
@@ -265,37 +271,35 @@ $(document).ready(function () {
         background_ctx.drawImage(backgroundImage, 0, 0, backgroundCanvas.width, backgroundCanvas.height);
       };
 
-      canvas.addEventListener('mousedown', function (e) {
+      opinionCanvas.addEventListener('mousedown', function (e) {
         if (isDrawing || isErasing) {
-          isDrawing ? ctx.strokeStyle = selectedColor : ctx.strokeStyle = 'white';
-          isDrawing ? ctx.globalCompositeOperation = 'source-over' : ctx.globalCompositeOperation = 'destination-out';
+          isDrawing ? opinion_ctx.strokeStyle = selectedColor : opinion_ctx.strokeStyle = 'white';
+          isDrawing ? opinion_ctx.globalCompositeOperation = 'source-over' : opinion_ctx.globalCompositeOperation = 'destination-out'; //1.기본 그리기   2. 그려진 선 지우기
           isDrawing = true;
           isErasing = false;
           [lastX, lastY] = [e.offsetX, e.offsetY];
         }
       });
 
-      canvas.addEventListener('mousemove', function (e) {
-        if (!isDrawing) return;
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-        [lastX, lastY] = [e.offsetX, e.offsetY];
+      opinionCanvas.addEventListener('mousemove', function (e) {
+        if (isDrawing || isErasing) {
+          if (e.buttons === 1) {
+            opinion_ctx.beginPath();
+            opinion_ctx.moveTo(lastX, lastY);
+            opinion_ctx.lineTo(e.offsetX, e.offsetY);
+            opinion_ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+          }
+        }
       });
 
-      canvas.addEventListener('mouseup', function () {
+      opinionCanvas.addEventListener('mouseup', function () {
+        // isDrawing = false;
+      });
+
+      opinionCanvas.addEventListener('mouseout', function () {
         isDrawing = false;
       });
-
-      canvas.addEventListener('mouseout', function () {
-        isDrawing = false;
-      });
-
-
-
-
-
 
 
 
@@ -304,5 +308,34 @@ $(document).ready(function () {
 
       console.error('ResultMarkvu_API_URL 응답 오류: ', error);
     }
+
+
+  })
+
+
+
+
+  $('#custom_info_saveButton').on('click', function (event) {
+
+    console.log("저장 버튼 클릭");
+
+    localStorage.setItem('opinionCanvas', opinionCanvas.toDataURL());
+    localStorage.setItem('backgroundCanvas', backgroundCanvas.toDataURL());
+
+    var canvasImgData = localStorage.getItem('opinionCanvas');
+    var backgroundImgData = localStorage.getItem('backgroundCanvas');
+
+    console.log("canvasImgData : ", typeof(canvasImgData));   
+
+
   })
 });
+
+
+
+
+/*
+******************* 이후 차트생성 및 로직 **********************
+*/
+
+
