@@ -1,0 +1,676 @@
+<Window x:Class="IOPE_LAB.Contents.Scalp.Window_Opinion"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IOPE_LAB.Contents.Scalp"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Topmost="True"
+        Title="Window_Opinion" Height="501" Width="790" Background="#FFFFFF">
+    <Window.Resources>
+        <Style x:Key="ElementContainer" TargetType="Border">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="56"/>
+            <Setter Property="Height" Value="110"/>
+        </Style>
+
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Arita-dotum(TTF)" />
+        </Style>
+
+        <Style x:Key="ImageStyle" TargetType="Image">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Margin" Value="4 2 4 7"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="160*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="160*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="26*"/>
+            <ColumnDefinition Width="353*"/>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="364*"/>
+            <ColumnDefinition Width="26*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="HAIR LOSS TYPE" Grid.Column="1" VerticalAlignment="Center" FontSize="20" Foreground="#6F6F6F" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" />
+
+        <StackPanel HorizontalAlignment="Right" Grid.Column="3" Orientation="Horizontal" >
+            <Button x:Name="Man" Content="남" Background="Transparent" Foreground="#808080" FontWeight="Bold" FontSize="16" BorderThickness="0" Margin="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"/>
+            <TextBlock Text="|" Margin="10" VerticalAlignment="Center"/>
+            <Button Content="여" Background="Transparent" Foreground="#e7c1da" FontWeight="Bold" FontSize="16" BorderThickness="0" Margin="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"/>
+            <Button x:Name="Woman"  Click="Button_Click" Background="Transparent" BorderThickness="0" Margin="10">
+                <Button.Content>
+                    <Path Data="M15.7656 14.6256C15.9158 14.7777 16 14.9831 16 15.1972C16 15.4113 15.9158 15.6167 15.7656 15.7688C15.6128 15.9171 15.4085 16 15.196 16C14.9834 16 14.7791 15.9171 14.6263 15.7688L8 9.10985L1.37373 15.7688C1.2209 15.9171 1.01663 16 0.804048 16C0.591462 16 0.387194 15.9171 0.234368 15.7688C0.0842274 15.6167 0 15.4113 0 15.1972C0 14.9831 0.0842274 14.7777 0.234368 14.6256L6.87064 7.97662L0.234368 1.32766C0.10687 1.17178 0.0417127 0.973885 0.0515713 0.772469C0.0614298 0.571053 0.145599 0.380517 0.287707 0.237922C0.429815 0.0953281 0.6197 0.0108709 0.820429 0.000978669C1.02116 -0.0089136 1.21838 0.0564663 1.37373 0.184401L8 6.84339L14.6263 0.184401C14.7816 0.0564663 14.9788 -0.0089136 15.1796 0.000978669C15.3803 0.0108709 15.5702 0.0953281 15.7123 0.237922C15.8544 0.380517 15.9386 0.571053 15.9484 0.772469C15.9583 0.973885 15.8931 1.17178 15.7656 1.32766L9.12936 7.97662L15.7656 14.6256Z" Fill="#808080"/>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="0,1,0,0" BorderBrush="#e7c1da" />
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Basic Type" FontSize="16" VerticalAlignment='Center'  FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" />
+        <TextBlock Grid.Column="3" Grid.Row="1" Text="Specific Type" FontSize="16" VerticalAlignment='Center'  FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"/>
+        
+        <!--
+        <TextBlock Grid.Column="3" Grid.Row="3" Text="Specific Type2" FontSize="16" VerticalAlignment='Center'  FontFamily="Arita-dotum(TTF)" />
+        -->
+
+        <Border Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" BorderThickness="1" BorderBrush="#e7c1da" Padding="0,10,0,10" >
+
+            <Grid Height="316" VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border x:Name="M0" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic01.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM0" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM0" Text="M0" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="M1" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"    >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic02.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM1" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM1" Text="M1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="M2" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic03.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM2" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM2" Text="M2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="M3" Style="{StaticResource ElementContainer}"  Grid.Column="3" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="3" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic04.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM3" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM3" Text="M3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C0" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Grid.Column="0" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic05.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC0" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC0" Text="C0" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C1" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic06-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC1" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC1" Text="C1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C2" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic07.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC2" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC2" Text="C2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C3" Style="{StaticResource ElementContainer}"  Grid.Column="3" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="3" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic08.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC3" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC3" Text="C3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+
+                <Border x:Name="U0" BorderBrush="Transparent" BorderThickness="1" Width="56" Height="80"  Grid.Column="0" Grid.Row="2">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Grid.Column="0" Grid.Row="2" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic09.png" Width="30" Height="50"/>
+                        <Border x:Name="innerU1" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textU1" Text="U1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="U1" BorderBrush="Transparent" BorderThickness="1" Width="56" Height="80"  Grid.Column="1" Grid.Row="2">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="2" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic10.png" Width="30" Height="50"/>
+                        <Border x:Name="innerU2" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textU2" Text="U2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="U2" BorderBrush="Transparent" BorderThickness="1" Width="56" Height="80"  Grid.Column="2" Grid.Row="2">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="2" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic11.png" Width="30" Height="50"/>
+                        <Border x:Name="innerU3" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textU3" Text="U3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" BorderThickness="1" BorderBrush="#e7c1da" >
+            <Grid Margin="9,15,9,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>                 
+                </Grid.RowDefinitions>
+
+                <Border x:Name="V1" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe1-01.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerV1" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textV1" Text="V1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="V2" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe1-02.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerV2" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textV2" Text="V2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="V3" Style="{StaticResource ElementContainer}" Grid.Column="2" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe1-03.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerV3" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textV3" Text="V3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                
+                <!-- -->
+                <Border x:Name="F1" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-01.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF1" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF1" Text="F1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F2" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-02.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF2" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF2" Text="F2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F3" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-03.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF3" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF3" Text="F3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </Border>
+        
+   
+        
+        
+        
+
+        <!--
+        <Border Grid.Row="4" Grid.Column="3" BorderThickness="1" BorderBrush="#e7c1da" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="F1" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-01.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF1" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF1" Text="F1" Foreground="#808080" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F2" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-02.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF2" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF2" Text="F2" Foreground="#808080" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F3" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-03.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF3" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF3" Text="F3" Foreground="#808080" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </Border>
+        -->
+
+        <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" BorderThickness="3" BorderBrush="#e7c1da" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Final Type" FontSize="16" VerticalAlignment='Center' FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"  Margin="16,0,16,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding FinalType}" FontSize="16" VerticalAlignment='Center'  FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"  Margin="16,0,16,0" TextAlignment="Center"/>
+
+
+                <TextBlock Grid.Column="2" FontSize="16" VerticalAlignment='Center' FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="16,0,16,0" Foreground="#D89BBC" TextAlignment="Right">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}{2}">
+                            <Binding Path="HairBasicType"/>
+                            <Binding Path="HairLossTypeCenter"/>
+                            <Binding Path="HairLossTypeFrontCenter"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
+
+
+
+
+
+
+//남자
+
+
+<Window x:Class="IOPE_LAB.Contents.Scalp.Window_Opinion_M"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IOPE_LAB.Contents.Scalp"
+        mc:Ignorable="d"
+         WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Topmost="True"
+        Title="Window_Opinion_M" Height="501" Width="790" Background="#FFFFFF">
+    <Window.Resources>
+        <Style x:Key="ElementContainer" TargetType="Border">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="56"/>
+            <Setter Property="Height" Value="110"/>
+            <!--<Setter Property="FontFamily" Value="아리따-돋움(TTF)-Medium" />-->
+        </Style>
+
+        <Style x:Key="ImageStyle" TargetType="Image">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="80"/>
+            <Setter Property="Margin" Value="4 2 4 7"/>
+        </Style>
+
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="Arita-dotum(TTF)" />
+        </Style>
+
+    </Window.Resources>
+
+    <Grid >
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="160*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="160*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="38*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="26*"/>
+            <ColumnDefinition Width="353*"/>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="136*"/>
+            <ColumnDefinition Width="228*"/>
+            <ColumnDefinition Width="26*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="HAIR LOSS TYPE" Grid.Column="1" VerticalAlignment="Center" FontSize="20" Foreground="#6F6F6F" FontWeight="SemiBold" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"  Margin="0,17" />
+
+        <StackPanel HorizontalAlignment="Right" Grid.Column="4" Orientation="Horizontal" >
+            <Button x:Name="Man" Content="남" Background="Transparent" Foreground="#e7c1da" FontWeight="Bold" FontSize="16" BorderThickness="0" Margin="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"/>
+            <TextBlock Text="|" Margin="10" VerticalAlignment="Center"/>
+            <Button Content="여" Background="Transparent" Foreground="#808080" FontWeight="Bold" FontSize="16" BorderThickness="0" Margin="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"/>
+            <Button x:Name="Woman"  Click="Button_Click" Background="Transparent" BorderThickness="0" Margin="10">
+                <Button.Content>
+                    <Path Data="M15.7656 14.6256C15.9158 14.7777 16 14.9831 16 15.1972C16 15.4113 15.9158 15.6167 15.7656 15.7688C15.6128 15.9171 15.4085 16 15.196 16C14.9834 16 14.7791 15.9171 14.6263 15.7688L8 9.10985L1.37373 15.7688C1.2209 15.9171 1.01663 16 0.804048 16C0.591462 16 0.387194 15.9171 0.234368 15.7688C0.0842274 15.6167 0 15.4113 0 15.1972C0 14.9831 0.0842274 14.7777 0.234368 14.6256L6.87064 7.97662L0.234368 1.32766C0.10687 1.17178 0.0417127 0.973885 0.0515713 0.772469C0.0614298 0.571053 0.145599 0.380517 0.287707 0.237922C0.429815 0.0953281 0.6197 0.0108709 0.820429 0.000978669C1.02116 -0.0089136 1.21838 0.0564663 1.37373 0.184401L8 6.84339L14.6263 0.184401C14.7816 0.0564663 14.9788 -0.0089136 15.1796 0.000978669C15.3803 0.0108709 15.5702 0.0953281 15.7123 0.237922C15.8544 0.380517 15.9386 0.571053 15.9484 0.772469C15.9583 0.973885 15.8931 1.17178 15.7656 1.32766L9.12936 7.97662L15.7656 14.6256Z" Fill="#808080"/>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" BorderThickness="0,1,0,0" BorderBrush="#e7c1da" />
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="Basic Type" FontSize="16" VerticalAlignment='Center' FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,6,0,7"/>
+        <TextBlock Grid.Column="3" Grid.Row="1" Text="Specific Type" FontSize="16" VerticalAlignment='Center'  FontFamily="{DynamicResource Family_Arita-dotum(TTF)}"  Grid.ColumnSpan="2" Margin="0,6,0,7"/>
+        <!--
+        <TextBlock Grid.Column="3" Grid.Row="3" Text="Specific Type2" FontSize="16" VerticalAlignment='Center'  FontFamily="Arita-dotum(TTF)"  Grid.ColumnSpan="2" Margin="0,6"/>
+        -->
+
+        <Border Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" BorderThickness="1" BorderBrush="#e7c1da" Padding="0,10,0,10" >
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+
+                <Border x:Name="M0_M" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="0" >
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <!--<Image Source="/Resource/1.png" Width="34" Height="97"/>-->
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic01-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM0_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM0_M" Text="M0" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="M1_M" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic02-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM1_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM1_M" Text="M1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+
+                    </StackPanel>
+                </Border>
+
+
+                <Border x:Name="M2_M" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic03-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM2_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM2_M" Text="M2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="M3_M" Style="{StaticResource ElementContainer}"  Grid.Column="3" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic04-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerM3_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textM3_M" Text="M3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C0_M" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Grid.Column="0" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic05-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC0_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC0_M" Text="C0" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C1_M" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic06-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC1_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC1_M" Text="C1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C2_M" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic07-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC2_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC2_M" Text="C2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="C3_M" Style="{StaticResource ElementContainer}"  Grid.Column="3" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="3" Grid.Row="1" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic08-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerC3_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textC3_M" Text="C3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+
+                <Border x:Name="U0_M" BorderThickness="1" Width="56" Height="80"  Grid.Column="0" Grid.Row="2">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"  Grid.Column="0" Grid.Row="2" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic09-m.png" Width="30" Height="50"/>
+                        <Border x:Name="innerU1_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textU1_M" Text="U1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="U1_M" BorderThickness="1" Width="56" Height="80"  Grid.Column="1" Grid.Row="2">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="2" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic10-m.png" Width="30" Height="50"/>
+                        <Border x:Name="innerU2_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textU2_M" Text="U2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="U2_M" BorderThickness="1" Width="56" Height="80"  Grid.Column="2" Grid.Row="2">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="2" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-basic11-m.png" Width="30" Height="50"/>
+                        <Border x:Name="innerU3_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textU3_M" Text="U3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Grid.Column="3" Grid.RowSpan="3" BorderThickness="1" BorderBrush="#e7c1da" Grid.ColumnSpan="2" >
+            <Grid Margin="9,15,9,18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+
+                <Border x:Name="V1_M" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe1-01-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerV1_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textV1_M" Text="V1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="V2_M" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe1-02-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerV2_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textV2_M" Text="V2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="V3_M" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe1-03-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerV3_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textV3_M" Text="V3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F1_M" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-01-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF1_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF1_M" Text="F1" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F2_M" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-02-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF2_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF2_M" Text="F2" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F3_M" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-03-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF3_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF3_M" Text="F3" Foreground="#808080" TextAlignment="Center" FontSize="10" FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="0,2,0,-2"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+
+            </Grid>
+        </Border>
+
+        <!--
+        <Border Grid.Row="4" Grid.Column="3" BorderThickness="1" BorderBrush="#e7c1da" Grid.ColumnSpan="2" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="F1_M" Style="{StaticResource ElementContainer}"  Grid.Column="0" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-01-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF1_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF1_M" Text="F1" Foreground="#808080" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F2_M" Style="{StaticResource ElementContainer}"  Grid.Column="1" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="1" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-02-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF2_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF2_M" Text="F2" Foreground="#808080" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border x:Name="F3_M" Style="{StaticResource ElementContainer}"  Grid.Column="2" Grid.Row="0">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center"   Grid.Column="2" Grid.Row="0" >
+                        <Image Source="/Contents/Scalp/Resource/LossTypesPopup/loss-popup-spe2-03-m.png" Style="{StaticResource ImageStyle}"/>
+                        <Border x:Name="innerF3_M" HorizontalAlignment="Center" Background="#D9D9D9" CornerRadius="8" Width="27" Height="14" VerticalAlignment="Center">
+                            <TextBlock x:Name="textF3_M" Text="F3" Foreground="#808080" TextAlignment="Center" FontSize="10"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+        -->
+
+        <Border Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4" BorderThickness="3" BorderBrush="#e7c1da" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Final Type" FontSize="16" VerticalAlignment='Center'  FontFamily="Arita-dotum(TTF)"  Margin="16,0,16,0"/>
+                <TextBlock Grid.Column="1" Text="{Binding FinalType}" FontSize="16" VerticalAlignment='Center' FontFamily="{DynamicResource Family_Arita-dotum(TTF)}" Margin="16,0,16,0" TextAlignment="Center"/>
+
+
+                <TextBlock Grid.Column="2" FontSize="16" VerticalAlignment='Center' FontFamily="Arita-dotum(TTF)" Margin="16,0,16,0" Foreground="#D89BBC" TextAlignment="Right">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}{2}">
+                            <Binding Path="HairBasicType"/>
+                            <Binding Path="HairLossTypeCenter"/>
+                            <Binding Path="HairLossTypeFrontCenter"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
