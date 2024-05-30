@@ -114,3 +114,26 @@
         </div>
     </div>
 </div>
+
+
+
+  $.ajax({
+            // url: SkinSurvey_API_URL + surveyNo,
+            url: vapometer_API_URL,
+            type: 'POST',
+            contentType: 'application/json',
+            data: requestData,
+
+            success: function (response) {
+                console.log("vapometer_API_URL 응답값 : ", response);
+                $("#custom_detail").html("바포미터 측정값 저장 완료");
+                showErrorModal();   
+
+
+            }, error: function (xhr, status, error) {
+                console.error('vapometer_API_URL 오류 : ', error);
+                $("#custom_detail").html("바포미터 측정값 저장 실패");
+                showErrorModal();   
+            }
+        })
+
