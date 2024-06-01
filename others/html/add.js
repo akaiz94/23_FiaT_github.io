@@ -5,8 +5,6 @@ const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 const surveyDate = moment().format('YYYY/MM/DD');
 const surveyToday = moment().format('YYYY-MM-DD');
 
-
-
 var page_param = {
     totalCount: 5,
     currentPage: 1,
@@ -16,6 +14,8 @@ var page_param = {
 
 var selectValue = null; //(확인 팝업) 방문경로 체크 변수   
 var selectValue_add = null; //(등록 팝업) 방문경로 체크 변수   
+
+var search_date = surveyToday; // 오늘날짜를 초기값 설정(전역변수)
 
 
 $(document).ready(function () {
@@ -37,7 +37,6 @@ $(document).ready(function () {
 });
 
 const datePicker = document.querySelector('input[type="date"]');
-
 // input 요소의 값이 변경될 때 이벤트 리스너를 등록합니다.
 datePicker.addEventListener('change', (event) => {
     // 선택한 날짜를 변수에 저장합니다.
@@ -58,11 +57,10 @@ var fnGetVisitList = function (param) {
     console.log('## fnGetVisitList call')
     $('#visit-list > tr').remove()
 
-    search_date = surveyToday;
-
     ajax.get(API_URL + '?reg_date=' + search_date, param, function (result) {
         list = result;
         console.log("fnGetVisitList 의 result(list) : ", list);
+        console.log("list개수 : ", list.length);
 
         $.each(list, function (idx, data) {
             page_param.totalCount = data.total_count
@@ -133,8 +131,20 @@ for (var day = 1; day <= 31; day++) {
 
 
 
+// 팝업창 내 생년월일
+var selectedYear = "";
+var selectedMonth = "";
+var selectedDay = "";
 
-
+$('select[name="custom_year').on('change', function () {
+    selectedYear = $(this).val();
+});
+$('select[name="custom_month').on('change', function () {
+    selectedMonth = $(this).val();
+});
+$('select[name="custom_day').on('change', function () {
+    selectedDay = $(this).val();
+});
 
 
 function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo) {
@@ -187,6 +197,12 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo) {
         document.getElementById('birth_month').text = birth_month;
         document.getElementById('birth_day').text = birth_date;
     }
+
+
+
+
+
+
     if (phone !== null) {
         document.getElementById('phone_first').text = phone_first;
         document.getElementById('phone_middle').value = phone_middle;
@@ -206,13 +222,21 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo) {
 
         // console.log("앞 번호 : ", document.getElementById('phone_first').text);
         // console.log("가운데 번호 : ", document.getElementById('phone_middle').value);
-        localStorage.setItem('custom_userkey', userkey);
+        localStorage.setItem('custom_userkey', 2277);
 
         console.log("이름 : ", $("#custom_name").val());
 
         console.log("생일(년도) : ", $("#birth_year").val());
         console.log("생일(월) : ", $("#birth_month").val());
         console.log("생일(일) : ", $("#birth_day").val());
+
+        selectedYear = $("#birth_year").val();
+        selectedMonth = $("#birth_month").val();
+        selectedDay = $("#birth_day").val();
+
+        console.log("생년 : ", selectedYear);
+        console.log("월 : ", selectedMonth);
+        console.log("일 : ", selectedDay);
 
         console.log("앞 번호 : ", $("#phone_first").val());
         console.log("가운데 번호 : ", $("#phone_middle").val());
@@ -248,62 +272,7 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo) {
         else {
             console.log("선택 완료");
 
-            // var requestData = {
-            //     "skey": 330,
-            //     "reg_date": currentTime,
-            //     "rsvn_date": surveyDate,
-            //     "rsvn_time": "11:50", //
-            //     "name": String($("#custom_name-add").val()),
-            //     "course_flg": "B", //
-            //     "phone": String($("#phone_first-add").val() + $("#phone_middle-add").val() + $("#phone_last-add").val()),
-            //     "sex": String(sex),
-            //     "birthdate": String(selectedYear_add + selectedMonth_add + selectedDay_add),
-            //     "birthdatetp": "",
-            //     "cstmid": null,
-            //     "ucstmid": null,
-            //     "userkey": 0,
-            //     "surveyno": 0,
-            //     "progress_flg": "1", // 진행상태
-            //     "vst_path": String(selectValue_add),
-            //     "vst_txt": "",         
-            //     "email": String($("#email-add").val()),
-            //     "comment": "",
-            //     "group_id": null,
-            //     "programcode": "PC001014", //
-            //     "apnonid": null,
-            //     "brandcourse": "IC",
-            //     "create_dt": currentTime,
-            //     "update_dt": currentTime
-            // }
-            // // console.log("surveyNo-Type : ", typeof (parseInt(surveyNo)));
-            // // console.log("userKey-Type : ", typeof (parseInt(7777)));
-            // // console.log("cheek_Left-Type : ", typeof (cheek_Left));
-            // // console.log("cheek_Right-Type : ", typeof (cheek_Right));
-            // // console.log("currentTime-Type : ", typeof (currentTime));
 
-            // console.log("info_add requestData : ", requestData);
-
-            // $.ajax({
-            //     url: direct_API_URL,
-            //     type: 'POST',
-            //     contentType: 'application/json',
-            //     data: JSON.stringify(requestData),
-
-            //     success: function (response) {
-            //         console.log("direct_API_URL 응답값 : ", response);
-            //         $("#custom_detail_main").html("고객정보 저장 완료");
-            //         showErrorModal();
-
-            //         setTimeout(function () {
-            //             window.location.href = './solution_reservation.html';;
-            //         }, 1000); // 2초 딜레이
-
-            //     }, error: function (xhr, status, error) {
-            //         console.error('direct_API_URL 오류 : ', error);
-            //         $("#custom_detail_main").html("고객정보 저장 실패");
-            //         showErrorModal();
-            //     }
-            // })
 
 
 
@@ -515,5 +484,70 @@ Handlebars.registerHelper('maskName', function (name) {
 
 
 
+
+/*
+*
+* 24.06.01 중복확인버튼, (기존고객 정보 자동입력)
+*
+*/
+
+
+$('#checkDuplicate-add').click(function (event) {
+    event.preventDefault(); //폼 기본 동작 비활성화
+    console.log('중복확인버튼 클릭');
+
+    phone_number = $("#phone_first-add").val() + $("#phone_middle-add").val() + $("#phone_last-add").val();
+    // ajax.get(API_URL + 'list?phone=' + phone_number, param, function (result) {
+    //     list = result;
+    //     console.log("fnGetVisitList 의 result(list) : ", list);
+    //     console.log("list개수 : ", list.length);
+    // });   
+
+    console.log('phone_number: ', phone_number);
+
+    $.ajax({
+        url: API_URL + '?phone=' + phone_number,
+        type: 'GET',
+
+        success: function (response) {
+            console.log("핸드폰 중복 체크 성공 응답값 : ", response);
+            if (response.length === 0) {
+                $("#custom_detail_main").html("신규 고객입니다.");
+                showErrorModal();
+            }
+            else if (response.length > 0) {
+                $("#custom_detail_main").html("방문 고객입니다.");
+                showErrorModal();
+
+                $("#custom_name-add").val(response[0].name);
+
+                const birth_year = response[0].birthdate.substring(0, 4);
+                const birth_month = response[0].birthdate.substring(4, 6);
+                const birth_day = response[0].birthdate.substring(6, 8);
+                $("#birth_year-add").text(birth_year);
+                $("#birth_month-add").text(birth_month);
+                $("#birth_day-add").text(birth_day);
+
+                if (response[0].sex === "F") {
+                    $("#gender_02-add").prop("checked", true);
+                } else if (response[0].sex === "M") {
+                    $("#gender_01-add").prop("checked", true);
+                }
+                $("#email-add").val(response[0].email);
+
+                $("#program-add").css("color", "#e7c1da");
+
+            }
+
+        }, error: function (xhr, status, error) {
+            console.error('핸드폰 중복 오류 : ', error);
+            $("#custom_detail_main").html("확인이 불가능합니다. (error)");
+            showErrorModal();
+        }
+    })
+
+
+
+})
 
 
