@@ -47,11 +47,11 @@
                                     <col style="width: 25%;">
                                     <col style="width: 15%;">
                                 </colgroup>
-                                <tr>
-                                    <th>No</th>
-                                    <th>시간</th>
+                                <tr>                        
+                                    <th>No</th>              
+                                    <th>방문시간</th>                                    
                                     <th>성명</th>
-                                    <th>전화번호</th>
+                                    <th>프로그램명</th>
                                     <th>솔루션</th>
                                 </tr>
 
@@ -59,13 +59,14 @@
 
                                 <!--게시판 목록 동적할당-->
                                 <script id="visit-item" type="text/x-handlebars-template">
-                                    <tr>
-                                        <td>{{ this.visitkey }}</td>
-                                        <td>{{ this.rsvn_date }}</td>
+                                    <tr>                   
+                                        <td>{{ this.index }}</td>                   
+                                        <td>{{ this.rsvn_time }}</td>
                                         <td><a 
                                             onclick="openMsgLayer('{{this.name}}','{{this.phone}}','{{this.birthdate}}','{{this.sex}}',
                                             '{{this.m_userkey}}', '{{this.m_surveyno}}')">{{maskName this.name}}</a></td>
-                                        <td>{{ this.phone }}</td>  
+                                        <td>{{ this.ProgramCode }}</td>
+                                        <!-- <td>{{ this.progress_flg }}</td>  -->
                                         <td><button class="button radius list" data-event="popup" data-target="#solution_proposal" data-action="open">선택</button></td>
                                     </tr>
                                 </script>
@@ -82,7 +83,8 @@
                             <div class="function-wrap">
                                 <div class="input-box search-input">
                                     <label for="search">성명</label>
-                                    <input type="text" name="search" id="search"><button>검색</button>
+                                    <input type="text" name="search">
+                                    <button id="search_name">검색</button>
                                 </div>
                             </div>
                             <h2 class="title marginTop20">솔루션 제안 모음</h2>
@@ -105,7 +107,7 @@
                                             '{{this.m_userkey}}', '{{this.m_surveyno}}')">{{maskName this.name}}</a></td>
                                         <td>{{ this.birthdate }}</td>
                                         <td>{{ this.rsvn_date }}</td>                                        
-                                        <td>{{ this.prog_name }}</td>  
+                                        <td>{{ this.ProgramCode }}</td>
                                         <td>{{ this.progress_flg }}</td> 
                                     </tr>
                                 </script>
@@ -139,7 +141,7 @@
 </div>
 
 <!--솔루션 제안-->
-<div class="proposal-layer w1200 layer-wrap"  id="solution_proposal">
+<div class="proposal-layer w1200 layer-wrap"     id="solution_proposal">
     <div class="layer-container">
         <button class="close-button">닫기</button>
         <header class="layer-header header-auto">
@@ -147,8 +149,8 @@
             <h2 class="layer-title">솔루션 제안</h2>
         </header>
         <div class="layer-content">
-            <h3><em class="user-name" id="custom_name"></em> 님의 피부를 마주하는 순간, 여기는 아모레 시티랩입니다.</h3>
-            <p class="marginTop30"><em class="user-name" id="custom_name"></em> 님의 솔루션</p>
+            <h3><em class="custom_name"></em> 님의 피부를 마주하는 순간, 여기는 아모레 시티랩입니다.</h3>
+            <p class="marginTop30"><em class="custom_name" ></em> 님의 솔루션</p>
             <div class="analysis-wrap marginTop50">
                 <div class="table-box bg-white">
                     <table>
@@ -214,60 +216,6 @@
 </div>
 <!--솔루션 제안-->
 
-<!--보고서 제안-->
-<div class="report-layer w1200 layer-wrap"  id="solution_report">
-    <div class="layer-container">
-        <button class="close-button">닫기</button>
-        <header class="layer-header header-auto">
-            <h3 class="site-title">AMORE CITY LAB</h3>
-            <h2 class="layer-title">보고서 제안</h2>
-        </header>
-        <div class="layer-content">
-            <h3><em class="user-name">전지현</em> 님의 피부를 마주하는 순간, 여기는 아모레 시티랩입니다.</h3>
-            <p class="marginTop30"><em class="user-name">전지현</em> 님의 분석 보고서</p>
-            <div class="analysis-wrap marginTop50">
-                <div class="table-box bg-white">
-                    <table>
-                        <colgroup>
-                            <col style="width: 20%">
-                            <col style="width: 20%">
-                            <col style="width: 20%">
-                            <col style="width: 20%">
-                            <col style="width: 20%">
-                        </colgroup>
-                        <tr>
-                            <th colspan="3">피부</th>
-                            <th colspan="2">두피<span class="dat"></span>모발</th>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="icon-box">
-                                    <img src="./resource/images/icons/icon-solution002.svg">
-                                </div>
-                            </td>
-                            <td colspan="2" class="left-line">
-                                <div class="icon-box">
-                                    <img src="./resource/images/icons/icon-solution003.svg">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="buttons">
-                            <td><button class="button w150 radius medium">살펴보기</button></td>
-                            <td><button class="button w150 radius medium">살펴보기</button></td>
-                            <td><button class="button w150 radius medium">살펴보기</button></td>
-                            <td class="left-line"><button class="button w150 radius medium">살펴보기</button></td>
-                            <td><button class="button w150 radius medium">살펴보기</button></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="button-box grid-wrap justifyContentCenter">
-                <button class="button w300">All</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--보고서 제안-->
 
 </body>
 </html>
