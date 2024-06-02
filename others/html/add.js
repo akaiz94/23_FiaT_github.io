@@ -1362,7 +1362,6 @@ var scatterChart = new Chart(ctx_scatterChart, {
             },
         }
     },
-    plugins: [ChartDataLabels]
 });
 
 /** 
@@ -1451,3 +1450,91 @@ function showErrorModal() {
     // console.log("안내 모달창");
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+annotation: {
+    drawTime: 'afterDatasetsDraw', // 어노테이션은 데이터셋 그린 후에 그리도록 설정
+    annotations: [{
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x',
+        value: scatterData.datasets[0].data[0].x,
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderWidth: 1,
+        label: {
+            content: scatterData.datasets[0].data[0].label, // 데이터 라벨
+            enabled: true,
+            position: 'top'
+        }
+    }, {
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x',
+        value: scatterData.datasets[0].data[1].x,
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderWidth: 1,
+        label: {
+            content: scatterData.datasets[0].data[1].label, // 데이터 라벨
+            enabled: true,
+            position: 'top'
+        }
+    }, {
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x',
+        value: scatterData.datasets[0].data[2].x,
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderWidth: 1,
+        label: {
+            content: scatterData.datasets[0].data[2].label, // 데이터 라벨
+            enabled: true,
+            position: 'top'
+        }
+    }, {
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x',
+        value: scatterData.datasets[0].data[3].x,
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderWidth: 1,
+        label: {
+            content: scatterData.datasets[0].data[3].label, // 데이터 라벨
+            enabled: true,
+            position: 'top'
+        }
+    }, {
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x',
+        value: scatterData.datasets[0].data[4].x,
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderWidth: 1,
+        label: {
+            content: scatterData.datasets[0].data[4].label, // 데이터 라벨
+            enabled: true,
+            position: 'top'
+        }
+    }, {
+        type: 'line',
+        mode: 'vertical',
+        scaleID: 'x',
+        value: scatterData.datasets[0].data[5].x,
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderWidth: 1,
+        label: {
+            content: scatterData.datasets[0].data[5].label, // 데이터 라벨
+            enabled: true,
+            position: 'top'
+        }
+    }]
+}
