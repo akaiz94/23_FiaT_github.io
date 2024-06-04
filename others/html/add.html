@@ -1,94 +1,22 @@
 
-
-
 <!-- 두피 이미지 팝업 레이어-->
-<div class="scalp-image-layer layer-wrap w1200 ">
+<div class="scalp-image-layer layer-wrap w1200">
     <div class="layer-container" style="height: 950px;">
         <button class="close-button">닫기</button>
         <header class="layer-header">
             <h3 class="site-title">AMORE CITY LAB</h3>
-            <h2 class="layer-title" id="popup">HAIR LOSS TYPE</h2>
+            <h2 class="layer-title" id="popup_title">HAIR LOSS TYPE</h2>
         </header>
         <div class="layer-content autoScroll" style="padding: 10px;">
-            <div style="gap:10px">
+            <div style="gap:10px; width:900px; height: 700px;">
                 <div class="content-grid">
-                  
-                    
+                    <div class="img-box">
+                        <img id="popup_image" src="./resource/images/hair-skin-img001.png" >
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <!-- 두피 이미지 팝업 레이어-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 7. 모발 이미지 넣기
-$.ajax({
-   url: hair_image_URL + '?surveyNo=' + 1111,
-   type: 'GET',
-   success: function (response) {
-       console.log('hair_image_URL 응답 : ', response);
-
-       hairLeftHairLine_image = response[0].Scalp_LeftHairLine;
-       hairFrontCenter_image = response[0].Scalp_FrontCenter;
-       hairFrontHairLine_image = response[0].Scalp_FrontHairLine;
-       hairCenter_image = response[0].Scalp_Center;
-       hairRightHairLine_image = response[0].Scalp_RightHairLine;
-       hairBack_image = response[0].Scalp_Back;
-
-
-       $("#hairLeftHairLine-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_LeftHairLine);
-       $("#hairFrontCenter-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_FrontCenter);
-       $("#hairFrontHairLine-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_FrontHairLine);
-       $("#hairCenter-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_Center);
-       $("#hairRightHairLine-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_RightHairLine);
-       $("#hairBack-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_Back);
-
-   },
-   error: function (xhr, status, error) {
-
-       console.error('에러 : ', error);
-   }
-})
-});
-
-let hairLeftHairLine_image ;
-let hairFrontCenter_image ;
-let hairFrontHairLine_image ;
-let hairCenter_image ;
-let hairRightHairLine_image ;
-let hairBack_image ;
-
-
-
-
-/** 
-* 24.06. 04 
-* @description 이미지 클릭시, 확대 팝업
-**/
-
-$('#hairLeftHairLine-img').on('click', function () {
-console.log("왼쪽 이미지 클릭")
-console.log("hairLeftHairLine_image : ", hairLeftHairLine_image);
-
-$('.scalp-image-layer').addClass('open');
-$('#popup_title').text('좌측 헤어라인');
-});
-
-
 
