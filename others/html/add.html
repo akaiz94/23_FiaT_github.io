@@ -659,3 +659,120 @@
 
 <!--페이지 스크립트-->
 <script type="text/javascript" src="/dev/analysis2_result.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Tooltip Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .tooltip {
+            display: none;
+            position: absolute;
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 10px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .tooltip img {
+            width: 200px; /* 확대된 이미지의 크기 조절 */
+        }
+    </style>
+</head>
+<body>
+    <div class="col-item">
+        <div class="row-item">
+            <h2 class="title">Detailed Information On hair Thickness & Density</h2>
+            <input id="survey-value" style="width: 150px;" placeholder="SurveyKey입력"></input>
+            <button id="submit-button" style="border: 1px solid black; width: 70px; font-weight: 700;">Submit</button>
+            <div class="row-item-content flexWrapper gap50">
+                <div class="hair-skin-grid">
+                    <div class="grid-item" id="hairLeftHairLine">
+                        <h3>좌측 헤어라인</h3>
+                        <div class="hair-skin-info">
+                            <div class="img-box" data-tooltip="tooltip1">
+                                <img src="./resource/images/hair-skin-img001.png" class="tooltip-trigger">
+                            </div>
+                            <div class="img-box" data-tooltip="tooltip2">
+                                <img src="./resource/images/hair-skin-img002.png" class="tooltip-trigger">
+                            </div>
+                            <div class="img-box" data-tooltip="tooltip3">
+                                <img src="./resource/images/hair-skin-img003.png" class="tooltip-trigger">
+                            </div>
+                            <dl>
+                                <dt>밀도</dt>
+                                <dd>85/120 hair/㎠</dd>
+                                <dt>굵기</dt>
+                                <dd>0.04/0.075㎜</dd>
+                                <dt>두피유형</dt>
+                                <dd>지성</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        <img src="" alt="Tooltip Image">
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.tooltip-trigger').hover(
+                function(e) {
+                    var tooltipId = $(this).parent().data('tooltip');
+                    var src = $(this).attr('src');
+                    $('.tooltip img').attr('src', src);
+                    $('.tooltip').attr('id', tooltipId).css({
+                        display: 'block',
+                        top: e.pageY + 10 + 'px',
+                        left: e.pageX + 10 + 'px'
+                    });
+                },
+                function() {
+                    $('.tooltip').css('display', 'none');
+                }
+            );
+
+            $('.tooltip-trigger').mousemove(function(e) {
+                $('.tooltip').css({
+                    top: e.pageY + 10 + 'px',
+                    left: e.pageX + 10 + 'px'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
