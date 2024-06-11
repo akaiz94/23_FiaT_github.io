@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <!-- <section class="top-banner statistics"><h1>통계</h1></section> -->
+        <!--top-title-->
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">데이터 분석 (피부)</h2>
+                <div class="tab-box marginTop70 col-02">
+                    <a href="./statistics_skin_season.html" class="tab-item active">계절별</a>
+                    <a href="./statistics_skin_age.html" class="tab-item">연령대<span class="dat"></span>측정값</a>
+                    <!-- <a href="./statistics_head_season.html" class="tab-item">두피<span class="dat"></span>모발</a> -->
+                </div>
+                <div class="filter-warp marginTop70">
+                    <div class="left-box">
+                        <div class="input-box">
+                            <label for="year">년도</label>
+                           <select name="year" id="year">
+                               <option>2024-02-06</option>
+                           </select>
+                        </div>
+
+                        <div class="input-box">
+                           <label for="service">서비스</label>
+                           <select name="service" id="service">
+                               <option>My Skin DNA</option>
+                           </select>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="gender">성별</label>
+                           <select name="gender" id="gender">
+                               <option>여성</option>
+                               <option>남성</option>
+                           </select>
+                        </div>
+
+                        <div class="input-box">
+                            <label for="age">연령</label>
+                           <select name="age" id="age">
+                               <option>30세 이상</option>
+                           </select>
+                        </div>
+
+                    </div>
+                    <div class="right-box">
+                    </div>
+                </div>
+                <div class="statistics-board marginTop30 grid-4">
+                    <div class="statistics-item h100" style="grid-column: span 2;">
+                        <div class="header-box flexCenter flexColumn bottom-line fix-header">
+                            <h2 class="title">피부 전체 비교</h2>
+                            <p>- 피부관리항목 -</p>
+                        </div>
+                    </div>
+                    <div class="statistics-item h100" style="grid-column: span 2;">
+                        <div class="header-box flexCenter flexColumn bottom-line fix-header">
+                            <h2 class="title">피부 계절 비교</h2>
+                            <p>- 피부관리항목 -</p>
+                        </div>
+                    </div>
+                    <div class="statistics-item h300 paddingAll400" style="grid-area: 2 / 1; grid-column: span 2;">
+                        <div class="header-box flexBetween">
+                            <canvas id="skin_total_chart"></canvas>
+                        </div>
+                    </div>                   
+
+                    <div class="statistics-item h600 paddingAll40" style="grid-area: 2 / 2; grid-column: span 2;">               
+                        <canvas id="skin_season_chart"></canvas>
+                    </div>
+                    <div class="statistics-item h300 paddingAll400" style="grid-area: 3 / 1; grid-column: span 2;">
+                        
+                        <canvas id="skin_total_bar_chart" ></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/statistics_skin_season.js"></script>

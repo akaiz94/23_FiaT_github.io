@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    
+</head>
+<body class="login">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <div class="login-container">
+            <form id="loginForm" name="loginForm">
+                <h1 class="title-box">로그인</h1>
+                <div class="login-form-box marginTop70">
+                    <div class="row-box">
+                        <div class="input-box big">
+                            <input type="text" placeholder="ID" name="ManagerID" id="ManagerID" value="s1">
+                            <!-- <input type="text" placeholder="ID" name="id" id="login_id" autocomplete="username" required> -->
+                        </div>
+                    </div>
+                    <div class="row-box">
+                        <div class="input-box big">
+                            <input type="password" placeholder="PW" name="Password" id="Password" value="dkdldhvp123!">
+                            <!-- <input type="password" placeholder="PW" name="pw"id="login_pw" autocomplete="current-password" required> -->
+                        </div>
+                    </div>
+                    <div class="row-box">
+                        <div class="button-box big">
+                            <!-- <div type="submit" class="button full colorPoint" id="loginButton">LOG IN</div> -->
+                            <button class="button full colorPoint" id ="loginButton">LOG IN</button>
+                        </div>
+                    </div>
+                    <div id="loginResult"></div>
+                </div>
+            </form>
+
+
+        </div>
+    </main>
+</div>
+
+
+<!--고객찾기 결과 레이어-->
+<div class="search-result-layer layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">로그인 오류</h2>
+        </header>
+        <div class="layer-content">
+            <p>
+                ID와 PW를 다시 확인해주세요.
+            </p>
+        </div>     
+    </div>
+</div>
+<!--고객찾기 결과 레이어-->
+
+
+
+
+</body>
+</html>
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/login.js"></script>

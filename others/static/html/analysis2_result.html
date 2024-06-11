@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet" />
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet" />
+    <link href="./resource/css/common.css" rel="stylesheet" />
+    <link href="./resource/css/ui.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+
+
+
+    <style>
+        /* canvas {
+            width: 390px;
+            height: 450px;
+            margin: 0px auto;
+        } */        
+       
+        ::placeholder {
+            color: grey;
+        }
+
+        .canvas-container-draw {
+            position: relative;
+        }
+
+        .canvas-layer-draw {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #backgroundCanvas {
+            z-index: 1;
+        }
+
+        #opinionCanvas {
+            z-index: 2;
+        }
+
+
+        .opinion-img {
+            position: relative;
+        }
+
+        #backgroundImage {
+            position: absolute;
+            z-index: 1;
+        }
+
+        #opinionsImage {
+            position: absolute;
+            z-index: 2;
+        }
+
+        .grid-image {
+            justify-self: center;
+            align-self: center;
+            /* border: 1px solid #000; */
+        }
+
+        .grid-item {
+            justify-self: center;
+            align-self: center;
+        }
+
+        .caption {
+            margin-top: 5px;
+            padding: 10px;
+            background-color: #bdbdbd;
+            text-align: center;
+            width: 100%;
+            line-height: 13px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            font-size: 15px;
+            color: #333;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .content-grid {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .type-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, auto);
+            gap: 10px;
+            background-color: white;
+            height: 450px;
+
+        }
+
+        .type-grid2 {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 10px;
+            background-color: white;
+            height: 450px;
+
+        }
+
+        .type-grid3 {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            background-color: white;
+            height: 10px;
+
+        }
+    </style>
+
+</head>
+
+
+<body class="sub">
+    <div class="wrap">
+        <header class="site-header" id="top_menu">
+        </header>
+        <main>
+            <!--top-title-->
+            <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+            <!--top-title-->
+
+            <div class="content-box content-padding">
+                <div class="container">
+                    <h2 class="title-box">분석 (두피<i class="dat"></i>모발)</h2>
+                    <div class="tab-box marginTop70">
+                        <a href="./analysis.html" class="tab-item">피부 측정</a>
+                        <a href="./analysis_result.html" class="tab-item">피부 측정 결과</a>
+                        <a href="./analysis2.html" class="tab-item">두피<i class="dat"></i>모발 측정</a>
+                        <a href="./analysis2_result.html" class="tab-item active">두피<i class="dat"></i>모발 측정 결과</a>
+                        <a href="./analysis3_result.html" class="tab-item">MY SKIN DNA</a>
+                    </div>
+                    <!--리포트 부분 스타일 분리 했습니다 -->
+                    <link href="./resource/css/report.css" rel="stylesheet" />
+                    <section class="report-wrapper marginTop70">
+                        <header class="header-box">
+                            <div class="header-lift-box">HAIR&SCALP SOLUTION FOR : </div>
+                            <div>
+                                <span id="custom_name" style="font-size: 30px; font-weight: bold;"></span><span
+                                    style="font-size: 25px;">님</span>
+                            </div>
+                            <div class="header-right-box">
+                                <span>MY SKIN ANALYSIS REPORT ㅣ <span id="manager_name"
+                                        style="font-weight: bold;">고은비</span></span>
+                                <span id="title_date" style="margin-right: 105px;">측정일자 : <span id="visitDate">2024. 01.
+                                        22</span></span>
+                                <span id="title_count" style="margin-right: 160px;">방문회차 : 2회차</span>
+                            </div>
+                        </header>
+                        <div class="report-content">
+                            <div class="col-item">
+                                <div class="row-item flexWrapper width-auto-310">
+                                    <div class="row-col">
+                                        <h2 class="title">Scalp Type</h2>
+                                        <div class="row-item-content line-right">
+                                            <table class="type-list">
+                                                <tr>
+                                                    <th rowspan="2"><span class="type-item">양호</span></th>
+                                                    <td><span class="type-item">지성</span></td>
+                                                    <td><span class="type-item">지성비듬성</span></td>
+                                                    <td><span class="type-item">트러블성</span></td>
+                                                    <td><span class="type-item">지루성</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="type-item">건성</span></td>
+                                                    <td><span class="type-item">건성비듬성</span></td>
+                                                    <td><span class="type-item">민감성</span></td>
+                                                    <td><span class="type-item">아토피성</span></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row-col">
+                                        <h2 class="title">Hair Conditions</h2>
+                                        <div class="row-item-content">
+                                            <div class="hair-condition">
+                                                <img src="./resource/images/img-hair.png" alt="모발 이미지">
+                                                <ul class="hair-condition-list">
+                                                    <li class="condition-item" id="haircondition_tips">약손상</li>
+                                                    <li class="condition-item" id="haircondition_mid">건강</li>
+                                                    <li class="condition-item" id="haircondition_root">건강</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-item">
+                                    <h2 class="title">hair Thickness & Density</h2>
+                                    <div class="row-item-content">
+                                        <div class="flexWrapper columGap40">
+                                            <div class="flexColumnWrapper rowGap20">
+                                                <div>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <h3 style="margin-right: auto; font-weight: bold;">굵기(㎟)</h3>
+                                                        <sub style="margin-left: auto; font-size: 13px;">기준값 : 0.075
+                                                            mm</sub>
+                                                    </div>
+                                                    <canvas id="thicknessChart" width="350"></canvas>
+                                                    <!-- <div class="graph-item">
+                                                    <img src="./resource/images/graph/graph-021.svg" alt="Predicted Skin Analysis Results 그래프">
+                                                </div> -->
+                                                </div>
+                                                <div>
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <h3 style="margin-right: auto; font-weight: bold;">밀도(hairs/㎠)</h3>
+                                                        <sub style="margin-left: auto; font-size: 13px;">기준값 : 120
+                                                            hairs/㎠</sub>
+                                                    </div>
+                                                    <canvas id="densityChart" width="350"></canvas>
+                                                    <!-- <div class="graph-item">
+                                                    <img src="./resource/images/graph/graph-022.svg" alt="Predicted Skin Analysis Results 그래프">
+                                                </div> -->
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <canvas id="scatterChart" width="420" height="420"></canvas>
+                                                <!-- <div class="graph-item">
+                                                <img src="./resource/images/graph/graph-023.svg" alt="Predicted Skin Analysis Results 그래프">
+                                            </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-item">
+                                    <h2 class="title">hair Density Type</h2>
+                                    <div class="row-item-content flexColumn">
+                                        <div class="img-box">
+                                            <img src="./resource/images/hair-img.png">
+                                        </div>
+                                        <div class="diagram-wrapper flexWrapper marginTop20">
+                                            <dl class="diagram-item noTitle column gap30 ">
+                                                <dd class="gray" id="HairlossType_Basic" style="cursor: pointer;">
+                                                    M3
+                                                </dd>
+                                            </dl>
+                                            <dl class="diagram-item noTitle column gap30">
+                                                <dd class="gray" id="HairlossType_Center" style="cursor: pointer;">
+                                                    V1
+                                                </dd>
+                                            </dl>
+                                            <dl class="diagram-item noTitle column gap30">
+                                                <dd class="gray" id="HairlossType_FrontCenter" style="cursor: pointer;">
+                                                    F1
+                                                </dd>
+                                            </dl>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-item">
+                                <div class="row-item">
+                                    <h2 class="title">Detailed Information On hair Thickness & Density</h2>
+                                    <!-- <input id="survey-value" style=" width: 150px;" placeholder="SurveyKey입력"></input>
+                                    <button id="submit-button"
+                                        style="border: 1px solid black; width: 70px; font-weight: 700;">Submit</button> -->
+                                    <div class="row-item-content flexWrapper gap50">
+                                        <div class="hair-skin-grid">
+                                            <div class="grid-item" id="hairLeftHairLine">
+                                                <h3>좌측 헤어라인</h3>
+                                                <div class="hair-skin-info">
+                                                    <div class="img-box"><img id="hairLeftHairLine-img" style="cursor: pointer;"
+                                                            src="./resource/images/hair-skin-img001.png"></div>
+                                                    <dl>
+                                                        <dt>밀도</dt>
+                                                        <dd>85/120 hair/㎠</dd>
+                                                        <dt>굵기</dt>
+                                                        <dd>0.04/0.075㎜</dd>
+                                                        <dt>두피유형</dt>
+                                                        <dd style="font-weight: bold;">지성</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <div class="hair-model">
+                                                <img src="./resource/images/hair-skin-model.png">
+                                            </div>
+                                            <div class="grid-item" id="hairFrontCenter">
+                                                <h3>앞 중앙</h3>
+                                                <div class="hair-skin-info">
+                                                    <div class="img-box"><img id="hairFrontCenter-img" style="cursor: pointer;"
+                                                            src="./resource/images/hair-skin-img002.png"></div>
+                                                    <dl>
+                                                        <dt>밀도</dt>
+                                                        <dd>100/120 hair/㎠</dd>
+                                                        <dt>굵기</dt>
+                                                        <dd>0.074/0.075㎜</dd>
+                                                        <dt>두피유형</dt>
+                                                        <dd style="font-weight: bold;">양호</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <div class="grid-item" id="hairFrontHairLine">
+                                                <h3>앞 헤어라인</h3>
+                                                <div class="hair-skin-info">
+                                                    <div class="img-box"><img id="hairFrontHairLine-img" style="cursor: pointer;"
+                                                            src="./resource/images/hair-skin-img003.png"></div>
+                                                    <dl>
+                                                        <dt>밀도</dt>
+                                                        <dd>90/120 hair/㎠</dd>
+                                                        <dt>굵기</dt>
+                                                        <dd>0.04/0.075㎜</dd>
+                                                        <dt>두피유형</dt>
+                                                        <dd style="font-weight: bold;">건성</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <div class="grid-item" id="hairCenter">
+                                                <h3>정수리</h3>
+                                                <div class="hair-skin-info">
+                                                    <div class="img-box"><img id="hairCenter-img" style="cursor: pointer;"
+                                                            src="./resource/images/hair-skin-img004.png"></div>
+                                                    <dl>
+                                                        <dt>밀도</dt>
+                                                        <dd>105/120 hair/㎠</dd>
+                                                        <dt>굵기</dt>
+                                                        <dd>0.067/0.075㎜</dd>
+                                                        <dt>두피유형</dt>
+                                                        <dd style="font-weight: bold;">건성비듬성</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <div class="grid-item" id="hairRightHairLine">
+                                                <h3>우측 헤어라인</h3>
+                                                <div class="hair-skin-info">
+                                                    <div class="img-box"><img id="hairRightHairLine-img" style="cursor: pointer;"
+                                                            src="./resource/images/hair-skin-img005.png"></div>
+                                                    <dl>
+                                                        <dt>밀도</dt>
+                                                        <dd>85/120 hair/㎠</dd>
+                                                        <dt>굵기</dt>
+                                                        <dd>0.04/0.075㎜</dd>
+                                                        <dt>두피유형</dt>
+                                                        <dd style="font-weight: bold;">양호</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                            <div class="grid-item" id="hairBack">
+                                                <h3>후두부</h3>
+                                                <div class="hair-skin-info">
+                                                    <div class="img-box"><img id="hairBack-img" style="cursor: pointer;"
+                                                            src="./resource/images/hair-skin-img006.png"></div>
+                                                    <dl>
+                                                        <dt>밀도</dt>
+                                                        <dd>85/120 hair/㎠</dd>
+                                                        <dt>굵기</dt>
+                                                        <dd>0.068/0.075㎜</dd>
+                                                        <dt>두피유형</dt>
+                                                        <dd style="font-weight: bold;">건성비듬성</dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="row-item">
+                                <h2 class="title">Opinions</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div class="img-box marginTop30">
+                                        <img src="./resource/images/img-report002.png">
+                                    </div>
+                                    <div class="comment-box marginTop70">
+                                        <div class="input-box">
+                                            <label for="comment01">Comment 1</label>
+                                            <input type="text" id="comment01" name="comment01" placeholder="변화 루틴을 제안합니다.">
+                                        </div>
+                                        <div class="input-box">
+                                            <label for="comment02">Comment 2</label>
+                                            <input type="text" id="comment02" name="comment03" placeholder="변화 루틴을 제안합니다.">
+                                        </div>
+                                        <div class="input-box">
+                                            <label for="comment03">Comment 3</label>
+                                            <input type="text" id="comment03" name="comment03" placeholder="변화 루틴을 제안합니다.">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+
+                                <div class="row-item">
+                                    <h2 class="title">Opinions</h2>
+                                    <div class="row-item-content flexColumn">
+                                        <div class="img-box">
+                                            <img id="backgroundImage" src="" style="width: 820px; height: 300px;">
+                                            <img id="opinionsImage" src="" style="width: 820px; height: 300px;">
+                                        </div>
+                                        <div class="comment-box" style="margin-top: 370px;">
+                                            <div class="input-box">
+                                                <label for="comment01">두피/모발 케어</label>
+                                                <input type="text" id="comment01_main" name="comment01" disabled="true"
+                                                    placeholder="두피/모발 케어 루틴을 제안합니다.">
+                                            </div>
+                                            <div class="input-box">
+                                                <label for="comment02">일상 생활</label>
+                                                <input type="text" id="comment02_main" name="comment03" disabled="true"
+                                                    placeholder="일상 생활 루틴을 제안합니다.">
+                                            </div>
+                                            <div class="input-box">
+                                                <label for="comment03">Comment</label>
+                                                <input type="text" id="comment03_main" name="comment03" disabled="true"
+                                                    placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="button-box textAlignCenter grid-wrap justifyContentCenter marginTop70">
+                        <li class="submenu2-item">
+                            <a class="button radius w150 colorActive" href="./analysis2_result_history.html">히스토리</a>
+                        </li>
+                        <!-- <button class="button radius w150 colorActive" id="analysis2_result_save">저장</button> -->
+                        <li class="submenu2-item">
+                            <a class="button radius w150 colorWithe" href="./print003.html" target="_blank">출력</a>
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <div class="user-modify-layer layer-wrap w1200">
+        <div class="layer-container">
+            <!-- <button class="close-button">닫기</button> -->
+            <header class="layer-header">
+                <h3 class="site-title">HAIR&SCALP SOLUTION</h3>
+                <h2 class="layer-title">OPINIONS</h2>
+            </header>
+            <div class="layer-content autoScroll">
+                <form class="form-box">
+                    <h4 class="group-title" style="font-size: 25px;">SPECIAL TIP</h4>
+                    <div class="group-box">
+                        <div style="text-align: right">
+                            <input type="color" id="colorPicker" style="margin-top: 10px;">
+                            <button class="button radius w150 colorWithe" id="drawBtn"
+                                style="width: 100px; height: 30px; background-color: black; margin-top: 10px;">
+                                <a style="font-size: 15px; color: white;">그리기</a>
+                            </button>
+                            <button class="button radius w150 colorWithe" id="eraseBtn"
+                                style="width: 100px; height: 30px; background-color: black; margin-bottom: 10px; margin-right: 25px;">
+                                <a style="font-size: 15px; color: white;">지우기</a>
+                            </button>
+
+                        </div>
+                        <div class="canvas-container-draw">
+                            <canvas id="opinionCanvas" class="canvas-layer-draw" width="1100px" height="350px"></canvas>
+                            <canvas id="backgroundCanvas" class="canvas-layer-draw" width="1100px"
+                                height="350px"></canvas>
+                        </div>
+
+                    </div>
+
+                    <div class="group-box" style="margin-top: 400px;">
+                        <h4 class="group-title" style="font-size: 25px;">루틴 제안</h4>
+                        <div class="row-group marginTop30">
+                            <div class="row-box">
+                                <div class="input-box grid-wrap grid-flexWrap">
+                                    <div class="input-box grid-wrap grid-flexWrap">
+                                        <label for="comment01" class="col-8" style="font-size: 25px;">두피/모발 케어</label>
+                                        <input type="text" id="comment01" name="comment01" style="height: 150px;"
+                                            placeholder="두피/모발 케어 루틴을 제안합니다.">
+                                    </div>
+                                    <div class="input-box grid-wrap grid-flexWrap">
+                                        <label for="comment02" class="col-8"
+                                            style="font-size: 25px; margin-top: 10px;">일상 생활</label>
+                                        <input type="text" id="comment02" name="comment02" style="height: 150px;"
+                                            placeholder="일상 생활 루틴을 제안합니다.">
+                                    </div>
+                                    <div class="input-box grid-wrap grid-flexWrap">
+                                        <label for="comment03" class="col-8"
+                                            style="font-size: 25px; margin-top: 10px;">Comment</label>
+                                        <input type="text" id="comment03" name="comment03" style="height: 150px;"
+                                            placeholder="">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="button-box textAlignCenter">
+                <button class="button w300" id="custom_info_saveButton">확인</button>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+<div class="search-result-layer layer-wrap w1200 ">
+    <div class="layer-container" style="height: 950px;">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">HAIR LOSS TYPE</h2>
+        </header>
+        <div class="layer-content autoScroll" style="padding: 10px;">
+            <div style="gap:10px">
+                <div class="content-grid">
+                    <!-- Left Grid -->
+                    <div style="flex: 1; padding: 10px;">
+                        <h3 style="margin-bottom: 20px; font-weight: bold;">Basic Type</h3>
+                        <div class="type-grid line-right">
+                            <!-- <img src='./resource/images/scalp/LossTypesPopup/loss-popup-basic01.png' id="Image1"  alt="Image 1"> -->
+                            <div class="grid-item">
+                                <img src='' id="Image1" alt="Image 1" class="grid-image">
+                                <!-- <div class="caption" style="background-color: #e7c1da;">M0</div> -->
+                                <div class="caption" id="density_type-M0">M0</div>
+
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image2" alt="Image2" class="grid-image">
+                                <div class="caption"  id="density_type-M1">M1</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image3" alt="Image3" class="grid-image">
+                                <div class="caption" id="density_type-M2">M2</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image4" alt="Image4" class="grid-image">
+                                <div class="caption" id="density_type-M3">M3</div>
+                            </div>
+
+                            <div class="grid-item">
+                                <img src='' id="Image5" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-C0">C0</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image6" alt="Image2" class="grid-image">
+                                <div class="caption" id="density_type-C1">C1</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image7" alt="Image3" class="grid-image">
+                                <div class="caption" id="density_type-C2">C2</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image8" alt="Image4" class="grid-image">
+                                <div class="caption" id="density_type-C3">C3</div>
+                            </div>
+
+                            <div class="grid-item">
+                                <img src='' id="Image9" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-U1">U1</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image10" alt="Image2" class="grid-image">
+                                <div class="caption" id="density_type-U2">U2</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image11" alt="Image3" class="grid-image">
+                                <div class="caption" id="density_type-U3">U3</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Grid -->
+                    <div style="flex: 1; padding: 10px; margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 20px; font-weight: bold;">Specific Type</h3>
+                        <div class="type-grid2">
+                            <div class="grid-item">
+                                <img src='' id="Image1-special" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-V1">V1</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image2-special" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-V2">V2</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image3-special" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-V3">V3</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image4-special" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-F1">F1</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image5-special" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-F2">F2</div>
+                            </div>
+                            <div class="grid-item">
+                                <img src='' id="Image6-special" alt="Image 1" class="grid-image">
+                                <div class="caption" id="density_type-F3">F3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Final Grid -->
+                <div style="flex: 1; padding: 10px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 20px; font-weight: bold;">Final Type</h3>
+
+                    <div style="display: flex; justify-content: center; align-items: center; height: 70px; background-color: white; font-size: 25px;">
+                        Basic Type(<span id="Final-HairlossType_Basic" style="text-align: center; font-weight: bold;"></span>) + 
+                        Specific Type1(<span id="Final-HairlossType_Center" style="text-align: center; font-weight: bold;"></span>) + 
+                        Specific Type2(<span id="Final-HairlossType_FrontCenter" style="text-align: center; font-weight: bold;"></span>)
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 고객정보 수정 레이어-->
+
+
+
+<!-- 두피 이미지 팝업 레이어-->
+<div class="scalp-image-layer layer-wrap w1200">
+    <div class="layer-container" style="height: 950px;">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title" id="popup_title">HAIR LOSS TYPE</h2>
+        </header>
+        <div class="layer-content" style="padding: 10px; display: flex; justify-content: center; align-items: center;">
+            <div style="gap:10px; width:900px; height: 700px; display: flex; justify-content: center; align-items: center; margin-right: 150px; margin-bottom: 200px;">
+                <div class="content-grid">
+                    <div class="img-box">
+                        <img id="popup_image" src="./resource/images/hair-skin-img001.png" style="width: 130%; height: 120%; object-fit: cover; border-radius: 20px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 두피 이미지 팝업 레이어-->
+
+
+
+
+
+<div class="search-result-layer-error layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">알림</h2>
+        </header>
+        <div class="layer-content">
+            <span id="custom_detail_main" style="font-size: 25px;">
+                <span id="custom_detail" style="font-weight: bold;"></span> 입력해주세요.
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/analysis2_result.js"></script>

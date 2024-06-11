@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+        <!--top-title-->
+
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">상담</h2>
+                <div class="tab-box marginTop70 col-02">
+                    <a href="./solution_counsel.html" class="tab-item">솔루션 제안</a>
+                    <a href="./solution_counsel2.html" class="tab-item active">보고서 제공</a>
+                </div>
+                <div class="grid-wrap gap80 marginTop50 counsel-border">
+                    <div class="grid-item-2">
+                        <div class="table-box">
+                            <table>
+                                <colgroup>
+                                    <col style="width: 10%;">
+                                    <col style="width: 30%">
+                                    <col style="width: 20%">
+                                    <col style="width: 25%;">
+                                    <col style="width: 15%;">
+                                </colgroup>
+                                <tr>
+                                    <th>No</th>              
+                                    <th>방문시간</th>                                    
+                                    <th>성명</th>
+                                    <th>프로그램명</th>
+                                    <th>방문회차</th>
+                                </tr>
+                                
+                                <tbody id="visit-list"></tbody>
+
+                                <!--게시판 목록 동적할당-->
+                                <script id="visit-item" type="text/x-handlebars-template">
+                                    <tr>                   
+                                        <td>{{ this.index }}</td>                   
+                                        <td>{{ this.rsvn_time }}</td>
+                                        <td><a style="cursor: pointer;"
+                                            onclick="openMsgLayer('{{this.name}}','{{this.phone}}','{{this.birthdate}}','{{this.sex}}',
+                                            '{{this.m_userkey}}', '{{this.m_surveyNo}}')">{{maskName this.name}}</a></td>
+                                        <td>{{ this.ProgramCode }}</td>
+                                        <td>{{ this.progress_flg }}</td> 
+                                        <td><button class="button radius list" data-event="popup" data-target="#solution_proposal" data-action="open" style="display: none;">선택</button></td>
+                                    </tr>
+                                </script>
+                                
+                            </table>
+                        </div>
+                        <div id="pagination" class="pagination-box marginTop70"></div>
+                    </div>
+
+                    <div class="grid-item-2 list-type01">
+                        <div class="table-box marginTop30 " >
+                            <div class="function-wrap">
+                                <div class="input-box search-input">
+                                    <label for="search">성명</label>
+                                    <input type="text" name="search">
+                                    <button id="search_name">검색</button>
+                                </div>
+                            </div>
+                            <h2 class="title marginTop20">분석 보고서 모음</h2>
+                            <table>
+                                <tr>
+                                    <th>성명</th>
+                                    <th>생년월일</th>
+                                    <th>측정일</th>
+                                    <th>프로그램명</th>
+                                    <th>방문회차</th>
+                                </tr>
+                                
+                                <tbody id="visit-list-name"></tbody>
+
+                                <!--게시판 목록 동적할당-->
+                                <script id="visit-item-name" type="text/x-handlebars-template">
+                                    <tr>
+                                        <td><a  style="cursor: pointer;"
+                                            onclick="openMsgLayer('{{this.name}}','{{this.phone}}','{{this.birthdate}}','{{this.sex}}',
+                                            '{{this.m_userkey}}', '{{this.m_surveyno}}')">{{maskName this.name}}</a></td>
+                                        <td>{{ this.birthdate }}</td>
+                                        <td>{{ this.rsvn_date }}</td>                                        
+                                        <td>{{ this.ProgramCode }}</td>
+                                        <td>{{ this.progress_flg }}</td> 
+                                    </tr>
+                                </script>
+
+
+
+                            </table>
+                        </div>
+                        
+                        <div id="pagination_name" class="pagination-box marginTop70"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!--보고서 제안-->
+<div class="report-layer w1200 layer-wrap"  id="solution_proposal">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header header-auto">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">보고서 제안</h2>
+        </header>
+        <div class="layer-content">
+            <h3><em class="custom_name" ></em> 님의 피부를 마주하는 순간, 여기는 아모레 시티랩입니다.</h3>
+            <p class="marginTop30"><em class="custom_name" ></em> 님의 분석 보고서</p>
+            <div class="analysis-wrap marginTop50">
+                <div class="table-box bg-white">
+                    <table>
+                        <colgroup>
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                            <col style="width: 20%">
+                        </colgroup>
+                        <tr>
+                            <th colspan="3">피부</th>
+                            <th colspan="2">두피<span class="dat"></span>모발</th>
+                        </tr>
+                        <tr class="buttons">
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print001.html" target="_blank">Session</a>
+                                </li>                                
+                            </td>
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print002.html" target="_blank">History</a>
+                                </li>                                
+                            </td>  
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print005.html" target="_blank">Prediction</a>
+                                </li>                                
+                            </td>  
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print003.html" target="_blank">Session</a>
+                                </li>                                
+                            </td>  
+                            <td>
+                                <li class="submenu2-item">
+                                    <a class="button w150 radius medium" href="./print004.html" target="_blank">History</a>
+                                </li>                                
+                            </td>                              
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution002.svg">
+                                </div>
+                            </td>
+                            <td colspan="2" class="left-line">
+                                <div class="icon-box">
+                                    <img src="./resource/images/icons/icon-solution003.svg">
+                                </div>
+                            </td>
+                        </tr>
+                     
+                    </table>
+                </div>
+            </div>
+            <div class="button-box grid-wrap justifyContentCenter">
+                <button class="button w300">All</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--보고서 제안-->
+
+</body>
+</html>
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/solution_counsel2.js"></script>

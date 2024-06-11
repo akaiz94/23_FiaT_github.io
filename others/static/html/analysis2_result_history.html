@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet"/>
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet"/>
+    <link href="./resource/css/common.css" rel="stylesheet"/>
+    <link href="./resource/css/ui.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+</head>
+<body class="sub">
+<div class="wrap">
+    <header class="site-header" id="top_menu">       
+    </header>
+    <main>
+        <!--top-title-->
+        <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+        <!--top-title-->
+
+        <div class="content-box content-padding">
+            <div class="container">
+                <h2 class="title-box">분석 (두피<i class="dat"></i>모발)</h2>
+                <div class="tab-box marginTop70">
+                    <a href="./analysis.html" class="tab-item">피부 측정</a>
+                    <a href="./analysis_result.html" class="tab-item">피부 측정 결과</a>
+                    <a href="./analysis2.html" class="tab-item">두피<i class="dat"></i>모발 측정</a>
+                    <a href="./analysis2_result.html" class="tab-item active">두피<i class="dat"></i>모발 측정 결과</a>
+                    <a href="./analysis3_result.html" class="tab-item">MY SKIN DNA</a>
+                </div>
+                <!--리포트 부분 스타일 분리 했습니다 -->
+                <link href="./resource/css/report.css" rel="stylesheet"/>
+                <section class="report-wrapper marginTop70">
+                    <header class="header-box">
+                        <div class="header-lift-box">HAIR&SCALP SOLUTION FOR : </div>
+                        <div>
+                            <span id="custom_name" style="font-size: 30px; font-weight: bold;"></span><span
+                                style="font-size: 25px;">님</span>
+                        </div>
+                        <div class="header-right-box">
+                            <span>MY SKIN ANALYSIS REPORT ㅣ <span id="manager_name"
+                                    style="font-weight: bold;">고은비</span></span>
+                            <span id="title_date" style="margin-right: 105px;">측정일자 : <span id="visitDate">2024. 01.
+                                    22</span></span>
+                            <span id="title_count" style="margin-right: 160px;">방문회차 : 2회차</span>
+                        </div>
+                    </header>
+                    <div class="report-content">
+                        <div class="col-item">
+                            <div class="row-item">
+                                <h2 class="title">Hair Thickness & Density History</h2>
+                                <div class="row-item-content">
+                                    <div class="hair-grid marginTop30">
+                                        <div class="graph-item line ">
+                                            <h3 class="graph-title"><em>"좌"</em> 굵기 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairLeftHairLine_density_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="좌 굵기 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line up30">
+                                            <h3 class="graph-title"><em>"앞"</em> 굵기 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairFrontHairLine_density_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="앞 굵 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"우"</em> 굵기 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairRightHairLine_density_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="우 굵기 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"좌"</em> 밀도 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairLeftHairLine_thickness_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="좌 밀도 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line up30">
+                                            <h3 class="graph-title"><em>"앞"</em> 밀도 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairFrontHairLine_thickness_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="앞 밀도 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"우"</em> 밀도 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairRightHairLine_thickness_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="우 밀도 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"앞 중앙"</em> 굵기 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairFrontCenter_density_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="중앙 굵기 그래프"> -->
+                                        </div>
+                                        <div class="hair-model up30">
+                                            <img src="./resource/images/hair-model.svg">
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"정수리"</em> 굵기 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairCenter_density_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="정수리 굵기 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"앞 중앙"</em> 밀도 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairFrontCenter_thickness_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="중앙 밀도 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"뒤"</em> 굵기 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairBack_density_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="뒤 굵기 그래프"> -->
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"정수리"</em> 밀도 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairCenter_thickness_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="정수리 굵기 그래프"> -->
+                                        </div>
+                                        <div class="text-item">
+                                            <ul>
+                                                <li>머리 위치별 <em>상, 하 그래프</em>에서 <br><em>상</em>은 <em>굵기 변화, 하</em>는 <em>밀도 변화</em>입니다.</li>
+                                                <!-- <li>그래프의 <em>Ref.</em>는 아시아인 기준값 <br>입니다.</li> -->
+                                                <li><em>굵기</em>는 ㎟ 단위로 모발 단면의 면적 <br>입니다.</li>
+                                                <li><em>밀도</em>는 hairs/㎠ 단위로 단위 면적 내 <br>모발의 개수입니다.</li>
+                                            </ul>
+                                        </div>
+                                        <div class="graph-item line">
+                                            <h3 class="graph-title"><em>"뒤"</em> 밀도 변화</h3>
+                                            <canvas class="canvas2" width="200" height="100" id="hairBack_thickness_Chart" ></canvas>
+                                            <!-- <img src="./resource/images/graph/graph-020.svg" alt="뒤 밀도 그래프"> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-item">
+                            <div class="row-item">
+                                <h2 class="title">Scalp Type History</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div class="diagram-wrapper ">
+                                        <dl class="diagram-item gap40 h140 radius20 noTitle marginTop40">
+                                            <dd id="scalp-type-1">
+                                                <span class="date">23.11.07</span>                                                
+                                            </dd>
+                                            <dd class="active" id="scalp-type-2">
+                                                <span class="date">24.01.22</span>
+                                               
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-item">
+                                <h2 class="title">Hair Conditions History</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div class="diagram-wrapper">
+                                        <dl class="diagram-item w100 h70 gap40">
+                                            <dt class="font-24">모끝</dt>
+                                            <dd id="haircondition-tips-1">                                               
+                                            </dd>
+                                            <dd class="active" id="haircondition-tips-2">                                                
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                        <dl class="diagram-item w100 h70 gap40 marginTop20">
+                                            <dt class="font-24">모중앙</dt>
+                                            <dd id="haircondition-mid-1"></dd>                                              
+                                            <dd class="active" id="haircondition-mid-2">                                             
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                        <dl class="diagram-item w100 h70 gap40 marginTop20">
+                                            <dt class="font-24">모근</dt>
+                                            <dd id="haircondition-root-1">
+                                              
+                                            </dd>
+                                            <dd class="active" id="haircondition-root-2">
+                                              
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row-item">
+                                <h2 class="title">Hair Density History</h2>
+                                <div class="row-item-content flexColumn">
+                                    <div class="img-box">
+                                        <img src="./resource/images/hair-img.png">
+                                    </div>
+                                    <div class="diagram-wrapper flexWrapper marginTop20">
+                                        <dl class="diagram-item noTitle column gap30">
+                                            <dd id="HairlossType-Basic-1">
+                                             
+                                            </dd>
+                                            <dd class="active" id="HairlossType-Basic-2">
+                                              
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                        <dl class="diagram-item noTitle column gap30 ">
+                                            <dd id="HairlossType-Center-1">
+                                               
+                                            </dd>
+                                            <dd class="active" id="HairlossType-Center-2">
+                                               
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+                                        <dl class="diagram-item noTitle column gap30 ">
+                                            <dd id="HairlossType-FrontCenter-1">
+                                              
+                                            </dd>
+                                            <dd class="active" id="HairlossType-FrontCenter-2">
+                                               
+                                            </dd>
+                                            <dd></dd>
+                                            <dd></dd>
+                                        </dl>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="button-box textAlignCenter grid-wrap justifyContentCenter marginTop70">
+                    <li class="submenu2-item">
+                        <a class="button radius w150 colorActive" href="./analysis2_result.html">이전</a>
+                    </li>
+                    <!-- <button class="button radius w150 colorActive">저장</button> -->
+                    <li class="submenu2-item">
+                        <a class="button radius w150 colorWithe" href="./print004.html" target="_blank">출력</a>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
+
+
+
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/analysis2_result_history.js"></script>

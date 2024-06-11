@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>아모레 시티랩</title>
+    <link href="./resource/css/reset.css" rel="stylesheet" />
+    <link href="./resource/fonts/stylesheet.css" rel="stylesheet" />
+    <link href="./resource/css/common.css" rel="stylesheet" />
+    <link href="./resource/css/ui.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+
+    <script type="module" src="./js/ngrid.2.1.0.js"></script>
+    <script type="module" src="./resource/js/ui.js"></script>
+    <script type="module" src="../dev/result_logic.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <style>
+        .canvas-container-draw {
+            position: relative;
+        }
+
+        .canvas-layer-draw {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #backgroundCanvas {
+            z-index: 1;
+        }
+
+        #opinionCanvas {
+            z-index: 2;
+        }
+
+
+        .opinion-img {
+            position: relative;
+        }
+
+        #backgroundImage {
+            position: absolute;
+            z-index: 1;
+        }
+
+        #opinionsImage {
+            position: absolute;
+            z-index: 2;
+        }
+    </style>
+
+
+</head>
+
+<body class="sub">
+    <div class="wrap">
+        <header class="site-header" id="top_menu">
+        </header>
+        <main>
+            <!--top-title-->
+            <!-- <section class="top-banner solution"><h1>마이 스킨 솔루션</h1></section> -->
+            <!--top-title-->
+
+            <div class="content-box content-padding">
+                <div class="container">
+                    <h2 class="title-box">분석 (현재 피부)</h2>
+                    <div class="tab-box marginTop70">
+                        <a href="./analysis.html" class="tab-item">피부 측정</a>
+                        <a href="./analysis_result.html" class="tab-item active">피부 측정 결과</a>
+                        <a href="./analysis2.html" class="tab-item">두피<i class="dat"></i>모발 측정</a>
+                        <a href="./analysis2_result.html" class="tab-item">두피<i class="dat"></i>모발 측정 결과</a>
+                        <a href="./analysis3_result.html" class="tab-item">MY SKIN DNA</a>
+                    </div>
+                    <!--리포트 부분 스타일 분리 했습니다 -->
+                    <link href="./resource/css/report.css" rel="stylesheet" />
+                    <section class="report-wrapper marginTop70">
+                        <header class="header-box">
+                            <div class="header-lift-box" style="font-size: 30px;">MY SKIN SOLUTION ANALYSIS REPORT FOR :
+                            </div>
+                            <div>
+                                <span id="custom_name" style="font-size: 30px; font-weight: bold;"></span><span
+                                    style="font-size: 25px;">님</span>
+                            </div>
+                            <div class="header-right-box">
+                                <span>MY SKIN ANALYSIS REPORT ㅣ <span id="manager_name"
+                                        style="font-weight: bold;">고은비</span></span>
+                                <span id="title_date" style="margin-right: 105px;">측정일자 : <span id="visitDate">2024. 01.
+                                        22</span></span>
+                                <span id="title_count" style="margin-right: 160px;">방문회차 : 2회차</span>
+                            </div>
+                        </header>
+                        <div class="report-content">
+                            <div class="col-item">
+                                <div class="row-item">
+                                    <h2 class="title">Summary</h2>
+                                    <!-- <input id="survey-value" style=" width: 150px;" placeholder="SurveyKey입력"></input> -->
+                                    <!-- <button id="submit-button"
+                                        style="border: 1px solid black; width: 70px; font-weight: 700;">Submit</button> -->
+                                    <div class="row-item-content">
+                                        <div class="col-4 textAlignCenter line-right">
+                                            <h3 class="font-24 marginBottom30">피부 점수</h3>
+                                            <span class="font-30"><em class="font-60 bold"
+                                                    id="get_skin_score">84</em>/100점</span>
+                                        </div>
+                                        <div class="col-4 textAlignCenter line-right">
+                                            <h3 class="font-24 marginBottom30">관리 항목</h3>
+                                            <span>
+                                                <em class="font-40 bold" id="selected_subdata">탄력</em><br>
+                                                <em class="font-40 bold" id="selected_subdata2">주름</em>
+                                            </span>
+                                        </div>
+                                        <div class="col-4 textAlignCenter">
+                                            <h3 class="font-24 marginBottom30">점수</h3>
+                                            <ul class="level-list textAlignLeft paddingLeft40">
+                                                <li class="level-color1" style="font-size: 20px;">매우 좋음(80~100)</li>
+                                                <li class="level-color2" style="font-size: 20px;">좋음(60~80)</li>
+                                                <li class="level-color3" style="font-size: 20px;">보통(40~60)</li>
+                                                <li class="level-color4" style="font-size: 20px;">관심 필요(20~40)</li>
+                                                <li class="level-color5" style="font-size: 20px;">집중 관리(0~20)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-item">
+                                    <h2 class="title">Type</h2>
+                                    <div class="row-item-content">
+                                        <div class="col-6 textAlignCenter line-right">
+                                            <h3 class="font-30">T존 </h3>
+                                            <p class="font-20 marginTop10" id="t_zone_result"
+                                                style="font-weight: bold;">건성</p>
+                                            <p class="font-20 marginTop10" style="font-size: 16px;">유분 : <span
+                                                    id="t_zone_ubun-val">20.0</span> / 수분 : <span
+                                                    id="t_zone_subun-val">32.5</span></p>
+                                            <canvas class="canvas" id="t_zone_chart" width="400" height="280"
+                                                style="display: none;"></canvas>
+                                            <div class="graph-item">
+                                                <img src="./resource/images/skin/UT_test.png" id="T_zone-image"
+                                                    alt="T존 그래프">
+                                            </div>
+                                        </div>
+                                        <div class="col-6 textAlignCenter">
+                                            <h3 class="font-30">U존</h3>
+                                            <p class="font-20 marginTop10" id="u_zone_result"
+                                                style="font-weight: bold;">유분 부족</p>
+                                            <p class="font-20 marginTop10" style="font-size: 16px;">유분 :<span
+                                                    id="u_zone_ubun-val">20.0</span> / 수분 : <span
+                                                    id="u_zone_subun-val">32.5</span></p>
+                                            <canvas class="canvas" id="u_zone_chart" width="400" height="280"
+                                                style="display: none;"></canvas>
+                                            <div class="graph-item">
+                                                <img src="./resource/images/graph/graph-002.svg" id="U_zone-image"
+                                                    alt="U존 그래프">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-item">
+                                    <h2 class="title">Results</h2>
+                                    <div class="row-item-content">
+                                        <div class="col-3 textAlignCenter line-right">
+                                            <h3 class="font-30 en" style="margin-bottom: 30px; ">Aging</h3>
+                                            <canvas class="canvas2" width="200" height="350" id="aging_chart"></canvas>
+                                            <!-- <div class="graph-item marginTop30">
+                                            <img src="./resource/images/graph/graph-003.svg" alt="Aging 그래프">
+                                        </div> -->
+                                        </div>
+                                        <div class="col-3 textAlignCenter  line-right" style="margin-left: 15px;">
+                                            <h3 class="font-30 en" style="margin-bottom: 30px;">Pigmentation</h3>
+                                            <canvas class="canvas2" width="200" height="350"
+                                                id="pigmentation_chart"></canvas>
+                                            <!-- <div class="graph-item marginTop30">
+                                            <img src="./resource/images/graph/graph-004.svg" alt="Tone 그래프">
+                                        </div> -->
+                                        </div>
+                                        <div class="col-3 textAlignCenter  line-right" style="margin-left: 15px;">
+                                            <h3 class="font-30 en" style="margin-bottom: 30px;">Sensitivity</h3>
+                                            <canvas class="canvas2" width="200" height="360"
+                                                id="sensitivity_chart"></canvas>
+                                            <!-- <div class="graph-item marginTop30">
+                                            <img src="./resource/images/graph/graph-005.svg" alt="Sensitivity 그래프">
+                                        </div> -->
+                                        </div>
+                                        <div class="col-3 textAlignCenter" style="margin-left: 15px;">
+                                            <h3 class="font-30 en" style="margin-bottom: 30px;">Sebum</h3>
+                                            <canvas class="canvas2" width="200" height="350" id="sebum_chart"></canvas>
+                                            <!-- <div class="graph-item marginTop30">
+                                            <img src="./resource/images/graph/graph-005.svg" alt="Sensitivity 그래프">
+                                        </div> -->
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-item">
+                                <div class="row-item">
+                                    <h2 class="title">Solution Type</h2>
+                                    <div class="row-item-content flexWrapper gap50">
+                                        <div class="flex-w130 textAlignCenter">
+                                            <h3 class="font-24 grayColor en">Amore City Lab No.</h3>
+                                            <p class="font-64 grayColor marginTop45" id="solution_type_number">3</p>
+                                        </div>
+                                        <div>
+                                            <p class="font-24 grayColor" id="solution_type_result">
+                                                각질층 수분량 부족으로 피부가 건조합니다.<br>
+                                                <br>
+                                                피부가 자외선에 계속 노출되면 콜라겐의 손상으로 주름이 증가
+                                                하고, 멜라닌 색소 세포를 자극하여 피부톤의 균일성이 낮아집니다.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-item" style="margin-top: 28px;">
+                                    <h2 class="title">Sensitive Type</h2>
+                                    <div class="row-item-content flexWrapper gap50">
+                                        <div class="flex-w130 textAlignCenter">
+                                            <h3 class="font-24 grayColor en">Amore City Lab No.</h3>
+                                            <p class="font-64 grayColor marginTop45" id="SensitiveType_No">S2</p>
+                                        </div>
+                                        <div>
+                                            <p class="font-24 grayColor" id="SensitiveType_Text">
+                                                외부 환경 변화 시 트러블이 자주 발생하며 종종 가려움 혹은
+                                                속 건조 등이 동반될 수 있습니다.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-item" style="margin-top: 20px;">
+                                    <h2 class="title">Opinions</h2>
+                                    <div class="row-item-content flexColumn">
+
+                                        <!-- opinion 그림 삽입 위치-->
+                                        <div class="img-box opinion-img marginTop30">
+                                            <img id="backgroundImage" src="">
+                                            <img id="opinionsImage" src="">
+                                        </div>
+
+                                        <div class="comment-box flexColumn"
+                                            style="align-items: flex-start; margin-top: 350px;">
+                                            <div class="input-box">
+                                                <label for="comment01">스킨 케어</label>
+                                                <input type="text" id="comment01_main" name="comment01" disabled="true"
+                                                    placeholder="스킨 케어 루틴을 제안합니다.">
+                                            </div>
+                                            <div class="input-box">
+                                                <label for="comment02">일상 생활</label>
+                                                <input type="text" id="comment02_main" name="comment02" disabled="true"
+                                                    placeholder="일상 생활 루틴을 제안합니다.">
+                                            </div>
+                                            <div class="input-box">
+                                                <label for="comment03">Comment</label>
+                                                <input type="text" id="comment03_main" name="comment03" disabled="true"
+                                                    placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="button-box textAlignCenter grid-wrap justifyContentCenter marginTop70">
+                        <li class="submenu2-item">
+                            <a class="button radius w150 colorActive" href="./analysis_result_history.html">히스토리</a>
+                        </li>
+                        <!-- <button class="button radius w150 colorActive" id="analysis_result_save">저장</button> -->
+                        <li class="submenu2-item">
+                            <a class="button radius w150 colorWithe" href="./print001.html" target="_blank">출력</a>
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!--메시지 박스 커스텀 공통 영역에 넣어주세요-->
+    <div class="alert-layer layer-wrap">
+        <div class="layer-container">
+            <button class="close-button">닫기</button>
+            <header class="layer-header header-auto">
+                <h3 class="site-title">AMORE CITY LAB</h3>
+                <h2 class="layer-title"></h2>
+            </header>
+            <div class="layer-content">
+                <p>
+                    피부와 마주하는 순간,<br>
+                    여기는 아모레 시티랩입니다.
+                </p>
+            </div>
+            <div class="button-box grid-wrap justifyContentCenter">
+                <button class="button grid-item-2" data-event="popup" data-target=".alert-layer"
+                    data-action="close">확인</button>
+            </div>
+        </div>
+    </div>
+    <!--메시지 박스 커스텀-->
+
+
+    <div class="user-modify-layer layer-wrap w1200">
+        <div class="layer-container">
+            <!-- <button class="close-button">닫기</button> -->
+            <header class="layer-header">
+                <h3 class="site-title">MY SKIN SOLUTION</h3>
+                <h2 class="layer-title">OPINIONS</h2>
+            </header>
+            <div class="layer-content autoScroll">
+                <form class="form-box">
+                    <h4 class="group-title" style="font-size: 25px;">SPECIAL TIP</h4>
+                    <div class="group-box">
+                        <div style="text-align: right">
+                            <input type="color" id="colorPicker" style="margin-top: 10px;">
+                            <button class="button radius w150 colorWithe" id="drawBtn"
+                                style="width: 100px; height: 30px; background-color: black; margin-top: 10px;">
+                                <a style="font-size: 15px; color: white;">그리기</a>
+                            </button>
+                            <button class="button radius w150 colorWithe" id="eraseBtn"
+                                style="width: 100px; height: 30px; background-color: black; margin-bottom: 10px; margin-right: 25px;">
+                                <a style="font-size: 15px; color: white;">지우기</a>
+                            </button>
+
+                        </div>
+                        <div class="canvas-container-draw">
+                            <canvas id="opinionCanvas" class="canvas-layer-draw" width="1100px" height="350px"></canvas>
+                            <canvas id="backgroundCanvas" class="canvas-layer-draw" width="1100px"
+                                height="350px"></canvas>
+                        </div>
+
+                    </div>
+
+                    <div class="group-box" style="margin-top: 400px;">
+                        <h4 class="group-title" style="font-size: 25px;">루틴 제안</h4>
+                        <div class="row-group marginTop30">
+                            <div class="row-box">
+                                <div class="input-box grid-wrap grid-flexWrap">
+                                    <div class="input-box grid-wrap grid-flexWrap">
+                                        <label for="comment01" class="col-8" style="font-size: 25px;">스킨 케어</label>
+                                        <input type="text" id="comment01" name="comment01" style="height: 150px;"
+                                            placeholder="스킨 케어 루틴을 제안합니다.">
+                                    </div>
+                                    <div class="input-box grid-wrap grid-flexWrap">
+                                        <label for="comment02" class="col-8"
+                                            style="font-size: 25px; margin-top: 10px;">일상 생활</label>
+                                        <input type="text" id="comment02" name="comment02" style="height: 150px;"
+                                            placeholder="일상 생활 루틴을 제안합니다.">
+                                    </div>
+                                    <div class="input-box grid-wrap grid-flexWrap">
+                                        <label for="comment03" class="col-8"
+                                            style="font-size: 25px; margin-top: 10px;">Comment</label>
+                                        <input type="text" id="comment03" name="comment03" style="height: 150px;"
+                                            placeholder="">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="button-box textAlignCenter">
+                <button class="button w300" id="custom_info_saveButton">확인</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+<div class="search-result-layer-error layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">알림</h2>
+        </header>
+        <div class="layer-content">
+            <span id="custom_detail_main" style="font-size: 25px;">
+                <span id="custom_detail" style="font-weight: bold;"></span> 입력해주세요.
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--페이지 스크립트-->
+<script type="text/javascript" src="/dev/analysis_result.js"></script>
