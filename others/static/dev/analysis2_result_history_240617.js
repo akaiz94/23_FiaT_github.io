@@ -13,19 +13,17 @@ $(document).ready(function () {
     window.scrollTo(0, 470);
     console.log('analysis2_result_history page start -> ')
     $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
-
-
-    fnGetVisitCount();//방문회차 카운트 함수 + 피부 점수값들 매핑
-
+    fnGetVisitCount();//방문회차 카운트 함수
+    
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
 
-
-
+    
+    
     // var surveyNo = localStorage.getItem('custom_surveyNo');
     var surveyNo = 1111;
     console.log('surveyNo : ', surveyNo);
-
+    
     $('#manager_name').text(localStorage.getItem('manager_name'));
     $('#custom_name').text(localStorage.getItem('custom_name'));
 
@@ -38,241 +36,241 @@ $(document).ready(function () {
 
 
 
-    // $.ajax({
-    //     url: hairMain_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     contentType: 'application/json',
-    //     success: function (response) {
-    //         console.log('hairMain_URL 응답값 : ', response);
+    $.ajax({
+        url: hairMain_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        contentType: 'application/json',
+        success: function (response) {
+            console.log('hairMain_URL 응답값 : ', response);
 
 
-    //         // 1st. Scalp Type History값
-    //         var ScalpType_Nor = response[0].ScalpType_Nor;
-    //         var ScalpType_Oily = response[0].ScalpType_Oily;
-    //         var ScalpType_Ato = response[0].ScalpType_Ato;
-    //         var ScalpType_Trb = response[0].ScalpType_Trb;
-    //         var ScalpType_Dry = response[0].ScalpType_Dry;
-    //         var ScalpType_Sen = response[0].ScalpType_Sen;
-    //         var ScalpType_Seb = response[0].ScalpType_Seb;
-    //         var ScalpType_Ddan = response[0].ScalpType_Ddan;
-    //         var ScalpType_Odan = response[0].ScalpType_Odan;
-    //         var ScalpType_Unknown = response[0].ScalpType_Unknown;
-    //         var create_dt = response[0].create_dt;
+            // 1st. Scalp Type History값
+            var ScalpType_Nor = response[0].ScalpType_Nor;
+            var ScalpType_Oily = response[0].ScalpType_Oily;
+            var ScalpType_Ato = response[0].ScalpType_Ato;
+            var ScalpType_Trb = response[0].ScalpType_Trb;
+            var ScalpType_Dry = response[0].ScalpType_Dry;
+            var ScalpType_Sen = response[0].ScalpType_Sen;
+            var ScalpType_Seb = response[0].ScalpType_Seb;
+            var ScalpType_Ddan = response[0].ScalpType_Ddan;
+            var ScalpType_Odan = response[0].ScalpType_Odan;
+            var ScalpType_Unknown = response[0].ScalpType_Unknown;
+            var create_dt = response[0].create_dt;
 
-    //         // 1-1. 두피 타입 입력
-    //         var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-    //         $('#scalp-type-1').append(scalpType);
-    //         $('#scalp-type-2').append(scalpType);
+            // 1-1. 두피 타입 입력
+            var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
+            $('#scalp-type-1').append(scalpType);
+            $('#scalp-type-2').append(scalpType);
 
 
-    //         //1-2. 측정 일자 입력
-    //         var scalpDate = create_dt.substring(0, 4) + '. ' + create_dt.substring(5, 7) + '. ' + create_dt.substring(8, 10);
-    //         $('#scalp-type-1 .date').text(scalpDate);
-    //         $('#scalp-type-2 .date').text(scalpDate);
+            //1-2. 측정 일자 입력
+            var scalpDate = create_dt.substring(0, 4) + '. ' + create_dt.substring(5, 7) + '. ' + create_dt.substring(8, 10);
+            $('#scalp-type-1 .date').text(scalpDate);
+            $('#scalp-type-2 .date').text(scalpDate);
 
 
-    //         /********************** */
+            /********************** */
 
-    //         // 2nd. Hair Conditions History값
-    //         var Haircondition_Tips = response[0].Haircondition_Tips;
-    //         var Haircondition_Mid = response[0].Haircondition_Mid;
-    //         var Haircondition_Root = response[0].Haircondition_Root;
+            // 2nd. Hair Conditions History값
+            var Haircondition_Tips = response[0].Haircondition_Tips;
+            var Haircondition_Mid = response[0].Haircondition_Mid;
+            var Haircondition_Root = response[0].Haircondition_Root;
 
 
-    //         var Haircondition_Tips_Result = getHaiconditionResult(parseInt(Haircondition_Tips));
-    //         var Haircondition_Mid_Result = getHaiconditionResult(parseInt(Haircondition_Mid));
-    //         var Haircondition_Root_Result = getHaiconditionResult(parseInt(Haircondition_Root));
+            var Haircondition_Tips_Result = getHaiconditionResult(parseInt(Haircondition_Tips));
+            var Haircondition_Mid_Result = getHaiconditionResult(parseInt(Haircondition_Mid));
+            var Haircondition_Root_Result = getHaiconditionResult(parseInt(Haircondition_Root));
 
-    //         console.log('Haircondition_Root_Result : ', Haircondition_Root_Result);
-    //         $('#haircondition-tips-1').append(Haircondition_Tips_Result);
-    //         $('#haircondition-mid-1').append(Haircondition_Mid_Result);
-    //         $('#haircondition-root-1').append(Haircondition_Root_Result);
+            console.log('Haircondition_Root_Result : ', Haircondition_Root_Result);
+            $('#haircondition-tips-1').append(Haircondition_Tips_Result);
+            $('#haircondition-mid-1').append(Haircondition_Mid_Result);
+            $('#haircondition-root-1').append(Haircondition_Root_Result);
 
-    //         $('#haircondition-tips-2').append(Haircondition_Tips_Result);
-    //         $('#haircondition-mid-2').append(Haircondition_Mid_Result);
-    //         $('#haircondition-root-2').append(Haircondition_Root_Result);
+            $('#haircondition-tips-2').append(Haircondition_Tips_Result);
+            $('#haircondition-mid-2').append(Haircondition_Mid_Result);
+            $('#haircondition-root-2').append(Haircondition_Root_Result);
 
 
-    //         /********************** */
+            /********************** */
 
-    //         // 3rd. Hair Density  History값
-    //         var HairlossType_Basic = response[0].HairlossType_Basic; //기본
-    //         var HairlossType_Center = response[0].HairlossType_Center; //정수리
-    //         var HairlossType_FrontCenter = response[0].HairlossType_FrontCenter; //앞중앙
+            // 3rd. Hair Density  History값
+            var HairlossType_Basic = response[0].HairlossType_Basic; //기본
+            var HairlossType_Center = response[0].HairlossType_Center; //정수리
+            var HairlossType_FrontCenter = response[0].HairlossType_FrontCenter; //앞중앙
 
-    //         console.log("response[0].HairlossType_FrontCenter : ", HairlossType_FrontCenter);
-    //         $('#HairlossType-Basic-1').append(HairlossType_Basic);
-    //         $('#HairlossType-Center-1').append(HairlossType_Center);
-    //         $('#HairlossType-FrontCenter-1').append(HairlossType_FrontCenter);
+            console.log("response[0].HairlossType_FrontCenter : ", HairlossType_FrontCenter);
+            $('#HairlossType-Basic-1').append(HairlossType_Basic);
+            $('#HairlossType-Center-1').append(HairlossType_Center);
+            $('#HairlossType-FrontCenter-1').append(HairlossType_FrontCenter);
 
-    //         $('#HairlossType-Basic-2').append(HairlossType_Basic);
-    //         $('#HairlossType-Center-2').append(HairlossType_Center);
-    //         $('#HairlossType-FrontCenter-2').append(HairlossType_FrontCenter);
+            $('#HairlossType-Basic-2').append(HairlossType_Basic);
+            $('#HairlossType-Center-2').append(HairlossType_Center);
+            $('#HairlossType-FrontCenter-2').append(HairlossType_FrontCenter);
 
 
 
 
 
 
-    //     }, error: function (xhr, status, error) {
-    //         console.error('hairMain_URL 오류 : ', error);
-    //     }
+        }, error: function (xhr, status, error) {
+            console.error('hairMain_URL 오류 : ', error);
+        }
 
-    // });
+    });
 
 
 
 
-    // // 1.왼쪽 헤어라인
-    // $.ajax({
-    //     url: hairLeftHairLine_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     success: function (response) {
-    //         console.log('hairLeftHairLine 응답 : ', response);
+    // 1.왼쪽 헤어라인
+    $.ajax({
+        url: hairLeftHairLine_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        success: function (response) {
+            console.log('hairLeftHairLine 응답 : ', response);
 
-    //         var density_1 = response[0].Density;
-    //         var thickness_1 = response[0].Thickness;
+            var density_1 = response[0].Density;
+            var thickness_1 = response[0].Thickness;
 
-    //         console.log("density_1 : ", density_1);
-    //         console.log("thickness_1 : ", thickness_1);
+            console.log("density_1 : ", density_1);
+            console.log("thickness_1 : ", thickness_1);
 
-    //         update_hairLeftHairLine_density_Data(density_1, density_1);
-    //         update_hairLeftHairLine_thickness_Data(thickness_1, thickness_1);
+            update_hairLeftHairLine_density_Data(density_1, density_1);
+            update_hairLeftHairLine_thickness_Data(thickness_1, thickness_1);
 
 
-    //     },
-    //     error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //         console.error('hairLeftHairLine 에러 : ', error);
-    //     }
-    // })
+            console.error('hairLeftHairLine 에러 : ', error);
+        }
+    })
 
 
-    // // 2.앞 헤어라인
-    // $.ajax({
-    //     url: hairFrontHairLine_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     success: function (response) {
-    //         console.log('hairFrontHairLine_URL 응답 : ', response);
+    // 2.앞 헤어라인
+    $.ajax({
+        url: hairFrontHairLine_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        success: function (response) {
+            console.log('hairFrontHairLine_URL 응답 : ', response);
 
-    //         var density_1 = response[0].Density;
-    //         var thickness_1 = response[0].Thickness;
+            var density_1 = response[0].Density;
+            var thickness_1 = response[0].Thickness;
 
-    //         console.log("density_1 : ", density_1);
-    //         console.log("thickness_1 : ", thickness_1);
+            console.log("density_1 : ", density_1);
+            console.log("thickness_1 : ", thickness_1);
 
-    //         update_hairFrontHairLine_density_Data(density_1, density_1);
-    //         update_hairFrontHairLine_thickness_Data(thickness_1, thickness_1);
+            update_hairFrontHairLine_density_Data(density_1, density_1);
+            update_hairFrontHairLine_thickness_Data(thickness_1, thickness_1);
 
 
-    //     },
-    //     error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //         console.error('hairFrontHairLine_URL 에러 : ', error);
-    //     }
-    // })
+            console.error('hairFrontHairLine_URL 에러 : ', error);
+        }
+    })
 
 
-    // // 3.오른쪽 헤어라인
-    // $.ajax({
-    //     url: hairRightHairLine_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     success: function (response) {
-    //         console.log('hairRightHairLine_URL 응답 : ', response);
+    // 3.오른쪽 헤어라인
+    $.ajax({
+        url: hairRightHairLine_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        success: function (response) {
+            console.log('hairRightHairLine_URL 응답 : ', response);
 
-    //         var density_1 = response[0].Density;
-    //         var thickness_1 = response[0].Thickness;
+            var density_1 = response[0].Density;
+            var thickness_1 = response[0].Thickness;
 
-    //         console.log("density_1 : ", density_1);
-    //         console.log("thickness_1 : ", thickness_1);
+            console.log("density_1 : ", density_1);
+            console.log("thickness_1 : ", thickness_1);
 
-    //         update_hairRightHairLine_density_Data(density_1, density_1);
-    //         update_hairRightHairLine_thickness_Data(thickness_1, thickness_1);
+            update_hairRightHairLine_density_Data(density_1, density_1);
+            update_hairRightHairLine_thickness_Data(thickness_1, thickness_1);
 
 
-    //     },
-    //     error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //         console.error('hairRightHairLine_URL 에러 : ', error);
-    //     }
-    // })
+            console.error('hairRightHairLine_URL 에러 : ', error);
+        }
+    })
 
-    // // 4.앞 중앙
-    // $.ajax({
-    //     url: hairFrontCenter_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     success: function (response) {
-    //         console.log('hairFrontCenter_URL 응답 : ', response);
+    // 4.앞 중앙
+    $.ajax({
+        url: hairFrontCenter_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        success: function (response) {
+            console.log('hairFrontCenter_URL 응답 : ', response);
 
-    //         var density_1 = response[0].Density;
-    //         var thickness_1 = response[0].Thickness;
+            var density_1 = response[0].Density;
+            var thickness_1 = response[0].Thickness;
 
-    //         console.log("density_1 : ", density_1);
-    //         console.log("thickness_1 : ", thickness_1);
+            console.log("density_1 : ", density_1);
+            console.log("thickness_1 : ", thickness_1);
 
-    //         update_hairFrontCenter_density_Data(density_1, density_1);
-    //         update_hairFrontCenter_thickness_Data(thickness_1, thickness_1);
+            update_hairFrontCenter_density_Data(density_1, density_1);
+            update_hairFrontCenter_thickness_Data(thickness_1, thickness_1);
 
 
-    //     },
-    //     error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //         console.error('hairFrontCenter_URL 에러 : ', error);
-    //     }
-    // })
+            console.error('hairFrontCenter_URL 에러 : ', error);
+        }
+    })
 
 
 
 
-    // // 5. 정수리
-    // $.ajax({
-    //     url: hairCenter_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     success: function (response) {
-    //         console.log('hairCenter_URL 응답 : ', response);
+    // 5. 정수리
+    $.ajax({
+        url: hairCenter_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        success: function (response) {
+            console.log('hairCenter_URL 응답 : ', response);
 
-    //         var density_1 = response[0].Density;
-    //         var thickness_1 = response[0].Thickness;
+            var density_1 = response[0].Density;
+            var thickness_1 = response[0].Thickness;
 
-    //         console.log("density_1 : ", density_1);
-    //         console.log("thickness_1 : ", thickness_1);
+            console.log("density_1 : ", density_1);
+            console.log("thickness_1 : ", thickness_1);
 
-    //         update_hairCenter_density_Data(density_1, density_1);
-    //         update_hairCenter_thickness_Data(thickness_1, thickness_1);
+            update_hairCenter_density_Data(density_1, density_1);
+            update_hairCenter_thickness_Data(thickness_1, thickness_1);
 
 
-    //     },
-    //     error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //         console.error('hairCenter_URL 에러 : ', error);
-    //     }
-    // })
+            console.error('hairCenter_URL 에러 : ', error);
+        }
+    })
 
 
 
-    // // 6. 후두부
-    // $.ajax({
-    //     url: hairBack_URL + '?surveyNo=' + surveyNo,
-    //     type: 'GET',
-    //     success: function (response) {
-    //         console.log('hairBack_URL 응답 : ', response);
+    // 6. 후두부
+    $.ajax({
+        url: hairBack_URL + '?surveyNo=' + surveyNo,
+        type: 'GET',
+        success: function (response) {
+            console.log('hairBack_URL 응답 : ', response);
 
-    //         var density_1 = response[0].Density;
-    //         var thickness_1 = response[0].Thickness;
+            var density_1 = response[0].Density;
+            var thickness_1 = response[0].Thickness;
 
-    //         console.log("density_1 : ", density_1);
-    //         console.log("thickness_1 : ", thickness_1);
+            console.log("density_1 : ", density_1);
+            console.log("thickness_1 : ", thickness_1);
 
-    //         update_hairBack_density_Data(density_1, density_1);
-    //         update_hairBack_thickness_Data(thickness_1, thickness_1);
+            update_hairBack_density_Data(density_1, density_1);
+            update_hairBack_thickness_Data(thickness_1, thickness_1);
 
 
-    //     },
-    //     error: function (xhr, status, error) {
+        },
+        error: function (xhr, status, error) {
 
-    //         console.error('hairBack_URL 에러 : ', error);
-    //     }
-    // })
+            console.error('hairBack_URL 에러 : ', error);
+        }
+    })
 
 
 
@@ -288,755 +286,66 @@ $(document).ready(function () {
 
 /*
 *
-*24. 06. 17 방문회차 카운트 함수
+*24. 06. 14 방문회차 카운트 함수
 *
 */
-
-
-let scalpType_resultArray = []; //두피 타입
-let scalpDate_resultArray = []; // 측정일자
-
-let hairMain_resultArray = []; // 모끝, 모중앙, 모근
-
-let hairLeftHairLine_resultArray = []; // 부위별 밀도, 굵기
-let hairFrontCenter_resultArray = [];
-let hairFrontHairLine_resultArray = [];
-let hairCenter_resultArray = [];
-let hairRightHairLine_resultArray = [];
-let hairBack_resultArray = [];
-
-
 var fnGetVisitCount = function () {
     var visit_count = 0; //프로그램별 방문회차 카운트
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
-
-        type: 'GET',
-        success: function (response) {
-            console.log('=====================');
-            console.log('리스트 별 고객검색 결과 성공 : ', response);
-
-
-            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-            var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
-
-            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-
-            select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-
-
-            // console.log("select_visit1_1 : ", select_visit1_1);
-            // console.log("select_visit1_2 : ", select_visit1_2);
-
-            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-            var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
-
-            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-            select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-            // console.log("select_visit2_1 : ", select_visit2_1);
-            // console.log("select_visit2_2 : ", select_visit2_2);
-
-            visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
-            console.log("방문 회차 : visitCount > ", visitCount);
-
-            $('#visitCount').text(visitCount);
-
-
-
-            //===========================
-
-            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-            var select_visit1_1_data = 0 //다른날짜 - 마이스킨솔루션
-            var select_visit1_2_data = 0 //다른날짜 - 두피측정프로그램
-
-            select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-
-            select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-
-
-            console.log("select_visit1_1_data : ", select_visit1_1_data);
-            console.log("select_visit1_2_data : ", select_visit1_2_data);
-
-            var select_visit2_1_data = 0 //같은날짜 - 마이스킨솔루션
-            var select_visit2_2_data = 0 //같은날짜 - 두피측정프로그램
-
-            select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
-            select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
-            console.log("select_visit2_1_data : ", select_visit2_1_data);
-            console.log("select_visit2_2_data : ", select_visit2_2_data);
-
-
-
-            //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기     
-            const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
-            const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
-            const finalCombinedData_merge = [...combinedData1, ...combinedData2];
-            console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
-            
-        
-            let finalCombinedData = finalCombinedData_merge.filter(item => item.m_surveyNo !== null );
-            console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData);
-
-
-
-            //프로그램별 히스토리 조회 - 3.rsvn_date 값을 기준으로 정렬 (내림차순 정렬 - 최신 날짜순) 
-            finalCombinedData.sort((a, b) => new Date(b.rsvn_date).getTime() - new Date(a.rsvn_date).getTime());
-            // rsvn_date 값이 같은 경우 rsvn_time으로 한 번 더 정렬 (내림차순 정렬 - 최신 시간순) 
-            finalCombinedData.sort((a, b) => {
-                if (a.rsvn_date === b.rsvn_date) {
-                    return b.rsvn_time.localeCompare(a.rsvn_time);
-                }
-                return 0;
-            });
-            // 정렬된 데이터 출력
-            console.log("정렬된 데이터: ", finalCombinedData);
-
-
-            // 프로그램별 히스토리 조회 - 4. userkey와 surveyNo 값을 추출하여 새로운 배열로 저장
-            const extractedValues = finalCombinedData.map(item => {
-                return {
-                    userkey: item.m_userkey,
-                    surveyNo: item.m_surveyNo
-                };
-            });
-            // 추출된 값 출력
-            console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
-
-            // 첫 번째부터 네 번째까지 값을 추출하여 새로운 배열로 저장
-            const selectedValues = extractedValues.slice(0, 4);
-
-            // 추출된 값 출력
-            console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
-
-            console.log('selectedValues 의 길이 : ', selectedValues.length);
-            console.log("1111: ", selectedValues[0].surveyNo);
-
-
-
-
-
-
-            // // 1.왼쪽 헤어라인
-            // $.ajax({
-            //     url: hairLeftHairLine_URL + '?surveyNo=' + surveyNo,
-            //     type: 'GET',
-            //     success: function (response) {
-            //         console.log('hairLeftHairLine 응답 : ', response);
-
-            //         var density_1 = response[0].Density;
-            //         var thickness_1 = response[0].Thickness;
-
-            //         console.log("density_1 : ", density_1);
-            //         console.log("thickness_1 : ", thickness_1);
-
-            //         update_hairLeftHairLine_density_Data(density_1, density_1);
-            //         update_hairLeftHairLine_thickness_Data(thickness_1, thickness_1);
-
-
-            //     },
-            //     error: function (xhr, status, error) {
-
-            //         console.error('hairLeftHairLine 에러 : ', error);
-            //     }
-            // })
-
-
-            hairMain_Results(); 
-
-           
-
-
-
-
-            async function hairMain_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairMain_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-
-                        if (resultValue === undefined){
-                            alert('두피 측정 결과가 없습니다.')
-                            return false
-                        }
-
-
-                        hairMain_resultArray.push(resultValue)                        
-                        // console.log('헤어 메인 response값 ', resultValue);
-
-                        // 1st. Scalp Type History값
-                        var ScalpType_Nor = response[0].ScalpType_Nor;
-                        var ScalpType_Oily = response[0].ScalpType_Oily;
-                        var ScalpType_Ato = response[0].ScalpType_Ato;
-                        var ScalpType_Trb = response[0].ScalpType_Trb;
-                        var ScalpType_Dry = response[0].ScalpType_Dry;
-                        var ScalpType_Sen = response[0].ScalpType_Sen;
-                        var ScalpType_Seb = response[0].ScalpType_Seb;
-                        var ScalpType_Ddan = response[0].ScalpType_Ddan;
-                        var ScalpType_Odan = response[0].ScalpType_Odan;
-                        var ScalpType_Unknown = response[0].ScalpType_Unknown;
-                        var create_dt = response[0].create_dt;
-
-                        // 1-1. 두피 타입 입력
-                        var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                        scalpType_resultArray.push(scalpType)
-
-
-                        //1-2. 측정 일자 입력
-                        var scalpDate = create_dt.substring(0, 4) + '. ' + create_dt.substring(5, 7) + '. ' + create_dt.substring(8, 10);
-                        scalpDate_resultArray.push(scalpDate)
-
-
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[메인]')
-        
-                              
-                            $('#scalp-type-1').append(scalpType_resultArray[0]);
-                            $('#scalp-type-1').addClass('active');
-        
-                            $('#scalp-type-1 .date').text(scalpDate_resultArray[0]);
-        
-        
-        
-                            // 2nd. Hair Conditions History값         
-                            var Haircondition_Tips_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Tips));
-                            var Haircondition_Mid_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Mid));
-                            var Haircondition_Root_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Root));
-        
-        
-                            $('#haircondition-tips-1').append(Haircondition_Tips_0);
-                            $('#haircondition-mid-1').append(Haircondition_Mid_0);
-                            $('#haircondition-root-1').append(Haircondition_Root_0);
-        
-                            $('#haircondition-tips-1').addClass('active');
-                            $('#haircondition-mid-1').addClass('active');
-                            $('#haircondition-root-1').addClass('active');
-        
-                            /********************** */
-        
-                            // 3rd. Hair Density  History값    
-                            $('#HairlossType-Basic-1').append(hairMain_resultArray[0].HairlossType_Basic);
-                            $('#HairlossType-Center-1').append(hairMain_resultArray[0].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-1').append(hairMain_resultArray[0].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-1').addClass('active');
-                            $('#HairlossType-Center-1').addClass('active');
-                            $('#HairlossType-FrontCenter-1').addClass('active');
-                        }
-                        else if (selectedValues.length === 2) {
-                            console.log('2개 히스토리[메인]')
-                     
-        
-                            $('#scalp-type-1').append(scalpType_resultArray[1]);
-                            $('#scalp-type-2').append(scalpType_resultArray[0]);
-                            $('#scalp-type-2').addClass('active');
-        
-                            $('#scalp-type-1 .date').text(scalpDate_resultArray[1]);
-                            $('#scalp-type-2 .date').text(scalpDate_resultArray[0]);
-        
-        
-        
-                            // 2nd. Hair Conditions History값
-                            var Haircondition_Tips_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Tips));
-                            var Haircondition_Mid_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Mid));
-                            var Haircondition_Root_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Root));
-        
-                            var Haircondition_Tips_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Tips));
-                            var Haircondition_Mid_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Mid));
-                            var Haircondition_Root_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Root));
-        
-        
-                            $('#haircondition-tips-1').append(Haircondition_Tips_1);
-                            $('#haircondition-mid-1').append(Haircondition_Mid_1);
-                            $('#haircondition-root-1').append(Haircondition_Root_1);
-        
-                            $('#haircondition-tips-2').append(Haircondition_Tips_0);
-                            $('#haircondition-mid-2').append(Haircondition_Mid_0);
-                            $('#haircondition-root-2').append(Haircondition_Root_0);
-        
-                            $('#haircondition-tips-2').addClass('active');
-                            $('#haircondition-mid-2').addClass('active');
-                            $('#haircondition-root-2').addClass('active');
-        
-                            /********************** */
-        
-                            // 3rd. Hair Density  History값     
-                            $('#HairlossType-Basic-1').append(hairMain_resultArray[1].HairlossType_Basic);
-                            $('#HairlossType-Center-1').append(hairMain_resultArray[1].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-1').append(hairMain_resultArray[1].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-2').append(hairMain_resultArray[0].HairlossType_Basic);
-                            $('#HairlossType-Center-2').append(hairMain_resultArray[0].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-2').append(hairMain_resultArray[0].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-2').addClass('active');
-                            $('#HairlossType-Center-2').addClass('active');
-                            $('#HairlossType-FrontCenter-2').addClass('active');
-        
-        
-        
-                        }
-                        else if (selectedValues.length === 3) {
-                            console.log('3개 히스토리[메인]')                                  
-                            $('#scalp-type-1').append(scalpType_resultArray[2]);
-                            $('#scalp-type-2').append(scalpType_resultArray[1]);
-                            $('#scalp-type-3').append(scalpType_resultArray[0]);
-                            $('#scalp-type-3').addClass('active');
-        
-                            $('#scalp-type-1 .date').text(scalpDate_resultArray[2]);
-                            $('#scalp-type-2 .date').text(scalpDate_resultArray[1]);
-                            $('#scalp-type-3 .date').text(scalpDate_resultArray[0]);
-        
-        
-        
-                            // 2nd. Hair Conditions History값
-                            var Haircondition_Tips_2 = getHaiconditionResult(parseInt(hairMain_resultArray[2].Haircondition_Tips));
-                            var Haircondition_Mid_2 = getHaiconditionResult(parseInt(hairMain_resultArray[2].Haircondition_Mid));
-                            var Haircondition_Root_2 = getHaiconditionResult(parseInt(hairMain_resultArray[2].Haircondition_Root));
-        
-                            var Haircondition_Tips_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Tips));
-                            var Haircondition_Mid_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Mid));
-                            var Haircondition_Root_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Root));
-        
-                            var Haircondition_Tips_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Tips));
-                            var Haircondition_Mid_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Mid));
-                            var Haircondition_Root_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Root));
-        
-        
-                            $('#haircondition-tips-1').append(Haircondition_Tips_2);
-                            $('#haircondition-mid-1').append(Haircondition_Mid_2);
-                            $('#haircondition-root-1').append(Haircondition_Root_2);
-        
-                            $('#haircondition-tips-2').append(Haircondition_Tips_1);
-                            $('#haircondition-mid-2').append(Haircondition_Mid_1);
-                            $('#haircondition-root-2').append(Haircondition_Root_1);
-        
-                            $('#haircondition-tips-3').append(Haircondition_Tips_0);
-                            $('#haircondition-mid-3').append(Haircondition_Mid_0);
-                            $('#haircondition-root-3').append(Haircondition_Root_0);
-        
-                            $('#haircondition-tips-3').addClass('active');
-                            $('#haircondition-mid-3').addClass('active');
-                            $('#haircondition-root-3').addClass('active');
-        
-                            /********************** */
-        
-                            // 3rd. Hair Density  History값     
-                            $('#HairlossType-Basic-1').append(hairMain_resultArray[2].HairlossType_Basic);
-                            $('#HairlossType-Center-1').append(hairMain_resultArray[2].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-1').append(hairMain_resultArray[2].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-2').append(hairMain_resultArray[1].HairlossType_Basic);
-                            $('#HairlossType-Center-2').append(hairMain_resultArray[1].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-2').append(hairMain_resultArray[1].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-3').append(hairMain_resultArray[0].HairlossType_Basic);
-                            $('#HairlossType-Center-3').append(hairMain_resultArray[0].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-3').append(hairMain_resultArray[0].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-3').addClass('active');
-                            $('#HairlossType-Center-3').addClass('active');
-                            $('#HairlossType-FrontCenter-3').addClass('active');
-        
-        
-        
-                        }
-        
-                        else if (selectedValues.length === 4) {
-                            console.log('4개 히스토리[메인]')                          
-                            $('#scalp-type-1').append(scalpType_resultArray[3]);
-                            $('#scalp-type-2').append(scalpType_resultArray[2]);
-                            $('#scalp-type-3').append(scalpType_resultArray[1]);
-                            $('#scalp-type-4').append(scalpType_resultArray[0]);
-                            $('#scalp-type-4').addClass('active');
-        
-                            $('#scalp-type-1 .date').text(scalpDate_resultArray[3]);
-                            $('#scalp-type-2 .date').text(scalpDate_resultArray[2]);
-                            $('#scalp-type-3 .date').text(scalpDate_resultArray[1]);
-                            $('#scalp-type-4 .date').text(scalpDate_resultArray[0]);
-        
-        
-        
-                            // 2nd. Hair Conditions History값
-                            var Haircondition_Tips_3 = getHaiconditionResult(parseInt(hairMain_resultArray[3].Haircondition_Tips));
-                            var Haircondition_Mid_3 = getHaiconditionResult(parseInt(hairMain_resultArray[3].Haircondition_Mid));
-                            var Haircondition_Root_3 = getHaiconditionResult(parseInt(hairMain_resultArray[3].Haircondition_Root));
-        
-                            var Haircondition_Tips_2 = getHaiconditionResult(parseInt(hairMain_resultArray[2].Haircondition_Tips));
-                            var Haircondition_Mid_2 = getHaiconditionResult(parseInt(hairMain_resultArray[2].Haircondition_Mid));
-                            var Haircondition_Root_2 = getHaiconditionResult(parseInt(hairMain_resultArray[2].Haircondition_Root));
-        
-                            var Haircondition_Tips_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Tips));
-                            var Haircondition_Mid_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Mid));
-                            var Haircondition_Root_1 = getHaiconditionResult(parseInt(hairMain_resultArray[1].Haircondition_Root));
-        
-                            var Haircondition_Tips_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Tips));
-                            var Haircondition_Mid_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Mid));
-                            var Haircondition_Root_0 = getHaiconditionResult(parseInt(hairMain_resultArray[0].Haircondition_Root));
-        
-                            $('#haircondition-tips-1').append(Haircondition_Tips_3);
-                            $('#haircondition-mid-1').append(Haircondition_Mid_3);
-                            $('#haircondition-root-1').append(Haircondition_Root_3);
-        
-                            $('#haircondition-tips-2').append(Haircondition_Tips_2);
-                            $('#haircondition-mid-2').append(Haircondition_Mid_2);
-                            $('#haircondition-root-2').append(Haircondition_Root_2);
-        
-                            $('#haircondition-tips-3').append(Haircondition_Tips_1);
-                            $('#haircondition-mid-3').append(Haircondition_Mid_1);
-                            $('#haircondition-root-3').append(Haircondition_Root_1);
-        
-                            $('#haircondition-tips-4').append(Haircondition_Tips_0);
-                            $('#haircondition-mid-4').append(Haircondition_Mid_0);
-                            $('#haircondition-root-4').append(Haircondition_Root_0);
-        
-                            $('#haircondition-tips-4').addClass('active');
-                            $('#haircondition-mid-4').addClass('active');
-                            $('#haircondition-root-4').addClass('active');
-        
-                            /********************** */
-        
-                            // 3rd. Hair Density  History값     
-                            $('#HairlossType-Basic-1').append(hairMain_resultArray[3].HairlossType_Basic);
-                            $('#HairlossType-Center-1').append(hairMain_resultArray[3].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-1').append(hairMain_resultArray[3].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-2').append(hairMain_resultArray[2].HairlossType_Basic);
-                            $('#HairlossType-Center-2').append(hairMain_resultArray[2].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-2').append(hairMain_resultArray[2].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-3').append(hairMain_resultArray[1].HairlossType_Basic);
-                            $('#HairlossType-Center-3').append(hairMain_resultArray[1].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-3').append(hairMain_resultArray[1].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-4').append(hairMain_resultArray[0].HairlossType_Basic);
-                            $('#HairlossType-Center-4').append(hairMain_resultArray[0].HairlossType_Center);
-                            $('#HairlossType-FrontCenter-4').append(hairMain_resultArray[0].HairlossType_FrontCenter);
-        
-                            $('#HairlossType-Basic-4').addClass('active');
-                            $('#HairlossType-Center-4').addClass('active');
-                            $('#HairlossType-FrontCenter-4').addClass('active');
-        
-        
-        
-                        }
-
-
-                    } catch (error) {
-                        console.error('hairLeftHairLine_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairMain_resultArray 저장된 결과 : ", hairMain_resultArray);
-                console.log("scalpType_resultArray 저장된 결과 : ", scalpType_resultArray);
-                console.log("scalpDate_resultArray 저장된 결과 : ", scalpDate_resultArray);
-
-                 
-            hairLeftHairLine_Results();
-            hairFrontCenter_Results();
-            hairFrontHairLine_Results();
-            hairCenter_Results();
-            hairRightHairLine_Results();
-            hairBack_Results();
-                
-            }
-
-
-
-
-            async function hairLeftHairLine_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairLeftHairLine_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-                        hairLeftHairLine_resultArray.push(resultValue); // 결과 배열에 추가
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[hairLeft]')
-        
-                            update_hairLeftHairLine_density_Data(hairLeftHairLine_resultArray[0].Density);
-                            update_hairLeftHairLine_thickness_Data(hairLeftHairLine_resultArray[0].Thickness);                               
-                        }
-                        else if (selectedValues.length === 2) {
-                            console.log('2개 히스토리[hairLeft]')
-                            update_hairLeftHairLine_density_Data(hairLeftHairLine_resultArray[1].Density, hairLeftHairLine_resultArray[0].Density);
-                            update_hairLeftHairLine_thickness_Data(hairLeftHairLine_resultArray[1].Thickness, hairLeftHairLine_resultArray[0].Thickness);        
-                        }
-                        else if (selectedValues.length === 3) {
-                            console.log('3개 히스토리[hairLeft]')
-                            update_hairLeftHairLine_density_Data(hairLeftHairLine_resultArray[2].Density,hairLeftHairLine_resultArray[1].Density, hairLeftHairLine_resultArray[0].Density);
-                            update_hairLeftHairLine_thickness_Data(hairLeftHairLine_resultArray[2].Thickness, hairLeftHairLine_resultArray[1].Thickness, hairLeftHairLine_resultArray[0].Thickness);
-                        }
-        
-                        else if (selectedValues.length === 4) {
-                            console.log('4개 히스토리[hairLeft]')
-                            update_hairLeftHairLine_density_Data(hairLeftHairLine_resultArray[3].Density, hairLeftHairLine_resultArray[2].Density, hairLeftHairLine_resultArray[1].Density, hairLeftHairLine_resultArray[0].Density);
-                            update_hairLeftHairLine_thickness_Data(hairLeftHairLine_resultArray[3].Thickness, hairLeftHairLine_resultArray[2].Thickness, hairLeftHairLine_resultArray[1].Thickness, hairLeftHairLine_resultArray[0].Thickness);
-                        }
-
-                    } catch (error) {
-                        console.error('hairLeftHairLine_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairLeftHairLine_resultArray 저장된 결과 : ", hairLeftHairLine_resultArray);
-            }
-
-
-            async function hairFrontCenter_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairFrontCenter_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-                        hairFrontCenter_resultArray.push(resultValue); // 결과 배열에 추가
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[hairFrontCenter]')              
-        
-                            update_hairFrontCenter_density_Data(hairFrontCenter_resultArray[0].Density);
-                            update_hairFrontCenter_thickness_Data(hairFrontCenter_resultArray[0].Thickness);
-                        }
-                        else if (selectedValues.length === 2) {
-                            console.log('2개 히스토리[hairFrontCenter]')                
-                            update_hairFrontCenter_density_Data(hairFrontCenter_resultArray[1].Density, hairFrontCenter_resultArray[0].Density);
-                            update_hairFrontCenter_thickness_Data(hairFrontCenter_resultArray[1].Thickness, hairFrontCenter_resultArray[0].Thickness);
-                        }
-                        else if (selectedValues.length === 3) {
-                            console.log('3개 히스토리[hairFrontCenter[')
-                            update_hairFrontCenter_density_Data(hairFrontCenter_resultArray[2].Density,hairFrontCenter_resultArray[1].Density, hairFrontCenter_resultArray[0].Density);
-                            update_hairFrontCenter_thickness_Data(hairFrontCenter_resultArray[2].Thickness, hairFrontCenter_resultArray[1].Thickness, hairFrontCenter_resultArray[0].Thickness);
-        
-                        }
-        
-                        else if (selectedValues.length === 4) {
-                            console.log('4개 히스토리[hairFrontCenter]')                         
-                            update_hairFrontCenter_density_Data(hairFrontCenter_resultArray[3].Density, hairFrontCenter_resultArray[2].Density, hairFrontCenter_resultArray[1].Density, hairFrontCenter_resultArray[0].Density);
-                            update_hairFrontCenter_thickness_Data(hairFrontCenter_resultArray[3].Thickness, hairFrontCenter_resultArray[2].Thickness, hairFrontCenter_resultArray[1].Thickness, hairFrontCenter_resultArray[0].Thickness);
-                                 
-                        }
-
-                    } catch (error) {
-                        console.error('hairFrontCenter_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairFrontCenter_Results 저장된 결과 : ", hairFrontCenter_resultArray);
-            }
-
-            async function hairFrontHairLine_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairFrontHairLine_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-                        hairFrontHairLine_resultArray.push(resultValue); // 결과 배열에 추가
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[hairFrontHairLine]')       
-        
-                            update_hairFrontHairLine_density_Data(hairFrontHairLine_resultArray[0].Density);
-                            update_hairFrontHairLine_thickness_Data(hairFrontHairLine_resultArray[0].Thickness);        
-                        }
-                        else if (selectedValues.length === 2) {
-                            console.log('2개 히스토리[hairFrontHairLine]')                 
-                            update_hairFrontHairLine_density_Data(hairFrontHairLine_resultArray[1].Density, hairFrontHairLine_resultArray[0].Density);
-                            update_hairFrontHairLine_thickness_Data(hairFrontHairLine_resultArray[1].Thickness, hairFrontHairLine_resultArray[0].Thickness);
-                
-                        }
-                        else if (selectedValues.length === 3) {
-                            console.log('3개 히스토리[hairFrontHairLine]')                    
-                            update_hairFrontHairLine_density_Data(hairFrontHairLine_resultArray[2].Density,hairFrontHairLine_resultArray[1].Density, hairFrontHairLine_resultArray[0].Density);
-                            update_hairFrontHairLine_thickness_Data(hairFrontHairLine_resultArray[2].Thickness, hairFrontHairLine_resultArray[1].Thickness, hairFrontHairLine_resultArray[0].Thickness);
-        
-                        }
-        
-                        else if (selectedValues.length === 4 && hairBack_resultArray.length) {
-                            console.log('4개 히스토리[hairFrontHairLine]')                         
-                            update_hairFrontHairLine_density_Data(hairFrontHairLine_resultArray[3].Density, hairFrontHairLine_resultArray[2].Density, hairFrontHairLine_resultArray[1].Density, hairFrontHairLine_resultArray[0].Density);
-                            update_hairFrontHairLine_thickness_Data(hairFrontHairLine_resultArray[3].Thickness, hairFrontHairLine_resultArray[2].Thickness, hairFrontHairLine_resultArray[1].Thickness, hairFrontHairLine_resultArray[0].Thickness);
-     
-                        }
-
-                    } catch (error) {
-                        console.error('hairFrontHairLiner_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairFrontHairLine_Results 저장된 결과 : ", hairFrontHairLine_resultArray);
-            }
-
-            async function hairCenter_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairCenter_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-                        hairCenter_resultArray.push(resultValue); // 결과 배열에 추가
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[hairCenter]')        
-                            update_hairCenter_density_Data(hairCenter_resultArray[0].Density);
-                            update_hairCenter_thickness_Data(hairCenter_resultArray[0].Thickness);        
-                  
-                        }
-                        else if (selectedValues.length === 2 && hairBack_resultArray.length) {
-                            console.log('2개 히스토리[hairCenter]')                   
-                            update_hairCenter_density_Data(hairCenter_resultArray[1].Density, hairCenter_resultArray[0].Density);
-                            update_hairCenter_thickness_Data(hairCenter_resultArray[1].Thickness, hairCenter_resultArray[0].Thickness);        
-                        }
-                        else if (selectedValues.length === 3 && hairBack_resultArray.length) {
-                            console.log('3개 히스토리[hairCenter]')                     
-                            update_hairCenter_density_Data(hairCenter_resultArray[2].Density, hairCenter_resultArray[1].Density, hairCenter_resultArray[0].Density);
-                            update_hairCenter_thickness_Data(hairCenter_resultArray[2].Thickness, hairCenter_resultArray[1].Thickness, hairCenter_resultArray[0].Thickness);
-        
-                        }
-        
-                        else if (selectedValues.length === 4 && hairBack_resultArray.length) {
-                            console.log('4개 히스토리[hairCenter]')                         
-                            update_hairCenter_density_Data(hairCenter_resultArray[3].Density, hairCenter_resultArray[2].Density, hairCenter_resultArray[1].Density, hairCenter_resultArray[0].Density);
-                            update_hairCenter_thickness_Data(hairCenter_resultArray[3].Thickness, hairCenter_resultArray[2].Thickness, hairCenter_resultArray[1].Thickness, hairCenter_resultArray[0].Thickness);
-        
-                        }
-
-                    } catch (error) {
-                        console.error('hairCenter_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairCenter_Results 저장된 결과 : ", hairCenter_resultArray);
-            }
-
-            async function hairRightHairLine_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairRightHairLine_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-                        hairRightHairLine_resultArray.push(resultValue); // 결과 배열에 추가
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[hairRightHairLine]')        
-                            update_hairRightHairLine_density_Data(hairRightHairLine_resultArray[0].Density);
-                            update_hairRightHairLine_thickness_Data(hairRightHairLine_resultArray[0].Thickness);        
-        
-                        }
-                        else if (selectedValues.length === 2 && hairBack_resultArray.length) {
-                            console.log('2개 히스토리[hairRightHairLine]')                        
-                            update_hairRightHairLine_density_Data(hairRightHairLine_resultArray[1].Density, hairRightHairLine_resultArray[0].Density);
-                            update_hairRightHairLine_thickness_Data(hairRightHairLine_resultArray[1].Thickness, hairRightHairLine_resultArray[0].Thickness);        
-        
-                        }
-                        else if (selectedValues.length === 3 && hairBack_resultArray.length) {
-                            console.log('3개 히스토리[hairRightHairLine]')                        
-                            update_hairRightHairLine_density_Data(hairRightHairLine_resultArray[2].Density, hairRightHairLine_resultArray[1].Density, hairRightHairLine_resultArray[0].Density);
-                            update_hairRightHairLine_thickness_Data(hairRightHairLine_resultArray[2].Thickness,hairRightHairLine_resultArray[1].Thickness, hairRightHairLine_resultArray[0].Thickness);
-        
-                        }
-        
-                        else if (selectedValues.length === 4 && hairBack_resultArray.length) {
-                            console.log('4개 히스토리[hairRightHairLine]')                          
-                            update_hairRightHairLine_density_Data(hairRightHairLine_resultArray[3].Density, hairRightHairLine_resultArray[2].Density, hairRightHairLine_resultArray[1].Density, hairRightHairLine_resultArray[0].Density);
-                            update_hairRightHairLine_thickness_Data(hairRightHairLine_resultArray[3].Thickness, hairRightHairLine_resultArray[2].Thickness, hairRightHairLine_resultArray[1].Thickness, hairRightHairLine_resultArray[0].Thickness);
-        
-                        }
-
-                    } catch (error) {
-                        console.error('hairRightHairLine_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairRightHairLine_Results 저장된 결과 : ", hairRightHairLine_resultArray);
-            }
-
-            async function hairBack_Results() {
-                for (let i = 0; i < selectedValues.length; i++) {
-                    try {
-                        const response = await $.ajax({
-                            url: hairBack_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                            type: 'GET',
-                            contentType: 'application/json'
-                        });
-                        const resultValue = response[0];
-                        hairBack_resultArray.push(resultValue); // 결과 배열에 추가
-
-
-                        if (selectedValues.length === 1) {
-                            console.log('1개 히스토리[hairBack]')
-                            update_hairBack_density_Data(hairBack_resultArray[0].Density);
-                            update_hairBack_thickness_Data(hairBack_resultArray[0].Thickness);
-        
-                        }
-                        else if (selectedValues.length === 2 && hairBack_resultArray.length) {
-                            console.log('2개 히스토리[hairBack]')
-                            update_hairBack_density_Data(hairBack_resultArray[1].Density, hairBack_resultArray[0].Density);
-                            update_hairBack_thickness_Data(hairBack_resultArray[1].Thickness, hairBack_resultArray[0].Thickness);
-        
-                        }
-                        else if (selectedValues.length === 3 && hairBack_resultArray.length) {
-                            console.log('3개 히스토리[hairBack]')
-                            update_hairBack_density_Data(hairBack_resultArray[2].Density, hairBack_resultArray[1].Density, hairBack_resultArray[0].Density);
-                            update_hairBack_thickness_Data(hairBack_resultArray[2].Thickness, hairBack_resultArray[1].Thickness, hairBack_resultArray[0].Thickness);        
-        
-                        }
-        
-                        else if (selectedValues.length === 4 && hairBack_resultArray.length) {
-                            console.log('4개 히스토리[hairBack]')
-                            update_hairBack_density_Data(hairBack_resultArray[3].Density, hairBack_resultArray[2].Density, hairBack_resultArray[1].Density, hairBack_resultArray[0].Density);
-                            update_hairBack_thickness_Data(hairBack_resultArray[3].Thickness, hairBack_resultArray[2].Thickness, hairBack_resultArray[1].Thickness, hairBack_resultArray[0].Thickness);        
-        
-                        }
-
-                    } catch (error) {
-                        console.error('hairBack_Results 오류 : ', error);
-                    }
-                }
-                console.log("hairBack_Results 저장된 결과 : ", hairBack_resultArray);           
-
-            }
-
-        },
-
-        error: function (xhr, status, error) {
-            console.error('리스트 별 고객검색 결과  에러 : ', error);
-        }
+      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+  
+      type: 'GET',
+      success: function (response) {
+        console.log('=====================');
+        console.log('리스트 별 고객검색 결과 성공 : ', response);
+  
+  
+        //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+        var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+        var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
+  
+        select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+  
+        select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
+          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+  
+  
+        console.log("select_visit1_1 : ", select_visit1_1);
+        console.log("select_visit1_2 : ", select_visit1_2);
+  
+        var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+        var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
+  
+        select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+  
+        select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
+          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+  
+        console.log("select_visit2_1 : ", select_visit2_1);
+        console.log("select_visit2_2 : ", select_visit2_2);
+  
+        visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+        console.log("방문 회차 : visitCount > ", visitCount);
+  
+        $('#visitCount').text(visitCount);
+  
+  
+  
+      },
+  
+      error: function (xhr, status, error) {
+        console.error('리스트 별 고객검색 결과  에러 : ', error);
+      }
     })
-
-
-}
-
-
+  
+  
+  }
+  
+  
 
 
 

@@ -68,7 +68,7 @@
                                         style="font-weight: bold;">고은비</span></span>
                                 <span id="title_date" style="margin-right: 105px;">측정일자 : <span id="visitDate">2024. 01.
                                         22</span></span>
-                                <span id="title_count" style="margin-right: 160px;">방문회차 : 2회차</span>
+                                <span id="title_count" style="margin-right: 160px;">방문회차 : <span id="visitCount"></span>회차</span>
                             </div>
                         </header>
                         <div class="report-content">
@@ -78,8 +78,8 @@
                                     <div class="row-item-content flexColumn">
                                         <div class="graph-item" style="text-align: center; font-size: 30px;">
                                             가장 관리가 필요한 영역은
-                                            <span style="font-weight: bold;">유분</span> 및
-                                            <span style="font-weight: bold;">수분</span> 입니다.
+                                            <span style="font-weight: bold;" id="Low_First">유분</span> 및
+                                            <span style="font-weight: bold;" id="Low_second">민감</span> 입니다.
                                             <div id="radarChartContainer" style="margin-top: 70px;">
                                                 <canvas id="radarChart" width="800" height="600"></canvas>
                                             </div>
@@ -103,13 +103,14 @@
                                         <div class="radio-group">
                                             <div class="radio-item">
                                                 <label class="font-30">
-                                                    고객님의 나이는 30세입니다. 
-                                                    <a class="button radius w200 colorWithe" id="diagnosisButton"  style="font-weight: bold; background-color : #e7c1da; color: white; margin-left: 350px; height: 50px; cursor: pointer;" >진단하기</a>
+                                                    고객님의 나이는 <span id="lifestyle_age">20</span>세 입니다. 
+
+                                                    <a class="button radius w200 colorWithe" id="diagnosisButton"  style="font-weight: bold; background-color : #e7c1da; color: white; margin-left: 320px; height: 50px; cursor: pointer;" >진단하기</a>
                                                 </label>
                                                 <div class="radio-input">
-                                                    <input type="radio" id="age01" name="age">
+                                                    <input type="radio" id="age01" name="age" checked>
                                                     <label for="age01">20세</label>
-                                                    <input type="radio" id="age02" name="age" checked>
+                                                    <input type="radio" id="age02" name="age">
                                                     <label for="age02">30세</label>
                                                     <input type="radio" id="age03" name="age">
                                                     <label for="age03">40세</label>
@@ -130,7 +131,7 @@
                                             <div class="radio-item">
                                                 <label class="font-30">자외선 차단제를 항상 사용해요.</label>
                                                 <div class="radio-input">
-                                                    <input type="radio" id="uv01" name="uv" checked>
+                                                    <input type="radio" id="uv01" name="uv">
                                                     <label for="uv01">그렇지 않다</label>
                                                     <input type="radio" id="uv02" name="uv">
                                                     <label for="uv02">약간 그렇다</label>

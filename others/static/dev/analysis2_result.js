@@ -1,24 +1,79 @@
+var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
+var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/progress_flg/';
+
+
+var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
+
 const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 const surveyDate = moment().format('YYYY/MM/DD');
 
-var hair_result_URL = 'http://localhost:8000/v1/hairResult/';
+var hair_result_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairResult/';
 
-var hair_image_URL = 'http://localhost:8000/v1/hairImage/';
-
-
+var hair_image_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairImage/';
 
 
-$(document).ready(function () {   
+
+
+$(document).ready(function () {
     window.scrollTo(0, 470);
     console.log('analysis2_result page start -> ')
+
+    //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
+    if (localStorage.getItem('progress_flg') !== '10') {
+        //직접 방문 고객의 상담 진행률
+        if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_sculpResult') !== 'ok') {
+            console.log("직방 고객 상담 진행률 체크")
+            $.ajax({
+                url: DirectCustom_API_URL + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "109" }), //두피상담 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('두피상담 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('두피상담 인입 에러 : ', error);
+                }
+            })
+        }
+        //예약 방문 고객의 상담 진행률
+        else if (localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_sculpResult') !== 'ok') {
+            console.log("예약 고객 상담 진행률 체크")
+            $.ajax({
+                url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "109" }), //두피상담 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('두피상담 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('두피상담 인입 에러 : ', error);
+                }
+            })
+        }
+    }
+
+
+
+    $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
+
+
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
     console.log("custom_sex : ", localStorage.getItem('custom_sex'));
     // var surveyNo = localStorage.getItem('custom_surveyNo');
 
+    fnGetVisitCount();//방문회차 카운트 함수
 
-    surveyNo = 1111;
-    userkey = 1111;
+    surveyNo = localStorage.getItem('custom_surveyNo');
+    userkey = localStorage.getItem('custom_userkey');
 
     console.log('surveyNo : ', surveyNo);
     console.log('userkey : ', userkey);
@@ -32,9 +87,6 @@ $(document).ready(function () {
         document.getElementById("title_date").style.marginRight = "90px";
         document.getElementById("title_count").style.marginRight = "145px";
     }
-
-
-    $('#visitDate').text(localStorage.getItem('visitDate'));
 
 
     //페이지 내 opinion
@@ -98,6 +150,66 @@ $(document).ready(function () {
         $('#opinionsImage').attr('src', './resource/images/img-report002.png');
         $('#backgroundImage').attr('src', '');
         backgroundImage.src = './resource/images/img-report002.png';
+
+        //#0-2 두피 결과   
+        $.ajax({
+            url: hair_result_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo') + '&userkey=' + localStorage.getItem('custom_userkey'),
+            type: 'GET',
+            success: function (response) {
+                console.log('### hair_result_URL 응답 : ', response);
+
+                $('#comment01_main').text(response[0].specialtip_memo);
+                $('#comment02_main').text(response[0].specialtip_memo2);
+
+
+
+                
+                if (response.length === 0) {
+                    console.log("DB내, 이미지,코멘트 데이터가 존재하지않음")
+                    //DB내, 데이터가 존재하지않음
+                  
+          
+                  } else {
+                    console.log("DB내, 이미지,코멘트 데이터가 존재함")
+                    //DB내, 데이터가 존재
+                    $('#opinionsImage').attr('src', response[0].specialtip_stoke_img); //(페이지) 이미지
+                    $('#backgroundImage').attr('src', response[0].specialtip_img);//(페이지) 백그라운드 이미지
+          
+                    localStorage.setItem('analysis2_result-opinionCanvas', response[0].specialtip_stoke_img)//(페이지) 이미지
+                    localStorage.setItem('analysis2_result-backgroundCanvas', response[0].specialtip_img)//(페이지) 백그라운드이미지
+          
+                    localStorage.setItem('analysis2_result-comment01',response[0].specialtip_memo);
+                    localStorage.setItem('analysis2_result-comment02',response[0].specialtip_memo2);
+                    localStorage.setItem('analysis2_result-comment03',response[0].specialtip_memo3);          
+          
+                    $('#comment01_main').val(localStorage.getItem('analysis2_result-comment01'));
+                    $('#comment02_main').val(localStorage.getItem('analysis2_result-comment02'));
+                    $('#comment03_main').val(localStorage.getItem('analysis2_result-comment03'));
+             
+          
+                  }
+
+
+
+
+
+
+
+
+
+
+
+            },
+            error: function (xhr, status, error) {
+
+                console.error('### hair_result_URL 에러 : ', error);
+            }
+        })
+
+
+
+
+
     }
 
 
@@ -198,7 +310,7 @@ $(document).ready(function () {
         $('.user-modify-layer').removeClass('open');
 
 
-        
+
 
         console.log("==============================");
         console.log("analysis2_result_save 저장 버튼 클릭 효과!!22");
@@ -207,18 +319,18 @@ $(document).ready(function () {
         console.log("backgroundImageSrc:", localStorage.getItem('analysis2_result-backgroundCanvas'));
 
 
-        console.log("custom_userkey", localStorage.getItem('custom_userkey') );
-        console.log("custom_surveyNo", localStorage.getItem('custom_surveyNo') );
+        console.log("custom_userkey", localStorage.getItem('custom_userkey'));
+        console.log("custom_surveyNo", localStorage.getItem('custom_surveyNo'));
 
-        console.log("analysis2_result-comment01", localStorage.getItem('analysis2_result-comment01') );
-        console.log("analysis2_result-comment02", localStorage.getItem('analysis2_result-comment02') );
-        console.log("analysis2_result-comment03", localStorage.getItem('analysis2_result-comment03') );
+        console.log("analysis2_result-comment01", localStorage.getItem('analysis2_result-comment01'));
+        console.log("analysis2_result-comment02", localStorage.getItem('analysis2_result-comment02'));
+        console.log("analysis2_result-comment03", localStorage.getItem('analysis2_result-comment03'));
 
 
         var requestData = {
             "surveyNo": localStorage.getItem('custom_surveyNo'),
             "userKey": localStorage.getItem('custom_userkey'),
-            "surveyDate": surveyDate,         
+            "surveyDate": surveyDate,
             "name": localStorage.getItem('custom_name'),
             "skin_score": 0,
             "skin_gomin": "",
@@ -258,6 +370,50 @@ $(document).ready(function () {
                 showErrorModal();
 
 
+                //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
+                if (localStorage.getItem('progress_flg') !== '10') {
+                    //직접 방문 고객의 상담 진행률
+                    if (localStorage.getItem('visitkey') === '0') {
+                        $.ajax({
+                            url: DirectCustom_API_URL + localStorage.getItem('skey'),
+                            type: 'PATCH',
+                            data: JSON.stringify({ "progress_flg": "110" }), //두피상담 완료 
+                            contentType: 'application/json',
+
+                            success: function (response) {
+                                console.log('=====================');
+                                console.log('두피상담 완료 인입 성공 : ', response);
+                                localStorage.setItem('custom_sculpResult', 'ok');
+                            },
+
+                            error: function (xhr, status, error) {
+                                console.error('두피상담 완료 인입 에러 : ', error);
+                            }
+                        })
+                    }
+                    //예약 방문 고객의 상담 진행률
+                    else if (localStorage.getItem('visitkey') !== '0') {
+                        console.log("예약 고객 상담 진행률 체크")
+                        $.ajax({
+                            url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
+                            type: 'PATCH',
+                            data: JSON.stringify({ "progress_flg": "110" }), //두피상담 완료
+                            contentType: 'application/json',
+
+                            success: function (response) {
+                                console.log('=====================');
+                                console.log('두피상담 완료 인입 성공 : ', response);
+                            },
+
+                            error: function (xhr, status, error) {
+                                console.error('두피상담 완료 인입 에러 : ', error);
+                            }
+                        })
+                    }
+                }
+
+
+
             }, error: function (xhr, status, error) {
                 console.error('hair_result_URL 오류 : ', error);
                 $("#custom_detail_main").html("두피 결과 저장 실패");
@@ -288,18 +444,18 @@ $(document).ready(function () {
         console.log("backgroundImageSrc:", localStorage.getItem('analysis2_result-backgroundCanvas'));
 
 
-        console.log("custom_userkey", localStorage.getItem('custom_userkey') );
-        console.log("custom_surveyNo", localStorage.getItem('custom_surveyNo') );
+        console.log("custom_userkey", localStorage.getItem('custom_userkey'));
+        console.log("custom_surveyNo", localStorage.getItem('custom_surveyNo'));
 
-        console.log("analysis2_result-comment01", localStorage.getItem('analysis2_result-comment01') );
-        console.log("analysis2_result-comment02", localStorage.getItem('analysis2_result-comment02') );
-        console.log("analysis2_result-comment03", localStorage.getItem('analysis2_result-comment03') );
+        console.log("analysis2_result-comment01", localStorage.getItem('analysis2_result-comment01'));
+        console.log("analysis2_result-comment02", localStorage.getItem('analysis2_result-comment02'));
+        console.log("analysis2_result-comment03", localStorage.getItem('analysis2_result-comment03'));
 
 
         var requestData = {
             "surveyNo": localStorage.getItem('custom_surveyNo'),
             "userKey": localStorage.getItem('custom_userkey'),
-            "surveyDate": surveyDate,         
+            "surveyDate": surveyDate,
             "name": localStorage.getItem('custom_name'),
             "skin_score": 0,
             "skin_gomin": "",
@@ -354,12 +510,19 @@ $(document).ready(function () {
 
 
     // #1 Scalp Type, Hair Conditions, hair Density Type 부분 API 값요청
-    var hairMain_URL = 'http://localhost:8000/v1/hairMain/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairMain_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairMain/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
     $.ajax({
         url: hairMain_URL,
         type: 'GET',
         success: function (response) {
             console.log('hairMain 응답 : ', response);
+
+            // console.log("********hairMain 기준 측정일****** > ", response[0].create_dt);
+            // const dateObject = response[0].create_dt.substring(0,10).replace('-','. ').replace('-','. ');
+
+            // console.log("********hairMain 기준 생성일 변환****** > ", dateObject);      
+            // $('#visitDate').text(dateObject);
+
 
             // 1st. Scalp Type 값
             var ScalpType_Nor = response[0].ScalpType_Nor;
@@ -404,81 +567,81 @@ $(document).ready(function () {
 
             $('#HairlossType_Basic').text(HairlossType_Basic);
 
-          
+
 
 
             if (HairlossType_Basic !== null) {
                 $('#HairlossType_Basic').text(HairlossType_Basic);
                 console.log('*****************HairlossType_Basic 값 > ', HairlossType_Basic);
-                
-                if(HairlossType_Basic === 'M0'){
+
+                if (HairlossType_Basic === 'M0') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('M0');
                 }
-                if(HairlossType_Basic === 'M1'){
+                if (HairlossType_Basic === 'M1') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('M1');
                 }
-                if(HairlossType_Basic === 'M2'){
+                if (HairlossType_Basic === 'M2') {
                     $('#density_type-M2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('M2');
                 }
-                if(HairlossType_Basic === 'M3'){
+                if (HairlossType_Basic === 'M3') {
                     $('#density_type-M3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('M3');
                 }
-                if(HairlossType_Basic === 'C0'){
+                if (HairlossType_Basic === 'C0') {
                     $('#density_type-C0').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('C0');
                 }
-                if(HairlossType_Basic === 'C1'){
+                if (HairlossType_Basic === 'C1') {
                     $('#density_type-C1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('C1');
                 }
-                if(HairlossType_Basic === 'C2'){
+                if (HairlossType_Basic === 'C2') {
                     $('#density_type-C2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('C2');
                 }
-                if(HairlossType_Basic === 'C3'){
+                if (HairlossType_Basic === 'C3') {
                     $('#density_type-C3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('C3');
                 }
-                if(HairlossType_Basic === 'U1'){
+                if (HairlossType_Basic === 'U1') {
                     $('#density_type-U1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('U1');
                 }
-                if(HairlossType_Basic === 'U2'){
+                if (HairlossType_Basic === 'U2') {
                     $('#density_type-U2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('U2');
                 }
-                if(HairlossType_Basic === 'U3'){
+                if (HairlossType_Basic === 'U3') {
                     $('#density_type-U3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('U3');
                 }
 
-                if(HairlossType_Basic === 'V1'){
+                if (HairlossType_Basic === 'V1') {
                     $('#density_type-V1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('V1');
                 }
-                if(HairlossType_Basic === 'V2'){
+                if (HairlossType_Basic === 'V2') {
                     $('#density_type-V2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('V2');
                 }
-                if(HairlossType_Basic === 'V3'){
+                if (HairlossType_Basic === 'V3') {
                     $('#density_type-V3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('V3');
                 }
-              
 
-                if(HairlossType_Basic === 'F1'){
+
+                if (HairlossType_Basic === 'F1') {
                     $('#density_type-F1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('F1');
                 }
-                if(HairlossType_Basic === 'F2'){
+                if (HairlossType_Basic === 'F2') {
                     $('#density_type-F2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('F2');
                 }
-                if(HairlossType_Basic === 'F3'){
+                if (HairlossType_Basic === 'F3') {
                     $('#density_type-F3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Basic').text('F3');
                 }
@@ -492,75 +655,75 @@ $(document).ready(function () {
             if (HairlossType_Center !== null) {
                 $('#HairlossType_Center').text(HairlossType_Center);
                 console.log('*****************HairlossType_Center 값 > ', HairlossType_Center);
-                
-                if(HairlossType_Center === 'M0'){
+
+                if (HairlossType_Center === 'M0') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('M0');
                 }
-                if(HairlossType_Center === 'M1'){
+                if (HairlossType_Center === 'M1') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('M1');
                 }
-                if(HairlossType_Center === 'M2'){
+                if (HairlossType_Center === 'M2') {
                     $('#density_type-M2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('M2');
                 }
-                if(HairlossType_Center === 'M3'){
+                if (HairlossType_Center === 'M3') {
                     $('#density_type-M3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('M3');
                 }
-                if(HairlossType_Center === 'C0'){
+                if (HairlossType_Center === 'C0') {
                     $('#density_type-C0').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('C0');
                 }
-                if(HairlossType_Center === 'C1'){
+                if (HairlossType_Center === 'C1') {
                     $('#density_type-C1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('C1');
                 }
-                if(HairlossType_Center === 'C2'){
+                if (HairlossType_Center === 'C2') {
                     $('#density_type-C2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('C2');
                 }
-                if(HairlossType_Center === 'C3'){
+                if (HairlossType_Center === 'C3') {
                     $('#density_type-C3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('C3');
                 }
-                if(HairlossType_Center === 'U1'){
+                if (HairlossType_Center === 'U1') {
                     $('#density_type-U1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('U1');
                 }
-                if(HairlossType_Center === 'U2'){
+                if (HairlossType_Center === 'U2') {
                     $('#density_type-U2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('U2');
                 }
-                if(HairlossType_Center === 'U3'){
+                if (HairlossType_Center === 'U3') {
                     $('#density_type-U3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('U3');
                 }
 
-                if(HairlossType_Center === 'V1'){
+                if (HairlossType_Center === 'V1') {
                     $('#density_type-V1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('V1');
                 }
-                if(HairlossType_Center === 'V2'){
+                if (HairlossType_Center === 'V2') {
                     $('#density_type-V2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('V2');
                 }
-                if(HairlossType_Center === 'V3'){
+                if (HairlossType_Center === 'V3') {
                     $('#density_type-V3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('V3');
                 }
 
 
-                if(HairlossType_Center === 'F1'){
+                if (HairlossType_Center === 'F1') {
                     $('#density_type-F1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('F1');
                 }
-                if(HairlossType_Center === 'F2'){
+                if (HairlossType_Center === 'F2') {
                     $('#density_type-F2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('21');
                 }
-                if(HairlossType_Center === 'F3'){
+                if (HairlossType_Center === 'F3') {
                     $('#density_type-F3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('F3');
                 }
@@ -579,74 +742,74 @@ $(document).ready(function () {
                 console.log('*****************HairlossType_FrontCenter 값 > ', HairlossType_FrontCenter);
 
 
-                if(HairlossType_FrontCenter === 'M0'){
+                if (HairlossType_FrontCenter === 'M0') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('M0');
                 }
-                if(HairlossType_FrontCenter === 'M1'){
+                if (HairlossType_FrontCenter === 'M1') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('M1');
                 }
-                if(HairlossType_FrontCenter === 'M2'){
+                if (HairlossType_FrontCenter === 'M2') {
                     $('#density_type-M2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('M2');
                 }
-                if(HairlossType_FrontCenter === 'M3'){
+                if (HairlossType_FrontCenter === 'M3') {
                     $('#density_type-M3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('M3');
                 }
-                if(HairlossType_FrontCenter === 'C0'){
+                if (HairlossType_FrontCenter === 'C0') {
                     $('#density_type-C0').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('C0');
                 }
-                if(HairlossType_FrontCenter === 'C1'){
+                if (HairlossType_FrontCenter === 'C1') {
                     $('#density_type-C1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('C1');
                 }
-                if(HairlossType_FrontCenter === 'C2'){
+                if (HairlossType_FrontCenter === 'C2') {
                     $('#density_type-C2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('C2');
                 }
-                if(HairlossType_FrontCenter === 'C3'){
+                if (HairlossType_FrontCenter === 'C3') {
                     $('#density_type-C3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('C3');
                 }
-                if(HairlossType_FrontCenter === 'U1'){
+                if (HairlossType_FrontCenter === 'U1') {
                     $('#density_type-U1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('U1');
                 }
-                if(HairlossType_FrontCenter === 'U2'){
+                if (HairlossType_FrontCenter === 'U2') {
                     $('#density_type-U2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('U2');
                 }
-                if(HairlossType_FrontCenter === 'U3'){
+                if (HairlossType_FrontCenter === 'U3') {
                     $('#density_type-U3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('U3');
                 }
 
-                if(HairlossType_FrontCenter === 'V1'){
+                if (HairlossType_FrontCenter === 'V1') {
                     $('#density_type-V1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('V1');
                 }
-                if(HairlossType_FrontCenter === 'V2'){
+                if (HairlossType_FrontCenter === 'V2') {
                     console.log("v2v2v2v2")
                     $('#density_type-V2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('V2');
                 }
-                if(HairlossType_FrontCenter === 'V3'){
+                if (HairlossType_FrontCenter === 'V3') {
                     $('#density_type-V3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('V3');
                 }
 
-                if(HairlossType_FrontCenter === 'F1'){
+                if (HairlossType_FrontCenter === 'F1') {
                     $('#density_type-F1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('F1');
                 }
-                if(HairlossType_FrontCenter === 'F2'){
+                if (HairlossType_FrontCenter === 'F2') {
                     $('#density_type-F2').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('F2');
                 }
-                if(HairlossType_FrontCenter === 'F3'){
+                if (HairlossType_FrontCenter === 'F3') {
                     $('#density_type-F3').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_FrontCenter').text('F3');
                 }
@@ -672,12 +835,12 @@ $(document).ready(function () {
 
 
     // #2 Detailed Information On hair Thickness & Density 부분 API 값요청
-    var hairLeftHairLine_URL = 'http://localhost:8000/v1/hairLeftHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairFrontCenter_URL = 'http://localhost:8000/v1/hairFrontCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairFrontHairLine_URL = 'http://localhost:8000/v1/hairFrontHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairCenter_URL = 'http://localhost:8000/v1/hairCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairRightHairLine_URL = 'http://localhost:8000/v1/hairRightHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairBack_URL = 'http://localhost:8000/v1/hairBack/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairLeftHairLine_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairLeftHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairFrontCenter_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairFrontCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairFrontHairLine_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairFrontHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairCenter_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairRightHairLine_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairRightHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairBack_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairBack/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
 
 
     // 1.왼쪽 헤어라인
@@ -913,9 +1076,10 @@ $(document).ready(function () {
 
 
 
+
      // 7. 모발 이미지 넣기
      $.ajax({
-        url: hair_image_URL + '?surveyNo=' + 1111,
+        url: hair_image_URL + '?surveyNo=' + surveyNo,
         type: 'GET',
         success: function (response) {
             console.log('hair_image_URL 응답 : ', response);
@@ -928,12 +1092,12 @@ $(document).ready(function () {
             hairBack_image = response[0].Scalp_Back;
 
 
-            $("#hairLeftHairLine-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_LeftHairLine);
-            $("#hairFrontCenter-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_FrontCenter);
-            $("#hairFrontHairLine-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_FrontHairLine);
-            $("#hairCenter-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_Center);
-            $("#hairRightHairLine-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_RightHairLine);
-            $("#hairBack-img").attr("src", "data:image/jpeg;base64,"+ response[0].Scalp_Back);
+            $("#hairLeftHairLine-img").attr("src", "data:image/jpeg;base64," + response[0].Scalp_LeftHairLine);
+            $("#hairFrontCenter-img").attr("src", "data:image/jpeg;base64," + response[0].Scalp_FrontCenter);
+            $("#hairFrontHairLine-img").attr("src", "data:image/jpeg;base64," + response[0].Scalp_FrontHairLine);
+            $("#hairCenter-img").attr("src", "data:image/jpeg;base64," + response[0].Scalp_Center);
+            $("#hairRightHairLine-img").attr("src", "data:image/jpeg;base64," + response[0].Scalp_RightHairLine);
+            $("#hairBack-img").attr("src", "data:image/jpeg;base64," + response[0].Scalp_Back);
 
         },
         error: function (xhr, status, error) {
@@ -943,12 +1107,109 @@ $(document).ready(function () {
     })
 });
 
-let hairLeftHairLine_image ;
-let hairFrontCenter_image ;
-let hairFrontHairLine_image ;
-let hairCenter_image ;
-let hairRightHairLine_image ;
-let hairBack_image ;
+
+
+
+/*
+*
+*24. 06. 14 방문회차 카운트 함수
+*
+*/
+var fnGetVisitCount = function () {
+    var visit_count = 0; //프로그램별 방문회차 카운트
+    $.ajax({
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+
+        type: 'GET',
+        success: function (response) {
+            console.log('=====================');
+            console.log('리스트 별 고객검색 결과 성공 : ', response);
+
+
+            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+            var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
+
+            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+            select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+
+            console.log("select_visit1_1 : ", select_visit1_1);
+            console.log("select_visit1_2 : ", select_visit1_2);
+
+            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+            var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
+
+            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+            select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+            console.log("select_visit2_1 : ", select_visit2_1);
+            console.log("select_visit2_2 : ", select_visit2_2);
+
+            visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+            console.log("방문 회차 : visitCount > ", visitCount);
+
+            $('#visitCount').text(visitCount);
+
+
+
+        },
+
+        error: function (xhr, status, error) {
+            console.error('리스트 별 고객검색 결과  에러 : ', error);
+        }
+    })
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let hairLeftHairLine_image;
+let hairFrontCenter_image;
+let hairFrontHairLine_image;
+let hairCenter_image;
+let hairRightHairLine_image;
+let hairBack_image;
 
 
 
@@ -961,48 +1222,48 @@ let hairBack_image ;
 $('#hairLeftHairLine-img').on('click', function () {
     console.log("좌측 헤어라인 이미지 클릭")
     $('#popup_title').text('좌측 헤어라인');
-    $("#popup_image").attr("src", "data:image/jpeg;base64,"+ hairLeftHairLine_image);
+    $("#popup_image").attr("src", "data:image/jpeg;base64," + hairLeftHairLine_image);
     $('.scalp-image-layer').addClass('open');
-   
+
 });
 
 
 $('#hairFrontCenter-img').on('click', function () {
     console.log("앞 중앙 이미지 클릭")
     $('#popup_title').text('앞 중앙');
-    $("#popup_image").attr("src", "data:image/jpeg;base64,"+ hairFrontCenter_image);
-    $('.scalp-image-layer').addClass('open');   
+    $("#popup_image").attr("src", "data:image/jpeg;base64," + hairFrontCenter_image);
+    $('.scalp-image-layer').addClass('open');
 });
 
 
 $('#hairFrontHairLine-img').on('click', function () {
     console.log("앞 헤어라인 이미지 클릭")
     $('#popup_title').text('앞 헤어라인');
-    $("#popup_image").attr("src", "data:image/jpeg;base64,"+ hairFrontHairLine_image);
-    $('.scalp-image-layer').addClass('open');   
+    $("#popup_image").attr("src", "data:image/jpeg;base64," + hairFrontHairLine_image);
+    $('.scalp-image-layer').addClass('open');
 });
 
 
 $('#hairCenter-img').on('click', function () {
     console.log("정수리 이미지 클릭")
     $('#popup_title').text('정수리');
-    $("#popup_image").attr("src", "data:image/jpeg;base64,"+ hairCenter_image);
-    $('.scalp-image-layer').addClass('open');   
+    $("#popup_image").attr("src", "data:image/jpeg;base64," + hairCenter_image);
+    $('.scalp-image-layer').addClass('open');
 });
 
 $('#hairRightHairLine-img').on('click', function () {
     console.log("우측 헤어라인 이미지 클릭")
     $('#popup_title').text('우측 헤어라인');
-    $("#popup_image").attr("src", "data:image/jpeg;base64,"+ hairRightHairLine_image);
-    $('.scalp-image-layer').addClass('open');   
+    $("#popup_image").attr("src", "data:image/jpeg;base64," + hairRightHairLine_image);
+    $('.scalp-image-layer').addClass('open');
 });
 
 
 $('#hairBack-img').on('click', function () {
     console.log("후두부 이미지 클릭")
     $('#popup_title').text('후두부');
-    $("#popup_image").attr("src", "data:image/jpeg;base64,"+ hairBack_image);
-    $('.scalp-image-layer').addClass('open');   
+    $("#popup_image").attr("src", "data:image/jpeg;base64," + hairBack_image);
+    $('.scalp-image-layer').addClass('open');
 });
 
 
@@ -1025,7 +1286,7 @@ $('#hairBack-img').on('click', function () {
  * @description 
  **/
 $(document).ready(function () {
-    
+
 
 
     /*
@@ -1306,11 +1567,18 @@ var scatterData = {
             { x: 0.077, y: 50, label: '① 좌' },
             { x: 0.065, y: 90, label: '② 앞' },
             { x: 0.06, y: 70, label: '③ 우' },
-            { x: 0.065, y: 40, label: '④ 중앙' },
+            { x: 0.065, y: 40, label: '④ 앞중앙' },
             { x: 0.07, y: 75, label: '⑤ 정수리' },
             { x: 0.07, y: 75, label: '⑥ 후두부' }
         ],
-        backgroundColor: 'rgba(159, 159, 159, 0.5)', // 데이터 포인트 색상
+        backgroundColor: [
+            '#e5b9d5',
+            '#f17229',
+            '#fbca36',
+            '#6abe9f',
+            '#a9e5fb',
+            '#8749a0'
+        ], // 데이터 포인트 색상
         pointRadius: 8,
         pointHoverRadius: 10
     }]
@@ -1336,20 +1604,20 @@ var scatterChart = new Chart(ctx_scatterChart, {
                         borderWidth: 0
                     }
                 }
-            }, 
+            },
             legend: {
                 display: false // 범례 숨기기
             },
-            tooltip: {              
-               
+            tooltip: {
+
                 callbacks: {
                     label: function (context) {
                         return context.dataset.data[context.dataIndex].label;
-                    },                    
-                },         
-                enabled: true        
-            },           
-        },             
+                    },
+                },
+                enabled: true
+            },
+        },
         scales: {
             x: {
                 title: {
@@ -1398,7 +1666,7 @@ var scatterChart = new Chart(ctx_scatterChart, {
             padding: {
                 right: 30 // 오른쪽 여백 조정
             }
-        },    
+        },
     },
     // plugins: [ChartDataLabels]
 });

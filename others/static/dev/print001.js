@@ -1,10 +1,14 @@
-var ResultSkinConcern_API_URL = 'http://localhost:8000/v1/skin/concern/';
-var skin_result_URL = 'http://localhost:8000/v1/skin/result/';
+var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
 
+var ResultSkinConcern_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
+var skin_result_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/result/';
+var ResultMarkvu_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/markvu/result/';
 
 
 $(document).ready(function () {
     console.log('analysis_result page start -> ')
+    $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
+
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
 
@@ -12,13 +16,49 @@ $(document).ready(function () {
     $('#manager_name').text(localStorage.getItem('manager_name'));
     $('#custom_name').text(localStorage.getItem('custom_name'));
 
-    $('#visitDate').text(localStorage.getItem('visitDate'));
+    fnGetVisitCount();//방문회차 카운트 함수
+
 
     // $('#comment01_main').text(localStorage.getItem('analysis_result-comment01'));
     // $('#comment02_main').text(localStorage.getItem('analysis_result-comment02'));
 
     // $('#opinionsImage').attr('src', localStorage.getItem('analysis_result-opinionCanvas')); //(페이지) 이미지
     // $('#backgroundImage').attr('src', localStorage.getItem('analysis_result-backgroundCanvas'));//(페이지) 백그라운드 이미지
+
+    $.ajax({
+        // url: ResultMarkvu_API_URL + '?surveyNo=' + surveyNo,
+        url: ResultMarkvu_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
+        type: 'GET',
+        success: function (data) {
+          //console.log('ResultMarkvu_API_URL 응답 : ', data); 
+          markvu = data[0];
+          console.log("ResultMarkvu_API_URL 응답값 : ", markvu);
+    
+    
+          //T존
+          tzone_subun_value = markvu.FSubun_A;
+          tzone_ubun_value = (markvu.FSebum_A + markvu.FSebum_B) / 2;
+          t_zone_subun = tzone_subun_value;
+          t_zone_ubun = tzone_ubun_value;
+    
+          $('#t_zone_subun-val').text(t_zone_subun)
+          $('#t_zone_ubun-val').text(t_zone_ubun)
+    
+          //U존
+          uzone_subun_value = (markvu.FSubun_G + markvu.FSubun_H) / 2;
+          uzone_ubun_value = (markvu.FSebum_G + markvu.FSebum_H) / 2;
+          u_zone_subun = uzone_subun_value;
+          u_zone_ubun = uzone_ubun_value;
+          $('#u_zone_subun-val').text(u_zone_subun)
+          $('#u_zone_ubun-val').text(u_zone_ubun)
+    
+    
+        },
+        error: function (xhr, status, error) {
+    
+          console.error('ResultMarkvu_API_URL 응답 오류: ', error);
+        }
+      })
 
 
     $.ajax({
@@ -30,6 +70,53 @@ $(document).ready(function () {
             console.log("skin_result_URL 응답값 : ", response);
             console.log("skin_result_URL  길이 : ", response.length);
 
+            
+            let t_zone_position_num = response[0].t_zone_position_num;
+
+            //T존 9분위 적용
+            if (t_zone_position_num === 1) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_001.png");
+            } if (t_zone_position_num === 2) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_002.png");
+            } if (t_zone_position_num === 3) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_003.png");
+            } if (t_zone_position_num === 4) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_004.png");
+            } if (t_zone_position_num === 5) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_005.png");
+            } if (t_zone_position_num === 6) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_006.png");
+            } if (t_zone_position_num === 7) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_007.png");
+            } if (t_zone_position_num === 8) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_008.png");
+            } if (t_zone_position_num === 9) {
+                $('#T_zone-image').attr('src', "./resource/images/skin/UT_009.png");
+            }
+
+
+            let u_zone_position_num = response[0].u_zone_position_num;
+            //T존 9분위 적용
+            if (u_zone_position_num === 1) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_001.png");
+            } if (u_zone_position_num === 2) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_002.png");
+            } if (u_zone_position_num === 3) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_003.png");
+            } if (u_zone_position_num === 4) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_004.png");
+            } if (u_zone_position_num === 5) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_005.png");
+            } if (u_zone_position_num === 6) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_006.png");
+            } if (u_zone_position_num === 7) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_007.png");
+            } if (u_zone_position_num === 8) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_008.png");
+            } if (u_zone_position_num === 9) {
+                $('#U_zone-image').attr('src', "./resource/images/skin/UT_009.png");
+            }
+
             if (response.length === 0) {
                 console.log("1111111")
                 //DB내, 데이터가 존재하지않음
@@ -38,7 +125,7 @@ $(document).ready(function () {
                 //임시
                 $('#comment02_main').text(localStorage.getItem('analysis_result-comment02'));
 
-               
+
 
             } else {
                 console.log("222")
@@ -64,18 +151,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     $.ajax({
         url: ResultSkinConcern_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
         type: 'GET',
@@ -84,22 +159,11 @@ $(document).ready(function () {
         success: function (response) {
             console.log("ResultSkinConcern_API_URL 응답값 : ", response);
 
-            // 피부점수값 추출
-            // const valuesToSort = [
-            //     response.pore,
-            //     response.wrinkle,
-            //     response.futurewrinkles,
-            //     response.pigmentation,
-            //     response.melanin,               
-            //     response.transdermal,
-            //     response.redness,
-            //     response.porphyrin,
-            //     response.elasticity
-            // ];
+            // console.log("********스킨결과 기준 생성일****** > ", response[0].create_dt);
+            // const dateObject = response[0].create_dt.substring(0, 10).replace('-', '. ').replace('-', '. ');
 
-            // // 값들을 오름차순으로 정렬
-            // const sortedValues = valuesToSort.sort((a, b) => a - b);
-
+            // console.log("********스킨결과 기준 생성일 변환****** > ", dateObject);
+            // $('#visitDate').text(dateObject);
 
             // 피부점수값 추출
             const valuesToSort = [
@@ -654,4 +718,68 @@ function updateSebumData(data1, data2) {
 }
 
 
+
+
+
+
+/*
+*
+*24. 06. 14 방문회차 카운트 함수
+*
+*/
+var fnGetVisitCount = function () {
+    var visit_count = 0; //프로그램별 방문회차 카운트
+    $.ajax({
+      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+  
+      type: 'GET',
+      success: function (response) {
+        console.log('=====================');
+        console.log('리스트 별 고객검색 결과 성공 : ', response);
+  
+  
+        //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+        var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+        var select_visit1_2 = 0 //다른날짜 - 피부측정프로그램
+  
+        select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+  
+        select_visit1_2 = response.filter(item => item.ProgramCode === "PC001014"
+          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+  
+  
+        console.log("select_visit1_1 : ", select_visit1_1);
+        console.log("select_visit1_2 : ", select_visit1_2);
+  
+        var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+        var select_visit2_2 = 0 //같은날짜 - 피부측정프로그램
+  
+        select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+  
+        select_visit2_2 = response.filter(item => item.ProgramCode === "PC001014"
+          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+  
+        console.log("select_visit2_1 : ", select_visit2_1);
+        console.log("select_visit2_2 : ", select_visit2_2);
+  
+        visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+        console.log("방문 회차 : visitCount > ", visitCount);
+  
+        $('#visitCount').text(visitCount);
+  
+  
+  
+      },
+  
+      error: function (xhr, status, error) {
+        console.error('리스트 별 고객검색 결과  에러 : ', error);
+      }
+    })
+  
+  
+  }
 

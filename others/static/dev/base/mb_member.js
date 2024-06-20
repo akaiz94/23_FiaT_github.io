@@ -1,4 +1,4 @@
-var API_URL = 'http://localhost:8000/v1/mb/member/';
+var API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/mb/member/';
 var page_param = {
     totalCount: 5,
     currentPage: 1,

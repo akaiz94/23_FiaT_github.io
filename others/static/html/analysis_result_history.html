@@ -50,12 +50,12 @@
                         <div class="header-lift-box" style="font-size: 30px;">MY SKIN SOLUTION ANALYSIS REPORT FOR :
                         </div>
                         <div>
-                            <span id="custom_name" style="font-size: 30px; font-weight: bold;"></span><span  style="font-size: 25px;">님</span>
+                            <span id="custom_name" style="font-size: 30px; font-weight: bold;"></span><span  style="font-size: 25px; ">님</span>
                         </div>
                         <div class="header-right-box">
                             <span>MY SKIN ANALYSIS REPORT ㅣ <span id="manager_name" style="font-weight: bold;">고은비</span></span>
-                            <span id="title_date" style="margin-right: 105px;">측정일자 : <span id="visitDate">2024. 01. 22</span></span>
-                            <span id="title_count" style="margin-right: 160px;">방문회차 : 2회차</span>
+                            <span id="title_date" style="margin-right: 110px;">측정일자 : <span id="visitDate">2024. 01. 22</span></span>
+                            <span id="title_count" style="margin-right: 163px;">방문회차 : <span id="visitCount"></span>회차</span>
                         </div>
                     </header>
                     <div class="report-content">
@@ -93,27 +93,30 @@
                                                          
                                         <dl class="diagram-item">
                                             <dt>T존</dt>
-                                            <dd id="t_zone_result-1" style="font-size: 20px" class="active">
+                                            <dd id="t_zone_result-1" style="font-size: 20px">
                                                 <span class="date">23.11.07</span>
                                                 
                                             </dd>
                                             <dd id="t_zone_result-2" style="font-size: 20px">
-                                                <span class="date"></span>
-                                               
+                                                <span class="date"></span>                                               
                                             </dd>
-                                            <dd></dd>
-                                            <dd></dd>
+                                            <dd id="t_zone_result-3" style="font-size: 20px">
+                                                <span class="date"></span>                                               
+                                            </dd>
+                                            <dd id="t_zone_result-4" style="font-size: 20px">
+                                                <span class="date"></span>                                               
+                                            </dd>
                                         </dl>
                                         <dl class="diagram-item marginTop20">
                                             <dt>U존</dt>
-                                            <dd id="u_zone_result-1" style="font-size: 20px" class="active">
-                                               
+                                            <dd id="u_zone_result-1" style="font-size: 20px">                                               
                                             </dd>
-                                            <dd id="u_zone_result-2" style="font-size: 20px">
-                                              
+                                            <dd id="u_zone_result-2" style="font-size: 20px">                                              
                                             </dd>
-                                            <dd></dd>
-                                            <dd></dd>
+                                            <dd id="u_zone_result-3" style="font-size: 20px">                                              
+                                            </dd>
+                                            <dd id="u_zone_result-4" style="font-size: 20px">                                              
+                                            </dd>
                                         </dl>
 
                                     </div>
@@ -130,28 +133,28 @@
                                             <div class="graph-item line paddingAll30 textAlignCenter col-6" >
                                                 <!-- <img src="./resource/images/graph/graph-009.svg" alt="Aging 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-20" style="font-weight: bold;">모공</h3>
+                                                    <h3 class="font-20" >모공</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="pore_Chart" style="width: 300px !important; height: 180px !important;"></canvas> 
                                             </div>
                                             <div class="graph-item line paddingAll30 textAlignCenter col-6">
                                                 <!-- <img src="./resource/images/graph/graph-010.svg" alt="Aging 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-20" style="font-weight: bold;">탄력</h3>
+                                                    <h3 class="font-20" >탄력</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="elasticity_Chart" style="width: 300px !important; height: 180px !important;"></canvas> 
                                             </div>
                                             <div class="graph-item line paddingAll30 textAlignCenter col-6">
                                                 <!-- <img src="./resource/images/graph/graph-011.svg" alt="Aging 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-20" style="font-weight: bold;">주름</h3>
+                                                    <h3 class="font-20" >주름</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="wrinkle_Chart" style="width: 300px !important; height: 180px !important;"></canvas> 
                                             </div>
                                             <div class="graph-item line paddingAll30 textAlignCenter col-6">
                                                 <!-- <img src="./resource/images/graph/graph-012.svg" alt="Aging 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-20" style="font-weight: bold;">미래주름</h3>
+                                                    <h3 class="font-20" >미래주름</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="futurewrinkles_Chart" style="width: 300px !important; height: 180px !important;"></canvas> 
                                             </div>
@@ -163,14 +166,14 @@
                                             <div class="graph-item line paddingAll30 textAlignCenter col-6" >
                                                 <!-- <img src="./resource/images/graph/graph-013.svg" alt="Tone 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-20" style="font-weight: bold;">멜라닌</h3>
+                                                    <h3 class="font-20" >멜라닌</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="melanin_Chart" style="width: 300px !important; height: 180px !important;"></canvas>
                                             </div>
                                             <div class="graph-item line paddingAll30 textAlignCenter col-6">
                                                 <!-- <img src="./resource/images/graph/graph-014.svg" alt="Tone 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-20" style="font-weight: bold;">색소침착</h3>
+                                                    <h3 class="font-20" >색소침착</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="pigmentation_Chart" style="width: 300px !important; height: 180px !important;"></canvas>
                                             </div>
@@ -182,21 +185,21 @@
                                             <div class="graph-item line paddingAll30 textAlignCenter col-4" >
                                                 <!-- <img src="./resource/images/graph/graph-015.svg" alt="Sensitivity 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-18" style="font-weight: bold;">경피수분손실도</h3>
+                                                    <h3 class="font-18" >경피수분손실도</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="transdermal_Chart" style="width: 200px !important; height: 180px !important;"></canvas>
                                             </div>
                                             <div class="graph-item line paddingAll30 textAlignCenter col-4">
                                                 <!-- <img src="./resource/images/graph/graph-016.svg" alt="Sensitivity 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-18" style="font-weight: bold;">포피린</h3>
+                                                    <h3 class="font-18" >포피린</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="porphyrin_Chart" style="width: 200px !important; height: 180px !important;"></canvas>
                                             </div>
                                             <div class="graph-item line paddingAll30 textAlignCenter col-4">
                                                 <!-- <img src="./resource/images/graph/graph-017.svg" alt="Sensitivity 그래프"> -->
                                                 <div class="col-3 textAlignCenter">
-                                                    <h3 class="font-18" style="font-weight: bold;">붉은기</h3>
+                                                    <h3 class="font-18" >붉은기</h3>
                                                 </div>  
                                                 <canvas class="canvas2" id="redness_Chart" style="width: 200px !important; height: 180px !important;"></canvas>
 

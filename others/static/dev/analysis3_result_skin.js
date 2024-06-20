@@ -1,26 +1,146 @@
+var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
+var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000//v1/sch/direct/progress_flg/';
+
+var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
+
+var SkinSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/skin/';
+var ResultSkinConcern_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
+
+
+var first_s3_0 = 0; // 0.나이
+var first_s3_1 = 0; // 1.자외선
+var first_s3_2 = 0; // 2. 담배
+var first_s3_3 = 0; // 3.스트레스
+var first_s3_4 = 0; // 4 잠
+
+
+var s3_0 = 0; // 0.나이
+var s3_1 = 0; // 1.자외선
+var s3_2 = 0; // 2. 담배
+var s3_3 = 0; // 3.스트레스
+var s3_4 = 0; // 4 잠
+
+var dryness_score = -1; // 수분
+var oiliness_score = -1; // 유분
+var sensitivity_score = -1; //민감 (redness값)
+var pigment_score = -1; // 색소침착
+var elasticity_score = -1; //주름(탄력값)
+
 
 $(document).ready(function () {
     window.scrollTo(0, 470);
     console.log('analysis3_result_skin page start -> ')
 
+    //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
+    if (localStorage.getItem('progress_flg') !== '10') {
+        //직접 방문 고객의 상담 진행률
+        if (localStorage.getItem('visitkey') === '0') {
+            console.log("직방 고객 상담 진행률 체크")
+            $.ajax({
+                url: DirectCustom_API_URL + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "111" }), //마이스킨솔루션 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('마이스킨솔루션 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('마이스킨솔루션 인입 에러 : ', error);
+                }
+            })
+        }
+        //예약 방문 고객의 상담 진행률
+        else if (localStorage.getItem('visitkey') !== '0') {
+            console.log("예약 고객 상담 진행률 체크")
+            $.ajax({
+                url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "111" }), //마이스킨솔루션 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('마이스킨솔루션 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('마이스킨솔루션 인입 에러 : ', error);
+                }
+            })
+        }
+    }
+
+
+
+
+    $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
+    fnGetVisitCount();//방문회차 카운트 함수
+
     $('#manager_name').text(localStorage.getItem('manager_name'));
     $('#custom_name').text(localStorage.getItem('custom_name'));
 
-    // repush
-    
-    // if (localStorage.getItem('manager_name').length === 2) {
-    //     // $("#title_date").css("margin-right","90px");   
-    //     document.getElementById("title_date").style.marginRight = "90px";
-    //     document.getElementById("title_count").style.marginRight = "145px";
-    // }
+    fnGetSkinSurvey(); //스킨 문진 
+    fnGetResultSkinConcern(); // 현재점수  및 미래점수(초기)
 
+    var real_age = localStorage.getItem('AgeReal');
+    console.log('real_age : ', real_age);
 
-    $('#visitDate').text(localStorage.getItem('visitDate'));
-
+    first_s3_0 = GetAgeArea(real_age);
+    s3_0 = GetAgeArea(real_age);
+    $('#lifestyle_age').text(s3_0);
 
 });
 
 
+/*
+*
+*24. 06. 14 방문회차 카운트 함수
+*
+*/
+var fnGetVisitCount = function () {
+    var visit_count = 0; //프로그램별 방문회차 카운트
+    $.ajax({
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+
+        type: 'GET',
+        success: function (response) {
+            console.log('=====================');
+            console.log('리스트 별 고객검색 결과 성공 : ', response);
+
+
+            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+
+            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+            console.log("select_visit1_1 : ", select_visit1_1);
+
+            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+            console.log("select_visit2_1 : ", select_visit2_1);
+
+            visitCount = select_visit1_1 + select_visit2_1;
+            console.log("방문 회차 : visitCount > ", visitCount);
+
+            $('#visitCount').text(visitCount);
+
+
+
+        },
+
+        error: function (xhr, status, error) {
+            console.error('리스트 별 고객검색 결과  에러 : ', error);
+        }
+    })
+
+
+}
 
 
 
@@ -29,34 +149,380 @@ $(document).ready(function () {
 
 $('#diagnosisButton').click(function () {
 
-    // const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
-
-
-    // const currentTime = new Date();        
-
     console.log("진단하기 버튼 클릭 : ");
+    console.log('=====================');
+    console.log('first_ 0. 나이 대 : ', first_s3_0);
+    console.log('first_ 1.자외선 차단 s3_1 : ', first_s3_1);
+    console.log('first_ 2.담배 s3_2 : ', first_s3_2);
+    console.log('first_ 3.스트레스 s3_3 : ', first_s3_3);
+    console.log('first_ 4.잠 s3_4 : ', first_s3_4);
 
+
+    console.log('=====================');
+    console.log('0. 나이 대 : ', s3_0);
+    console.log('1.자외선 차단 s3_1 : ', s3_1);
+    console.log('2.담배 s3_2 : ', s3_2);
+    console.log('3.스트레스 s3_3 : ', s3_3);
+    console.log('4.잠 s3_4 : ', s3_4);
+
+    console.log('=====================');
+    console.log('수분 dryness_score : ', dryness_score); // 수분
+    console.log('유분 oiliness_score : ', oiliness_score); // 유분
+    console.log('민감 sensitivity_score : ', sensitivity_score); //민감
+    console.log('색소침착 pigment_score : ', pigment_score); // 색소침착
+    console.log('탄력 elasticity_score : ', elasticity_score); // 탄력
+
+
+    fnGetFutureScore(); //미래점수 가져오기 함수
+
+})
+
+
+
+
+
+
+
+// #1 라디오 버튼 클릭시, 데이터 값 저장
+
+$('input[type="radio"]').on('change', function () {
+
+    console.log('=====================');
+
+    if ($('#age01').prop('checked')) {
+        s3_0 = 20;
+    } else if ($('#age02').prop('checked')) {
+        s3_0 = 30;
+    } else if ($('#age03').prop('checked')) {
+        s3_0 = 40;
+    } else if ($('#age04').prop('checked')) {
+        s3_0 = 50;
+    } else if ($('#age05').prop('checked')) {
+        s3_0 = 60;
+    } else if ($('#age06').prop('checked')) {
+        s3_0 = 70;
+    } else if ($('#age07').prop('checked')) {
+        s3_0 = 80;
+    } else if ($('#age08').prop('checked')) {
+        s3_0 = 90;
+    } else if ($('#age09').prop('checked')) {
+        s3_0 = 100;
+    }
+    $('#lifestyle_age').text(s3_0);
+
+    console.log('0. 나이 대 : ', s3_0);
+
+    if ($('#uv01').prop('checked')) {
+        s3_1 = 0;
+    } else if ($('#uv02').prop('checked')) {
+        s3_1 = 1;
+    } else if ($('#uv03').prop('checked')) {
+        s3_1 = 2;
+    } else if ($('#uv04').prop('checked')) {
+        s3_1 = 3;
+    }
+    console.log('1.자외선 차단 s3_1 : ', s3_1);
+
+
+    if ($('#smoking01').prop('checked')) {
+        s3_2 = 0;
+    } else if ($('#smoking02').prop('checked')) {
+        s3_2 = 1;
+    } else if ($('#smoking03').prop('checked')) {
+        s3_2 = 2;
+    } else if ($('#smoking04').prop('checked')) {
+        s3_2 = 3;
+    }
+    console.log('2.담배 s3_2 : ', s3_2);
+
+    if ($('#stress01').prop('checked')) {
+        s3_3 = 0;
+    } else if ($('#stress02').prop('checked')) {
+        s3_3 = 1;
+    } else if ($('#stress03').prop('checked')) {
+        s3_3 = 2;
+    } else if ($('#stress04').prop('checked')) {
+        s3_3 = 3;
+    }
+    console.log('3.스트레스 s3_3 : ', s3_3);
+
+    if ($('#sleep01').prop('checked')) {
+        s3_4 = 0;
+    } else if ($('#sleep02').prop('checked')) {
+        s3_4 = 1;
+    } else if ($('#sleep03').prop('checked')) {
+        s3_4 = 2;
+    } else if ($('#sleep04').prop('checked')) {
+        s3_4 = 3;
+    }
+    console.log('4.잠 s3_4 : ', s3_4);
+});
+
+
+
+
+
+
+
+// #2 피부 설문 값 가져오기
+var fnGetSkinSurvey = function () {
 
     $.ajax({
-        // url: SkinSurvey_API_URL + surveyNo,
-        // url: ResultMarkvu_API_URL +  '?surveyNo=' +surveyNo, //실제 데이터 인입
-
-        //url: 'https://citylab.amorepacific.com/gpiopeApi/test',
-        url: 'https://citylab.amorepacific.com/gpiopeApi/genoResult?btCustIdNo=100084743&btCustIdNoClassifiCode=01',
-
+        url: SkinSurvey_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
         type: 'GET',
+
         success: function (response) {
-            console.log("diagnosisButton 응답값 : ", response);
+            console.log("SkinSurvey_API_URL 응답값 : ", response);
+            first_s3_1 = parseInt(response[0].s3_1);
+            first_s3_2 = parseInt(response[0].s3_2);
+            first_s3_3 = parseInt(response[0].s3_3);
+            first_s3_4 = parseInt(response[0].s3_4);
+
+
+
+            s3_1 = parseInt(response[0].s3_1);
+            s3_2 = parseInt(response[0].s3_2);
+            s3_3 = parseInt(response[0].s3_3);
+            s3_4 = parseInt(response[0].s3_4);
+
+            console.log('진짜 나이 : ', localStorage.getItem('AgeReal'));
+            console.log('s3_1 : ', s3_1);
+            console.log('s3_2 : ', s3_2);
+            console.log('s3_3 : ', s3_3);
+            console.log('s3_4 : ', s3_4);
+
+            console.log('response.length : ', response.length);
+
+            // .자외선 차단제
+            if (s3_1 === 0) {
+                $('#uv01').prop('checked', true);
+            } else if (s3_1 === 1) {
+                $('#uv02').prop('checked', true);
+            } else if (s3_1 === 2) {
+                $('#uv03').prop('checked', true);
+            } else if (s3_1 === 3) {
+                $('#uv04').prop('checked', true);
+            }
+
+            // 2.담배, 간접흡연
+            if (s3_2 === 0) {
+                $('#smoking01').prop('checked', true);
+            } else if (s3_2 === 1) {
+                $('#smoking02').prop('checked', true);
+            } else if (s3_2 === 2) {
+                $('#smoking03').prop('checked', true);
+            } else if (s3_2 === 3) {
+                $('#smoking04').prop('checked', true);
+            }
+
+            // 3.스트레스
+            if (s3_3 === 0) {
+                $('#stress01').prop('checked', true);
+            } else if (s3_3 === 1) {
+                $('#stress02').prop('checked', true);
+            } else if (s3_3 === 2) {
+                $('#stress03').prop('checked', true);
+            } else if (s3_3 === 3) {
+                $('#stress04').prop('checked', true);
+            }
+
+            // 4.잠
+            if (s3_4 === 0) {
+                $('#sleep01').prop('checked', true);
+            } else if (s3_4 === 1) {
+                $('#sleep02').prop('checked', true);
+            } else if (s3_4 === 2) {
+                $('#sleep03').prop('checked', true);
+            } else if (s3_4 === 3) {
+                $('#sleep04').prop('checked', true);
+            }
 
         }, error: function (xhr, status, error) {
-            console.error('diagnosisButton 오류 : ', error);
-            $("#custom_detail").html("통신 오류. 다시한번 시도해주세요.");
+            console.error('SkinSurvey_API_URL 오류 : ', error);
 
-            showErrorModal();
 
         }
     })
-})
+
+}
+
+
+
+// #3 현재점수 값 가져오기
+var fnGetResultSkinConcern = function () {
+
+    $.ajax({
+        url: ResultSkinConcern_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
+        type: 'GET',
+
+        success: function (response) {
+            console.log("ResultSkinConcern_API_URL 응답값 : ", response);
+
+            sensitivity_score = parseInt(response[0].redness); // 민감 (붉은기)
+            pigment_score = parseInt(response[0].pigmentation); // 색소침착
+            wrinkle_score = parseInt(response[0].wrinkle); // 주름
+            elasticity_score = parseInt(response[0].elasticity); //탄력
+
+            oiliness_score = parseInt(response[0].uZone_Oilskin); // 유분
+            dryness_score = parseInt(response[0].uZone_Moisture); //수분
+       
+
+            // 값들을 배열로 만듦
+            const values = [
+                { name: '민감', score: sensitivity_score },
+                { name: '색소침착', score: pigment_score },
+                { name: '주름', score: wrinkle_score },
+                { name: '유분', score: (oiliness_score * 100 / 40) },
+                { name: '수분', score: (dryness_score * 100 / 60) }
+            ];
+
+            // 값을 점수(score) 기준으로 오름차순으로 정렬
+            values.sort((a, b) => a.score - b.score);
+
+            // 가장 낮은 값과 두 번째로 낮은 값을 가져옴
+            const lowestValue = values[0].name;
+            const secondLowestValue = values[1].name;
+
+            // 해당 값을 <span> 요소의 텍스트로 넣어줌
+            $('#Low_First').text(lowestValue);
+            $('#Low_second').text(secondLowestValue);
+
+            //방사형(레이더)차트 업데이트 (현재점수)
+            updateRadarData(0, [(dryness_score * 100 / 60).toFixed(0), (oiliness_score * 100 / 40).toFixed(0), sensitivity_score, pigment_score, wrinkle_score]); //현재 피부 데이터 
+            //막대(my)차트 업데이트 (현재점수)
+            updateBarData(0, [(dryness_score * 100 / 60).toFixed(0), (oiliness_score * 100 / 40).toFixed(0), sensitivity_score, pigment_score, wrinkle_score]); //현재 피부 데이터 
+
+
+
+            fnGetFutureScore_first(); // 미래점수(초기)
+
+
+
+        }, error: function (xhr, status, error) {
+            console.error('ResultSkinConcern_API_URL 오류 : ', error);
+
+
+        }
+    })
+
+
+}
+
+
+// #4 미래점수 값 가져오기
+var fnGetFutureScore = function () {
+    var ucstmid = localStorage.getItem('custom_ucstmid'); //운영
+    // var ucstmid = 204677883 // 테스트
+
+
+    //설문값 0이 존재하면 안되므로, +1씩 더하여줌 (그렇지않다(1) ~ 매우그렇다(4))
+    var after_first_s3_1 = first_s3_1 + 1
+    var after_first_s3_2 = first_s3_2 + 1
+    var after_first_s3_3 = first_s3_3 + 1
+    var after_first_s3_4 = first_s3_4 + 1
+
+    var after_s3_1 = s3_1 + 1
+    var after_s3_2 = s3_2 + 1
+    var after_s3_3 = s3_3 + 1
+    var after_s3_4 = s3_4 + 1
+
+    $.ajax({
+        //운영
+        // url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${age}&sunscreen=${sunscreen}&smoke=${smoke}&stress=${stress}&sleep=${sleep}&modified_age=${modified_age}&modified_sunscreen=${modified_sunscreen}&modified_smoke=${modified_smoke}&modified_stress=${modified_stress}&modified_sleep=${modified_sleep}`,
+        //테스트
+        url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_s3_1}&modified_smoke=${after_s3_2}&modified_stress=${after_s3_3}&modified_sleep=${after_s3_4}`,
+
+        type: 'GET',
+
+        success: function (response) {
+            console.log("fnGetFutureScore 응답값 : ", response);
+
+            let pred_sensitivity_score = parseInt(response.result.pred_sensitivity_score); // 민감 (붉은기)
+            let pred_pigment_score = parseInt(response.result.pred_pigment_score); // 색소침착
+            let pred_elasticity_score = parseInt(response.result.pred_elasticity_score); // 탄력
+            let pred_oiliness_score = parseInt(response.result.pred_oiliness_score); // 유분
+            let pred_dryness_score = parseInt(response.result.pred_dryness_score); //수분
+
+
+            //방사형(레이더)차트 업데이트
+            updateRadarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+
+            //막대(my)차트 업데이트
+            updateBarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+
+
+
+        }, error: function (xhr, status, error) {
+            console.error('fnGetFutureScore 오류 : ', error);
+        }
+    })
+}
+
+
+
+// #5 미래점수 값 가져오기 (초기)
+var fnGetFutureScore_first = function () {
+    var ucstmid = localStorage.getItem('custom_ucstmid'); //운영
+    // var ucstmid = 204677883 // 테스트
+    
+
+    console.log('first_s3_1 : ', first_s3_1);
+    console.log('first_s3_2 : ', first_s3_2);
+    console.log('first_s3_3 : ', first_s3_3);
+    console.log('first_s3_4 : ', first_s3_4);
+    //설문값 0이 존재하면 안되므로, +1씩 더하여줌 (그렇지않다(1) ~ 매우그렇다(4))
+    var after_first_s3_1 = first_s3_1 + 1
+    var after_first_s3_2 = first_s3_2 + 1
+    var after_first_s3_3 = first_s3_3 + 1
+    var after_first_s3_4 = first_s3_4 + 1
+
+    // var after_s3_1 = s3_1 + 1
+    // var after_s3_2 = s3_2 + 1
+    // var after_s3_3 = s3_3 + 1
+    // var after_s3_4 = s3_4 + 1
+
+
+    if (elasticity_score > -1 && sensitivity_score > -1 && pigment_score > -1 && oiliness_score > -1 && dryness_score) {
+        $.ajax({
+            //운영
+            url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_first_s3_1}&modified_smoke=${after_first_s3_2}&modified_stress=${after_first_s3_3}&modified_sleep=${after_first_s3_4}`,
+            //테스트
+            // url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture_test?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_first_s3_1}&modified_smoke=${after_first_s3_2}&modified_stress=${after_first_s3_3}&modified_sleep=${after_first_s3_4}`,
+
+
+            type: 'GET',
+
+            success: function (response) {
+                console.log("fnGetFutureScore 응답값 : ", response);
+
+                let pred_sensitivity_score = parseInt(response.result.pred_sensitivity_score); // 민감 (붉은기)
+                let pred_pigment_score = parseInt(response.result.pred_pigment_score); // 색소침착
+                let pred_elasticity_score = parseInt(response.result.pred_elasticity_score); // 탄력
+                let pred_oiliness_score = parseInt(response.result.pred_oiliness_score); // 유분
+                let pred_dryness_score = parseInt(response.result.pred_dryness_score); //수분
+
+
+                //방사형(레이더)차트 업데이트
+                updateRadarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+
+                //막대(my)차트 업데이트
+                updateBarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+
+
+
+            }, error: function (xhr, status, error) {
+                console.error('fnGetFutureScore 오류 : ', error);
+
+                console.log('test_url : ', test_url);
+            }
+        })
+
+
+    }
+
+}
+
+
 
 
 
@@ -72,7 +538,7 @@ $('#diagnosisButton').click(function () {
 *
 */
 const data = {
-    labels: ['수분', '유분', '민감', '색소', '주름'],
+    labels: ['수분', '유분', '민감', '색소침착', '주름'],
     datasets: [{
         label: '현재 피부',
         data: [40, 20, 100, 80, 70],
@@ -126,6 +592,17 @@ const radarChart = new Chart(
 );
 
 
+/** 
+ * 24.06. 12
+ * @description 현재 피부, 미래 피부 값을 업데이트하고 radar차트를 다시 렌더링
+ **/
+function updateRadarData(datasetIndex, data) {
+    radarChart.data.datasets[datasetIndex].data = data;
+    radarChart.update();
+}
+
+
+
 
 
 /*
@@ -138,7 +615,7 @@ var ctx = document.getElementById('skinResult_Chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ['수분', '유분', '민감', '색소', '주름'],
+        labels: ['수분', '유분', '민감', '색소침착', '주름'],
         datasets: [{
             label: '', // 범례 레이블 없음
             data: [40, 20, 100, 80, 70],
@@ -173,7 +650,7 @@ var myChart = new Chart(ctx, {
                     color: '#ddd',
                     lineWidth: 1,
                     display: false
-                    
+
                 }
             },
             x: {
@@ -198,2136 +675,47 @@ var myChart = new Chart(ctx, {
                 }
             }
         },
-      
+
     }
 });
 
 
 
-{
-    "id": "100084743",
-    "code": "success",
-    "result": {
-        "code": "0000",
-        "message": "success",
-        "data": [
-            {
-                "index": 1,
-                "name": "skin_pigmentation",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 75,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "MC1R",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "OCA2",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": "CC",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 2,
-                "name": "skin_aging",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 57,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "AGER",
-                        "genotype": {
-                            "first_snp": "AT",
-                            "second_snp": "CC",
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "DEF8",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "HDAC4",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SLC36A3-SLC36A2",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "WDR1-ZNF518B",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 3,
-                "name": "androgenetic_alopecia",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 90,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "chr20p11",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": "CT",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 4,
-                "name": "hair_thickness",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 90,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "EDAR",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 5,
-                "name": "freckles",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 5,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "AKAP1-MSI2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "BNC2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "EMX2OS-RAB11FIP2",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PPARGC1B",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 6,
-                "name": "acne",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 63,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "LYPLAL1-SLC30A10",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PCNX3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SEMA4B",
-                        "genotype": {
-                            "first_snp": "AG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TGFB2-LYPLAL1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 7,
-                "name": "skin_inflammation",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 64,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "FAM72C",
-                        "genotype": {
-                            "first_snp": "GT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "RNF145-UBLCP1",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 8,
-                "name": "tanning",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 53,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "GRM5",
-                        "genotype": {
-                            "first_snp": "AG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PPARGC1B",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PRDM15",
-                        "genotype": {
-                            "first_snp": "AG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SLC45A2",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 9,
-                "name": "dead_skin_cells",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 57,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "HMCN1",
-                        "genotype": {
-                            "first_snp": "CG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TMEM270-ELN",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 10,
-                "name": "aplopecia_areata",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 78,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "ACOXL",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "IL13",
-                        "genotype": {
-                            "first_snp": "AC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "IL2-IL21",
-                        "genotype": {
-                            "first_snp": "GC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "IL2RA",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 11,
-                "name": "hair_greying",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "skin_hair",
-                "genes": [
-                    {
-                        "name": "IRF4",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 12,
-                "name": "vitamin_c",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 94,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "SLC23A1",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": "GG",
-                            "third_snp": "CC"
-                        }
-                    },
-                    {
-                        "name": "SLC23A2",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 13,
-                "name": "vitamin_d",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 20,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "GC",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 14,
-                "name": "coenzyme_q10",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 20,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "SWI5",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 15,
-                "name": "magnesium",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "MUC1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 16,
-                "name": "zinc",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 50,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "SLC30A3",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 17,
-                "name": "iron",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "KCTD17-TMPRSS6",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TMPRSS6",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": "CC",
-                            "third_snp": "AA"
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 18,
-                "name": "potassium",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 43,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "CLASP1",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "HOTTIP",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PRDM8-FGF5",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TBX2",
-                        "genotype": {
-                            "first_snp": "AG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 19,
-                "name": "calcium",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 50,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "BCAS1-CYP24A1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "BCAS3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 20,
-                "name": "arginine",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 80,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "AGXT2",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "DDAH1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "NRX1-ASB3",
-                        "genotype": {
-                            "first_snp": "GT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PTPRE-MGMT",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 21,
-                "name": "fatty_acid",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "ADIPOR2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "FABP2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "FFAR1",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 22,
-                "name": "vitamin_a",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "PKD1L2",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PKD1L2-BCO1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": "GG",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 23,
-                "name": "vitamin_b6",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 55,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "NBPF3-ALPL",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 24,
-                "name": "vitamin_e",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 22,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "CYP4F2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SCARB1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "ZPR1",
-                        "genotype": {
-                            "first_snp": "GC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 25,
-                "name": "vitamin_k",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "TMED7-CDO1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 26,
-                "name": "vitamin_b12",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "CUBN",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MUT",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 27,
-                "name": "tyrosine",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 56,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "REV3L",
-                        "genotype": {
-                            "first_snp": "TG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TAT-MARVELD3",
-                        "genotype": {
-                            "first_snp": "AT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TM6SF2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 28,
-                "name": "betaine",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 85,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "BHMT2",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "BHMT-JMY",
-                        "genotype": {
-                            "first_snp": "AC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CPS1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 29,
-                "name": "selenium",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 83,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "BHMT",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "NEIL3-AGA",
-                        "genotype": {
-                            "first_snp": "CA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SLC39A11",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 30,
-                "name": "lutein",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 8,
-                "category": "nutrition_and_metabolism",
-                "genes": [
-                    {
-                        "name": "BCO1",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PKD1L2-BCO1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": "GG",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 31,
-                "name": "triglycerides",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 18,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "ANGPTL3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "AQP9-LIPC",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": "CC",
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "GCKR",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MLXIPL",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TBL2",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TRIB1",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TRIB1-FAM84B",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 32,
-                "name": "bmi",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 97,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "BDNF",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "FTO",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": "TT",
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MC4R",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 33,
-                "name": "cholesterol",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 83,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "APOA5-APOA4",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CETP",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CMIP",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "HMGCR",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": "CC",
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "HPR",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MYRF",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "POLK",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SNX13",
-                        "genotype": {
-                            "first_snp": "GT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 34,
-                "name": "blood_sugar",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 65,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "CDKAL1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CDKN2A/B",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "DGKB-TMEM195",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "GCK",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "KCNQ1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MTNR1B",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SIX3-SIX2",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SLC30A8",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": "CC",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 35,
-                "name": "blood_pressure",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 92,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "ATP2B1",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CYP17A1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "FGF5",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "NPR3",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 36,
-                "name": "obesity",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 85,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "CLOCK",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "FTO",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 37,
-                "name": "motion_sickness",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 52,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "HMX3-GPR26",
-                        "genotype": {
-                            "first_snp": "CA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 38,
-                "name": "bone_density",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 25,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "COLEC10",
-                        "genotype": {
-                            "first_snp": "TA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MEPE-SPP1",
-                        "genotype": {
-                            "first_snp": "TG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "WNT4-ZBTB40",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "ZNF621-CTNNB1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 39,
-                "name": "osteoarthritis",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 27,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "CRADD",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "GLIS3",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "LTBP1",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MIR572-RAB28",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TGFA",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 40,
-                "name": "uric_acid",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 21,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "BCAS3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MPPED2-DCDC1",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 41,
-                "name": "body_fat_percentage",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 36,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "IQCH",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PEPD",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PLCE1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "WSCD2",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 42,
-                "name": "abdominal_obesity",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 19,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "KCNJ2-CASC17",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SSPN-ITPR2",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "VEGFA-MRPL14",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 43,
-                "name": "weight_loss",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 56,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "CRTC3",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CYYR1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "DCC-MBD2",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PRRX2",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 44,
-                "name": "yoyo_effect",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "healthcare",
-                "genes": [
-                    {
-                        "name": "FBLN5",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "LAMB1",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 45,
-                "name": "caffein_matebolism",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "AGR3-AHR",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CYP1A2",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 46,
-                "name": "alcohol_metabolism",
-                "grade_name": "안심",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 87,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "ADH1B",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "ALDH2",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": "TC",
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "HECTD4",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 47,
-                "name": "alcohol_dependency",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 62,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "ESR1",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PKNOX2",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SERINC2",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 48,
-                "name": "alcohol_flushing",
-                "grade_name": "주의",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 39,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "IDO1-ZMAT4",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MOB2-DUSP8",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": "AA",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 49,
-                "name": "wine_preference",
-                "grade_name": "화이트 와인",
-                "grade": "",
-                "percentage_in_south_korea": 20,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "ARL15",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "MROH5-TSNARE1",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 50,
-                "name": "nicotine_metabolism",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 66,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "CYP2A6",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": "TC",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 51,
-                "name": "nicotine_dependency",
-                "grade_name": "낮음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 83,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "FERD3L-TWISTNB",
-                        "genotype": {
-                            "first_snp": "CA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "GNAL",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "ICE1-UBE2QL1",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "QSOX2-GPSM1",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 52,
-                "name": "caffein_dependency",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 51,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "CAB39L",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "CPLX3-ULK3",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 53,
-                "name": "insomnia",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 51,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "SMAD5",
-                        "genotype": {
-                            "first_snp": "GT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 54,
-                "name": "sleep_duration",
-                "grade_name": "긴 수면",
-                "grade": "",
-                "percentage_in_south_korea": 56,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "CA10-KIF2B",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "RBFOX1",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 55,
-                "name": "morning_person",
-                "grade_name": "아침형 인간",
-                "grade": "",
-                "percentage_in_south_korea": 81,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "FAM185A",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "VAMP3",
-                        "genotype": {
-                            "first_snp": "AC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 56,
-                "name": "pain_sensitivity",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 62,
-                "category": "personal_characteristics",
-                "genes": [
-                    {
-                        "name": "COMT",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "OPRM1",
-                        "genotype": {
-                            "first_snp": "AG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 57,
-                "name": "power_exercise",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 72,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "ACTN3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "AGT",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 58,
-                "name": "aerobic_exercise",
-                "grade_name": "낮음",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 17,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "KDR",
-                        "genotype": {
-                            "first_snp": "TA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "NOS3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "PPARGC1A",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "VEGFA",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 59,
-                "name": "endurance_exercise",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 61,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "PPARD",
-                        "genotype": {
-                            "first_snp": "CT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "VEGFA",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 60,
-                "name": "muscle_develop",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 96,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "AGT",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "AGTR2",
-                        "genotype": {
-                            "first_snp": "AC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TRHR",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 61,
-                "name": "sprint",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "AGTR2",
-                        "genotype": {
-                            "first_snp": "AC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "SLC16A1",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 62,
-                "name": "ankle_injury",
-                "grade_name": "보통",
-                "grade": "TRAIT_GRADE_NORMAL",
-                "percentage_in_south_korea": 50,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "ACTN3",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 63,
-                "name": "grip_strength",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 71,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "ATXN2L",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TGFA",
-                        "genotype": {
-                            "first_snp": "GG",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 64,
-                "name": "recovery",
-                "grade_name": "낮음",
-                "grade": "TRAIT_GRADE_BAD",
-                "percentage_in_south_korea": 20,
-                "category": "workout",
-                "genes": [
-                    {
-                        "name": "GDF5",
-                        "genotype": {
-                            "first_snp": "AA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "IL6R",
-                        "genotype": {
-                            "first_snp": "AC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 65,
-                "name": "appetite",
-                "grade_name": "낮음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 85,
-                "category": "eating_habits",
-                "genes": [
-                    {
-                        "name": "ANKK1",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 66,
-                "name": "satiety",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "eating_habits",
-                "genes": [
-                    {
-                        "name": "FTO",
-                        "genotype": {
-                            "first_snp": "TT",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 67,
-                "name": "sweetness_sensitivity",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "eating_habits",
-                "genes": [
-                    {
-                        "name": "TAS1R3",
-                        "genotype": {
-                            "first_snp": "CC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 68,
-                "name": "bitterness_sensitivity",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "eating_habits",
-                "genes": [
-                    {
-                        "name": "TAS2R38",
-                        "genotype": {
-                            "first_snp": "GA",
-                            "second_snp": "CG",
-                            "third_snp": null
-                        }
-                    }
-                ]
-            },
-            {
-                "index": 69,
-                "name": "salt_taste_sensitivity",
-                "grade_name": "높음",
-                "grade": "TRAIT_GRADE_GOOD",
-                "percentage_in_south_korea": 99,
-                "category": "eating_habits",
-                "genes": [
-                    {
-                        "name": "SCNN1B",
-                        "genotype": {
-                            "first_snp": "TA",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    },
-                    {
-                        "name": "TRPV1",
-                        "genotype": {
-                            "first_snp": "TC",
-                            "second_snp": null,
-                            "third_snp": null
-                        }
-                    }
-                ]
-            }
-        ],
-        "level": "info",
-        "timestamp": "2024-06-11 15:48:36",
-        "label": "Iope"
+/** 
+ * 24.06. 12
+ * @description 현재 피부, 미래 피부 값을 업데이트하고 막대 차트를 다시 렌더링
+ **/
+function updateBarData(datasetIndex, data) {
+    myChart.data.datasets[datasetIndex].data = data;
+    myChart.update();
+}
+
+
+
+
+
+function GetAgeArea(_age) {
+    if (_age <= 19) {
+        return 19;
+    } else if (_age >= 20 && _age <= 24) {
+        return 20;
+    } else if (_age >= 25 && _age <= 29) {
+        return 20;
+    } else if (_age >= 30 && _age <= 34) {
+        return 30;
+    } else if (_age >= 35 && _age <= 39) {
+        return 30;
+    } else if (_age >= 40 && _age <= 44) {
+        return 40;
+    } else if (_age >= 45 && _age <= 49) {
+        return 40;
+    } else if (_age >= 50 && _age <= 54) {
+        return 50;
+    } else if (_age >= 55 && _age <= 59) {
+        return 50;
+    } else if (_age >= 60 && _age <= 69) {
+        return 60;
+    } else {
+        return 70;
     }
 }

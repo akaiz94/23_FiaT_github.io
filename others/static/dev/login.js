@@ -1,4 +1,4 @@
-var API_URL = 'http://localhost:8000/v1/mb/manager/login'
+var API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/mb/manager/login'
 
 $(document).ready(function () {
     
@@ -49,7 +49,7 @@ function login() {
 
 // {
 //     type: "POST",
-//         url: "http://localhost:8000/v1/mb/manager/login",
+//         url: "https://amore-citylab.amorepacific.com:8000/v1/mb/manager/login",
 //     data: JSON.stringify(formData),
 //     contentType: "application/json",
 //     dataType: "json", // 서버에서 받을 데이터 타입
@@ -76,7 +76,7 @@ function login() {
 //     startIndex: 0,
 // }
 
-// var Manager_API_URL = 'http://localhost:8000/v1/mb/manager/';
+// var Manager_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/mb/manager/';
 
 // $(document).ready(function () {
 

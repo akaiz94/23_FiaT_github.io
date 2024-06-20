@@ -31,7 +31,7 @@
             </div>
             <div class="date-box">
                 <span id="visitDate" style="font-size: 11px;">2024. 01. 22</span>
-                    <div class="round-item" style="font-weight: bold;">2회차</div>
+                    <div class="round-item" style="font-weight: bold;"><span id="visitCount"></span>회차</div>
             </div>
         </header>
         <main class="print-content">
@@ -48,14 +48,18 @@
                     <div class="row-item-content flexWrapper fix-height-center">
                         <div class="diagram-wrapper ">
                             <dl class="diagram-item square">
-                                <dd id="scalp-type-1" class="active">
+                                <dd id="scalp-type-1">
                                     <span class="date"></span>                                   
                                 </dd>
                                 <dd id="scalp-type-2">
                                     <span class="date"></span>        
                                 </dd>
-                                <dd></dd>
-                                <dd></dd>
+                                <dd id="scalp-type-3">
+                                    <span class="date"></span>        
+                                </dd>
+                                <dd id="scalp-type-4">
+                                    <span class="date"></span>        
+                                </dd>
                             </dl>
                         </div>
                     </div>
@@ -66,28 +70,32 @@
                         <div class="hair-condition marginTop40">
                             <img src="./resource/images/print/img-hair2.svg" alt="모발 이미지">
                             <ul class="hair-condition-list">
-                                <li class="condition-item active" id="haircondition-tips-1">
+                                <li class="condition-item" id="haircondition-tips-1">
                                     <!-- <span class="date-item">23.11.07</span> -->
                                     </li>
-                                <li class="condition-item active" id="haircondition-mid-1" ></li>
+                                <li class="condition-item" id="haircondition-mid-1" ></li>
                                 <li class="condition-item active" id="haircondition-root-1"></li>
                             </ul>
-                            <ul class="hair-condition-list ">
+                            <ul class="hair-condition-list">
                                 <li class="condition-item" id="haircondition-tips-2">
                                     <!-- <span class="date-item">24.01.22</span> -->
                                     </li>
                                 <li class="condition-item" id="haircondition-mid-2"></li>
                                 <li class="condition-item" id="haircondition-root-2"></li>
                             </ul>
-                            <ul class="hair-condition-list ">
-                                <li class="condition-item"></li>
-                                <li class="condition-item"></li>
-                                <li class="condition-item"></li>
+                            <ul class="hair-condition-list">
+                                <li class="condition-item" id="haircondition-tips-3">
+                                    <!-- <span class="date-item">24.01.22</span> -->
+                                    </li>
+                                <li class="condition-item" id="haircondition-mid-3"></li>
+                                <li class="condition-item" id="haircondition-root-3"></li>
                             </ul>
-                            <ul class="hair-condition-list ">
-                                <li class="condition-item"></li>
-                                <li class="condition-item"></li>
-                                <li class="condition-item"></li>
+                            <ul class="hair-condition-list">
+                                <li class="condition-item" id="haircondition-tips-4">
+                                    <!-- <span class="date-item">24.01.22</span> -->
+                                    </li>
+                                <li class="condition-item" id="haircondition-mid-4"></li>
+                                <li class="condition-item" id="haircondition-root-4"></li>
                             </ul>
                         </div>
                     </div>

@@ -1,8 +1,6 @@
-var API_URL = 'http://localhost:8000/v1/sch/visit/merged/list';
-var direct_API_URL = 'http://localhost:8000/v1/sch/direct/';
+var API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list';
+var direct_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/';
 
-// var API_URL = 'https://10.93.22.215:8000/v1/sch/visit/merged/list';
-// var direct_API_URL = 'https://10.93.22.215:8000/v1/sch/direct/';
 
 const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 const surveyDate = moment().format('YYYY/MM/DD');
@@ -12,7 +10,7 @@ const surveyHour = moment().format('HH:mm');
 var page_param = {
     totalCount: 5,
     currentPage: 1,
-    pageSize: 20, //데이터 호출 개수
+    pageSize: 30, //데이터 호출 개수
     startIndex: 0,
 }
 
@@ -34,7 +32,7 @@ $(document).ready(function () {
     })
     $('input[name="learned-add"]').on('change', function () {
         selectValue_add = parseInt($(this).val());
-    })  
+    })
 
     $("#today_date").val(surveyToday);
 
@@ -59,16 +57,34 @@ datePicker.addEventListener('change', (event) => {
 
 
 var list = null;
+var visit_rsvn_date = null;
+
+var raw_rsvn_date = null;
+var raw_rsvn_time = null;
+
+
 var fnGetVisitList = function (param) {
     console.log('## fnGetVisitList call')
     $('#visit-list > tr').remove()
 
     ajax.get(API_URL + '?rsvn_date=' + search_date, param, function (result) {
+
         list = result;
-        console.log("fnGetVisitList 의 result(list) : ", list);
+
+
+        list.sort((a, b) => {
+            let timeA = parseInt(a.rsvn_time.replace(":", ""));
+            let timeB = parseInt(b.rsvn_time.replace(":", ""));
+            return timeA - timeB;
+        });
+        console.log("fnGetVisitList 의 result(list): ", list);
+
+
         console.log("list개수 : ", list.length);
 
         $.each(list.reverse(), function (idx, data) {
+            console.log("고객 리스트별 data 값 : ", data);
+
             page_param.totalCount = data.total_count
 
             // data.index = idx + 1;
@@ -78,9 +94,18 @@ var fnGetVisitList = function (param) {
             // var change_date = data.rsvn_date.slice(0, 10);
             // data.rsvn_date = change_date;
 
+             //시간에 세미콜론 추가
+             let rsvn_time_colon = ''
+             if (data.rsvn_time.length === 4) {
+                rsvn_time_colon = data.rsvn_time.slice(0, 2) + ':' + data.rsvn_time.slice(2);
+             } else {
+                rsvn_time_colon = data.rsvn_time;
+             }
+             data.rsvn_time_colon = rsvn_time_colon;
+
             //핸드폰 번호 뒷자리만
             var lastPhonNum = '';
-            lastPhonNum = data.phone.substring(7, 11);          
+            lastPhonNum = data.phone.substring(7, 11);
             data.phone_last = lastPhonNum;
 
 
@@ -91,7 +116,8 @@ var fnGetVisitList = function (param) {
             } else {
                 reservationType = 'Online';
             }
-            data.rsvn_date = reservationType;
+            data.reservationType = reservationType;
+
 
 
             // 프로그램 이름 변경 (코드 -> 프로그램명)
@@ -110,11 +136,144 @@ var fnGetVisitList = function (param) {
                     programName = data.ProgramCode;
                     break;
             }
-            data.ProgramCode = programName;
+            data.ProgramName = programName;
 
-            template.prepend($('#visit-item'), $('#visit-list'), data, function () {
-                // todo define
-            });
+            // 상담 진행 구분
+            var progress_check = '';
+            switch (data.progress_flg) {
+
+                // **이전 버전
+                case '0':
+                    progress_check = '대기';
+                    break;
+                case '1':
+                    progress_check = '대기';
+                    break;
+                case '2':
+                    progress_check = '문진 완료';
+                    break;
+                case '3':
+                    progress_check = '기기1 측정 완료';
+                    break;
+                case '4':
+                    progress_check = '기기2 측정 완료';
+                    break;
+                case '5':
+                    progress_check = '기기3 측정 완료';
+                    break;
+                case '6':
+                    progress_check = '기기 측정 완료';
+                    break;
+                case '7':
+                    progress_check = '상담';
+                    break;
+                case '8':
+                    progress_check = '상담 완료';
+                    break;
+                case '9':
+                    progress_check = '연구원 상담';
+                    break;
+
+                // **리뉴얼 이후 버전      
+                case '10':
+                    progress_check = '상담 완료';
+                    break;                     
+                case '101':
+                    progress_check = '피부 문진';
+                    break;
+                case '102':
+                    progress_check = '두피 문진';
+                    break;
+                case '103':
+                    progress_check = '피부 측정';
+                    break;
+                case '104':
+                    progress_check = '두피 측정';
+                    break;
+                // case '105':
+                //     progress_check = '피부 측정 완료';
+                //     break;
+                // case '106':
+                //     progress_check = '두피 측정 완료';
+                //     break;
+                case '107':
+                    progress_check = '피부 상담';
+                    break;
+                case '108':
+                    progress_check = '피부 상담 완료';
+                    break;
+                case '109':
+                    progress_check = '두피 상담';
+                    break;
+                case '110':
+                    progress_check = '두피 상담 완료';
+                    break;
+                case '111':
+                    progress_check = '마이 스킨 솔루션';
+                    break;
+                // case '10':
+                //     progress_check = '완료';
+                //     break;    
+
+                default:
+                    progress_check = '확인 필요';
+                    break;
+            }
+            data.progress_check = progress_check;
+            console.log("data.progress_check : ", data.progress_check);
+
+
+            var visit_count = 0; //프로그램별 방문회차 카운트
+            $.ajax({
+                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30',
+               
+
+                type: 'GET',
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('리스트 별 고객검색 결과 성공 : ', response);
+
+
+                    //프로그램별 방문회차 카운트 입력1 
+                    // visit_count = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date >= item.rsvn_date).length;
+                    // console.log('프로그램 방문회차 visit_count : ', visit_count);
+
+                    // data.visitCount = visit_count;
+                    // console.log('프로그램 방문회차 data.visitCount : ', data.visitCount);
+
+                    visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');//해당고객 방문 날짜   
+
+                    // raw_rsvn_date = data.rsvn_date; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 1
+                    // raw_rsvn_time = data.rsvn_time; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 2
+
+
+                    //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+                    var select_visit1 = 0 //다른날짜
+                    select_visit1 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date).length;
+                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date))
+
+                    var select_visit2 = 0 //같은날짜
+                    select_visit2 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time).length;
+                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time))
+
+                    data.visitCount = select_visit1 + select_visit2;
+
+
+
+
+                    //비동기적으로 html을 로드
+                    template.prepend($('#visit-item'), $('#visit-list'), data, function () {
+                        // todo define
+                    });
+
+
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('리스트 별 고객검색 결과  에러 : ', error);
+                }
+            })
+
         })
         // fnSetUI('list');
         fnAddPagenation();
@@ -213,22 +372,78 @@ $('select[name="custom_day').on('change', function () {
 
 
 
-function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst_path) {
+function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst_path, ucstmid, rsvn_date, rsvn_time, ProgramCode, visitkey, skey, ProgramCode, progress_flg) {
     // 여기에서 msg-layer를 열거나 필요한 작업을 수행하세요.
 
     console.log("===========================");
+
+
+    localStorage.removeItem('custom_sex');
+    localStorage.removeItem('custom_name');
+    localStorage.removeItem('custom_userkey');
+    localStorage.removeItem('custom_surveyNo');
+    localStorage.removeItem('visitDate');
+
+    localStorage.removeItem('AgeReal');
+    localStorage.removeItem('custom_ucstmid');
+    localStorage.removeItem('custom_sex');
+    localStorage.removeItem('custom_phone');
+ 
+    localStorage.removeItem('visit_rsvn_date');
+    localStorage.removeItem('raw_rsvn_date');
+    localStorage.removeItem('raw_rsvn_time');
+    localStorage.removeItem('ProgramCode');
+    localStorage.removeItem('visitkey');
+    localStorage.removeItem('skey');
+    localStorage.removeItem('ProgramCode');
+    localStorage.removeItem('progress_flg');
+
+    localStorage.removeItem('custom_markvu');
+    localStorage.removeItem('custom_antera');
+    localStorage.removeItem('custom_cutometer');
+    localStorage.removeItem('custom_vapometer');
+    localStorage.removeItem('custom_asm');
+
+    localStorage.removeItem('custom_skinResult');
+    localStorage.removeItem('custom_sculpResult');
+
+    
+    localStorage.removeItem('analysis2_result-backgroundCanvas');
+    localStorage.removeItem('analysis2_result-opinionCanvas');
+    localStorage.removeItem('analysis2_result-comment01');
+    localStorage.removeItem('analysis2_result-comment02');
+    localStorage.removeItem('analysis2_result-comment03');
+
+    localStorage.removeItem('analysis_result-backgroundCanvas');
+    localStorage.removeItem('analysis_result-opinionCanvas');
+    localStorage.removeItem('analysis_result-comment01');
+    localStorage.removeItem('analysis_result-comment02');
+    localStorage.removeItem('analysis_result-comment03');
+    
+    
+
+
+
+
+
+
     var registerButton = document.querySelector('.button[data-target=".msg-layer"]');
 
     registerButton.click();
-    console.log('custom_name : ', name);
-    console.log('phone :', phone);
-    console.log('birthdate : ', birthdate);
-    console.log('sex : ', sex);
-    console.log('surveyNo : ', surveyNo);
-    console.log('userkey : ', userkey);
+    // console.log('custom_name : ', name);
+    // console.log('phone :', phone);
+    // console.log('birthdate : ', birthdate);
+    // console.log('sex : ', sex);
+    // console.log('surveyNo : ', surveyNo);
+    // console.log('userkey : ', userkey);
+    // console.log('ucstmid : ', ucstmid);
 
     var find_info = list.find(item => item.m_surveyno === surveyNo && item.m_userkey === userkey);
     console.log("find_info : ", find_info);
+
+    var AgeReal = calculateAge(birthdate);
+    console.log("진짜 나이는 : ", AgeReal);
+
 
     const visitDate = currentTime.substring(0, 4) + ". " + currentTime.substring(5, 7) + ". " + currentTime.substring(8, 10);
 
@@ -279,6 +494,9 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst
     checkRadioButton(vst_path);
 
 
+
+
+
     $('#custom_info_saveButton').click(function () {
         console.log("고객정보 저장버튼 클릭!");
 
@@ -290,17 +508,19 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst
         localStorage.setItem('custom_surveyNo', surveyNo);
         localStorage.setItem('visitDate', visitDate);
 
-        localStorage.removeItem('analysis2_result-backgroundCanvas');
-        localStorage.removeItem('analysis2_result-opinionCanvas');
-        localStorage.removeItem('analysis2_result-comment01');
-        localStorage.removeItem('analysis2_result-comment02');
-        localStorage.removeItem('analysis2_result-comment03');
+        localStorage.setItem('AgeReal', AgeReal);
+        localStorage.setItem('custom_ucstmid', ucstmid);
+        localStorage.setItem('custom_sex', sex);
+        localStorage.setItem('custom_phone', phone);
+        localStorage.setItem('visit_rsvn_date', visit_rsvn_date);
 
-        localStorage.removeItem('analysis_result-backgroundCanvas');
-        localStorage.removeItem('analysis_result-opinionCanvas');
-        localStorage.removeItem('analysis_result-comment01');
-        localStorage.removeItem('analysis_result-comment02');
-        localStorage.removeItem('analysis_result-comment03');
+        localStorage.setItem('raw_rsvn_date', rsvn_date);
+        localStorage.setItem('raw_rsvn_time', rsvn_time);
+        localStorage.setItem('ProgramCode', ProgramCode);
+        localStorage.setItem('visitkey', visitkey);
+        localStorage.setItem('skey', skey);
+        localStorage.setItem('ProgramCode', ProgramCode);
+        localStorage.setItem('progress_flg', progress_flg);
 
 
 
@@ -343,21 +563,25 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst
         } else if ($("#phone_first").val() === "" || $("#phone_middle").val() === "" || $("#phone_last").val() === "") {
             $("#custom_detail").html("'핸드폰 번호'를");
             showErrorModal();
-        } else if ($("#email").val() === "") {
-            $("#custom_detail").html("'이메일'을");
-            showErrorModal();
-        } else if ($('input[name="learned"]:checked').length === 0) {
+        }
+        // else if ($("#email").val() === "") {
+        //     $("#custom_detail").html("'이메일'을");
+        //     showErrorModal();
+        // } 
+        else if ($('input[name="learned"]:checked').length === 0) {
             $("#custom_detail").html("'방문경로'를");
             showErrorModal();
         }
         else {
             console.log("선택 완료");
-            $("#custom_detail_main").html('문진(피부)로 이동합니다.');
+            $("#custom_detail_main").html(`'${name}' 고객님 환영합니다.`);
             showErrorModal();
 
-            setTimeout(function () {
-                window.location.href = './solution_questionnaire.html';;
-            }, 1000); // 2초 
+            $('.user-modify-layer').removeClass('open');
+
+            // setTimeout(function () {
+            //     window.location.href = './solution_reservation.html';;
+            // }, 1000); // 2초 
         }
 
 
@@ -419,44 +643,44 @@ $('#custom_searchButton').click(function () {
     console.log("찾는 고객 가운데 번호 : ", $("#phone_middle-search").val());
     console.log("찾는 고객 뒷 번호 : ", $("#phone_last-search").val());
 
-    var search_phone =  $("#phone_first-search").val() + $("#phone_middle-search").val() + $("#phone_last-search").val();
-    console.log ("search_phone : ", search_phone);
+    var search_phone = $("#phone_first-search").val() + $("#phone_middle-search").val() + $("#phone_last-search").val();
+    console.log("search_phone : ", search_phone);
 
     $('#visit-list2 > tr').remove()
 
 
 
-    if ($("#phone_last-search").val() === "") { 
+    if ($("#phone_last-search").val() === "") {
         //이름만 검색
         $.ajax({
-            url: API_URL + '?name=' +  $("#custom_name-search").val(),
-            type: 'GET',       
+            url: API_URL + '?name=' + $("#custom_name-search").val(),
+            type: 'GET',
 
             success: function (response) {
                 console.log("API_URL(고객찾기 - 이름) 응답값 : ", response);
-                if(response.length === 0){
+                if (response.length === 0) {
                     //고객이 없을경우
-                    console.log("고객없음 name");              
-                    $('.search-result-layer').addClass('open');      
+                    console.log("고객없음 name");
+                    $('.search-result-layer').addClass('open');
 
 
-                } else{
+                } else {
                     //고객 찾아졌을경우
                     console.log("고객있음 name : ", response);
                     $('.search-layer').removeClass('open');
-                    $('.search-result-layer').removeClass('open');      
-    
-                    $('.search-custom-layer').addClass('open');                  
+                    $('.search-result-layer').removeClass('open');
+
+                    $('.search-custom-layer').addClass('open');
 
 
                     $.each(response.reverse(), function (idx, data) {
-                        page_param.totalCount = data.total_count            
+                        page_param.totalCount = data.total_count
                         // data.index = idx + 1;
                         data.index = response.length - idx; //배열 revers, idx도 역순으로
 
                         const birthdate_after = data.birthdate.substring(0, 4) + "-" + data.birthdate.substring(4, 6) + "-" + data.birthdate.substring(6, 8);
                         data.birthdate = birthdate_after;
-            
+
                         template.prepend($('#visit-item2'), $('#visit-list2'), data, function () {
                             // todo define
                         });
@@ -464,52 +688,52 @@ $('#custom_searchButton').click(function () {
                     // fnSetUI('list');
                     fnAddPagenation2();
                 }
-         
+
             }, error: function (xhr, status, error) {
                 console.error('API_URL(고객찾기 - 이름) 오류 : ', error);
-            
+
             }
         })
     } else {
         //이름 + 전화번호 검색
         $.ajax({
-            url: API_URL + '?name=' +  $("#custom_name-search").val() +'&phone=' +  search_phone,
-            type: 'GET',       
+            url: API_URL + '?name=' + $("#custom_name-search").val() + '&phone=' + search_phone,
+            type: 'GET',
 
             success: function (response) {
                 console.log("API_URL(고객찾기 - 이름+번호) 응답값 : ", response);
-                if(response.length === 0){
+                if (response.length === 0) {
                     //고객이 없을경우
                     console.log("고객없음 name+phone");
-                    $('.search-result-layer').addClass('open');    
+                    $('.search-result-layer').addClass('open');
 
 
-                } else{
+                } else {
                     //고객 찾아졌을경우
                     console.log("고객있음 name+phone");
                     $('.search-layer').removeClass('open');
-                    $('.search-result-layer').removeClass('open');        
-    
+                    $('.search-result-layer').removeClass('open');
+
                     $('.search-custom-layer').addClass('open');
 
                     $.each(response.reverse(), function (idx, data) {
-                        page_param.totalCount = data.total_count            
+                        page_param.totalCount = data.total_count
                         // data.index = idx + 1;
                         data.index = response.length - idx; //배열 revers, idx도 역순으로
 
                         const birthdate_after = data.birthdate.substring(0, 4) + "-" + data.birthdate.substring(4, 6) + "-" + data.birthdate.substring(6, 8);
                         data.birthdate = birthdate_after;
-            
-            
+
+
                         template.prepend($('#visit-item2'), $('#visit-list2'), data, function () {
                             // todo define
                         });
                     })
                     // fnSetUI('list');
                     fnAddPagenation2();
-                }         
+                }
             }, error: function (xhr, status, error) {
-                console.error('API_URL(고객찾기- 이름+번호) 오류 : ', error);            
+                console.error('API_URL(고객찾기- 이름+번호) 오류 : ', error);
             }
         })
     }
@@ -602,10 +826,12 @@ $('#custom_info_saveButton-add').click(function () {
     } else if ($("#phone_first-add").val() === "" || $("#phone_middle-add").val() === "" || $("#phone_last-add").val() === "") {
         $("#custom_detail").html("'전화번호'를");
         showErrorModal();
-    } else if ($("#email-add").val() === "") {
-        $("#custom_detail").html("'이메일'을");
-        showErrorModal();
-    } else if ($('input[name="learned-add"]:checked').length === 0) {
+    }
+    // else if ($("#email-add").val() === "") {
+    //     $("#custom_detail").html("'이메일'을");
+    //     showErrorModal();
+    // } 
+    else if ($('input[name="learned-add"]:checked').length === 0) {
         $("#custom_detail").html("'방문경로'를");
         showErrorModal();
     }
@@ -627,7 +853,7 @@ $('#custom_info_saveButton-add').click(function () {
             "ucstmid": null,
             "userkey": null,
             "surveyNo": null,
-            "progress_flg": "1", // 진행상태
+            "progress_flg": "0", // 진행상태
             "vst_path": String(selectValue_add),
             "vst_txt": "",
             "email": String($("#email-add").val()),
@@ -806,5 +1032,27 @@ $('#checkDuplicate-add').click(function (event) {
 
 
 })
+
+
+
+
+/** 
+ * 24.05. 13
+ * @description 실제 나이 계산 함수
+ **/
+function calculateAge(birthdate) {
+    if (birthdate) {
+        let now = new Date();
+        let iNow = parseInt(now.toISOString().slice(0, 10).replace(/-/g, ''));
+        let iBirthDay = parseInt(birthdate);
+        let sAge = (iNow - iBirthDay).toString();
+        if (sAge.length > 4)
+            return parseInt(sAge.substring(0, sAge.length - 4));
+        else
+            return 0;
+    } else {
+        return 0;
+    }
+}
 
 

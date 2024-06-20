@@ -123,24 +123,13 @@ $(document).ready(function () {
   $('#comment03').val(localStorage.getItem('analysis_result-comment03'));
 
 
+  let get_makvu = fnGetMarkvu(surveyNo); //1.마크뷰
+  let get_vapometer = fnGetVapometer(surveyNo); //2.바포미터 요청
+  let get_cutometer= fnGetCutometer(surveyNo); //3.큐토미터
+  let get_skinsurvey = fnGetSkinSurvey(surveyNo); //4.문진(피부)
+  setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
 
-  async function getAllDataAndSetSkinScore(surveyNo) {
-    try {
-      const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
-        fnGetMarkvu(surveyNo),
-        fnGetVapometer(surveyNo),
-        fnGetCutometer(surveyNo),
-        fnGetSkinSurvey(surveyNo)
-      ]);
-  
-      setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-  
-  // 함수 호출
-  getAllDataAndSetSkinScore(surveyNo);
+
 
   /*
   *
@@ -516,242 +505,216 @@ $(document).ready(function () {
 
  
 
-//#1st. 마크뷰 요청
+
 function fnGetMarkvu(surveyNo) {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: ResultMarkvu_API_URL + '?surveyNo=' + surveyNo, //실 운영
-      // url: ResultMarkvu_API_URL + '?surveyNo=' + 2277, //마크뷰 테스트 데이터
-      type: 'GET',
-      success: function (data) {
-        //console.log('ResultMarkvu_API_URL 응답 : ', data);
-        markvu = data[0];
-        console.log("ResultMarkvu_API_URL 응답값 : ", markvu);
+  $.ajax({
+    url: ResultMarkvu_API_URL + '?surveyNo=' + surveyNo, //실 운영 
+
+    // url: ResultMarkvu_API_URL + '?surveyNo=' + 2277, //마크뷰 테스트 데이터
+    type: 'GET',
+    success: function (data) {
+      //console.log('ResultMarkvu_API_URL 응답 : ', data); 
+      markvu = data[0];
+      console.log("ResultMarkvu_API_URL 응답값 : ", markvu);
 
 
-        if (markvu === undefined) {
-          console.log('마크뷰 데이터가 없습니다.');
-          resolve(false);
-        } else {
-          // T존
-          tzone_subun_value = markvu.FSubun_A;
-          tzone_ubun_value = (markvu.FSebum_A + markvu.FSebum_B) / 2;
-          t_zone_subun = tzone_subun_value;
-          t_zone_ubun = tzone_ubun_value;
 
-          $('#t_zone_subun-val').text(t_zone_subun);
-          $('#t_zone_ubun-val').text(t_zone_ubun);
+      // console.log("********마크뷰 기준 측정일****** > ", markvu.create_dt);
+      // const dateObject = markvu.create_dt.substring(0,10).replace('-','. ').replace('-','. ');
 
-          // U존
-          uzone_subun_value = (markvu.FSubun_G + markvu.FSubun_H) / 2;
-          uzone_ubun_value = (markvu.FSebum_G + markvu.FSebum_H) / 2;
-          u_zone_subun = uzone_subun_value;
-          u_zone_ubun = uzone_ubun_value;
-          $('#u_zone_subun-val').text(u_zone_subun);
-          $('#u_zone_ubun-val').text(u_zone_ubun);
+      // console.log("********마크뷰 기준 생성일 변환****** > ", dateObject);
+      // $('#visitDate').text(dateObject);
 
-          // T존 수분/유분 결과 계산
-          var tzone_subun_result = null;
-          var tzone_ubun_result = null;
-          var t_zone_position_num = null;
 
-          if (tzone_subun_value < 20) {
-            tzone_subun_result = "수분부족";
-          } else if (20 <= tzone_subun_value && tzone_subun_value < 40) {
-            tzone_subun_result = "수분적당";
-          } else if (40 <= tzone_subun_value) {
-            tzone_subun_result = "수분충분";
-          }
 
-          if (tzone_ubun_value < 9) {
-            tzone_ubun_result = "유분부족";
-          } else if (9 <= tzone_ubun_value && tzone_ubun_value < 19) {
-            tzone_ubun_result = "유분적당";
-          } else if (19 <= tzone_ubun_value) {
-            tzone_ubun_result = "유분과다";
-          }
+      //T존
+      tzone_subun_value = markvu.FSubun_A;
+      tzone_ubun_value = (markvu.FSebum_A + markvu.FSebum_B) / 2;
+      t_zone_subun = tzone_subun_value;
+      t_zone_ubun = tzone_ubun_value;
 
-          if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분과다") {
-            t_zone_position_num = 1;
-            t_zone_result = "수분부족 유분과다 지성";
-          }
-          if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분적당") {
-            t_zone_position_num = 2;
-            t_zone_result = "수분 부족 건성";
-          }
-          if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분부족") {
-            t_zone_position_num = 3;
-            t_zone_result = "유수분 부족 건성";
-          }
-          if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분과다") {
-            t_zone_position_num = 4;
-            t_zone_result = "유분 과다 지성";
-          }
-          if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분적당") {
-            t_zone_position_num = 5;
-            t_zone_result = "유수분 균형 중성";
-          }
-          if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분부족") {
-            t_zone_position_num = 6;
-            t_zone_result = "유분 부족 건성";
-          }
-          if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분과다") {
-            t_zone_position_num = 7;
-            t_zone_result = "유분 과다 지성";
-          }
-          if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분적당") {
-            t_zone_position_num = 8;
-            t_zone_result = "유수분 균형 중성";
-          }
-          if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분부족") {
-            t_zone_position_num = 9;
-            t_zone_result = "유분 부족 건성";
-          }
+      $('#t_zone_subun-val').text(t_zone_subun)
+      $('#t_zone_ubun-val').text(t_zone_ubun)
 
-          console.log('********* t_zone_position_num  > ', t_zone_position_num);
-          t_zone_position_num_input = t_zone_position_num;
+      //U존
+      uzone_subun_value = (markvu.FSubun_G + markvu.FSubun_H) / 2;
+      uzone_ubun_value = (markvu.FSebum_G + markvu.FSebum_H) / 2;
+      u_zone_subun = uzone_subun_value;
+      u_zone_ubun = uzone_ubun_value;
+      $('#u_zone_subun-val').text(u_zone_subun)
+      $('#u_zone_ubun-val').text(u_zone_ubun)
 
-          if (t_zone_position_num === 1) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_001.png");
-          } if (t_zone_position_num === 2) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_002.png");
-          } if (t_zone_position_num === 3) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_003.png");
-          } if (t_zone_position_num === 4) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_004.png");
-          } if (t_zone_position_num === 5) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_005.png");
-          } if (t_zone_position_num === 6) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_006.png");
-          } if (t_zone_position_num === 7) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_007.png");
-          } if (t_zone_position_num === 8) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_008.png");
-          } if (t_zone_position_num === 9) {
-            $('#T_zone-image').attr('src', "./resource/images/skin/UT_009.png");
-          }
+      // console.log("t_zone_subun :",t_zone_subun );
+      // console.log("t_zone_ubun :",t_zone_ubun );
+      // console.log("u_zone_subun :",u_zone_subun );
+      // console.log("u_zone_ubun :",u_zone_ubun );
 
-          var uzone_subun_result = null;
-          var uzone_ubun_result = null;
-          var u_zone_position_num = null;
+      var tzone_subun_result = null;
+      var tzone_ubun_result = null;
 
-          if (uzone_subun_value < 20) {
-            uzone_subun_result = "수분부족";
-          } else if (20 <= uzone_subun_value && uzone_subun_value < 40) {
-            uzone_subun_result = "수분적당";
-          } else if (40 <= uzone_subun_value) {
-            uzone_subun_result = "수분충분";
-          }
+      var t_zone_position_num = null;
 
-          if (uzone_ubun_value <= 5.5) {
-            uzone_ubun_result = "유분부족";
-          } else if (5.5 < uzone_ubun_value && uzone_ubun_value < 12) {
-            uzone_ubun_result = "유분적당";
-          } else if (12 <= uzone_ubun_value) {
-            uzone_ubun_result = "유분과다";
-          }
-
-          if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분과다") {
-            u_zone_position_num = 1;
-            u_zone_result = "수분부족 유분과다 지성";
-          }
-          if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분적당") {
-            u_zone_position_num = 2;
-            u_zone_result = "수분 부족 건성";
-          }
-          if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분부족") {
-            u_zone_position_num = 3;
-            u_zone_result = "유수분 부족 건성";
-          }
-          if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분과다") {
-            u_zone_position_num = 4;
-            u_zone_result = "유분 과다 지성";
-          }
-          if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분적당") {
-            u_zone_position_num = 5;
-            u_zone_result = "유수분 균형 중성";
-          }
-          if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분부족") {
-            u_zone_position_num = 6;
-            u_zone_result = "유분 부족 건성";
-          }
-          if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분과다") {
-            u_zone_position_num = 7;
-            u_zone_result = "유분 과다 지성";
-          }
-          if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분적당") {
-            u_zone_position_num = 8;
-            u_zone_result = "유수분 균형 중성";
-          }
-          if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분부족") {
-            u_zone_position_num = 9;
-            u_zone_result = "유분 부족 건성";
-          }
-
-          console.log('********* u_zone_position_num  > ', u_zone_position_num);
-          t_zone_position_num_input = u_zone_position_num;
-
-          if (u_zone_position_num === 1) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_001.png");
-          } if (u_zone_position_num === 2) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_002.png");
-          } if (u_zone_position_num === 3) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_003.png");
-          } if (u_zone_position_num === 4) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_004.png");
-          } if (u_zone_position_num === 5) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_005.png");
-          } if (u_zone_position_num === 6) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_006.png");
-          } if (u_zone_position_num === 7) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_007.png");
-          } if (u_zone_position_num === 8) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_008.png");
-          } if (u_zone_position_num === 9) {
-            $('#U_zone-image').attr('src', "./resource/images/skin/UT_009.png");
-          }
-
-          $('#t_zone_result').text(t_zone_result);
-          $('#u_zone_result').text(u_zone_result);
-
-          updateTZoneData(t_zone_subun, t_zone_ubun);
-          updateUZoneData(u_zone_subun, u_zone_ubun);
-
-          resolve(markvu);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('ResultMarkvu_API_URL 응답 오류: ', error);
-        reject(error);
+      //T존 수분위치
+      if (tzone_subun_value < 20) {
+        tzone_subun_result = "수분부족";
       }
-    });
-  });
+      else if (20 <= tzone_subun_value && tzone_subun_value < 40) {
+        tzone_subun_result = "수분적당";
+      }
+      else if (40 <= tzone_subun_value) {
+        tzone_subun_result = "수분충분";
+      }
+
+      //T존 유분위치
+      if (tzone_ubun_value < 9) {
+        tzone_ubun_result = "유분부족";
+      }
+      else if (9 <= tzone_ubun_value && tzone_ubun_value < 19) {
+        tzone_ubun_result = "유분적당";
+      }
+      else if (19 <= tzone_ubun_value) {
+        tzone_ubun_result = "유분과다";
+      }
+
+      if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분과다") { t_zone_position_num = 1; t_zone_result = "수분부족 유분과다 지성"; }
+      if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분적당") { t_zone_position_num = 2; t_zone_result = "수분 부족 건성"; }
+      if (tzone_subun_result == "수분부족" && tzone_ubun_result == "유분부족") { t_zone_position_num = 3; t_zone_result = "유수분 부족 건성"; }
+      if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분과다") { t_zone_position_num = 4; t_zone_result = "유분 과다 지성"; }
+      if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분적당") { t_zone_position_num = 5; t_zone_result = "유수분 균형 중성"; }
+      if (tzone_subun_result == "수분적당" && tzone_ubun_result == "유분부족") { t_zone_position_num = 6; t_zone_result = "유분 부족 건성"; }
+      if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분과다") { t_zone_position_num = 7; t_zone_result = "유분 과다 지성"; }
+      if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분적당") { t_zone_position_num = 8; t_zone_result = "유수분 균형 중성"; }
+      if (tzone_subun_result == "수분충분" && tzone_ubun_result == "유분부족") { t_zone_position_num = 9; t_zone_result = "유분 부족 건성"; }
+
+      console.log('********* t_zone_position_num  > ', t_zone_position_num);
+      t_zone_position_num_input = t_zone_position_num;
+
+      //T존 9분위 적용
+      if (t_zone_position_num === 1) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_001.png");
+      } if (t_zone_position_num === 2) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_002.png");
+      } if (t_zone_position_num === 3) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_003.png");
+      } if (t_zone_position_num === 4) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_004.png");
+      } if (t_zone_position_num === 5) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_005.png");
+      } if (t_zone_position_num === 6) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_006.png");
+      } if (t_zone_position_num === 7) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_007.png");
+      } if (t_zone_position_num === 8) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_008.png");
+      } if (t_zone_position_num === 9) {
+        $('#T_zone-image').attr('src', "./resource/images/skin/UT_009.png");
+      }
+
+
+      var uzone_subun_result = null;
+      var uzone_ubun_result = null;
+
+      var u_zone_position_num = null;
+
+      //U존 수분위치
+      if (uzone_subun_value < 20) {
+        uzone_subun_result = "수분부족";
+      }
+      else if (20 <= uzone_subun_value && uzone_subun_value < 40) {
+        uzone_subun_result = "수분적당";
+      }
+      else if (40 <= uzone_subun_value) {
+        uzone_subun_result = "수분충분";
+      }
+      //U존 유분위치
+      if (uzone_ubun_value <= 5.5) {
+        uzone_ubun_result = "유분부족";
+      }
+      else if (5.5 < uzone_ubun_value && uzone_ubun_value < 12) {
+        uzone_ubun_result = "유분적당";
+      }
+      else if (12 <= uzone_ubun_value) {
+        uzone_ubun_result = "유분과다";
+      }
+
+      if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분과다") { u_zone_position_num = 1; u_zone_result = "수분부족 유분과다 지성"; }
+      if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분적당") { u_zone_position_num = 2; u_zone_result = "수분 부족 건성"; }
+      if (uzone_subun_result == "수분부족" && uzone_ubun_result == "유분부족") { u_zone_position_num = 3; u_zone_result = "유수분 부족 건성"; }
+      if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분과다") { u_zone_position_num = 4; u_zone_result = "유분 과다 지성"; }
+      if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분적당") { u_zone_position_num = 5; u_zone_result = "유수분 균형 중성"; }
+      if (uzone_subun_result == "수분적당" && uzone_ubun_result == "유분부족") { u_zone_position_num = 6; u_zone_result = "유분 부족 건성"; }
+      if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분과다") { u_zone_position_num = 7; u_zone_result = "유분 과다 지성"; }
+      if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분적당") { u_zone_position_num = 8; u_zone_result = "유수분 균형 중성"; }
+      if (uzone_subun_result == "수분충분" && uzone_ubun_result == "유분부족") { u_zone_position_num = 9; u_zone_result = "유분 부족 건성"; }
+
+      console.log('********* u_zone_position_num  > ', u_zone_position_num);
+      t_zone_position_num_input = u_zone_position_num;
+
+      //T존 9분위 적용
+      if (u_zone_position_num === 1) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_001.png");
+      } if (u_zone_position_num === 2) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_002.png");
+      } if (u_zone_position_num === 3) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_003.png");
+      } if (u_zone_position_num === 4) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_004.png");
+      } if (u_zone_position_num === 5) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_005.png");
+      } if (u_zone_position_num === 6) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_006.png");
+      } if (u_zone_position_num === 7) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_007.png");
+      } if (u_zone_position_num === 8) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_008.png");
+      } if (u_zone_position_num === 9) {
+        $('#U_zone-image').attr('src', "./resource/images/skin/UT_009.png");
+      }
+
+
+      $('#t_zone_result').text(t_zone_result);
+      $('#u_zone_result').text(u_zone_result);
+
+      updateTZoneData(t_zone_subun, t_zone_ubun);
+      updateUZoneData(u_zone_subun, u_zone_ubun);
+
+      return markvu
+
+
+    },
+    error: function (xhr, status, error) {
+
+      console.error('ResultMarkvu_API_URL 응답 오류: ', error);
+    }
+  })
 }
 
 //#2nd. 바포미터 요청(경피수분손실도 값)
 function fnGetVapometer(surveyNo) {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      // url: ResultVapometer_API_URL + surveyNo,
-      url: ResultVapometer_API_URL + '?surveyNo=' + surveyNo,
-      type: 'GET',
-      success: function (data) {
-        const vapometer = data[0];
-        console.log("ResultVapometer_API_URL 응답값 : ", vapometer);
-        
-        if (vapometer === undefined) {       
-          console.log('바포미터 데이터가 없습니다.');
-          resolve(false);
-        } else {
-          resolve(vapometer);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('ResultVapometer_API_URL 오류 : ', error);
-        reject(error);
+  $.ajax({
+    // url: ResultVapometer_API_URL + surveyNo,
+    url: ResultVapometer_API_URL + '?surveyNo=' + surveyNo,
+    type: 'GET',
+    success: function (data) {
+      vapometer = data[0];
+      console.log("ResultVapometer_API_URL 응답값 : ", vapometer);
+      
+      if(vapometer === undefined){       
+        console.log ('바포미터 데이터가 없습니다.');
+
+        return false
       }
-    });
-  });
+
+
+      return vapometer
+
+
+
+    }, error: function (xhr, status, error) {
+
+      console.error('ResultVapometer_API_URL 오류 : ', error);
+    }
+  })
 }
 
 
@@ -760,58 +723,47 @@ function fnGetVapometer(surveyNo) {
 //#3rd. 큐토미터 요청(탄력 값)       
 
 function fnGetCutometer(surveyNo) {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      // url: ResultVapometer_API_URL + surveyNo,
-      url: ResultCutometer_API_URL + '?surveyNo=' + surveyNo,
-      type: 'GET',
-      success: function (data) {
-        const cutometer = data[0];
-        console.log("ResultCutometer_API_URL 응답값 : ", cutometer);
+  $.ajax({
+    // url: ResultVapometer_API_URL + surveyNo,
+    url: ResultCutometer_API_URL + '?surveyNo=' + surveyNo,
+    type: 'GET',
+    success: function (data) {
+      cutometer = data[0];
+      console.log("ResultCutometer_API_URL 응답값 : ", cutometer);
 
-        if (cutometer === undefined) {
-          console.log('큐토미터 데이터가 없습니다.');
-          resolve(false);
-        } else {
-          resolve(cutometer);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('ResultCutometer_API_URL 오류 : ', error);
-        reject(error);
-      }
-    });
-  });
+
+      return cutometer
+
+    }, error: function (xhr, status, error) {
+
+      console.error('ResultCutometer_API_URL 오류 : ', error);
+    }
+  })
 }
 
 
 //#4th. 문진(피부) 요청
 function fnGetSkinSurvey(surveyNo) {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      // url: SkinSurvey_API_URL + surveyNo,
-      url: SkinSurvey_API_URL + '?surveyNo=' + surveyNo,
-      type: 'GET',
-      success: function (data) {
-        const skinsurvey = data[0];
-        console.log("SkinSurvey_API_URL 응답값 : ", skinsurvey);
+  $.ajax({
+    // url: SkinSurvey_API_URL + surveyNo,
+    url: SkinSurvey_API_URL + '?surveyNo=' + surveyNo,
+    type: 'GET',
+    success: function (data) {
+      skinsurvey = data[0];
+      console.log("SkinSurvey_API_URL 응답값 : ", skinsurvey);
 
-        // ###모든 데이터값 매핑 함수!
+      // ###모든 데이터값 매핑 함수!
+   
+      return skinsurvey
 
-        if (skinsurvey === undefined) {
-          console.log('피부 문진 데이터가 없습니다.');
-          resolve(false);
-        } else {
-          resolve(skinsurvey);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('SkinSurvey_API_URL 오류 : ', error);
-        reject(error);
-      }
-    });
-  });
+    }, error: function (xhr, status, error) {
+
+      console.error('SkinSurvey_API_URL 오류 : ', error);
+    }
+  })
 }
+
+
 
 
 

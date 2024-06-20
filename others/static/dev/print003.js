@@ -1,19 +1,25 @@
-var hairSurvey_API_URL = 'http://localhost:8000/v1/svy/hair/';
-var hair_result_URL = 'http://localhost:8000/v1/hairResult/';
+var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
+
+var hairSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/hair/';
+var hair_result_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairResult/';
 
 
 
 $(document).ready(function () {
     console.log('print003 page start ->')
+    $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
+
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
+
+    fnGetVisitCount();//방문회차 카운트 함수
 
 
 
     $('#manager_name').text(localStorage.getItem('manager_name'));
     $('#custom_name').text(localStorage.getItem('custom_name'));
 
-    $('#visitDate').text(localStorage.getItem('visitDate'));
+
 
     $('#comment01_main').text(localStorage.getItem('analysis_result-comment01'));
     $('#comment02_main').text(localStorage.getItem('analysis_result-comment02'));
@@ -24,10 +30,12 @@ $(document).ready(function () {
 
 
     // var surveyNo = localStorage.getItem('custom_surveyNo');
-    surveyNo = 1111;
-    userkey = 1111;
+    surveyNo = localStorage.getItem('custom_surveyNo');
+    userkey = localStorage.getItem('custom_userkey');
+
     console.log('surveyNo : ', surveyNo);
     console.log('userkey : ', userkey);
+
 
 
 
@@ -37,6 +45,7 @@ $(document).ready(function () {
         type: 'GET',
         success: function (response) {
             console.log('hairSurvey_API_URL 응답 : ', response);
+            
 
             // 주어진 response 객체에서 필요한 값을 추출합니다.
             const s1_1 = response.s1_1;
@@ -116,12 +125,18 @@ $(document).ready(function () {
 
 
     // #1 Scalp Type, Hair Conditions, hair Density Type 부분 API 값요청
-    var hairMain_URL = 'http://localhost:8000/v1/hairMain/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairMain_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairMain/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
     $.ajax({
         url: hairMain_URL,
         type: 'GET',
         success: function (response) {
             console.log('hairMain 응답 : ', response);
+
+            // console.log("********hairMain 기준 측정일****** > ", response[0].create_dt);
+            // const dateObject = response[0].create_dt.substring(0,10).replace('-','. ').replace('-','. ');
+
+            // console.log("********hairMain 기준 생성일 변환****** > ", dateObject);      
+            // $('#visitDate').text(dateObject);
 
             // 1st. Scalp Type 값
             var ScalpType_Nor = response[0].ScalpType_Nor;
@@ -213,12 +228,12 @@ $(document).ready(function () {
 
 
     // #2 Detailed Information On hair Thickness & Density 부분 API 값요청
-    var hairLeftHairLine_URL = 'http://localhost:8000/v1/hairLeftHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairFrontCenter_URL = 'http://localhost:8000/v1/hairFrontCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairFrontHairLine_URL = 'http://localhost:8000/v1/hairFrontHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairCenter_URL = 'http://localhost:8000/v1/hairCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairRightHairLine_URL = 'http://localhost:8000/v1/hairRightHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
-    var hairBack_URL = 'http://localhost:8000/v1/hairBack/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairLeftHairLine_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairLeftHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairFrontCenter_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairFrontCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairFrontHairLine_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairFrontHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairCenter_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairCenter/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairRightHairLine_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairRightHairLine/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
+    var hairBack_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairBack/' + '?surveyNo=' + surveyNo + '&userkey=' + userkey;
 
 
     // 1.왼쪽 헤어라인
@@ -466,352 +481,71 @@ $(document).ready(function () {
 
 
 
-
-
-
-/** 
- * 24.05. 08 
- * @description 
- **/
-$(document).ready(function () {
-    var surveyNo = $('#survey-value').val();
-
-    $('#survey-value').on('input', function () {
-        surveyNo = $(this).val();
-        //console.log('입력된 Survey Value 값 : ',surveyNo);
+/*
+*
+*24. 06. 14 방문회차 카운트 함수
+*
+*/
+var fnGetVisitCount = function () {
+    var visit_count = 0; //프로그램별 방문회차 카운트
+    $.ajax({
+      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+  
+      type: 'GET',
+      success: function (response) {
+        console.log('=====================');
+        console.log('리스트 별 고객검색 결과 성공 : ', response);
+  
+  
+        //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+        var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+        var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
+  
+        select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+  
+        select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
+          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+  
+  
+        console.log("select_visit1_1 : ", select_visit1_1);
+        console.log("select_visit1_2 : ", select_visit1_2);
+  
+        var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+        var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
+  
+        select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+  
+        select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
+          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+  
+        console.log("select_visit2_1 : ", select_visit2_1);
+        console.log("select_visit2_2 : ", select_visit2_2);
+  
+        visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+        console.log("방문 회차 : visitCount > ", visitCount);
+  
+        $('#visitCount').text(visitCount);
+  
+  
+  
+      },
+  
+      error: function (xhr, status, error) {
+        console.error('리스트 별 고객검색 결과  에러 : ', error);
+      }
     })
+  
+  
+  }
+  
 
 
-    $('#submit-button').click(function () {
 
-        // #1 Scalp Type, Hair Conditions, hair Density Type 부분 API 값요청
-        var hairMain_URL = 'http://localhost:8000/v1/hairMain/' + '?surveyNo=' + surveyNo;
-        $.ajax({
-            url: hairMain_URL,
-            type: 'GET',
-            success: function (response) {
-                console.log('hairMain 응답 : ', response);
 
-                // 1st. Scalp Type 값
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('.type-item').removeClass('active');
-                $(`.type-item:contains(${scalpType})`).addClass('active');
-
-
-                // 2nd. Hair Conditions 값
-                var Haircondition_Tips = response.Haircondition_Tips;
-                var Haircondition_Mid = response.Haircondition_Mid;
-                var Haircondition_Root = response.Haircondition_Root;
-
-                //console.log("Haircondition_Tips : ", Haircondition_Tips);
-                //console.log(typeof(Haircondition_Tips));
-
-                var Haircondition_Tips_Result = getHaiconditionResult(parseInt(Haircondition_Tips));
-                var Haircondition_Mid_Result = getHaiconditionResult(parseInt(Haircondition_Mid));
-                var Haircondition_Root_Result = getHaiconditionResult(parseInt(Haircondition_Root));
-
-                //console.log("Haircondition_Tips_Result : ", Haircondition_Tips_Result);
-
-                $('#haircondition_tips').text(Haircondition_Tips_Result);
-                $('#haircondition_mid').text(Haircondition_Mid_Result);
-                $('#haircondition_root').text(Haircondition_Root_Result);
-
-
-                // 3rd. hair Density Type 값
-                var HairlossType_Basic = response.HairlossType_Basic; //기본
-                var HairlossType_Center = response.HairlossType_Center; //정수리
-                var HairlossType_FrontCenter = response.HairlossType_FrontCenter; //앞중앙
-                if (HairlossType_Basic !== null) {
-                    $('#HairlossType_Basic').text(HairlossType_Basic);
-                } else {
-                    //$('#HairlossType_Basic').hide();
-                    $('#HairlossType_Basic').parent().remove();
-                }
-
-                if (HairlossType_Center !== null) {
-                    $('#HairlossType_Center').text(HairlossType_Center);
-                } else {
-                    //$('#HairlossType_Center').hide();
-                    $('#HairlossType_Center').parent().remove();
-                }
-
-                if (HairlossType_FrontCenter !== null) {
-                    $('#HairlossType_FrontCenter').text(HairlossType_FrontCenter);
-                } else {
-                    //$('#HairlossType_FrontCenter').hide();
-                    $('#HairlossType_FrontCenter').parent().remove();
-                }
-
-
-
-
-
-
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-
-
-        // #2 Detailed Information On hair Thickness & Density 부분 API 값요청
-        var hairLeftHairLine_URL = 'http://localhost:8000/v1/hairLeftHairLine/' + '?surveyNo=' + surveyNo;
-        var hairFrontCenter_URL = 'http://localhost:8000/v1/hairFrontCenter/' + '?surveyNo=' + surveyNo;
-        var hairFrontHairLine_URL = 'http://localhost:8000/v1/hairFrontHairLine/' + '?surveyNo=' + surveyNo;
-        var hairCenter_URL = 'http://localhost:8000/v1/hairCenter/' + '?surveyNo=' + surveyNo;
-        var hairRightHairLine_URL = 'http://localhost:8000/v1/hairRightHairLine/' + '?surveyNo=' + surveyNo;
-        var hairBack_URL = 'http://localhost:8000/v1/hairBack/' + '?surveyNo=' + surveyNo;
-
-
-        // 1.왼쪽 헤어라인
-        $.ajax({
-            url: hairLeftHairLine_URL,
-            type: 'GET',
-            success: function (response) {
-                //console.log('hairLeftHairLine 응답 : ', response);
-
-                var density = response.Density;
-                var thickness = response.Thickness;
-                updateDensityData(0, density);
-                updateThicknessData(0, thickness);
-                updateScatterData(0, thickness, density);
-
-
-
-                $('#hairLeftHairLine .hair-skin-info dd:eq(0)').text(density + '/120 hair/㎠');
-                $('#hairLeftHairLine .hair-skin-info dd:eq(1)').text(thickness + '/0.075 ㎟');
-
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('#hairLeftHairLine .hair-skin-info dd:eq(2)').text(scalpType);
-
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-        // 2.앞 헤어라인
-        $.ajax({
-            url: hairFrontHairLine_URL,
-            type: 'GET',
-            success: function (response) {
-                //console.log('hairFrontHairLine 응답 : ', response);
-
-                var density = response.Density;
-                var thickness = response.Thickness;
-                updateDensityData(1, density);
-                updateThicknessData(1, thickness);
-                updateScatterData(1, thickness, density);
-
-                $('#hairFrontHairLine .hair-skin-info dd:eq(0)').text(density + '/120 hair/㎠');
-                $('#hairFrontHairLine .hair-skin-info dd:eq(1)').text(thickness + '/0.075 ㎟');
-
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('#hairFrontHairLine .hair-skin-info dd:eq(2)').text(scalpType);
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-        // 3. 오른쪽 헤어라인
-        $.ajax({
-            url: hairRightHairLine_URL,
-            type: 'GET',
-            success: function (response) {
-                //console.log('hairRightHairLine 응답 : ', response);
-
-                var density = response.Density;
-                var thickness = response.Thickness;
-                updateDensityData(2, density);
-                updateThicknessData(2, thickness);
-                updateScatterData(2, thickness, density);
-
-                $('#hairRightHairLine .hair-skin-info dd:eq(0)').text(density + '/120 hair/㎠');
-                $('#hairRightHairLine .hair-skin-info dd:eq(1)').text(thickness + '/0.075 ㎟');
-
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('#hairRightHairLine .hair-skin-info dd:eq(2)').text(scalpType);
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-
-
-        // 4.앞 중앙
-        $.ajax({
-            url: hairFrontCenter_URL,
-            type: 'GET',
-            success: function (response) {
-                //console.log('hairFrontCenter 응답 : ', response);
-
-                var density = response.Density;
-                var thickness = response.Thickness;
-                updateDensityData(3, density);
-                updateThicknessData(3, thickness);
-                updateScatterData(3, thickness, density);
-
-                $('#hairFrontCenter .hair-skin-info dd:eq(0)').text(density + '/120 hair/㎠');
-                $('#hairFrontCenter .hair-skin-info dd:eq(1)').text(thickness + '/0.075 ㎟');
-
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('#hairFrontCenter .hair-skin-info dd:eq(2)').text(scalpType);
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-
-        // 5.정수리
-        $.ajax({
-            url: hairCenter_URL,
-            type: 'GET',
-            success: function (response) {
-                //console.log('hairCenter 응답 : ', response);
-
-                var density = response.Density;
-                var thickness = response.Thickness;
-                updateDensityData(4, density);
-                updateThicknessData(4, thickness);
-                updateScatterData(4, thickness, density);
-
-                $('#hairCenter .hair-skin-info dd:eq(0)').text(density + '/120 hair/㎠');
-                $('#hairCenter .hair-skin-info dd:eq(1)').text(thickness + '/0.075 ㎟');
-
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('#hairCenter .hair-skin-info dd:eq(2)').text(scalpType);
-
-
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-
-        // 6. 후두부
-        $.ajax({
-            url: hairBack_URL,
-            type: 'GET',
-            success: function (response) {
-                //console.log('hairBack 응답 : ', response);
-
-                var density = response.Density;
-                var thickness = response.Thickness;
-                updateDensityData(5, density);
-                updateThicknessData(5, thickness);
-                updateScatterData(5, thickness, density);
-
-                $('#hairBack .hair-skin-info dd:eq(0)').text(density + '/120 hair/㎠');
-                $('#hairBack .hair-skin-info dd:eq(1)').text(thickness + '/0.075 ㎟');
-
-                var ScalpType_Nor = response.ScalpType_Nor;
-                var ScalpType_Oily = response.ScalpType_Oily;
-                var ScalpType_Ato = response.ScalpType_Ato;
-                var ScalpType_Trb = response.ScalpType_Trb;
-                var ScalpType_Dry = response.ScalpType_Dry;
-                var ScalpType_Sen = response.ScalpType_Sen;
-                var ScalpType_Seb = response.ScalpType_Seb;
-                var ScalpType_Ddan = response.ScalpType_Ddan;
-                var ScalpType_Odan = response.ScalpType_Odan;
-                var ScalpType_Unknown = response.ScalpType_Unknown;
-
-                var scalpType = getScalpType(ScalpType_Nor, ScalpType_Oily, ScalpType_Ato, ScalpType_Trb, ScalpType_Dry, ScalpType_Sen, ScalpType_Seb, ScalpType_Ddan, ScalpType_Odan, ScalpType_Unknown);
-                $('#hairBack .hair-skin-info dd:eq(2)').text(scalpType);
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('에러 : ', error);
-            }
-        })
-
-    })
-
-
-});
 
 
 

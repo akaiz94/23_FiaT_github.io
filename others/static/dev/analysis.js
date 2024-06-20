@@ -1,8 +1,13 @@
-var ResultMarkvu_API_URL = 'http://localhost:8000/v1/skin/markvu/result/';
 
-var cutometer_API_URL = 'http://localhost:8000/v1/skin/cutometer/';
-var vapometer_API_URL = 'http://localhost:8000/v1/skin/vapometer/';
-var antera_API_URL = 'http://localhost:8000/v1/skin/antera/';
+var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
+var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/progress_flg/';
+
+var ResultMarkvu_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/markvu/result/';
+
+
+var cutometer_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/cutometer/';
+var vapometer_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/vapometer/';
+var antera_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/antera/';
 
 
 const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -22,6 +27,50 @@ $(document).ready(function () {
     const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
     console.log('analysis page start -> ')
+
+    //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
+    if (localStorage.getItem('progress_flg') !== '10') {
+    //직접 방문 고객의 상담 진행률
+    if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
+        console.log("직방 고객 상담 진행률 체크")
+        $.ajax({
+            url: DirectCustom_API_URL + localStorage.getItem('skey'),
+            type: 'PATCH',
+            data: JSON.stringify({ "progress_flg": "103" }), //피부측정 진행중
+            contentType: 'application/json', 
+
+            success: function (response) {
+                console.log('=====================');
+                console.log('피부 측정 인입 성공 : ', response);
+            },
+
+            error: function (xhr, status, error) {
+                console.error('피부 측정 인입 에러 : ', error);
+            }
+        })
+    }
+    //예약 방문 고객의 상담 진행률
+    else if(localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_skinResult') !== 'ok' ){
+        console.log("예약 고객 상담 진행률 체크")
+        $.ajax({
+            url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' +localStorage.getItem('skey'),
+            type: 'PATCH',
+            data: JSON.stringify({ "progress_flg": "103" }), //피부문진 진행중
+            contentType: 'application/json', 
+
+            success: function (response) {
+                console.log('=====================');
+                console.log('피부 문진 인입 성공 : ', response);
+            },
+
+            error: function (xhr, status, error) {
+                console.error('피부 문진 인입 에러 : ', error);
+            }
+        })
+    }
+}
+
+
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
     console.log("custom_sex : ", localStorage.getItem('custom_sex'));
@@ -49,8 +98,8 @@ $(document).ready(function () {
 
         $.ajax({
             // url: SkinSurvey_API_URL + surveyNo,
-            // url: ResultMarkvu_API_URL +  '?surveyNo=' +surveyNo, //실제 데이터 인입
-            url: ResultMarkvu_API_URL + '?surveyNo=' + 2277,
+            url: ResultMarkvu_API_URL +  '?surveyNo=' +surveyNo, //실제 데이터 인입
+            // url: ResultMarkvu_API_URL + '?surveyNo=' + 2277,
 
             type: 'GET',
             success: function (response) {
@@ -63,8 +112,8 @@ $(document).ready(function () {
                     $("#custom_detail").html("마크뷰 데이터 조회 완료");
                     showErrorModal();
 
-                    $('.analysis-layer').removeClass('open');
-                    
+                    localStorage.setItem('custom_markvu', 'ok');  
+                    $('.analysis-layer').removeClass('open');                   
                 }
 
             }, error: function (xhr, status, error) {
@@ -154,6 +203,7 @@ $(document).ready(function () {
                     $("#custom_detail").html("안테라 측정값 저장 완료");
                     showErrorModal();       
 
+                    localStorage.setItem('custom_antera', 'ok');  
                     $('.analysis-layer').removeClass('open');         
     
                 }, error: function (xhr, status, error) {
@@ -218,6 +268,7 @@ $(document).ready(function () {
                     $("#custom_detail").html("큐토미터 측정값 저장 완료");
                     showErrorModal();
 
+                    localStorage.setItem('custom_cutometer', 'ok');  
                     $('.analysis-layer').removeClass('open');
     
     
@@ -282,6 +333,7 @@ $(document).ready(function () {
                     $("#custom_detail").html("바포미터 측정값 저장 완료");
                     showErrorModal();
 
+                    localStorage.setItem('custom_vapometer', 'ok');  
                     $('.analysis-layer').removeClass('open');
                         
                 }, error: function (xhr, status, error) {

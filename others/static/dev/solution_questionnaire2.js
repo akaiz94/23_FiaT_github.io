@@ -1,4 +1,7 @@
-var hairSurvey_API_URL = 'http://localhost:8000/v1/svy/hair/';
+var hairSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/hair/';
+
+var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
+var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/progress_flg/';
 
 let currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 let surveyDate = moment().format('YYYY/MM/DD');
@@ -7,6 +10,152 @@ $(document).ready(function () {
 
     console.log('solution_questionnaire2 page start -> ')
 
+
+
+
+    //#4th. 문진(두피) 요청
+    $.ajax({
+        // url: SkinSurvey_API_URL + surveyNo,
+        url: hairSurvey_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
+        type: 'GET',
+        success: function (data) {
+            scalpSurvey = data[0];
+            console.log("hairSurvey_API_URL 응답값 : ", scalpSurvey);
+            console.log("hairSurvey_API_URL 길이 : ", Object.keys(scalpSurvey).length);
+
+            if (Object.keys(scalpSurvey).length > 0) {
+
+
+                if (scalpSurvey.s1_1 == "Y") {
+                    $("#S1_1").prop("checked", true);
+                }
+                if (scalpSurvey.s1_2 == "Y") {
+                    $("#S1_2").prop("checked", true);
+                }
+                if (scalpSurvey.s1_3 == "Y") {
+                    $("#S1_3").prop("checked", true);
+                }
+                if (scalpSurvey.s1_4 == "Y") {
+                    $("#S1_4").prop("checked", true);
+                }
+                if (scalpSurvey.s1_5 == "Y") {
+                    $("#S1_5").prop("checked", true);
+                }
+                if (scalpSurvey.s1_6 == "Y") {
+                    $("#S1_6").prop("checked", true);
+                }
+                if (scalpSurvey.s1_7 == "Y") {
+                    $("#S1_7").prop("checked", true);
+                }
+                $("#S1_First").val(scalpSurvey.s1_first);
+
+
+
+                if (scalpSurvey.s2_1_1 == "Y") {
+                    $("#S2_1_1").prop("checked", true);
+                }
+                if (scalpSurvey.s2_1_2 == "Y") {
+                    $("#S2_1_2").prop("checked", true);
+                }
+                if (scalpSurvey.s2_1_3 == "Y") {
+                    $("#S2_1_3").prop("checked", true);
+                }
+
+                checkRadioBasedOnValue(scalpSurvey.s2_2, 'S2_2');
+                checkRadioBasedOnValue(scalpSurvey.s2_3, 'S2_3');
+                checkRadioBasedOnValue(scalpSurvey.s2_4, 'S2_4');
+                checkRadioBasedOnValue(scalpSurvey.s2_5, 'S2_5');
+                checkRadioBasedOnValue(scalpSurvey.s2_6, 'S2_6');
+                checkRadioBasedOnValue(scalpSurvey.s2_7, 'S2_7');
+                checkRadioBasedOnValue(scalpSurvey.s2_8, 'S2_8');
+                checkRadioBasedOnValue(scalpSurvey.s2_9, 'S2_9');
+                checkRadioBasedOnValue(scalpSurvey.s2_10, 'S2_10');
+                checkRadioBasedOnValue(scalpSurvey.s2_11, 'S2_11');
+
+
+
+                if (scalpSurvey.s3_1_1 == "Y") {
+                    $("#S3_1_1").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_2 == "Y") {
+                    $("#S3_1_2").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_3 == "Y") {
+                    $("#S3_1_3").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_4 == "Y") {
+                    $("#S3_1_4").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_5 == "Y") {
+                    $("#S3_1_5").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_6 == "Y") {
+                    $("#S3_1_6").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_7 == "Y") {
+                    $("#S3_1_7").prop("checked", true);
+                }
+                if (scalpSurvey.s3_1_8 == "Y") {
+                    $("#S3_1_8").prop("checked", true);
+                }
+                $("#S3_1_First").val(scalpSurvey.s3_1_first);
+
+                checkRadioBasedOnValue(scalpSurvey.s3_2, 'S3_2');
+
+            }
+
+
+        }, error: function (xhr, status, error) {
+
+            console.error('SkinSurvey_API_URL 오류 : ', error);
+        }
+    })
+
+
+
+
+    //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
+    if (localStorage.getItem('progress_flg') !== '10') {
+        //직접 방문 고객의 상담 진행률
+        if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_sculpResult') !== 'ok') {
+            console.log("직방 고객 상담 진행률 체크")
+            $.ajax({
+                url: DirectCustom_API_URL + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "102" }), //두피문진 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('두피 문진 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('두피 문진 인입 에러 : ', error);
+                }
+            })
+        }
+        //예약 방문 고객의 상담 진행률
+        else if (localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_sculpResult') !== 'ok') {
+            console.log("예약 고객 상담 진행률 체크")
+            $.ajax({
+                url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "102" }), //피부문진 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('피부 문진 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('피부 문진 인입 에러 : ', error);
+                }
+            })
+        }
+    }
+
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
     console.log("custom_sex : ", localStorage.getItem('custom_sex'));
@@ -14,10 +163,10 @@ $(document).ready(function () {
     console.log("visitDate : ", localStorage.getItem('visitDate'));
 
 
-    
+
 
     $('#scalpSurvey_saveButton').click(function () {
-       
+
         console.log("두피 저장버튼 클릭 : ");
 
         /*
@@ -453,7 +602,7 @@ $(document).ready(function () {
 
 
                     setTimeout(function () {
-                        window.location.href = './analysis.html';
+                        window.location.href = './analysis2.html';
                     }, 2000); // 2초 딜레이
 
                 }, error: function (xhr, status, error) {
@@ -482,3 +631,41 @@ function showErrorModal() {
     // console.log("안내 모달창");
 }
 
+
+
+
+function checkRadioBasedOnValue(s2Value, radioIdPrefix) {
+    console.log('s2Value 값 : ', s2Value);
+    console.log('radioIdPrefix 값 : ', radioIdPrefix);
+    const radio1 = $(`#${radioIdPrefix}_001`);
+    const radio2 = $(`#${radioIdPrefix}_002`);
+    const radio3 = $(`#${radioIdPrefix}_003`);
+    const radio4 = $(`#${radioIdPrefix}_004`);
+    const radio5 = $(`#${radioIdPrefix}_005`);
+    const radio6 = $(`#${radioIdPrefix}_006`);
+
+    switch (s2Value) {
+        case '0':
+            radio1.prop('checked', true);
+            break;
+        case '1':
+            radio2.prop('checked', true);
+            break;
+        case '2':
+            radio3.prop('checked', true);
+            break;
+        case '3':
+            radio4.prop('checked', true);
+            break;
+        case '4':
+            radio5.prop('checked', true);
+            break;
+        case '5':
+            radio6.prop('checked', true);
+            break;
+    
+        default:
+            // Handle other cases if needed
+            break;
+    }
+}

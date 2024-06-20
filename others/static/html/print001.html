@@ -69,15 +69,15 @@
                 </div>
                 <div class="date-box">
                     <span id="visitDate" style="font-size: 11px;">2024. 01. 22</span>
-                    <div class="round-item" style="font-weight: bold;">2회차</div>
+                    <div class="round-item" style="font-weight: bold;"> <span id="visitCount"></span>회차 </div>
                 </div>
             </header>
             <main class="print-content">
                 <div class="flexWrapper flexJustifyBetween flexAlignCenter">
-                    <h1>마이 스킨 솔루션 피부 분석 보고서</h1>
+                    <h1 style="font-size: 22px; font-weight: bold;" >마이 스킨 솔루션 피부 분석 보고서</h1>
                     <div>
-                        <span id="custom_name" style="font-size: 15px; font-weight: bold;"></span><span
-                            style="font-size: 13px;">님</span>
+                        <span id="custom_name" style="font-size: 19px; font-weight: bold;"></span><span
+                            style="font-size: 13px;"> 님</span>
                     </div>
                 </div>
                 <div class="row-item marginTop50">
@@ -86,7 +86,7 @@
                         <div class="col-3  line-right ">
                             <h3 class="font-size40 font-color-gray3">피부 점수</h3>
                             <div class="font-size50 font-color-black flexJustifyCenter height100 marginTop30"><em
-                                    class="font-size100 font-bold" id="get_skin_score">84</em>/100점</div>
+                                    class="font-size100 font-bold" id="get_skin_score"></em>/100점</div>
                             <p class="font-size30 default-line2 textAlignCenter marginTop30">동일 성별, 연령대 데이터의<br>
                                 정규분포 확률 활용</p>
                         </div>
@@ -94,8 +94,8 @@
                             <h3 class="font-size40 font-color-gray3">관리 항목</h3>
                             <div class="font-size60 font-color-black font-bold flexJustifyCenter height100 marginTop30">
                                 <span>
-                                    <em class="font-40 bold" id="selected_subdata">탄력</em>,
-                                    <em class="font-40 bold" id="selected_subdata2">주름</em>
+                                    <em class="font-40 bold" id="selected_subdata"></em>,
+                                    <em class="font-40 bold" id="selected_subdata2"></em>
 
                                 </span>
                             </div>
@@ -119,19 +119,27 @@
                         <div class="col-3  line-right paddingLeftRight20">
                             <div class="flex-container">
                                 <h3 class="font-size40 font-color-gray3 tzone">T존</h3>
-                                <p class="font-size40 marginTop10 skin-type" id="t_zone_result">수분 부족 건성</p>
+                                <p class="font-size40 marginTop10 skin-type" id="t_zone_result">수분 부족 건성</p>                              
                             </div>
+                            <p class="font-20 marginTop10" style="font-size: 10px; text-align: right; margin-right: 7px;">유분 : <span
+                                id="t_zone_ubun-val">20.0</span> / 수분 : <span
+                                id="t_zone_subun-val">32.5</span></p>
                             <div class="graph-item paddingLeftRight">
-                                <img src="./resource/images/print/graph-001.svg" alt="T존 그래프">
+                                <img src="./resource/images/skin/UT_test.png" id="T_zone-image"
+                                                    alt="T존 그래프">
                             </div>
                         </div>
                         <div class="col-3  line-right paddingLeftRight20">
                             <div class="flex-container">
                             <h3 class="font-size40 font-color-gray3 tzone" >U존</h3>
                             <p class="font-size40 marginTop10 skin-type" id="u_zone_result">유수분 균형 중성</p>
-                            </div>                            
+                            </div>                     
+                            <p class="font-20 marginTop10" style="font-size: 10px; text-align: right; margin-right: 7px;">유분 :<span
+                                id="u_zone_ubun-val">20.0</span> / 수분 : <span
+                                id="u_zone_subun-val">32.5</span></p>       
                             <div class="graph-item paddingLeftRight">
-                                <img src="./resource/images/print/graph-001.svg" alt="U존 그래프">
+                                <img src="./resource/images/skin/UT_test.png" id="U_zone-image"
+                                alt="U존 그래프">
                             </div>
                         </div>
                         <div class="col-6  flexWrapper flexAlignCenter paddingLeftRight">
@@ -146,7 +154,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
                 <div class="row-item">
                     <h2 class="title">3. 분석결과</h2>
@@ -154,7 +161,7 @@
                         <div class="col-2_5">
                             <div class="paddingLeftRight20">
                                 <h3 class="font-size40 font-color-gray3">Aging</h3>
-                                <canvas class="canvas2" width="160" height="210" id="aging_chart" ></canvas>
+                                <canvas class="canvas2" width="160" height="210" id="aging_chart" style="image-rendering: auto;" ></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-003.svg" alt="Aging 그래프">
                                 </div> -->
@@ -168,7 +175,7 @@
                         <div class="col-2_4">
                             <div class="paddingLeftRight20 ">
                                 <h3 class="font-size40 font-color-gray3">Pigmentation</h3>
-                                <canvas class="canvas2" width="130" height="210" id="pigmentation_chart" ></canvas>
+                                <canvas class="canvas2" width="130" height="210" id="pigmentation_chart" style="image-rendering: auto;"></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-004.svg" alt="Pigmentation 그래프">
                                 </div> -->
@@ -182,7 +189,7 @@
                         <div class="col-2_5">
                             <div class="paddingLeftRight20 ">
                                 <h3 class="font-size40 font-color-gray3">Sensitivity</h3>
-                                <canvas class="canvas2" width="150" height="210" id="sensitivity_chart" ></canvas>
+                                <canvas class="canvas2" width="150" height="210" id="sensitivity_chart" style="image-rendering: auto;"></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-005.svg" alt="Sensitivity 그래프">
                                 </div> -->
@@ -196,7 +203,7 @@
                         <div class="col-2_4 ">
                             <div class="paddingLeftRight20 line-right">
                                 <h3 class="font-size40 font-color-gray3 ">Sebum</h3>
-                                <canvas class="canvas2" width="130" height="210" id="sebum_chart" ></canvas>
+                                <canvas class="canvas2" width="130" height="210" id="sebum_chart" style="image-rendering: auto;" ></canvas>
                                 <!-- <div class="graph-item height520">
                                     <img src="./resource/images/print/graph-006.svg" alt="Sebum 그래프">
                                 </div> -->

@@ -57,23 +57,23 @@
                     <table>
                         <thead>
                             <colgroup>
-                                <col style="width: 5%;">
-                                <col style="width: 10%;">
-                                <col style="width: 10%;">
-                                <col style="width: 10%;">
-                                <col style="width: 10%;">
+                                <col style="width: 7%;">
+                                <!-- <col style="width: 10%;"> -->
+                                <col style="width: 11%;">
+                                <col style="width: 11%;">
+                                <col style="width: 11%;">
 
                                 <col style="width: 5%">
 
                                 <col style="width: 5%">                                
                                 <col style="width: auto;"> 
-                                <col style="width: 10%;">
-                                <col style="width: 10%;">
-                                <col style="width: 5%;">
+                                <col style="width: 12%;">
+                                <col style="width: 12%;">
+                                <col style="width: 7%;">
                             </colgroup>
                             <tr>
                                 <th></th>
-                                <th style="font-size: 25px;">No</th>
+                                <!-- <th style="font-size: 25px;">No</th> -->
                                 <th style="font-size: 25px;">예약타입</th>
                                 <th style="font-size: 25px;">예약시간</th>
                                 <th style="font-size: 25px;">이름</th>
@@ -91,19 +91,19 @@
                         <script id="visit-item" type="text/x-handlebars-template">
                             <tr>
                                 <td></td>  
-                                <td>{{ this.index }}</td>   
-                                <td>{{ this.rsvn_date }}</td>
-                                <td>{{ this.rsvn_time }}</td>                               
+                                <!-- <td>{{ this.index }}</td>    -->
+                                <td>{{ this.reservationType }}</td>
+                                <td>{{ this.rsvn_time_colon }}</td>                               
                                 <td><a href="javascript:fnGetVisitDetail({{ this.visitkey }}, {{ this.skey }})" 
-                                    onclick="openMsgLayer('{{this.name}}','{{this.phone}}','{{this.birthdate}}','{{this.sex}}',
-                                    '{{this.m_userkey}}', '{{this.m_surveyNo}}', '{{this.email}}' , '{{this.vst_path}}'  )">{{maskName this.name}}</a></td>
+                                    onclick="openMsgLayer('{{this.name}}','{{this.phone}}','{{this.birthdate}}','{{this.sex}}', '{{this.m_userkey}}', '{{this.m_surveyNo}}', '{{this.email}}' , '{{this.vst_path}}','{{this.ucstmid}}' 
+                                    ,'{{this.rsvn_date}}','{{this.rsvn_time}}' ,'{{this.ProgramCode}}' ,'{{this.visitkey}}' ,'{{this.skey}}' ,'{{this.ProgramCode}}'  ,'{{this.progress_flg}}' )">{{maskName this.name}}</a></td>
                                 <td></td>
                                 <td>{{ this.phone_last }}</td>
-                                <td>{{ this.ProgramCode }}</td>
-                                <td>{{ this.progress_flg}}회차</td>
+                                <td>{{ this.ProgramName }}</td>
+                                <td>{{ this.visitCount}}회차</td>
                                 <td>
                                     <p class="state-item completion">
-                                        <span class="state-icon ">{{ this.rsvn_flg}}완료</span>
+                                        <span class="state-icon" style="width: auto; padding: 10px;" >{{ this.progress_check}}</span>
                                     </p>
                                 </td>
                                 <td></td>  

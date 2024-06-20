@@ -60,6 +60,39 @@
             position: absolute;
             z-index: 2;
         }
+
+        .round-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding : 10px; 
+            height: 30px;
+            background-color: #e7c1da;
+            color: white;
+            border: none;
+            border-radius: 15px 15px 0 0;
+            text-align: center;
+            line-height: 100px;
+            font-size: 14px;
+            
+            cursor: pointer;
+            transition: background-color 0,3s;
+        }
+
+        .round-button:hover {
+            background-color: #d98cbf;
+        }
+
+        .group-box-container {
+        display: flex;
+        justify-content: space-between; /* 왼쪽과 오른쪽으로 이등분 */
+    }
+
+    .group-box-left,
+    .group-box-right {
+        flex: 1; /* 동일한 너비로 이등분 */
+        padding: 10px; /* 내용 간격 설정 */
+    }
     </style>
 
 
@@ -96,10 +129,9 @@
                             </div>
                             <div class="header-right-box">
                                 <span>MY SKIN ANALYSIS REPORT ㅣ <span id="manager_name"
-                                        style="font-weight: bold;">고은비</span></span>
-                                <span id="title_date" style="margin-right: 105px;">측정일자 : <span id="visitDate">2024. 01.
-                                        22</span></span>
-                                <span id="title_count" style="margin-right: 160px;">방문회차 : 2회차</span>
+                                       style="font-weight: bold;">고은비</span></span>
+                                <span id="title_date" style="margin-right: 110px;">측정일자 : <span id="visitDate"></span></span>
+                                <span id="title_count" style="margin-right: 163px;">방문회차 : <span id="visitCount"></span>회차</span>
                             </div>
                         </header>
                         <div class="report-content">
@@ -111,25 +143,25 @@
                                         style="border: 1px solid black; width: 70px; font-weight: 700;">Submit</button> -->
                                     <div class="row-item-content">
                                         <div class="col-4 textAlignCenter line-right">
-                                            <h3 class="font-24 marginBottom30">피부 점수</h3>
+                                            <h3 class="font-24 marginBottom30" >피부 점수</h3>
                                             <span class="font-30"><em class="font-60 bold"
-                                                    id="get_skin_score">84</em>/100점</span>
+                                                    id="get_skin_score"></em>/100점</span>
                                         </div>
                                         <div class="col-4 textAlignCenter line-right">
                                             <h3 class="font-24 marginBottom30">관리 항목</h3>
                                             <span>
-                                                <em class="font-40 bold" id="selected_subdata">탄력</em><br>
-                                                <em class="font-40 bold" id="selected_subdata2">주름</em>
+                                                <em  style="font-size: 37px;" id="selected_subdata"></em><br>
+                                                <em  style="font-size: 37px;" id="selected_subdata2"></em>
                                             </span>
                                         </div>
                                         <div class="col-4 textAlignCenter">
                                             <h3 class="font-24 marginBottom30">점수</h3>
                                             <ul class="level-list textAlignLeft paddingLeft40">
-                                                <li class="level-color1" style="font-size: 20px;">매우 좋음(80~100)</li>
-                                                <li class="level-color2" style="font-size: 20px;">좋음(60~80)</li>
-                                                <li class="level-color3" style="font-size: 20px;">보통(40~60)</li>
-                                                <li class="level-color4" style="font-size: 20px;">관심 필요(20~40)</li>
-                                                <li class="level-color5" style="font-size: 20px;">집중 관리(0~20)</li>
+                                                <li class="level-color1" style="font-size: 19px;">매우 좋음(80~100)</li>
+                                                <li class="level-color2" style="font-size: 19px;">좋음(60~80)</li>
+                                                <li class="level-color3" style="font-size: 19px;">보통(40~60)</li>
+                                                <li class="level-color4" style="font-size: 19px;">관심 필요(20~40)</li>
+                                                <li class="level-color5" style="font-size: 19px;">집중 관리(0~20)</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -139,11 +171,10 @@
                                     <div class="row-item-content">
                                         <div class="col-6 textAlignCenter line-right">
                                             <h3 class="font-30">T존 </h3>
-                                            <p class="font-20 marginTop10" id="t_zone_result"
-                                                style="font-weight: bold;">건성</p>
+                                            <p class="font-20 marginTop10" id="t_zone_result"></p>
                                             <p class="font-20 marginTop10" style="font-size: 16px;">유분 : <span
-                                                    id="t_zone_ubun-val">20.0</span> / 수분 : <span
-                                                    id="t_zone_subun-val">32.5</span></p>
+                                                    id="t_zone_ubun-val">0.0</span> / 수분 : <span
+                                                    id="t_zone_subun-val">0.0</span></p>
                                             <canvas class="canvas" id="t_zone_chart" width="400" height="280"
                                                 style="display: none;"></canvas>
                                             <div class="graph-item">
@@ -153,15 +184,14 @@
                                         </div>
                                         <div class="col-6 textAlignCenter">
                                             <h3 class="font-30">U존</h3>
-                                            <p class="font-20 marginTop10" id="u_zone_result"
-                                                style="font-weight: bold;">유분 부족</p>
+                                            <p class="font-20 marginTop10" id="u_zone_result"></p>
                                             <p class="font-20 marginTop10" style="font-size: 16px;">유분 :<span
-                                                    id="u_zone_ubun-val">20.0</span> / 수분 : <span
-                                                    id="u_zone_subun-val">32.5</span></p>
+                                                    id="u_zone_ubun-val">0.0</span> / 수분 : <span
+                                                    id="u_zone_subun-val">0.0</span></p>
                                             <canvas class="canvas" id="u_zone_chart" width="400" height="280"
                                                 style="display: none;"></canvas>
                                             <div class="graph-item">
-                                                <img src="./resource/images/graph/graph-002.svg" id="U_zone-image"
+                                                <img src="./resource/images/skin/UT_test.png" id="U_zone-image"
                                                     alt="U존 그래프">
                                             </div>
                                         </div>
@@ -172,30 +202,28 @@
                                     <div class="row-item-content">
                                         <div class="col-3 textAlignCenter line-right">
                                             <h3 class="font-30 en" style="margin-bottom: 30px; ">Aging</h3>
-                                            <canvas class="canvas2" width="200" height="350" id="aging_chart"></canvas>
+                                            <canvas class="canvas2" width="200" height="350" id="aging_chart" style="image-rendering: auto;"></canvas>
                                             <!-- <div class="graph-item marginTop30">
                                             <img src="./resource/images/graph/graph-003.svg" alt="Aging 그래프">
                                         </div> -->
                                         </div>
-                                        <div class="col-3 textAlignCenter  line-right" style="margin-left: 15px;">
+                                        <div class="col-3 textAlignCenter  line-right" style="margin-left: 15px;" >
                                             <h3 class="font-30 en" style="margin-bottom: 30px;">Pigmentation</h3>
-                                            <canvas class="canvas2" width="200" height="350"
-                                                id="pigmentation_chart"></canvas>
+                                            <canvas class="canvas2" width="200" height="350"id="pigmentation_chart" style="image-rendering: auto;"></canvas>
                                             <!-- <div class="graph-item marginTop30">
                                             <img src="./resource/images/graph/graph-004.svg" alt="Tone 그래프">
                                         </div> -->
                                         </div>
                                         <div class="col-3 textAlignCenter  line-right" style="margin-left: 15px;">
                                             <h3 class="font-30 en" style="margin-bottom: 30px;">Sensitivity</h3>
-                                            <canvas class="canvas2" width="200" height="360"
-                                                id="sensitivity_chart"></canvas>
+                                            <canvas class="canvas2" width="200" height="360" style="image-rendering: auto;" id="sensitivity_chart"></canvas>
                                             <!-- <div class="graph-item marginTop30">
                                             <img src="./resource/images/graph/graph-005.svg" alt="Sensitivity 그래프">
                                         </div> -->
                                         </div>
                                         <div class="col-3 textAlignCenter" style="margin-left: 15px;">
                                             <h3 class="font-30 en" style="margin-bottom: 30px;">Sebum</h3>
-                                            <canvas class="canvas2" width="200" height="350" id="sebum_chart"></canvas>
+                                            <canvas class="canvas2" width="200" height="350" id="sebum_chart" style="image-rendering: auto;"></canvas>
                                             <!-- <div class="graph-item marginTop30">
                                             <img src="./resource/images/graph/graph-005.svg" alt="Sensitivity 그래프">
                                         </div> -->
@@ -203,21 +231,52 @@
                                     </div>
 
                                 </div>
+                                <div class="row-item">
+                                    <div class="row-col">                                      
+                                        <div class="row-item-content" style="margin-top: -100px;">
+                                            <table class="type-list">                                       
+                                                <tr>           
+                                                    <td style="width: 45px;"></td>
+                                                    <td> <button class="round-button" type="button" id="results_score-wrinkle">주름</button></td>
+                                                    <td> <button class="round-button" type="button" id="results_score-futurewrinkles">미래주름</button></td>
+
+                                                    <td style="width: 60px;"></td>                                                  
+                                                    <td> <button class="round-button" type="button" id="results_score-pigmentation">색소침착</button></td>
+                                                    <td> <button class="round-button" type="button" id="results_score-melanin">멜라닌</button></td>
+                                                 
+                                                    <td  style="width: 100px;"></td>                                             
+                                                    <td><button class="round-button" type="button" id="results_score-redness">붉은기</button></td>       
+                                                    
+                                                    <td  style="width: 120px;"></td>                                             
+                                                    <td><button class="round-button" type="button" id="results_score-pore">모공</button></td>  
+                                                    <td><button class="round-button" type="button" id="results_score-porphyrin">포피린</button></td>      
+                                                   
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                
+                                </div>
                             </div>
                             <div class="col-item">
                                 <div class="row-item">
                                     <h2 class="title">Solution Type</h2>
                                     <div class="row-item-content flexWrapper gap50">
                                         <div class="flex-w130 textAlignCenter">
-                                            <h3 class="font-24 grayColor en">Amore City Lab No.</h3>
-                                            <p class="font-64 grayColor marginTop45" id="solution_type_number">3</p>
+                                            <h3 class="font-24 grayColor en" style="font-size: 20px;">Amore City Lab No.</h3>
+                                            <p class="font-64 grayColor marginTop45" id="solution_type_number"></p>
                                         </div>
                                         <div>
                                             <p class="font-24 grayColor" id="solution_type_result">
-                                                각질층 수분량 부족으로 피부가 건조합니다.<br>
                                                 <br>
-                                                피부가 자외선에 계속 노출되면 콜라겐의 손상으로 주름이 증가
-                                                하고, 멜라닌 색소 세포를 자극하여 피부톤의 균일성이 낮아집니다.
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+
+                                             
                                             </p>
                                         </div>
                                     </div>
@@ -226,13 +285,14 @@
                                     <h2 class="title">Sensitive Type</h2>
                                     <div class="row-item-content flexWrapper gap50">
                                         <div class="flex-w130 textAlignCenter">
-                                            <h3 class="font-24 grayColor en">Amore City Lab No.</h3>
-                                            <p class="font-64 grayColor marginTop45" id="SensitiveType_No">S2</p>
+                                            <h3 class="font-24 grayColor en" style="font-size: 20px;">Amore City Lab No.</h3>
+                                            <p class="font-64 grayColor marginTop45" id="SensitiveType_No"></p>
                                         </div>
                                         <div>
                                             <p class="font-24 grayColor" id="SensitiveType_Text">
-                                                외부 환경 변화 시 트러블이 자주 발생하며 종종 가려움 혹은
-                                                속 건조 등이 동반될 수 있습니다.
+                                                <br>
+                                                <br>
+                                                                                            
                                             </p>
                                         </div>
                                     </div>
@@ -309,7 +369,7 @@
 
     <div class="user-modify-layer layer-wrap w1200">
         <div class="layer-container">
-            <!-- <button class="close-button">닫기</button> -->
+            <button class="close-button">닫기</button>
             <header class="layer-header">
                 <h3 class="site-title">MY SKIN SOLUTION</h3>
                 <h2 class="layer-title">OPINIONS</h2>
@@ -374,9 +434,76 @@
         </div>
     </div>
 
+
+    
+
+<div class="markvu-popup-layer layer-wrap w1200">
+    <div class="layer-container">
+        <!-- <button class="close-button">닫기</button> -->
+        <header class="layer-header">
+            <h3 class="site-title">MY SKIN SOLUTION</h3>
+            <h2 class="layer-title">SKIN DETAIL</h2>
+        </header>
+        <div class="layer-content autoScroll">
+            <form class="form-box">
+                <!-- <h4 class="group-title" style="font-size: 25px;">SPECIAL TIP</h4> -->
+                <div class="group-box-container">
+                    <div class="group-box-left">
+                        <!-- 왼쪽 내용 -->
+                         <div>
+                            <span>측정 이미지</span>                           
+                         </div>
+                         <div  style="margin-top: 10px;">
+                            <img src='./resource/images/skin/ConcernFaceArea.jpg'
+                                                    alt="피부 부위">
+                         </div>       
+                    </div>
+                    <div class="group-box-right">
+                        <!-- 오른쪽 내용 -->
+                        <div>
+                            <span>피부 부위</span>                           
+                         </div>
+                         <div style="margin-top: 10px;">                   
+                            <img src='./resource/images/skin/ConcernFaceArea.jpg'
+                                                    alt="피부 부위">
+                         </div>    
+                    </div>
+               
+                </div>
+
+                <div class="group-box" style="margin-top: 0px;">
+                    <h4 class="group-title" style="font-size: 25px;">SKIN SCORE (<span id="markvu_gubun">주름</span>)</h4>
+                    <div class="row-group marginTop30">
+                        <canvas class="canvas2" width="1100" height="290" id="aging_chart2"></canvas>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="button-box textAlignCenter" style="margin-top: 0px;">
+            <button class="button w300" id="markvu-popup-close">확인</button>
+        </div>
+    </div>
+</div>
+
+
+
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div class="search-result-layer-error layer-wrap">
