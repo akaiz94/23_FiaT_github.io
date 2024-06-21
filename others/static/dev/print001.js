@@ -546,7 +546,7 @@ function updatePigmentationData(data1, data2, data3) {
 24. 05. 14 #3 Sensitivity 차트 생성 및 업데이트
 */
 var sensitivity_data = {
-    labels: ['수분손실도', '붉은기'],
+    labels: ['경피수분손실도', '붉은기'],
     datasets: [{
         label: '', // 범례 레이블 없음
         data: [24, 50],
@@ -591,7 +591,7 @@ var sensitivity_chart = new Chart(ctx_sensitivity, {
             x: {
                 ticks: {
                     font: {
-                        size: 9 // 폰트 크기 조절
+                        size: 7 // 폰트 크기 조절
                     }
                 },
                 grid: {

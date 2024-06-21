@@ -74,35 +74,35 @@
             </header>
             <main class="print-content">
                 <div class="flexWrapper flexJustifyBetween flexAlignCenter">
-                    <h1 style="font-size: 22px; font-weight: bold;" >마이 스킨 솔루션 피부 분석 보고서</h1>
+                    <h1 class="print-main-text" >마이 스킨 솔루션 피부 분석 보고서</h1>
                     <div>
-                        <span id="custom_name" style="font-size: 19px; font-weight: bold;"></span><span
+                        <span id="custom_name" style="font-size: 17px; font-weight: bold;"></span><span
                             style="font-size: 13px;"> 님</span>
                     </div>
                 </div>
                 <div class="row-item marginTop50">
-                    <h2 class="title">1. 종합 결과</h2>
+                    <h2 class="title print-title-text">1. 종합 결과</h2>
                     <div class="row-item-content flexWrapper">
                         <div class="col-3  line-right ">
-                            <h3 class="font-size40 font-color-gray3">피부 점수</h3>
+                            <h3 class="font-size40 font-color-gray3" style="font-weight: 600;">피부 점수</h3>
                             <div class="font-size50 font-color-black flexJustifyCenter height100 marginTop30"><em
                                     class="font-size100 font-bold" id="get_skin_score"></em>/100점</div>
                             <p class="font-size30 default-line2 textAlignCenter marginTop30">동일 성별, 연령대 데이터의<br>
                                 정규분포 확률 활용</p>
                         </div>
                         <div class="col-3 paddingLeftRight line-right ">
-                            <h3 class="font-size40 font-color-gray3">관리 항목</h3>
+                            <h3 class="font-size40 font-color-gray3" style="font-weight: 600;">관리 항목</h3>
                             <div class="font-size60 font-color-black font-bold flexJustifyCenter height100 marginTop30">
                                 <span>
-                                    <em class="font-40 bold" id="selected_subdata"></em>,
-                                    <em class="font-40 bold" id="selected_subdata2"></em>
+                                    <em style="font-size: 16px; " id="selected_subdata"></em>,
+                                    <em style="font-size: 16px; " id="selected_subdata2"></em>
 
                                 </span>
                             </div>
                             <p class="font-size30 default-line2 textAlignCenter marginTop30">측정 결과 기반의 상위 고민</p>
                         </div>
                         <div class="col-6 paddingLeftRight ">
-                            <h3 class="font-size40 font-color-gray3">현재 상태</h3>
+                            <h3 class="font-size40 font-color-gray3" style="font-weight: 600;">현재 상태</h3>
                             <ul id="skinScoreList" class="flexWrapper gap28 marginTop30">
                                 <li class="item-box" data-range="0-20">집중관리</li>
                                 <li class="item-box" data-range="20-40">관심필요</li>
@@ -114,12 +114,12 @@
                     </div>
                 </div>
                 <div class="row-item">
-                    <h2 class="title">2. 피부 타입</h2>
+                    <h2 class="title print-title-text">2. 피부 타입</h2>
                     <div class="row-item-content flexWrapper">
                         <div class="col-3  line-right paddingLeftRight20">
                             <div class="flex-container">
-                                <h3 class="font-size40 font-color-gray3 tzone">T존</h3>
-                                <p class="font-size30 marginTop10 skin-type" id="t_zone_result"></p>                              
+                                <h3 class="font-size40 font-color-gray3 tzone" style="font-weight: 600;">T존</h3>
+                                <p class="font-size30 marginTop10 skin-type" style="font-weight: 600; font-size: 12px;" id="t_zone_result"></p>                              
                             </div>
                             <p class="font-20 marginTop10" style="font-size: 10px; text-align: right; margin-right: 7px;">유분 : <span
                                 id="t_zone_ubun-val">20.0</span> / 수분 : <span
@@ -131,8 +131,8 @@
                         </div>
                         <div class="col-3  line-right paddingLeftRight20">
                             <div class="flex-container">
-                            <h3 class="font-size40 font-color-gray3 tzone" >U존</h3>
-                            <p class="font-size30 marginTop10 skin-type" id="u_zone_result"></p>
+                            <h3 class="font-size40 font-color-gray3 tzone" style="font-weight: 600;">U존</h3>
+                            <p class="font-size30 marginTop10 skin-type" style="font-weight: 600; font-size: 12px;" id="u_zone_result"></p>
                             </div>                     
                             <p class="font-20 marginTop10" style="font-size: 10px; text-align: right; margin-right: 7px;">유분 :<span
                                 id="u_zone_ubun-val">20.0</span> / 수분 : <span
@@ -156,17 +156,17 @@
                     </div>
 
                 <div class="row-item">
-                    <h2 class="title">3. 분석결과</h2>
+                    <h2 class="title print-title-text">3. 분석결과</h2>
                     <div class="row-item-content flexWrapper">
                         <div class="col-2_5">
                             <div class="paddingLeftRight20">
-                                <h3 class="font-size40 font-color-gray3">Aging</h3>
-                                <canvas class="canvas2" width="160" height="210" id="aging_chart" style="image-rendering: auto;" ></canvas>
+                                <h3 class="font-size40 font-color-gray3" style="margin-left: 70px; font-weight: 600;">Aging</h3>
+                                <canvas class="canvas2" width="160" height="180" id="aging_chart" style="image-rendering: crisp-edges;" ></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-003.svg" alt="Aging 그래프">
                                 </div> -->
                             </div>
-                            <p class="font-size26 paddingLeftRight20 marginTop30">
+                            <p class="font-size26 marginTop30" style="margin-left: 15px;">
                                 <em class="font-bold">미래주름</em> : MARK-VU 광택광으로 측정한
                                 주름으로 시간이 지나면서 생겨날 수
                                 있는 주름
@@ -174,13 +174,13 @@
                         </div>
                         <div class="col-2_4">
                             <div class="paddingLeftRight20 ">
-                                <h3 class="font-size40 font-color-gray3">Pigmentation</h3>
-                                <canvas class="canvas2" width="130" height="210" id="pigmentation_chart" style="image-rendering: auto;"></canvas>
+                                <h3 class="font-size40 font-color-gray3" style="margin-left: 47px; font-weight: 600;">Pigmentation</h3>
+                                <canvas class="canvas2" width="130" height="180" id="pigmentation_chart" style="image-rendering: crisp-edges;"></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-004.svg" alt="Pigmentation 그래프">
                                 </div> -->
                             </div>
-                            <p class="font-size26 paddingLeftRight20 marginTop30">
+                            <p class="font-size26 marginTop30" style="margin-left: 15px;">
                                 <em class="font-bold">멜라닌</em> : MARK-VU UV광으로 확인한
                                 겉으로 보이지 않는 피부 내 깊은
                                 색소 침착.
@@ -188,28 +188,28 @@
                         </div>
                         <div class="col-2_5">
                             <div class="paddingLeftRight20 ">
-                                <h3 class="font-size40 font-color-gray3">Sensitivity</h3>
-                                <canvas class="canvas2" width="150" height="210" id="sensitivity_chart" style="image-rendering: auto;"></canvas>
+                                <h3 class="font-size40 font-color-gray3" style="margin-left: 65px; font-weight: 600;">Sensitivity</h3>
+                                <canvas class="canvas2" width="150" height="180" id="sensitivity_chart" style="image-rendering: crisp-edges;"></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-005.svg" alt="Sensitivity 그래프">
                                 </div> -->
                             </div>
-                            <p class="font-size26 paddingLeftRight20 marginTop30">
+                            <p class="font-size26 marginTop30" style="margin-left: 20px;">
                                 <em class="font-bold">경피수분손실도</em> : 피부 수분 증발의 손실
-                                정도를 나타냄. 값이 낮을수록 건조, 피부
+                                <br>정도를 나타냄. 값이 낮을수록 건조, <br>피부
                                 장벽 손상, 민감성 피부를 나타냄
                             </p>
                         </div>
                         <div class="col-2_4 ">
                             <div class="paddingLeftRight20 line-right">
-                                <h3 class="font-size40 font-color-gray3 ">Sebum</h3>
-                                <canvas class="canvas2" width="130" height="210" id="sebum_chart" style="image-rendering: auto;" ></canvas>
+                                <h3 class="font-size40 font-color-gray3" style="margin-left: 60px; font-weight: 600;">Sebum</h3>
+                                <canvas class="canvas2" width="130" height="180" id="sebum_chart" style="image-rendering: crisp-edges;" ></canvas>
                                 <!-- <div class="graph-item height520">
                                     <img src="./resource/images/print/graph-006.svg" alt="Sebum 그래프">
                                 </div> -->
                             </div>
-                            <p class="font-size26 paddingLeftRight20 marginTop30">                                
-                                <em class="font-bold">포피린</em> : 피지분비가 많은 곳에서 발견
+                            <p class="font-size26 marginTop30" style="margin-left: 15px;">                                
+                                <em class="font-bold">포피린</em> : 피지분비 많은 곳에서 발견
                                 됨. 포피린 과다 축척은 피부 염증,
                                 여드름 발생과 연관됨
                             </p>
@@ -231,7 +231,7 @@
                     </div>
                 </div>
                 <div class="row-item">
-                    <h2 class="title">4. 뷰티 루틴 제안</h2>
+                    <h2 class="title print-title-text">4. 뷰티 루틴 제안</h2>
                     <div class="row-item-content flexWrapGap30 flexWrap">
                         <div class="col-6">
                             <h3 class="font-size50 font-bold">1. 스킨 케어 루틴 제안</h3>

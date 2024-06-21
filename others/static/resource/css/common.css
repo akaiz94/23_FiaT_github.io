@@ -346,3 +346,9 @@ body.layerOpen {height: 100%;overflow: hidden;}/*스크롤 막기*/
 
 body.sub .statistics-board .statistics-item .text-box .statistics_sub_fontsize {font-size: medium;}
 body.sub .statistics-board .statistics-item .text-box .t_box_fontsize {font-size: large;}
+
+
+.title-text {
+    font-size: 28px;
+    font-weight: 600;
+}

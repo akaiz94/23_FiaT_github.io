@@ -4,14 +4,14 @@ var API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/l
 var page_param = {
     totalCount: 5,
     currentPage: 1,
-    pageSize: 10,
+    pageSize: 1000,
     startIndex: 0,
 }
 
 var page_param_name = {
     totalCount: 5,
     currentPage: 1,
-    pageSize: 8,
+    pageSize: 1000,
     startIndex: 0,
 }
 
@@ -191,7 +191,7 @@ var fnGetVisitList = function (param) {
 
             var visit_count = 0; //프로그램별 방문회차 카운트
             $.ajax({
-                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30',
+                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000',
 
 
                 type: 'GET',
@@ -353,11 +353,11 @@ var fnGetVisitList_name = function (param) {
             data.changeBirthday = changeBirthday;
 
 
-            console.log("*****url : ", API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30')
+            console.log("*****url : ", API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000')
 
             var visit_count = 0; //프로그램별 방문회차 카운트
             $.ajax({
-                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30',
+                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000',
 
 
                 type: 'GET',

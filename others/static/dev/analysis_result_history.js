@@ -32,17 +32,27 @@ let resultArray2 = []; //T존, U존결과값
 var fnGetVisitCount = function () {
     var visit_count = 0; //프로그램별 방문회차 카운트
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
         type: 'GET',
         success: function (response) {
             console.log('=====================');
             console.log('리스트 별 고객검색 결과 성공 : ', response);
 
-            var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-            var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-            var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-            var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
+            var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+            var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+                
             const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
                 .filter(item => item.m_surveyNo !== null)
                 .sort((a, b) => {
@@ -53,28 +63,21 @@ var fnGetVisitCount = function () {
 
             console.log("정렬된 데이터: ", finalCombinedData);
 
-            const extractedValues = finalCombinedData.map(item => ({ userkey: item.m_userkey, surveyNo: item.m_surveyNo }));
+            const extractedValues = finalCombinedData.map(item => ({surveyNo: item.m_surveyNo, userkey: item.m_userkey}));
             const selectedValues = extractedValues.slice(0, 4);
 
             console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
             console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
 
-            SkinConcernResults(selectedValues);
-            SkinConcernResults2(selectedValues);
+            SkinConcernResults(extractedValues);
+            SkinConcernResults2(extractedValues);
 
 
             //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
             const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
             const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
             const finalCombinedData_merge = [...combinedData1, ...combinedData2];
-            console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
-
-
-            let finalCombinedData_afterMarge = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
-            console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData_afterMarge);
-
-
-            $('#visitCount').text(finalCombinedData_afterMarge.length);
+            $('#visitCount').text(finalCombinedData_merge.length);
 
 
         },
@@ -84,147 +87,185 @@ var fnGetVisitCount = function () {
     });
 }
 
-async function SkinConcernResults(selectedValues) {
-    for (let i = 0; i < selectedValues.length; i++) {
+async function SkinConcernResults(extractedValues) {
+    async function fetchData(surveyNo) {
         try {
-            const response = await $.ajax({
-                url: ResultSkinConcenr_API_URL + '?surveyNo=' + selectedValues[i].surveyNo,
-                type: 'GET',
-                contentType: 'application/json'
-            });
-            if (!response[0]) {
-                alert('피부 측정 결과가 없습니다.');
+            if (resultArray.length >= 4) {
                 return;
             }
-            const resultValue = response[0];
-            resultArray.push(resultValue);
+            const response = await $.ajax({
+                url: ResultSkinConcenr_API_URL + '?surveyNo=' + surveyNo,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function(response){
+                    console.log('SkinConcernResults의 response 값 : ', response);
 
-            if (selectedValues.length === 1) {
-                updatePoreData(resultArray[0].pore);
-                updateElasticityData(resultArray[0].elasticity);
-                updateWrinkleData(resultArray[0].wrinkle);
-                updateFutureWrinklesData(resultArray[0].futurewrinkles);
-                updateMelaninData(resultArray[0].melanin);
-                updatePigmentationData(resultArray[0].pigmentation);
-                updateTransdermalData(resultArray[0].transdermal);
-                updatePorphyrinData(resultArray[0].porphyrin);
-                updateRednessData(resultArray[0].redness);
-                updateTZoneData(resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
-                updateUZoneData(resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
-            } else if (selectedValues.length === 2) {
-                updatePoreData(resultArray[1].pore, resultArray[0].pore);
-                updateElasticityData(resultArray[1].elasticity, resultArray[0].elasticity);
-                updateWrinkleData(resultArray[1].wrinkle, resultArray[0].wrinkle);
-                updateFutureWrinklesData(resultArray[1].futurewrinkles, resultArray[0].futurewrinkles);
-                updateMelaninData(resultArray[1].melanin, resultArray[0].melanin);
-                updatePigmentationData(resultArray[1].pigmentation, resultArray[0].pigmentation);
-                updateTransdermalData(resultArray[1].transdermal, resultArray[0].transdermal);
-                updatePorphyrinData(resultArray[1].porphyrin, resultArray[0].porphyrin);
-                updateRednessData(resultArray[1].redness, resultArray[0].redness);
-                updateTZoneData(resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
-                updateUZoneData(resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
-            } else if (selectedValues.length === 3) {
-                updatePoreData(resultArray[2].pore, resultArray[1].pore, resultArray[0].pore);
-                updateElasticityData(resultArray[2].elasticity, resultArray[1].elasticity, resultArray[0].elasticity);
-                updateWrinkleData(resultArray[2].wrinkle, resultArray[1].wrinkle, resultArray[0].wrinkle);
-                updateFutureWrinklesData(resultArray[2].futurewrinkles, resultArray[1].futurewrinkles, resultArray[0].futurewrinkles);
-                updateMelaninData(resultArray[2].melanin, resultArray[1].melanin, resultArray[0].melanin);
-                updatePigmentationData(resultArray[2].pigmentation, resultArray[1].pigmentation, resultArray[0].pigmentation);
-                updateTransdermalData(resultArray[2].transdermal, resultArray[1].transdermal, resultArray[0].transdermal);
-                updatePorphyrinData(resultArray[2].porphyrin, resultArray[1].porphyrin, resultArray[0].porphyrin);
-                updateRednessData(resultArray[2].redness, resultArray[1].redness, resultArray[0].redness);
-                updateTZoneData(resultArray[2].tZone_Moisture, resultArray[2].tZone_Oilskin, resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
-                updateUZoneData(resultArray[2].uZone_Moisture, resultArray[2].uZone_Oilskin, resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
-            } else if (selectedValues.length === 4) {
-                updatePoreData(resultArray[3].pore, resultArray[2].pore, resultArray[1].pore, resultArray[0].pore);
-                updateElasticityData(resultArray[3].elasticity, resultArray[2].elasticity, resultArray[1].elasticity, resultArray[0].elasticity);
-                updateWrinkleData(resultArray[3].wrinkle, resultArray[2].wrinkle, resultArray[1].wrinkle, resultArray[0].wrinkle);
-                updateFutureWrinklesData(resultArray[3].futurewrinkles, resultArray[2].futurewrinkles, resultArray[1].futurewrinkles, resultArray[0].futurewrinkles);
-                updateMelaninData(resultArray[3].melanin, resultArray[2].melanin, resultArray[1].melanin, resultArray[0].melanin);
-                updatePigmentationData(resultArray[3].pigmentation, resultArray[2].pigmentation, resultArray[1].pigmentation, resultArray[0].pigmentation);
-                updateTransdermalData(resultArray[3].transdermal, resultArray[2].transdermal, resultArray[1].transdermal, resultArray[0].transdermal);
-                updatePorphyrinData(resultArray[3].porphyrin, resultArray[2].porphyrin, resultArray[1].porphyrin, resultArray[0].porphyrin);
-                updateRednessData(resultArray[3].redness, resultArray[2].redness, resultArray[1].redness, resultArray[0].redness);
-                updateTZoneData(resultArray[3].tZone_Moisture, resultArray[3].tZone_Oilskin, resultArray[2].tZone_Moisture, resultArray[2].tZone_Oilskin, resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
-                updateUZoneData(resultArray[3].uZone_Moisture, resultArray[3].uZone_Oilskin, resultArray[2].uZone_Moisture, resultArray[2].uZone_Oilskin, resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+                }
+            });
+
+            if (response && response.length > 0) {
+                const resultValue = response[0];
+                resultArray.push(resultValue);
+
+                console.log("SkinConcernResults의 resultValue 값 : ", resultValue);
+                console.log("SkinConcernResults의 resultArray 값 : ", resultArray);
             }
         } catch (error) {
-            console.error('SkinConcernResults 오류 : ', error);
+            console.error('SkinConcernResults 데이터 로드오류 : ', error);
         }
     }
-    console.log("conceern 저장된 결과(resultArray): ", resultArray);
+
+    // 모든 데이터 로드가 끝날 때까지 기다립니다.
+    await Promise.all(extractedValues.map(value => fetchData(value.surveyNo)));
+    resultArray.sort((a, b) => b.surveyNo - a.surveyNo);
+
+    try {
+        if (!resultArray || resultArray.length === 0) {
+            alert('피부 점수 데이터가 없습니다.');
+            return;
+        }
+        if (resultArray.length === 1) {
+            updatePoreData(resultArray[0].pore);
+            updateElasticityData(resultArray[0].elasticity);
+            updateWrinkleData(resultArray[0].wrinkle);
+            updateFutureWrinklesData(resultArray[0].futurewrinkles);
+            updateMelaninData(resultArray[0].melanin);
+            updatePigmentationData(resultArray[0].pigmentation);
+            updateTransdermalData(resultArray[0].transdermal);
+            updatePorphyrinData(resultArray[0].porphyrin);
+            updateRednessData(resultArray[0].redness);
+            updateTZoneData(resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
+            updateUZoneData(resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+        } else if (resultArray.length === 2) {
+            updatePoreData(resultArray[1].pore, resultArray[0].pore);
+            updateElasticityData(resultArray[1].elasticity, resultArray[0].elasticity);
+            updateWrinkleData(resultArray[1].wrinkle, resultArray[0].wrinkle);
+            updateFutureWrinklesData(resultArray[1].futurewrinkles, resultArray[0].futurewrinkles);
+            updateMelaninData(resultArray[1].melanin, resultArray[0].melanin);
+            updatePigmentationData(resultArray[1].pigmentation, resultArray[0].pigmentation);
+            updateTransdermalData(resultArray[1].transdermal, resultArray[0].transdermal);
+            updatePorphyrinData(resultArray[1].porphyrin, resultArray[0].porphyrin);
+            updateRednessData(resultArray[1].redness, resultArray[0].redness);
+            updateTZoneData(resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
+            updateUZoneData(resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+        } else if (resultArray.length === 3) {
+            updatePoreData(resultArray[2].pore, resultArray[1].pore, resultArray[0].pore);
+            updateElasticityData(resultArray[2].elasticity, resultArray[1].elasticity, resultArray[0].elasticity);
+            updateWrinkleData(resultArray[2].wrinkle, resultArray[1].wrinkle, resultArray[0].wrinkle);
+            updateFutureWrinklesData(resultArray[2].futurewrinkles, resultArray[1].futurewrinkles, resultArray[0].futurewrinkles);
+            updateMelaninData(resultArray[2].melanin, resultArray[1].melanin, resultArray[0].melanin);
+            updatePigmentationData(resultArray[2].pigmentation, resultArray[1].pigmentation, resultArray[0].pigmentation);
+            updateTransdermalData(resultArray[2].transdermal, resultArray[1].transdermal, resultArray[0].transdermal);
+            updatePorphyrinData(resultArray[2].porphyrin, resultArray[1].porphyrin, resultArray[0].porphyrin);
+            updateRednessData(resultArray[2].redness, resultArray[1].redness, resultArray[0].redness);
+            updateTZoneData(resultArray[2].tZone_Moisture, resultArray[2].tZone_Oilskin, resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
+            updateUZoneData(resultArray[2].uZone_Moisture, resultArray[2].uZone_Oilskin, resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+        } else if (resultArray.length === 4) {
+            updatePoreData(resultArray[3].pore, resultArray[2].pore, resultArray[1].pore, resultArray[0].pore);
+            updateElasticityData(resultArray[3].elasticity, resultArray[2].elasticity, resultArray[1].elasticity, resultArray[0].elasticity);
+            updateWrinkleData(resultArray[3].wrinkle, resultArray[2].wrinkle, resultArray[1].wrinkle, resultArray[0].wrinkle);
+            updateFutureWrinklesData(resultArray[3].futurewrinkles, resultArray[2].futurewrinkles, resultArray[1].futurewrinkles, resultArray[0].futurewrinkles);
+            updateMelaninData(resultArray[3].melanin, resultArray[2].melanin, resultArray[1].melanin, resultArray[0].melanin);
+            updatePigmentationData(resultArray[3].pigmentation, resultArray[2].pigmentation, resultArray[1].pigmentation, resultArray[0].pigmentation);
+            updateTransdermalData(resultArray[3].transdermal, resultArray[2].transdermal, resultArray[1].transdermal, resultArray[0].transdermal);
+            updatePorphyrinData(resultArray[3].porphyrin, resultArray[2].porphyrin, resultArray[1].porphyrin, resultArray[0].porphyrin);
+            updateRednessData(resultArray[3].redness, resultArray[2].redness, resultArray[1].redness, resultArray[0].redness);
+            updateTZoneData(resultArray[3].tZone_Moisture, resultArray[3].tZone_Oilskin, resultArray[2].tZone_Moisture, resultArray[2].tZone_Oilskin, resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
+            updateUZoneData(resultArray[3].uZone_Moisture, resultArray[3].uZone_Oilskin, resultArray[2].uZone_Moisture, resultArray[2].uZone_Oilskin, resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+        }
+    } catch (error) {
+        console.error('SkinConcernResults 차트 반영 오류 : ', error);
+    }
+
+    console.log("concern 저장된 결과(resultArray): ", resultArray);
 }
 
-async function SkinConcernResults2(selectedValues) {
-    for (let i = 0; i < selectedValues.length; i++) {
+
+async function SkinConcernResults2(extractedValues) {
+    async function fetchData(surveyNo) {
         try {
+            if (resultArray2.length >= 4) {
+                return;
+            }
             const response = await $.ajax({
-                url: SkinResult_API_URL + '?surveyNo=' + selectedValues[i].surveyNo,
+                url: SkinResult_API_URL + '?surveyNo=' + surveyNo,
                 type: 'GET',
                 contentType: 'application/json'
             });
-            if (!response[0]) {
-                alert('피부 측정 결과가 없습니다.');
-                return;
-            }
-            const resultValue2 = response[0];
-            resultArray2.push(resultValue2);
 
-            if (selectedValues.length === 1) {
-                updateskinScoreData(resultArray2[0]);
-                $('#t_zone_result-1 .date').text(resultArray2[0].create_dt.slice(0, 10));
-
-                $('#t_zone_result-1').append(resultArray2[0].t_zone_result).addClass('active');
-                $('#u_zone_result-1').append(resultArray2[0].u_zone_result).addClass('active');
-            } else if (selectedValues.length === 2) {
-                updateskinScoreData(resultArray2[1], resultArray2[0]);
-                $('#t_zone_result-1 .date').text(resultArray2[1].create_dt.slice(0, 10));
-                $('#t_zone_result-2 .date').text(resultArray2[0].create_dt.slice(0, 10));
-
-
-                $('#t_zone_result-1').append(resultArray2[1].t_zone_result);
-                $('#t_zone_result-2').append(resultArray2[0].t_zone_result).addClass('active');
-                $('#u_zone_result-1').append(resultArray2[1].u_zone_result);
-                $('#u_zone_result-2').append(resultArray2[0].u_zone_result).addClass('active');
-            } else if (selectedValues.length === 3) {
-                updateskinScoreData(resultArray2[2], resultArray2[1], resultArray2[0]);
-                $('#t_zone_result-1 .date').text(resultArray2[2].create_dt.slice(0, 10));
-                $('#t_zone_result-2 .date').text(resultArray2[1].create_dt.slice(0, 10));
-                $('#t_zone_result-3 .date').text(resultArray2[0].create_dt.slice(0, 10));
-
-            
-
-                $('#t_zone_result-1').append(resultArray2[2].t_zone_result);
-                $('#t_zone_result-2').append(resultArray2[1].t_zone_result);
-                $('#t_zone_result-3').append(resultArray2[0].t_zone_result).addClass('active');
-                $('#u_zone_result-1').append(resultArray2[2].u_zone_result);
-                $('#u_zone_result-2').append(resultArray2[1].u_zone_result);
-                $('#u_zone_result-3').append(resultArray2[0].u_zone_result).addClass('active');
-            } else if (selectedValues.length === 4) {
-                updateskinScoreData(resultArray2[3], resultArray2[2], resultArray2[1], resultArray2[0]);
-                $('#t_zone_result-1 .date').text(resultArray2[3].create_dt.slice(0, 10));
-                $('#t_zone_result-2 .date').text(resultArray2[2].create_dt.slice(0, 10));
-                $('#t_zone_result-3 .date').text(resultArray2[1].create_dt.slice(0, 10));
-                $('#t_zone_result-4 .date').text(resultArray2[0].create_dt.slice(0, 10));
-
-
-                $('#t_zone_result-1').append(resultArray2[3].t_zone_result);
-                $('#t_zone_result-2').append(resultArray2[2].t_zone_result);
-                $('#t_zone_result-3').append(resultArray2[1].t_zone_result);
-                $('#t_zone_result-4').append(resultArray2[0].t_zone_result).addClass('active');
-                $('#u_zone_result-1').append(resultArray2[3].u_zone_result);
-                $('#u_zone_result-2').append(resultArray2[2].u_zone_result);
-                $('#u_zone_result-3').append(resultArray2[1].u_zone_result);
-                $('#u_zone_result-4').append(resultArray2[0].u_zone_result).addClass('active');
+            if (response && response.length > 0) {
+                const resultValue2 = response[0];
+                resultArray2.push(resultValue2);
             }
         } catch (error) {
-            console.error('SkinConcernResults2 오류 : ', error);
+            console.error('SkinConcernResults2 데이터 로드 오류 : ', error);
         }
     }
+
+    // 모든 데이터 로드가 끝날 때까지 기다립니다.
+    await Promise.all(extractedValues.map(value => fetchData(value.surveyNo)));
+    resultArray2.sort((a, b) => b.surveyNo - a.surveyNo);
+
+    try {
+        if (!resultArray2 || resultArray2.length === 0) {
+            alert('T존/U존 데이터가 없습니다.');
+            return;
+        }
+        if (resultArray2.length === 1) {
+            updateskinScoreData(resultArray2[0]);
+            $('#t_zone_result-1 .date').text(resultArray2[0].create_dt.slice(0, 10));
+
+            $('#t_zone_result-1').append(resultArray2[0].t_zone_result).addClass('active');
+            $('#u_zone_result-1').append(resultArray2[0].u_zone_result).addClass('active');
+
+        } else if (resultArray2.length === 2) {
+            updateskinScoreData(resultArray2[1], resultArray2[0]);
+            $('#t_zone_result-1 .date').text(resultArray2[1].create_dt.slice(0, 10));
+            $('#t_zone_result-2 .date').text(resultArray2[0].create_dt.slice(0, 10));
+
+
+            $('#t_zone_result-1').append(resultArray2[1].t_zone_result);
+            $('#t_zone_result-2').append(resultArray2[0].t_zone_result).addClass('active');
+            $('#u_zone_result-1').append(resultArray2[1].u_zone_result);
+            $('#u_zone_result-2').append(resultArray2[0].u_zone_result).addClass('active');
+            
+        } else if (resultArray2.length === 3) {
+            updateskinScoreData(resultArray2[2], resultArray2[1], resultArray2[0]);
+            $('#t_zone_result-1 .date').text(resultArray2[2].create_dt.slice(0, 10));
+            $('#t_zone_result-2 .date').text(resultArray2[1].create_dt.slice(0, 10));
+            $('#t_zone_result-3 .date').text(resultArray2[0].create_dt.slice(0, 10));
+
+        
+
+            $('#t_zone_result-1').append(resultArray2[2].t_zone_result);
+            $('#t_zone_result-2').append(resultArray2[1].t_zone_result);
+            $('#t_zone_result-3').append(resultArray2[0].t_zone_result).addClass('active');
+            $('#u_zone_result-1').append(resultArray2[2].u_zone_result);
+            $('#u_zone_result-2').append(resultArray2[1].u_zone_result);
+            $('#u_zone_result-3').append(resultArray2[0].u_zone_result).addClass('active');
+        } else if (resultArray2.length === 4) {
+            updateskinScoreData(resultArray2[3], resultArray2[2], resultArray2[1], resultArray2[0]);
+            $('#t_zone_result-1 .date').text(resultArray2[3].create_dt.slice(0, 10));
+            $('#t_zone_result-2 .date').text(resultArray2[2].create_dt.slice(0, 10));
+            $('#t_zone_result-3 .date').text(resultArray2[1].create_dt.slice(0, 10));
+            $('#t_zone_result-4 .date').text(resultArray2[0].create_dt.slice(0, 10));
+
+
+            $('#t_zone_result-1').append(resultArray2[3].t_zone_result);
+            $('#t_zone_result-2').append(resultArray2[2].t_zone_result);
+            $('#t_zone_result-3').append(resultArray2[1].t_zone_result);
+            $('#t_zone_result-4').append(resultArray2[0].t_zone_result).addClass('active');
+            $('#u_zone_result-1').append(resultArray2[3].u_zone_result);
+            $('#u_zone_result-2').append(resultArray2[2].u_zone_result);
+            $('#u_zone_result-3').append(resultArray2[1].u_zone_result);
+            $('#u_zone_result-4').append(resultArray2[0].u_zone_result).addClass('active');
+        }
+    } catch (error) {
+        console.error('SkinConcernResults2 차트 반영 오류 : ', error);
+    }
+
     console.log("U존, T존저장된 결과(resultArray2): ", resultArray2);
 }
-
-
 
 
 

@@ -120,7 +120,7 @@
 .report-wrapper .report-content .row-item-content .type-list th{vertical-align: middle;padding-right: 7px;}
 .report-wrapper .report-content .row-item-content .type-list th .type-item{width: 64px;height: 64px;}
 .report-wrapper .report-content .row-item-content .type-list td{padding:10px 7px;}
-.report-wrapper .report-content .row-item-content .type-list td .type-item{min-width: 80px;padding:15px;}
+.report-wrapper .report-content .row-item-content .type-list td .type-item{min-width: 100px;padding:15px;}
 .report-wrapper .report-content .row-item-content .type-list .type-item.active{border-color: var(--active-color);color:var(--active-color);}
 
 /*코멘트 입력 폼*/

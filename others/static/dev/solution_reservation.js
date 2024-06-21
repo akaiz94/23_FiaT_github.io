@@ -10,7 +10,7 @@ const surveyHour = moment().format('HH:mm');
 var page_param = {
     totalCount: 5,
     currentPage: 1,
-    pageSize: 30, //데이터 호출 개수
+    pageSize: 1000, //데이터 호출 개수
     startIndex: 0,
 }
 
@@ -62,7 +62,6 @@ var visit_rsvn_date = null;
 var raw_rsvn_date = null;
 var raw_rsvn_time = null;
 
-
 var fnGetVisitList = function (param) {
     console.log('## fnGetVisitList call')
     $('#visit-list > tr').remove()
@@ -71,28 +70,21 @@ var fnGetVisitList = function (param) {
 
         list = result;
 
-
+        list = list.filter(item => item.cancelYN !== "3");
         list.sort((a, b) => {
-            let timeA = parseInt(a.rsvn_time.replace(":", ""));
-            let timeB = parseInt(b.rsvn_time.replace(":", ""));
-            return timeA - timeB;
+            // Convert rsvn_time to comparable format (24-hour time)
+            let timeA = a.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
+            let timeB = b.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
+            return timeA.localeCompare(timeB);
         });
+
         console.log("fnGetVisitList 의 result(list): ", list);
-
-
         console.log("list개수 : ", list.length);
 
-        $.each(list.reverse(), function (idx, data) {
+        $.each(list, function (idx, data) {
             console.log("고객 리스트별 data 값 : ", data);
 
-            page_param.totalCount = data.total_count
-
-            // data.index = idx + 1;
-            data.index = list.length - idx; //배열 revers, idx도 역순으로
-
-            //rsvn_date 날짜 변경
-            // var change_date = data.rsvn_date.slice(0, 10);
-            // data.rsvn_date = change_date;
+            // page_param.totalCount = data.total_count
 
              //시간에 세미콜론 추가
              let rsvn_time_colon = ''
@@ -108,7 +100,6 @@ var fnGetVisitList = function (param) {
             lastPhonNum = data.phone.substring(7, 11);
             data.phone_last = lastPhonNum;
 
-
             //예약 타입 구분
             var reservationType = '';
             if (data.visitkey === 0) {
@@ -117,8 +108,6 @@ var fnGetVisitList = function (param) {
                 reservationType = 'Online';
             }
             data.reservationType = reservationType;
-
-
 
             // 프로그램 이름 변경 (코드 -> 프로그램명)
             var programName = '';
@@ -214,7 +203,6 @@ var fnGetVisitList = function (param) {
                 // case '10':
                 //     progress_check = '완료';
                 //     break;    
-
                 default:
                     progress_check = '확인 필요';
                     break;
@@ -225,47 +213,48 @@ var fnGetVisitList = function (param) {
 
             var visit_count = 0; //프로그램별 방문회차 카운트
             $.ajax({
-                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30',
+                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000',
                
-
                 type: 'GET',
                 success: function (response) {
                     console.log('=====================');
                     console.log('리스트 별 고객검색 결과 성공 : ', response);
-
-
-                    //프로그램별 방문회차 카운트 입력1 
-                    // visit_count = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date >= item.rsvn_date).length;
-                    // console.log('프로그램 방문회차 visit_count : ', visit_count);
-
-                    // data.visitCount = visit_count;
-                    // console.log('프로그램 방문회차 data.visitCount : ', data.visitCount);
-
-                    visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');//해당고객 방문 날짜   
-
-                    // raw_rsvn_date = data.rsvn_date; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 1
-                    // raw_rsvn_time = data.rsvn_time; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 2
-
-
-                    //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-                    var select_visit1 = 0 //다른날짜
-                    select_visit1 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date))
-
-                    var select_visit2 = 0 //같은날짜
-                    select_visit2 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time))
-
+                    //해당고객 방문 날짜   
+                    visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');
+                    
+                    // 프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+                    let select_visit1 = 0; // 다른날짜
+                    select_visit1 = response.filter(item => 
+                        item.ProgramCode === data.ProgramCode && 
+                        data.rsvn_date > item.rsvn_date && 
+                        item.cancelYN !== "3"
+                    ).length;
+                    console.log("select_visit1 데이터 값 : ", response.filter(item => 
+                        item.ProgramCode === data.ProgramCode && 
+                        data.rsvn_date > item.rsvn_date && 
+                        item.cancelYN !== "3"
+                    ));
+                    
+                    let select_visit2 = 0; // 같은날짜
+                    select_visit2 = response.filter(item => 
+                        item.ProgramCode === data.ProgramCode && 
+                        data.rsvn_date === item.rsvn_date && 
+                        data.rsvn_time >= item.rsvn_time && 
+                        item.cancelYN !== "3"
+                    ).length;
+                    console.log("select_visit2 데이터 값 : ", response.filter(item => 
+                        item.ProgramCode === data.ProgramCode && 
+                        data.rsvn_date === item.rsvn_date && 
+                        data.rsvn_time >= item.rsvn_time && 
+                        item.cancelYN !== "3"
+                    ));
+                    
                     data.visitCount = select_visit1 + select_visit2;
-
-
-
 
                     //비동기적으로 html을 로드
                     template.prepend($('#visit-item'), $('#visit-list'), data, function () {
                         // todo define
                     });
-
 
                 },
 
@@ -286,8 +275,6 @@ var fnGetVisitDetail = function (visitkey, skey) {
         fnSetUI('detail')
     });
 }
-
-
 
 
 

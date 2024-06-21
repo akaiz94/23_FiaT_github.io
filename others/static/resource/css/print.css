@@ -267,8 +267,30 @@
 .print-wrap footer .sing-box::after{content:'(인)';}
 .print-wrap footer .copyright{font-size: var(--font-size-36);color:var(--gray-op-100);text-align: center;margin-top: var(--marginTop20);}
 
+
+
+.print-main-text {
+    font-size: 20px; 
+    font-weight: bold;
+}
+
+
+.print-title-text {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+
+
+
+
+
 @page {  size: A4;  margin: 0;  }
 @media print {
     html, body {width:var(--print-width);height: var(--print-height)}
     .print-wrap {border: initial;width: initial;min-height: initial;box-shadow: initial;page-break-after: always;margin:var(--print-margin)}
 }
+
+
+
+

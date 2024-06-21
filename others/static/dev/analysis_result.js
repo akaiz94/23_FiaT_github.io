@@ -124,21 +124,63 @@ $(document).ready(function () {
 
 
 
-  async function getAllDataAndSetSkinScore(surveyNo) {
-    try {
-      const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
-        fnGetMarkvu(surveyNo),
-        fnGetVapometer(surveyNo),
-        fnGetCutometer(surveyNo),
-        fnGetSkinSurvey(surveyNo)
-      ]);
+  // async function getAllDataAndSetSkinScore(surveyNo) {
+  //   try {
+  //     const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
+  //       fnGetMarkvu(surveyNo),
+  //       fnGetVapometer(surveyNo),
+  //       fnGetCutometer(surveyNo),
+  //       fnGetSkinSurvey(surveyNo)
+  //     ]);
 
-      setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
-    } catch (error) {
-      console.error('Error:', error);
+  //     setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // }
+async function getAllDataAndSetSkinScore(surveyNo) {
+  try {
+    const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
+      fnGetMarkvu(surveyNo),
+      fnGetVapometer(surveyNo),
+      fnGetCutometer(surveyNo),
+      fnGetSkinSurvey(surveyNo)
+    ]);
+    localStorage.getItem('ProgramCode')
+
+    if (!get_skinsurvey) {
+      alert("피부 문진이 완료되지 않았습니다.");
+      window.location.href = './solution_questionnaire.html';  // 피부 문진 화면으로 이동
+      return;
     }
-  }
 
+
+    if (!get_makvu) {
+      alert("마크뷰 측정이 완료되지 않았습니다.");
+      window.location.href = './analysis.html';  // 마크뷰 측정 페이지로 이동
+      return;
+    }
+
+    if (!get_vapometer) {
+      alert("바포미터 측정이 완료되지 않았습니다.");
+      window.location.href = './analysis.html';  // 바포미터 측정 페이지로 이동
+      return;
+    }
+    
+    if (!get_cutometer) {
+      const programCode = localStorage.getItem('ProgramCode');
+      if (programCode === "PC001013") {
+        alert("큐토미터 측정이 완료되지 않았습니다.");
+        window.location.href = './analysis.html';  // 큐토미터 측정 페이지로 이동
+        return;
+      }
+    }
+
+    setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
   // 함수 호출
   getAllDataAndSetSkinScore(surveyNo);
 
@@ -963,50 +1005,16 @@ var fnGetVisitCount = function () {
       console.log('=====================');
       console.log('리스트 별 고객검색 결과 성공 : ', response);
 
-
-      // //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-      // var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-      // var select_visit1_2 = 0 //다른날짜 - 피부측정프로그램
-
-      // select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-      //   && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-
-      // select_visit1_2 = response.filter(item => item.ProgramCode === "PC001014"
-      //   && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-
-
-      // console.log("select_visit1_1 : ", select_visit1_1);
-      // console.log("select_visit1_2 : ", select_visit1_2);
-
-      // var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-      // var select_visit2_2 = 0 //같은날짜 - 피부측정프로그램
-
-      // select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
-      //   && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-      //   && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-      // select_visit2_2 = response.filter(item => item.ProgramCode === "PC001014"
-      //   && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-      //   && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-      // console.log("select_visit2_1 : ", select_visit2_1);
-      // console.log("select_visit2_2 : ", select_visit2_2);
-
-      // visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
-
-      // console.log("방문 회차 : visitCount > ", visitCount);
-      // $('#visitCount').text(visitCount);
-
-
-
       //프로그램별 히스토리 조회 - 1.userkey, surveyNo 조회
       var select_visit1_1_data = 0 //다른날짜 - 마이스킨솔루션
       var select_visit1_2_data = 0 //다른날짜 - 피부측정프로그램
 
       select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
+        && item.cancelYN !== "3"
         && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
 
       select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
+        && item.cancelYN !== "3"
         && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
 
 
@@ -1017,35 +1025,28 @@ var fnGetVisitCount = function () {
       var select_visit2_2_data = 0 //같은날짜 - 피부측정프로그램
 
       select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
+        && item.cancelYN !== "3"
         && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
         && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
 
       select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
+        && item.cancelYN !== "3"
         && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
         && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
 
       console.log("select_visit2_1_data : ", select_visit2_1_data);
       console.log("select_visit2_2_data : ", select_visit2_2_data);
 
-
-
       //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
       const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
       const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
       const finalCombinedData_merge = [...combinedData1, ...combinedData2];
       console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
+      $('#visitCount').text(finalCombinedData_merge.length);
 
 
       let finalCombinedData = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
       console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData);
-
-
-      $('#visitCount').text(finalCombinedData.length);
-
-
-
-
-
 
     },
 
@@ -1053,6 +1054,7 @@ var fnGetVisitCount = function () {
       console.error('리스트 별 고객검색 결과  에러 : ', error);
     }
   })
+ 
 
 
 }
