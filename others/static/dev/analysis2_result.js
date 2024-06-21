@@ -573,6 +573,14 @@ $(document).ready(function () {
             if (HairlossType_Basic !== null) {
                 $('#HairlossType_Basic').text(HairlossType_Basic);
                 console.log('*****************HairlossType_Basic 값 > ', HairlossType_Basic);
+                
+                if (localStorage.getItem('custom_sex') === "F") {
+                    $('#HairlossType_Basic_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_f.PNG');
+                    $('#HairlossType_Basic_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_s.PNG');
+                } else {
+                    $('#HairlossType_Basic_1-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Basic + '_f.PNG');
+                    $('#HairlossType_Basic_2-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Basic + '_s.PNG');
+                }
 
                 if (HairlossType_Basic === 'M0') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
@@ -656,6 +664,14 @@ $(document).ready(function () {
                 $('#HairlossType_Center').text(HairlossType_Center);
                 console.log('*****************HairlossType_Center 값 > ', HairlossType_Center);
 
+                if (localStorage.getItem('custom_sex') === "F") {
+                    $('#HairlossType_Center_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Center + '_f.PNG');
+                    $('#HairlossType_Center_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Center + '_s.PNG');
+                } else {
+                    $('#HairlossType_Center_1-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Center + '_f.PNG');
+                    $('#HairlossType_Center_2-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Center + '_s.PNG');
+                }
+
                 if (HairlossType_Center === 'M0') {
                     $('#density_type-M1').css('background-color', '#e7c1da').css('font-weight', 'bold');
                     $('#Final-HairlossType_Center').text('M0');
@@ -728,10 +744,6 @@ $(document).ready(function () {
                     $('#Final-HairlossType_Center').text('F3');
                 }
 
-
-
-
-
             } else {
                 //$('#HairlossType_Center').hide();
                 $('#HairlossType_Center').parent().remove();
@@ -740,6 +752,14 @@ $(document).ready(function () {
             if (HairlossType_FrontCenter !== null) {
                 $('#HairlossType_FrontCenter').text(HairlossType_FrontCenter);
                 console.log('*****************HairlossType_FrontCenter 값 > ', HairlossType_FrontCenter);
+
+                if (localStorage.getItem('custom_sex') === "F") {
+                    $('#HairlossType_FrontCenter_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_FrontCenter + '_f.PNG');
+                    $('#HairlossType_FrontCenter_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_FrontCenter + '_s.PNG');
+                } else {
+                    $('#HairlossType_FrontCenter_1-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_FrontCenter + '_f.PNG');
+                    $('#HairlossType_FrontCenter_2-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_FrontCenter + '_s.PNG');
+                }
 
 
                 if (HairlossType_FrontCenter === 'M0') {
@@ -818,9 +838,6 @@ $(document).ready(function () {
                 //$('#HairlossType_FrontCenter').hide();
                 $('#HairlossType_FrontCenter').parent().remove();
             }
-
-
-
 
 
 
@@ -1410,7 +1427,7 @@ var thicknessData = {
     labels: ['좌 ①', '앞 ②', '우 ③', '앞중앙 ④', '정수리 ⑤', '후두부 ⑥'],
     datasets: [{
         label: '굵기(mm)',
-        data: [0.01, 0.02, 0.03, 0.04, 0.05, 0.06],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgba(200, 200, 200, 0.8)',
         borderColor: 'rgba(200, 200, 200, 1)',
         borderWidth: 1
@@ -1491,7 +1508,7 @@ var densityData = {
     labels: ['좌 ①', '앞 ②', '우 ③', '앞중앙 ④', '정수리 ⑤', '후두부 ⑥'],
     datasets: [{
         label: '밀도(hairs/㎠)',
-        data: [10, 20, 30, 40, 50, 60],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgba(200, 200, 200, 0.8)',
         borderColor: 'rgba(200, 200, 200, 1)',
         borderWidth: 1
@@ -1564,12 +1581,12 @@ var scatterData = {
     datasets: [{
         label: '',
         data: [
-            { x: 0.077, y: 50, label: '① 좌' },
-            { x: 0.065, y: 90, label: '② 앞' },
-            { x: 0.06, y: 70, label: '③ 우' },
-            { x: 0.065, y: 40, label: '④ 앞중앙' },
-            { x: 0.07, y: 75, label: '⑤ 정수리' },
-            { x: 0.07, y: 75, label: '⑥ 후두부' }
+            { x: 0.08, y: 120, label: '① 좌' },
+            { x: 0.08, y: 120, label: '② 앞' },
+            { x: 0.08, y: 120, label: '③ 우' },
+            { x: 0.08, y: 120, label: '④ 앞중앙' },
+            { x: 0.08, y: 120, label: '⑤ 정수리' },
+            { x: 0.08, y: 120, label: '⑥ 후두부' }
         ],
         backgroundColor: [
             '#e5b9d5',
@@ -1680,6 +1697,163 @@ function updateScatterData(index, thicknessValue, densityValue) {
     scatterData.datasets[0].data[index].y = densityValue;
     scatterChart.update();
 }
+
+
+
+
+//스카터 차트 대가리 붙이기.
+
+// var scatterData = {
+//     datasets: [{
+//         label: '',
+//         data: [
+//             { x: 0.077, y: 50, label: '① 좌' },
+//             { x: 0.065, y: 90, label: '② 앞' },
+//             { x: 0.06, y: 70, label: '③ 우' },
+//             { x: 0.065, y: 40, label: '④ 앞중앙' },
+//             { x: 0.07, y: 75, label: '⑤ 정수리' },
+//             { x: 0.07, y: 75, label: '⑥ 후두부' }
+//         ],
+//         backgroundColor: [
+//             '#e5b9d5',
+//             '#f17229',
+//             '#fbca36',
+//             '#6abe9f',
+//             '#a9e5fb',
+//             '#8749a0'
+//         ], // 데이터 포인트 색상
+//         pointRadius: 8,
+//         pointHoverRadius: 10
+//     }]
+// };
+
+// var ctx_scatterChart = document.getElementById('scatterChart').getContext('2d');
+// var scatterChart = new Chart(ctx_scatterChart, {
+//     type: 'scatter',
+//     data: scatterData,
+//     options: {
+//         responsive: false, //그래프 사이즈 자동 변경 안되도록 수정
+//         plugins: {
+//             annotation: {
+//                 annotations: {
+//                     circle: {
+//                         type: 'ellipse',
+//                         xMin: 0.045,
+//                         xMax: 0.085,
+//                         yMin: 40,
+//                         yMax: 100,
+//                         backgroundColor: 'rgba(255, 192, 203, 0.3)', // 원형 영역 색상
+//                         borderColor: 'transparent',
+//                         borderWidth: 0
+//                     }
+//                 }
+//             },
+//             legend: {
+//                 display: false // 범례 숨기기
+//             },
+//             tooltip: {
+//                 callbacks: {
+//                     label: function (context) {
+//                         return context.dataset.data[context.dataIndex].label;
+//                     },
+//                 },
+//                 enabled: true
+//             },
+//         },
+//         scales: {
+//             x: {
+//                 title: {
+//                     display: true,
+//                     text: '굵기',
+//                     font: {
+//                         size: 14
+//                     }
+//                 },
+//                 min: 0,
+//                 max: 0.15,
+//                 ticks: {
+//                     stepSize: 0.075
+//                 },
+//                 grid: {
+//                     color: '#ddd',
+//                     borderDash: [5, 5]
+//                 }
+//             },
+//             y: {
+//                 title: {
+//                     display: true,
+//                     text: '밀도',
+//                     font: {
+//                         size: 14
+//                     }
+//                 },
+//                 min: 0,
+//                 max: 240,
+//                 ticks: {
+//                     stepSize: 120
+//                 },
+//                 grid: {
+//                     color: '#ddd',
+//                     borderDash: [5, 5]
+//                 }
+//             }
+//         },
+//         elements: {
+//             point: {
+//                 borderWidth: 0, // 데이터 포인트 테두리 제거
+//             }
+//         },
+//         layout: {
+//             padding: {
+//                 right: 30 // 오른쪽 여백 조정
+//             }
+//         },
+//     },
+//     plugins: [{
+//         id: 'pointLabels',
+//         afterDatasetsDraw: function(chart) {
+//             const ctx = chart.ctx;
+//             chart.data.datasets.forEach(function(dataset) {
+//                 dataset.data.forEach(function(point, index) {
+//                     const x = chart.scales.x.getPixelForValue(point.x);
+//                     const y = chart.scales.y.getPixelForValue(point.y);
+//                     const labelX = x + 10;
+//                     const labelY = y - 10;
+
+//                     // Draw line from point to label
+//                     ctx.beginPath();
+//                     ctx.moveTo(x, y);
+//                     ctx.lineTo(labelX, labelY);
+//                     ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+//                     ctx.stroke();
+
+//                     // Draw label
+//                     ctx.fillStyle = 'black';
+//                     ctx.font = '12px Arial';
+//                     ctx.fillText(point.label, labelX, labelY);
+//                 });
+//             });
+//         }
+//     }]
+// });
+
+// /** 
+//  * 24.05. 14
+//  * @description API통신을 통한 실제 모발 밀도&굵기 scatter업데이트
+//  **/
+// function updateScatterData(index, thicknessValue, densityValue) {
+//     scatterData.datasets[0].data[index].x = thicknessValue;
+//     scatterData.datasets[0].data[index].y = densityValue;
+//     scatterChart.update();
+// }
+
+
+
+
+
+
+
+
 
 
 

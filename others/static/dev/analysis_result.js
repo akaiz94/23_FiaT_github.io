@@ -132,13 +132,13 @@ $(document).ready(function () {
         fnGetCutometer(surveyNo),
         fnGetSkinSurvey(surveyNo)
       ]);
-  
+
       setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
     } catch (error) {
       console.error('Error:', error);
     }
   }
-  
+
   // 함수 호출
   getAllDataAndSetSkinScore(surveyNo);
 
@@ -514,7 +514,7 @@ $(document).ready(function () {
 });
 
 
- 
+
 
 //#1st. 마크뷰 요청
 function fnGetMarkvu(surveyNo) {
@@ -738,8 +738,8 @@ function fnGetVapometer(surveyNo) {
       success: function (data) {
         const vapometer = data[0];
         console.log("ResultVapometer_API_URL 응답값 : ", vapometer);
-        
-        if (vapometer === undefined) {       
+
+        if (vapometer === undefined) {
           console.log('바포미터 데이터가 없습니다.');
           resolve(false);
         } else {
@@ -957,44 +957,93 @@ var fnGetVisitCount = function () {
   $.ajax({
     url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
 
+    
     type: 'GET',
     success: function (response) {
       console.log('=====================');
       console.log('리스트 별 고객검색 결과 성공 : ', response);
 
 
-      //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-      var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-      var select_visit1_2 = 0 //다른날짜 - 피부측정프로그램
+      // //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+      // var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+      // var select_visit1_2 = 0 //다른날짜 - 피부측정프로그램
 
-      select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+      // select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+      //   && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
 
-      select_visit1_2 = response.filter(item => item.ProgramCode === "PC001014"
-        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+      // select_visit1_2 = response.filter(item => item.ProgramCode === "PC001014"
+      //   && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
 
 
-      console.log("select_visit1_1 : ", select_visit1_1);
-      console.log("select_visit1_2 : ", select_visit1_2);
+      // console.log("select_visit1_1 : ", select_visit1_1);
+      // console.log("select_visit1_2 : ", select_visit1_2);
 
-      var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-      var select_visit2_2 = 0 //같은날짜 - 피부측정프로그램
+      // var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+      // var select_visit2_2 = 0 //같은날짜 - 피부측정프로그램
 
-      select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+      // select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+      //   && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+      //   && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+      // select_visit2_2 = response.filter(item => item.ProgramCode === "PC001014"
+      //   && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+      //   && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+      // console.log("select_visit2_1 : ", select_visit2_1);
+      // console.log("select_visit2_2 : ", select_visit2_2);
+
+      // visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+
+      // console.log("방문 회차 : visitCount > ", visitCount);
+      // $('#visitCount').text(visitCount);
+
+
+
+      //프로그램별 히스토리 조회 - 1.userkey, surveyNo 조회
+      var select_visit1_1_data = 0 //다른날짜 - 마이스킨솔루션
+      var select_visit1_2_data = 0 //다른날짜 - 피부측정프로그램
+
+      select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
+        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+
+      select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
+        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+
+
+      console.log("select_visit1_1_data : ", select_visit1_1_data);
+      console.log("select_visit1_2_data : ", select_visit1_2_data);
+
+      var select_visit2_1_data = 0 //같은날짜 - 마이스킨솔루션
+      var select_visit2_2_data = 0 //같은날짜 - 피부측정프로그램
+
+      select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
         && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
 
-      select_visit2_2 = response.filter(item => item.ProgramCode === "PC001014"
+      select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
         && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
 
-      console.log("select_visit2_1 : ", select_visit2_1);
-      console.log("select_visit2_2 : ", select_visit2_2);
+      console.log("select_visit2_1_data : ", select_visit2_1_data);
+      console.log("select_visit2_2_data : ", select_visit2_2_data);
 
-      visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
-      console.log("방문 회차 : visitCount > ", visitCount);
 
-      $('#visitCount').text(visitCount);
+
+      //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
+      const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
+      const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
+      const finalCombinedData_merge = [...combinedData1, ...combinedData2];
+      console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
+
+
+      let finalCombinedData = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
+      console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData);
+
+
+      $('#visitCount').text(finalCombinedData.length);
+
+
+
 
 
 
@@ -1012,8 +1061,6 @@ var fnGetVisitCount = function () {
 
 
 
-
-
 /*
 *
 * Results내 마크뷰 이미지 팝업
@@ -1025,19 +1072,19 @@ var fnGetVisitCount = function () {
 // 1.주름
 $('#results_score-wrinkle').click(function () {
   $('#markvu_gubun').text('주름');
-  FWrinkle_Avg = (markvu.FWrinkle_A + markvu.FWrinkle_C + markvu.FWrinkle_D + markvu.FWrinkle_E + markvu.FWrinkle_F) / 5
+  const labels = ['A', 'C', 'D', 'E', 'F', 'Avg'];
+  FWrinkle_Avg = (markvu.FWrinkle_A + markvu.FWrinkle_C + markvu.FWrinkle_D + markvu.FWrinkle_E + markvu.FWrinkle_F) / 5;
   console.log('주름 버튼 클릭! FWrinkle_Avg : ', FWrinkle_Avg);
   console.log('주름 버튼 클릭! AgeReal : ', AgeReal);
 
   AgeReal = GetAgeArea(AgeReal);
   console.log('주름 버튼 클릭! GetAgeArea이후 AgeReal : ', AgeReal);
 
-
   const filtering = list_rce.filter(item => item.gender === localStorage.getItem('custom_sex') && item.age === AgeReal && item.gubun === '주름');
   console.log("filtering : ", filtering);
 
   $('.markvu-popup-layer').addClass('open');
-  updateAgingData2(markvu.FWrinkle_A.toFixed(0), filtering[0].A.toFixed(0), 0, 0, markvu.FWrinkle_C.toFixed(0), filtering[0].C.toFixed(0), markvu.FWrinkle_D.toFixed(0), filtering[0].D.toFixed(0), markvu.FWrinkle_E.toFixed(0), filtering[0].E.toFixed(0), markvu.FWrinkle_F.toFixed(0), filtering[0].F.toFixed(0), 0, 0, 0, 0, FWrinkle_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
+  updateAgingData2(labels, [markvu.FWrinkle_A.toFixed(0), markvu.FWrinkle_C.toFixed(0), markvu.FWrinkle_D.toFixed(0), markvu.FWrinkle_E.toFixed(0), markvu.FWrinkle_F.toFixed(0), FWrinkle_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].C.toFixed(0), filtering[0].D.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
 
 
@@ -1045,7 +1092,8 @@ $('#results_score-wrinkle').click(function () {
 // 2.미래 주름
 $('#results_score-futurewrinkles').click(function () {
   $('#markvu_gubun').text('미래 주름');
-  FFuturewrinkles_Avg = (markvu.FFutureWrinkle_A + markvu.FFutureWrinkle_E + markvu.FFutureWrinkle_F + markvu.FFutureWrinkle_G + markvu.FFutureWrinkle_H) / 5
+  const labels = ['A', 'E', 'F', 'G', 'H', 'Avg'];
+  FFuturewrinkles_Avg = (markvu.FFutureWrinkle_A + markvu.FFutureWrinkle_E + markvu.FFutureWrinkle_F + markvu.FFutureWrinkle_G + markvu.FFutureWrinkle_H) / 5;
   console.log('미래 주름 버튼 클릭! FFuturewrinkles_Avg : ', FFuturewrinkles_Avg);
 
   AgeReal = GetAgeArea(AgeReal);
@@ -1054,14 +1102,15 @@ $('#results_score-futurewrinkles').click(function () {
   console.log("filtering : ", filtering);
   $('.markvu-popup-layer').addClass('open');
 
-  updateAgingData2(markvu.FFutureWrinkle_A.toFixed(0), filtering[0].A, 0, 0, 0, 0, 0, 0, markvu.FFutureWrinkle_E.toFixed(0), filtering[0].E.toFixed(0), markvu.FFutureWrinkle_F.toFixed(0), filtering[0].F.toFixed(0), markvu.FFutureWrinkle_G.toFixed(0), filtering[0].G.toFixed(0), markvu.FFutureWrinkle_H.toFixed(0), filtering[0].H.toFixed(0), FFuturewrinkles_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
-
+  updateAgingData2(labels, [markvu.FFutureWrinkle_A.toFixed(0), markvu.FFutureWrinkle_E.toFixed(0), markvu.FFutureWrinkle_F.toFixed(0), markvu.FFutureWrinkle_G.toFixed(0), markvu.FFutureWrinkle_H.toFixed(0), FFuturewrinkles_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
+
 
 // 3.색소침착
 $('#results_score-pigmentation').click(function () {
   $('#markvu_gubun').text('색소 침착');
-  FPigmentation_Avg = (markvu.FPigmentation_A + markvu.FPigmentation_B + markvu.FPigmentation_E + markvu.FPigmentation_F + markvu.FPigmentation_G + markvu.FPigmentation_H) / 6
+  const labels = ['A', 'B', 'E', 'F', 'G', 'H', 'Avg'];
+  FPigmentation_Avg = (markvu.FPigmentation_A + markvu.FPigmentation_B + markvu.FPigmentation_E + markvu.FPigmentation_F + markvu.FPigmentation_G + markvu.FPigmentation_H) / 6;
   console.log('색소 침착 버튼 클릭! FPigmentation_Avg : ', FPigmentation_Avg);
 
   AgeReal = GetAgeArea(AgeReal);
@@ -1070,16 +1119,17 @@ $('#results_score-pigmentation').click(function () {
   console.log("filtering : ", filtering);
   $('.markvu-popup-layer').addClass('open');
 
-  updateAgingData2(markvu.FPigmentation_A.toFixed(0), filtering[0].A.toFixed(0), markvu.FPigmentation_B.toFixed(0), filtering[0].B.toFixed(0), 0, 0, 0, 0, markvu.FPigmentation_E.toFixed(0), filtering[0].E.toFixed(0), markvu.FPigmentation_F.toFixed(0), filtering[0].F.toFixed(0), markvu.FPigmentation_G.toFixed(0), filtering[0].G.toFixed(0), markvu.FPigmentation_H.toFixed(0), filtering[0].H.toFixed(0), FPigmentation_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
-
+  updateAgingData2(labels, [markvu.FPigmentation_A.toFixed(0), markvu.FPigmentation_B.toFixed(0), markvu.FPigmentation_E.toFixed(0), markvu.FPigmentation_F.toFixed(0), markvu.FPigmentation_G.toFixed(0), markvu.FPigmentation_H.toFixed(0), FPigmentation_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
+
 
 
 
 // 4.멜라닌
 $('#results_score-melanin').click(function () {
   $('#markvu_gubun').text('멜라닌');
-  FMelanin_Avg = (markvu.FMelanin_A + markvu.FMelanin_B + markvu.FMelanin_E + markvu.FMelanin_F + markvu.FMelanin_G + markvu.FMelanin_H) / 6
+  const labels = ['A', 'B', 'E', 'F', 'G', 'H', 'Avg'];
+  FMelanin_Avg = (markvu.FMelanin_A + markvu.FMelanin_B + markvu.FMelanin_E + markvu.FMelanin_F + markvu.FMelanin_G + markvu.FMelanin_H) / 6;
   console.log('멜라닌 버튼 클릭! FMelanin_Avg : ', FMelanin_Avg);
 
   AgeReal = GetAgeArea(AgeReal);
@@ -1088,15 +1138,16 @@ $('#results_score-melanin').click(function () {
   console.log("filtering : ", filtering);
   $('.markvu-popup-layer').addClass('open');
 
-  updateAgingData2(markvu.FMelanin_A.toFixed(0), filtering[0].A.toFixed(0), markvu.FMelanin_B.toFixed(0), filtering[0].B.toFixed(0), 0, 0, 0, 0, markvu.FMelanin_E.toFixed(0), filtering[0].E.toFixed(0), markvu.FMelanin_F.toFixed(0), filtering[0].F.toFixed(0), markvu.FMelanin_G.toFixed(0), filtering[0].G.toFixed(0), markvu.FMelanin_H.toFixed(0), filtering[0].H.toFixed(0), FMelanin_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
-
+  updateAgingData2(labels, [markvu.FMelanin_A.toFixed(0), markvu.FMelanin_B.toFixed(0), markvu.FMelanin_E.toFixed(0), markvu.FMelanin_F.toFixed(0), markvu.FMelanin_G.toFixed(0), markvu.FMelanin_H.toFixed(0), FMelanin_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
+
 
 
 // 5.붉은기
 $('#results_score-redness').click(function () {
   $('#markvu_gubun').text('붉은기');
-  Redness_Avg = (markvu.FRedness_A + markvu.FRedness_B + markvu.FRedness_E + markvu.FRedness_F + markvu.FRedness_G + markvu.FRedness_H) / 6
+  const labels = ['A', 'B', 'E', 'F', 'G', 'H', 'Avg'];
+  Redness_Avg = (markvu.FRedness_A + markvu.FRedness_B + markvu.FRedness_E + markvu.FRedness_F + markvu.FRedness_G + markvu.FRedness_H) / 6;
   console.log('붉은기 버튼 클릭! Redness_Avg : ', Redness_Avg);
 
   AgeReal = GetAgeArea(AgeReal);
@@ -1105,16 +1156,17 @@ $('#results_score-redness').click(function () {
   console.log("filtering : ", filtering);
   $('.markvu-popup-layer').addClass('open');
 
-  updateAgingData2(markvu.FRedness_A.toFixed(0), filtering[0].A.toFixed(0), markvu.FRedness_B.toFixed(0), filtering[0].B.toFixed(0), 0, 0, 0, 0, markvu.FRedness_E.toFixed(0), filtering[0].E.toFixed(0), markvu.FRedness_F.toFixed(0), filtering[0].F.toFixed(0), markvu.FRedness_G.toFixed(0), filtering[0].G.toFixed(0), markvu.FRedness_H.toFixed(0), filtering[0].H.toFixed(0), Redness_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
-
+  updateAgingData2(labels, [markvu.FRedness_A.toFixed(0), markvu.FRedness_B.toFixed(0), markvu.FRedness_E.toFixed(0), markvu.FRedness_F.toFixed(0), markvu.FRedness_G.toFixed(0), markvu.FRedness_H.toFixed(0), Redness_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
+
 
 
 
 // 6.모공
 $('#results_score-pore').click(function () {
   $('#markvu_gubun').text('모공');
-  FPore_Avg = (markvu.FPore_A + markvu.FPore_B + markvu.FPore_G + markvu.FPore_H) / 4
+  const labels = ['A', 'B', 'G', 'H', 'Avg'];
+  FPore_Avg = (markvu.FPore_A + markvu.FPore_B + markvu.FPore_G + markvu.FPore_H) / 4;
   console.log('모공 버튼 클릭! FPore_Avg : ', FPore_Avg);
 
   AgeReal = GetAgeArea(AgeReal);
@@ -1123,16 +1175,18 @@ $('#results_score-pore').click(function () {
   console.log("filtering : ", filtering);
   $('.markvu-popup-layer').addClass('open');
 
-  updateAgingData2(markvu.FPore_A.toFixed(0), filtering[0].A.toFixed(0), markvu.FPore_B.toFixed(0), filtering[0].B.toFixed(0), 0, 0, 0, 0, 0, 0, 0, 0, markvu.FPore_G.toFixed(0), filtering[0].G.toFixed(0), markvu.FPore_H.toFixed(0), filtering[0].H.toFixed(0), FPore_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
+  updateAgingData2(labels, [markvu.FPore_A.toFixed(0), markvu.FPore_B.toFixed(0), markvu.FPore_G.toFixed(0), markvu.FPore_H.toFixed(0), FPore_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
+
 
 
 
 // 7.포피린
 $('#results_score-porphyrin').click(function () {
   $('#markvu_gubun').text('포피린');
-  FPorphyrin_Avg = (markvu.FPorphyrin_A + markvu.FPorphyrin_B + markvu.FPorphyrin_G + markvu.FPorphyrin_H) / 4
-  console.log('포피린 버튼 클릭! FPore_Avg : ', FPorphyrin_Avg);
+  const labels = ['A', 'B', 'G', 'H', 'Avg'];
+  FPorphyrin_Avg = (markvu.FPorphyrin_A + markvu.FPorphyrin_B + markvu.FPorphyrin_G + markvu.FPorphyrin_H) / 4;
+  console.log('포피린 버튼 클릭! FPorphyrin_Avg : ', FPorphyrin_Avg);
 
   AgeReal = GetAgeArea(AgeReal);
 
@@ -1140,8 +1194,9 @@ $('#results_score-porphyrin').click(function () {
   console.log("filtering : ", filtering);
   $('.markvu-popup-layer').addClass('open');
 
-  updateAgingData2(markvu.FPorphyrin_A, filtering[0].A.toFixed(0), markvu.FPorphyrin_B, filtering[0].B.toFixed(0), 0, 0, 0, 0, 0, 0, 0, 0, markvu.FPorphyrin_G, filtering[0].G.toFixed(0), markvu.FPorphyrin_H, filtering[0].H.toFixed(0), FPorphyrin_Avg.toFixed(0), filtering[0].AVG.toFixed(0))
+  updateAgingData2(labels, [markvu.FPorphyrin_A.toFixed(0), markvu.FPorphyrin_B.toFixed(0), markvu.FPorphyrin_G.toFixed(0), markvu.FPorphyrin_H.toFixed(0), FPorphyrin_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
 });
+
 
 
 
@@ -1658,29 +1713,24 @@ function updateSebumData(data1, data2) {
 
 
 
-/*
-24. 05. 14  #마크뷰 팝업 내, 부위별 점수 차트
-*/
 var aging_data2 = {
-  labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'Avg'],
+  labels: [], // 초기화 시 빈 배열로 설정
   datasets: [{
     label: '', // 범례 레이블 없음
-    data: [0, 0, 0, 0, 0, 0, 0, , 0, 0],
+    data: [],
     backgroundColor: function (context) {
-      // return context.raw < 60 ? '#e7c1da' : '#e7c1da';
-      return context.dataIndex === 8 ? '#d98cbf' : '#e7c1da';
+      return context.dataIndex === context.chart.data.labels.length - 1 ? '#d98cbf' : '#e7c1da';
     },
   },
   {
     label: '', // 범례 레이블 없음
-    data: [1, 1, 1, 1, 1, 1, 1, 1, 77],
+    data: [],
     backgroundColor: function (context) {
-      // return context.raw < 60 ? '#d2d2d2' : '#d2d2d2';
-      return context.dataIndex === 8 ? '#c1c1c1' : '#d2d2d2';
+      return context.dataIndex === context.chart.data.labels.length - 1 ? '#c1c1c1' : '#d2d2d2';
     }
-  }
-  ]
-}
+  }]
+};
+
 var min_aging_data2 = 10; // step1 : Y축 최소값 초기화
 
 var ctx_makvu = document.getElementById('aging_chart2').getContext('2d');
@@ -1694,11 +1744,9 @@ var aging_chart2 = new Chart(ctx_makvu, {
       y: {
         beginAtZero: true,
         max: 110,
-        // min: min_aging_data - 10,
         min: 0,
         ticks: {
           stepSize: 20,
-          //최댓값을 안보이도록 해주는 call back 함수
           callback: function (value, index, values) {
             return value === 110 ? '' : value;
           }
@@ -1733,37 +1781,17 @@ var aging_chart2 = new Chart(ctx_makvu, {
       }
     },
     barThickness: 25
-
   }
 });
 
 
-function updateAgingData2(A, A1, B, B1, C, C1, D, D1, E, E1, F, F1, G, G1, H, H1, Avg, Avg1) {
-  aging_data2.datasets[0].data[0] = A;
-  aging_data2.datasets[0].data[1] = B;
-  aging_data2.datasets[0].data[2] = C;
-  aging_data2.datasets[0].data[3] = D;
-  aging_data2.datasets[0].data[4] = E;
-  aging_data2.datasets[0].data[5] = F;
-  aging_data2.datasets[0].data[6] = G;
-  aging_data2.datasets[0].data[7] = H;
-  aging_data2.datasets[0].data[8] = Avg;
-
-  aging_data2.datasets[1].data[0] = A1;
-  aging_data2.datasets[1].data[1] = B1;
-  aging_data2.datasets[1].data[2] = C1;
-  aging_data2.datasets[1].data[3] = D1;
-  aging_data2.datasets[1].data[4] = E1;
-  aging_data2.datasets[1].data[5] = F1;
-  aging_data2.datasets[1].data[6] = G1;
-  aging_data2.datasets[1].data[7] = H1;
-  aging_data2.datasets[1].data[8] = Avg1;
+function updateAgingData2(labels, data1, data2) {
+  aging_data2.labels = labels;
+  aging_data2.datasets[0].data = data1;
+  aging_data2.datasets[1].data = data2;
 
   aging_chart2.update();
 }
-
-
-
 
 
 

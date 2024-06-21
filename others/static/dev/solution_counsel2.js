@@ -116,7 +116,7 @@ var fnGetVisitList = function (param) {
                     progress_check = '대기';
                     break;
                 case '1':
-                    progress_check = '문진 진행';
+                    progress_check = '대기';
                     break;
                 case '2':
                     progress_check = '문진 완료';

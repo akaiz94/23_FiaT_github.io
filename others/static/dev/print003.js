@@ -565,7 +565,7 @@ var thicknessData = {
     labels: ['좌 ①', '앞 ②', '우 ③', '앞중앙 ④', '정수리 ⑤', '후두부 ⑥'],
     datasets: [{
         label: '굵기(mm)',
-        data: [0.01, 0.02, 0.03, 0.04, 0.05, 0.06],
+        data: [0, 0, 0, 0, 0, 0],
         backgroundColor: 'rgba(200, 200, 200, 0.8)',
         borderColor: 'rgba(200, 200, 200, 1)',
         borderWidth: 1
@@ -654,7 +654,7 @@ var densityData = {
     labels: ['좌 ①', '앞 ②', '우 ③', '앞중앙 ④', '정수리 ⑤', '후두부 ⑥'],
     datasets: [{
         label: '밀도(hairs/㎠)',
-        data: [10, 20, 30, 40, 50, 60],
+        data: [0, 0, 0, 0, 0,0],
         backgroundColor: 'rgba(200, 200, 200, 0.8)',
         borderColor: 'rgba(200, 200, 200, 1)',
         borderWidth: 1

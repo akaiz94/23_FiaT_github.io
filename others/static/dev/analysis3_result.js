@@ -75,13 +75,16 @@ $(document).ready(function () {
 
     fnGetVisitCount();//방문회차 카운트 함수
     $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
-    var ucstmid = "204677883";
+    // var ucstmid = "204677883";
+    let ucstmid = localStorage.getItem('custom_ucstmid'); //운영
     console.log("ucstmid : ", ucstmid);
 
 
-    fnGetDNA(ucstmid);
-
-    
+    if(localStorage.getItem('custom_ucstmid') === undefined){
+        alert('해당고객은 유전자검사를 하지 않았습니다.')        
+    } else {
+        fnGetDNA(ucstmid);
+    }
 
 });
 

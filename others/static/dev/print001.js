@@ -30,35 +30,35 @@ $(document).ready(function () {
         url: ResultMarkvu_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
         type: 'GET',
         success: function (data) {
-          //console.log('ResultMarkvu_API_URL 응답 : ', data); 
-          markvu = data[0];
-          console.log("ResultMarkvu_API_URL 응답값 : ", markvu);
-    
-    
-          //T존
-          tzone_subun_value = markvu.FSubun_A;
-          tzone_ubun_value = (markvu.FSebum_A + markvu.FSebum_B) / 2;
-          t_zone_subun = tzone_subun_value;
-          t_zone_ubun = tzone_ubun_value;
-    
-          $('#t_zone_subun-val').text(t_zone_subun)
-          $('#t_zone_ubun-val').text(t_zone_ubun)
-    
-          //U존
-          uzone_subun_value = (markvu.FSubun_G + markvu.FSubun_H) / 2;
-          uzone_ubun_value = (markvu.FSebum_G + markvu.FSebum_H) / 2;
-          u_zone_subun = uzone_subun_value;
-          u_zone_ubun = uzone_ubun_value;
-          $('#u_zone_subun-val').text(u_zone_subun)
-          $('#u_zone_ubun-val').text(u_zone_ubun)
-    
-    
+            //console.log('ResultMarkvu_API_URL 응답 : ', data); 
+            markvu = data[0];
+            console.log("ResultMarkvu_API_URL 응답값 : ", markvu);
+
+
+            //T존
+            tzone_subun_value = markvu.FSubun_A;
+            tzone_ubun_value = (markvu.FSebum_A + markvu.FSebum_B) / 2;
+            t_zone_subun = tzone_subun_value;
+            t_zone_ubun = tzone_ubun_value;
+
+            $('#t_zone_subun-val').text(t_zone_subun)
+            $('#t_zone_ubun-val').text(t_zone_ubun)
+
+            //U존
+            uzone_subun_value = (markvu.FSubun_G + markvu.FSubun_H) / 2;
+            uzone_ubun_value = (markvu.FSebum_G + markvu.FSebum_H) / 2;
+            u_zone_subun = uzone_subun_value;
+            u_zone_ubun = uzone_ubun_value;
+            $('#u_zone_subun-val').text(u_zone_subun)
+            $('#u_zone_ubun-val').text(u_zone_ubun)
+
+
         },
         error: function (xhr, status, error) {
-    
-          console.error('ResultMarkvu_API_URL 응답 오류: ', error);
+
+            console.error('ResultMarkvu_API_URL 응답 오류: ', error);
         }
-      })
+    })
 
 
     $.ajax({
@@ -70,7 +70,7 @@ $(document).ready(function () {
             console.log("skin_result_URL 응답값 : ", response);
             console.log("skin_result_URL  길이 : ", response.length);
 
-            
+
             let t_zone_position_num = response[0].t_zone_position_num;
 
             //T존 9분위 적용
@@ -730,56 +730,57 @@ function updateSebumData(data1, data2) {
 var fnGetVisitCount = function () {
     var visit_count = 0; //프로그램별 방문회차 카운트
     $.ajax({
-      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
-  
-      type: 'GET',
-      success: function (response) {
-        console.log('=====================');
-        console.log('리스트 별 고객검색 결과 성공 : ', response);
-  
-  
-        //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-        var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-        var select_visit1_2 = 0 //다른날짜 - 피부측정프로그램
-  
-        select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-  
-        select_visit1_2 = response.filter(item => item.ProgramCode === "PC001014"
-          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-  
-  
-        console.log("select_visit1_1 : ", select_visit1_1);
-        console.log("select_visit1_2 : ", select_visit1_2);
-  
-        var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-        var select_visit2_2 = 0 //같은날짜 - 피부측정프로그램
-  
-        select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
-          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-  
-        select_visit2_2 = response.filter(item => item.ProgramCode === "PC001014"
-          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-  
-        console.log("select_visit2_1 : ", select_visit2_1);
-        console.log("select_visit2_2 : ", select_visit2_2);
-  
-        visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
-        console.log("방문 회차 : visitCount > ", visitCount);
-  
-        $('#visitCount').text(visitCount);
-  
-  
-  
-      },
-  
-      error: function (xhr, status, error) {
-        console.error('리스트 별 고객검색 결과  에러 : ', error);
-      }
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+
+        type: 'GET',
+        success: function (response) {
+            console.log('=====================');
+            console.log('리스트 별 고객검색 결과 성공 : ', response);
+
+
+            var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+            var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+
+            const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
+                .filter(item => item.m_surveyNo !== null)
+                .sort((a, b) => {
+                    const dateComparison = new Date(b.rsvn_date).getTime() - new Date(a.rsvn_date).getTime();
+                    if (dateComparison !== 0) return dateComparison;
+                    return b.rsvn_time.localeCompare(a.rsvn_time);
+                });
+
+            console.log("정렬된 데이터: ", finalCombinedData);
+
+            const extractedValues = finalCombinedData.map(item => ({ userkey: item.m_userkey, surveyNo: item.m_surveyNo }));
+            const selectedValues = extractedValues.slice(0, 4);
+
+            console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
+            console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
+
+
+            //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
+            const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
+            const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
+            const finalCombinedData_merge = [...combinedData1, ...combinedData2];
+            console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
+
+
+            let finalCombinedData_afterMarge = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
+            console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData_afterMarge);
+
+
+            $('#visitCount').text(finalCombinedData_afterMarge.length);
+
+
+        },
+
+        error: function (xhr, status, error) {
+            console.error('리스트 별 고객검색 결과  에러 : ', error);
+        }
     })
-  
-  
-  }
+
+
+}
 

@@ -1051,7 +1051,7 @@ var hairLeftHairLine_density_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1184,7 +1184,7 @@ var hairLeftHairLine_thickness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1321,7 +1321,7 @@ var hairFrontHairLine_density_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1454,7 +1454,7 @@ var hairFrontHairLine_thickness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1592,7 +1592,7 @@ var hairRightHairLine_density_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1725,7 +1725,7 @@ var hairRightHairLine_thickness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1861,7 +1861,7 @@ var hairFrontCenter_density_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -1994,7 +1994,7 @@ var hairFrontCenter_thickness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -2130,7 +2130,7 @@ var hairCenter_density_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -2263,7 +2263,7 @@ var hairCenter_thickness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -2403,7 +2403,7 @@ var hairBack_density_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
@@ -2536,7 +2536,7 @@ var hairBack_thickness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0.073, 0.077], // 데이터 포인트 값
+        data: [0], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e83f6f'], // 라인 색상
         borderWidth: 2,
