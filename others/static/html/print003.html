@@ -85,10 +85,10 @@
                     <div class="row-item-content flexWrapper">
                         <div class="paddingLeftRight">
                             <div style="display: flex; justify-content: space-between;">
-                                <h3 class="font-size40 font-color-gray3">굵기(㎟)</h3>
-                                <sub style="margin-left: auto; font-size: 10px;">기준값 : 0.075 mm</sub>
+                                <h3 class="font-size30 font-color-gray3" style="font-weight: 600;">굵기(㎟)</h3>
+                                <sub style="margin-left: auto; font-size: 8px;">기준값 : 0.075 mm</sub>
                             </div>
-                            <canvas id="thicknessChart" width="200" height="200"></canvas>
+                            <canvas id="thicknessChart" width="180" height="180"></canvas>
                             <!-- <div class="graph-item marginTop50 ">
                             <img src="./resource/images/print/graph-012.svg" alt="굵기 그래프">
                         </div> -->
@@ -96,23 +96,23 @@
                         </div>
                         <div class="flexWrapper flexAlignCenter">
                             <div class="img-box head-img  marginTop50">
-                                <img src="./resource/images/print/img-head.svg" alt="">
+                                <img src="./resource/images/print/img-head.png" alt="">
                             </div>
 
                         </div>
                         <div class="line-right paddingLeftRight">
                             <div style="display: flex; justify-content: space-between;">
-                            <h3 class="font-size40 font-color-gray3">밀도(hairs/㎠)</h3>
-                            <sub style="margin-left: auto; font-size: 10px;">기준값 : 120 hairs/㎠</sub>
+                            <h3 class="font-size30 font-color-gray3" style="font-weight: 600;">밀도(hairs/㎠)</h3>
+                            <sub style="margin-left: auto; font-size: 8px;">기준값 : 120 hairs/㎠</sub>
                             </div>
-                            <canvas id="densityChart" width="200" height="200"></canvas>
+                            <canvas id="densityChart" width="180" height="180"></canvas>
                             <!-- <div class="graph-item marginTop50">
                                 <img src="./resource/images/print/graph-013.svg" alt="밀도 그래프">
                             </div> -->
                         </div>
                         <div class="paddingLeftRight">
                             <!-- <h3 class="font-size40 font-color-gray3">밀도</h3> -->
-                            <canvas id="scatterChart" width="200" height="230"></canvas>
+                            <canvas id="scatterChart" width="200" height="200"></canvas>
                             <!-- <div class="graph-item marginTop50">
                                 <img src="./resource/images/print/graph-014.svg" alt="밀도 원 그래프">
                             </div> -->
@@ -131,35 +131,36 @@
                             </p>
                         </div>
                         <div class="col-3 paddingLeftRight line-right">
-                            <div class="img-box">
-                                <img src="./resource/images/print/img-hair-model1.svg" alt="헤어 모델 이미지">
+                            <div class="img-box" style="display: flex;">
+                                <img id="HairlossType_Basic_1-img"  style="width: 60px; height: 60px; margin: 10px;">
+                                <img id="HairlossType_Basic_2-img"  style="width: 60px; height: 60px; margin: 10px;">
                             </div>
-                            <h2 class="font-size40 font-bold textAlignCenter marginTop40">관심필요</h2>
-                            <p class="font-size36 marginTop20">
-                                헤어라인이 M자 형태로 물러난
-                                양상이 가중되어 양쪽 이마 헤어
-                                라인이 비어 보일 수 있습니다.
+                            <h2 class="font-size40 font-bold textAlignCenter marginTop20"id="HairlossType_Basic-text"></h2>
+                            <p class="font-size36 marginTop20" id="HairlossType_Basic-text2">
+                               
                             </p>
                         </div>
                         <div class="col-3 paddingLeftRight line-right">
-                            <div class="img-box">
-                                <img src="./resource/images/print/img-hair-model2.svg" alt="헤어 모델 이미지">
+                            <div class="img-box" style="display: flex;">
+                                <img id="HairlossType_Center_1-img"  style="width: 60px; height: 60px; margin: 10px;">
+                                <img id="HairlossType_Center_2-img"  style="width: 60px; height: 60px; margin: 10px;">
                             </div>
-                            <h2 class="font-size40 font-bold textAlignCenter marginTop40">집중관리</h2>
-                            <p class="font-size36 marginTop20">
-                                머리의 정점에서 머리카락이
-                                가늘어지고 있습니다.
+                            <h2 class="font-size40 font-bold textAlignCenter marginTop20" id="HairlossType_Center-text"></h2>
+                            <p class="font-size36 marginTop20" id="HairlossType_Center-text2">
+                              
                             </p>
                         </div>
                         <div class="col-3 paddingLeftRight">
-                            <div class="img-box">
+                            <!-- <div class="img-box">
                                 <img src="./resource/images/print/img-hair-model3.svg" alt="헤어 모델 이미지">
+                            </div> -->
+                            <div class="img-box" style="display: flex;">
+                                <img id="HairlossType_FrontCenter_1-img"  style="width: 60px; height: 60px; margin: 10px;">
+                                <img id="HairlossType_FrontCenter_2-img"  style="width: 60px; height: 60px; margin: 10px;">
                             </div>
-                            <h2 class="font-size40 font-bold textAlignCenter marginTop40">집중관리</h2>
-                            <p class="font-size36 marginTop20">
-                                헤어라인에서부터 정수리까지의
-                                모발이 매우 가늘어졌으며 밀도도
-                                줄어들고 있습니다.
+                            <h2 class="font-size40 font-bold textAlignCenter marginTop20" id="HairlossType_FrontCenter-text"></h2>
+                            <p class="font-size36 marginTop20" id="HairlossType_FrontCenter-text2">
+                               
                             </p>
                         </div>
                     </div>

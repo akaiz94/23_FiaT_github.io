@@ -572,7 +572,7 @@ $(document).ready(function () {
 
             if (HairlossType_Basic !== null) {
                 $('#HairlossType_Basic').text(HairlossType_Basic);
-                console.log('*****************HairlossType_Basic 값 > ', HairlossType_Basic);
+                console.log('*****************HairlossType_Basic 값 > ', HairlossType_Basic);                
                 
                 if (localStorage.getItem('custom_sex') === "F") {
                     $('#HairlossType_Basic_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_f.PNG');
@@ -655,9 +655,11 @@ $(document).ready(function () {
                 }
 
 
-            } else {
-                //$('#HairlossType_Basic').hide();
+            } else {              
                 $('#HairlossType_Basic').parent().remove();
+
+                $('#HairlossType_Basic_1-img').hide();
+                $('#HairlossType_Basic_2-img').hide();
             }
 
             if (HairlossType_Center !== null) {
@@ -747,6 +749,8 @@ $(document).ready(function () {
             } else {
                 //$('#HairlossType_Center').hide();
                 $('#HairlossType_Center').parent().remove();
+                $('#HairlossType_Center_1-img').hide();
+                $('#HairlossType_Center_2-img').hide();
             }
 
             if (HairlossType_FrontCenter !== null) {
@@ -837,6 +841,9 @@ $(document).ready(function () {
             } else {
                 //$('#HairlossType_FrontCenter').hide();
                 $('#HairlossType_FrontCenter').parent().remove();
+
+                $('#HairlossType_FrontCenter_1-img').hide();
+                $('#HairlossType_FrontCenter_2-img').hide();
             }
 
 
@@ -1135,7 +1142,7 @@ $(document).ready(function () {
 var fnGetVisitCount = function () {
     var visit_count = 0; //프로그램별 방문회차 카운트
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
 
         type: 'GET',
         success: function (response) {
@@ -1148,9 +1155,11 @@ var fnGetVisitCount = function () {
             var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
 
             select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
 
             select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
 
 
@@ -1161,10 +1170,12 @@ var fnGetVisitCount = function () {
             var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
 
             select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
                 && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
 
             select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
                 && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
 
@@ -1176,8 +1187,6 @@ var fnGetVisitCount = function () {
 
             $('#visitCount').text(visitCount);
 
-
-
         },
 
         error: function (xhr, status, error) {
@@ -1187,10 +1196,6 @@ var fnGetVisitCount = function () {
 
 
 }
-
-
-
-
 
 
 

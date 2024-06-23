@@ -28,10 +28,10 @@ $(document).ready(function () {
 
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
     console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
-    
-    
-  $('#manager_name').text(localStorage.getItem('manager_name'));
-  $('[id="custom_name"]').text(localStorage.getItem('custom_name'));
+
+
+    $('#manager_name').text(localStorage.getItem('manager_name'));
+    $('[id="custom_name"]').text(localStorage.getItem('custom_name'));
 
 });
 
@@ -48,6 +48,14 @@ var fnGetVisitList = function (param) {
     ajax.get(API_URL + '?rsvn_date=' + search_date, param, function (result) {
 
         list = result;
+
+        list = list.filter(item => item.cancelYN !== "3");
+        list.sort((a, b) => {
+            // Convert rsvn_time to comparable format (24-hour time)
+            let timeA = a.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
+            let timeB = b.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
+            return timeA.localeCompare(timeB);
+        });
 
 
         list.sort((a, b) => {
@@ -146,7 +154,7 @@ var fnGetVisitList = function (param) {
                 // **리뉴얼 이후 버전      
                 case '10':
                     progress_check = '상담 완료';
-                    break;                     
+                    break;
                 case '101':
                     progress_check = '피부 문진';
                     break;
@@ -194,39 +202,42 @@ var fnGetVisitList = function (param) {
 
             var visit_count = 0; //프로그램별 방문회차 카운트
             $.ajax({
-                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30',
-               
+                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000',
+
 
                 type: 'GET',
                 success: function (response) {
                     console.log('=====================');
                     console.log('리스트 별 고객검색 결과 성공 : ', response);
 
+                    // 프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+                    let select_visit1 = 0; // 다른날짜
+                    select_visit1 = response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date > item.rsvn_date &&
+                        item.cancelYN !== "3"
+                    ).length;
+                    console.log("select_visit1 데이터 값 : ", response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date > item.rsvn_date &&
+                        item.cancelYN !== "3"
+                    ));
 
-                    //프로그램별 방문회차 카운트 입력1 
-                    // visit_count = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date >= item.rsvn_date).length;
-                    // console.log('프로그램 방문회차 visit_count : ', visit_count);
-
-                    // data.visitCount = visit_count;
-                    // console.log('프로그램 방문회차 data.visitCount : ', data.visitCount);
-
-                    visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');//해당고객 방문 날짜   
-
-                    // raw_rsvn_date = data.rsvn_date; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 1
-                    // raw_rsvn_time = data.rsvn_time; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 2
-
-
-                    //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-                    var select_visit1 = 0 //다른날짜
-                    select_visit1 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date))
-
-                    var select_visit2 = 0 //같은날짜
-                    select_visit2 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time))
+                    let select_visit2 = 0; // 같은날짜
+                    select_visit2 = response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date === item.rsvn_date &&
+                        data.rsvn_time >= item.rsvn_time &&
+                        item.cancelYN !== "3"
+                    ).length;
+                    console.log("select_visit2 데이터 값 : ", response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date === item.rsvn_date &&
+                        data.rsvn_time >= item.rsvn_time &&
+                        item.cancelYN !== "3"
+                    ));
 
                     data.visitCount = select_visit1 + select_visit2;
-
 
 
 
@@ -268,7 +279,7 @@ var fnSetCurrentPage = function (num) {
  * 솔루션 제안 모음 
  * */
 
-var search_custom_name ="홍김똥";
+var search_custom_name = "홍김똥";
 $('#search_name').click(function () {
     console.log('search_name click!!!');
 
@@ -283,6 +294,18 @@ var fnGetVisitList_name = function (param) {
     $('#visit-list-name > tr').remove()
     ajax.get(API_URL + '?name=' + search_custom_name, param, function (result) {
         var list = result;
+
+
+        list = list.filter(item => item.cancelYN !== "3");
+        list.sort((a, b) => {
+            // Convert rsvn_time to comparable format (24-hour time)
+            let timeA = a.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
+            let timeB = b.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
+            return timeA.localeCompare(timeB);
+        });
+
+
+
         console.log("fnGetVisitList_name 의 result(list) : ", list);
 
         $.each(list, function (idx, data) {
@@ -333,7 +356,7 @@ var fnGetVisitList_name = function (param) {
                     programName = data.ProgramCode;
                     break;
             }
-            data.ProgramName = programName;         
+            data.ProgramName = programName;
 
             //핸드폰 번호 뒷자리만
             var lastPhonNum = '';
@@ -348,12 +371,12 @@ var fnGetVisitList_name = function (param) {
 
 
 
-            console.log("*****url : ", API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30' )
+            console.log("*****url : ", API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30')
 
             var visit_count = 0; //프로그램별 방문회차 카운트
             $.ajax({
                 url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=30',
-               
+
 
                 type: 'GET',
                 success: function (response) {
@@ -361,27 +384,32 @@ var fnGetVisitList_name = function (param) {
                     console.log('리스트 별 고객검색 결과 성공 : ', response);
 
 
-                    //프로그램별 방문회차 카운트 입력1 
-                    // visit_count = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date >= item.rsvn_date).length;
-                    // console.log('프로그램 방문회차 visit_count : ', visit_count);
+                    // 프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+                    let select_visit1 = 0; // 다른날짜
+                    select_visit1 = response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date > item.rsvn_date &&
+                        item.cancelYN !== "3"
+                    ).length;
+                    console.log("select_visit1 데이터 값 : ", response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date > item.rsvn_date &&
+                        item.cancelYN !== "3"
+                    ));
 
-                    // data.visitCount = visit_count;
-                    // console.log('프로그램 방문회차 data.visitCount : ', data.visitCount);
-
-                    visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');//해당고객 방문 날짜   
-
-                    // raw_rsvn_date = data.rsvn_date; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 1
-                    // raw_rsvn_time = data.rsvn_time; //피부 결과, 두피결과, 마이스킨솔루션 프로그램 측정회차 카운트용 2
-
-
-                    //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-                    var select_visit1 = 0 //다른날짜
-                    select_visit1 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date > item.rsvn_date))
-
-                    var select_visit2 = 0 //같은날짜
-                    select_visit2 = response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => item.ProgramCode === data.ProgramCode && data.rsvn_date === item.rsvn_date && data.rsvn_time >= item.rsvn_time))
+                    let select_visit2 = 0; // 같은날짜
+                    select_visit2 = response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date === item.rsvn_date &&
+                        data.rsvn_time >= item.rsvn_time &&
+                        item.cancelYN !== "3"
+                    ).length;
+                    console.log("select_visit2 데이터 값 : ", response.filter(item =>
+                        item.ProgramCode === data.ProgramCode &&
+                        data.rsvn_date === item.rsvn_date &&
+                        data.rsvn_time >= item.rsvn_time &&
+                        item.cancelYN !== "3"
+                    ));
 
                     data.visitCount = select_visit1 + select_visit2;
 
@@ -434,7 +462,7 @@ var fnSetCurrentPage_name = function (num) {
 function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst_path, ucstmid, rsvn_date, rsvn_time, ProgramCode, visitkey, skey, ProgramCode, progress_flg) {
     // 여기에서 msg-layer를 열거나 필요한 작업을 수행하세요.
 
-    console.log("========================");    
+    console.log("========================");
     $('.report-layer').addClass('open');
 
     localStorage.removeItem('custom_sex');
@@ -447,7 +475,7 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst
     localStorage.removeItem('custom_ucstmid');
     localStorage.removeItem('custom_sex');
     localStorage.removeItem('custom_phone');
- 
+
     localStorage.removeItem('visit_rsvn_date');
     localStorage.removeItem('raw_rsvn_date');
     localStorage.removeItem('raw_rsvn_time');
@@ -488,7 +516,7 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst
     localStorage.setItem('custom_userkey', userkey);
     localStorage.setItem('custom_surveyNo', surveyNo);
 
-    var rsvn_date_after  = rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');//해당고객 방문 날짜   
+    var rsvn_date_after = rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');//해당고객 방문 날짜   
 
     localStorage.setItem('AgeReal', AgeReal);
     localStorage.setItem('custom_ucstmid', ucstmid);

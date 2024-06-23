@@ -190,26 +190,283 @@ $(document).ready(function () {
             if (HairlossType_Basic !== null) {
                 // console.log("HairlossType_Basic33 : ", HairlossType_Basic);
                 $('#HairlossType_Basic').text(HairlossType_Basic);
+
+
+                if (localStorage.getItem('custom_sex') === "F") {
+                    $('#HairlossType_Basic_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_f.PNG');
+                    $('#HairlossType_Basic_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_s.PNG');
+                } else {
+                    $('#HairlossType_Basic_1-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Basic + '_f.PNG');
+                    $('#HairlossType_Basic_2-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Basic + '_s.PNG');
+                }
+
+
+                if (HairlossType_Basic === 'M0') {
+                    $('#HairlossType_Basic-text2').text('탈모는 진행되고 있지 않지만 헤어라인 모양이 M자형으로 예측됩니다.');
+                    $('#HairlossType_Basic-text').text('관심필요');
+                }
+                if (HairlossType_Basic === 'M1') {
+                    $('#HairlossType_Basic-text2').text('헤어라인이 M자 형태로 물러나기 시작하여 이마가 도드라져 보일 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'M2') {
+                    $('#HairlossType_Basic-text2').text('헤어라인이 M자 형태로 물러나 보일 수 있으며 이마 헤어라인의 모발 또한 가늘어 보일 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'M3') {
+                    $('#HairlossType_Basic-text2').text('헤어라인이 M자 형태로 물러난 양상이 가중되어 보이며 양쪽 이마 헤어라인이 비어 보일 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('집중관리');
+                }
+                if (HairlossType_Basic === 'C0') {
+                    $('#HairlossType_Basic-text2').text('탈모는 진행되고 있지 않지만 헤어라인 모양이 C자형으로 예측됩니다.');
+                    $('#HairlossType_Basic-text').text('관심필요');
+                }
+                if (HairlossType_Basic === 'C1') {
+                    $('#HairlossType_Basic-text2').text('헤어라인이 C자 형태로 물러나기 시작하여 이마가 도드라져 보일 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'C2') {
+                    $('#HairlossType_Basic-text2').text('헤어라인이 C자 형태로 물러나 보일 수 있으며 이마 헤어라인의 모발 또한 가늘어 보일 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'C3') {
+                    $('#HairlossType_Basic-text2').text('헤어라인이 C자 형태로 물러난 양상이 가중되어 보이며 이마 헤어라인이 비어 보일 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('집중관리');
+                }
+                if (HairlossType_Basic === 'U1') {
+                    $('#HairlossType_Basic-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 1/3 지점까지 탈모가 진행되었습니다.');
+                    $('#HairlossType_Basic-text').text('관심필요');
+                }
+                if (HairlossType_Basic === 'U2') {
+                    $('#HairlossType_Basic-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 2/3 지점까지 탈모가 진행되었습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'U3') {
+                    $('#HairlossType_Basic-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 2/3 지점 이상 탈모가 진행되었습니다.');
+                    $('#HairlossType_Basic-text').text('집중관리');
+                }
+
+                if (HairlossType_Basic === 'V1') {
+                    $('#HairlossType_Basic-text2').text('머리의 정점에서 머리카락이 가늘어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('관심필요');
+                }
+                if (HairlossType_Basic === 'V2') {
+                    $('#HairlossType_Basic-text2').text('머리의 정점에서 머리카락이 가늘어지고 면적이 넓어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'V3') {
+                    $('#HairlossType_Basic-text2').text('머리의 정점에 머리카락이 드물고 그 면적이 넓어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('집중관리');
+                }
+
+
+                if (HairlossType_Basic === 'F1') {
+                    $('#HairlossType_Basic-text2').text('헤어라인에서부터 정수리까지의 모발이 가늘어지는 형태가 예상됩니다.');
+                    $('#HairlossType_Basic-text').text('관심필요');
+                }
+                if (HairlossType_Basic === 'F2') {
+                    $('#HairlossType_Basic-text2').text('헤어라인에서부터 정수리까지의 모발이 가늘어지는 것이 육안으로도 인지될 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('주의요망');
+                }
+                if (HairlossType_Basic === 'F3') {
+                    $('#HairlossType_Basic-text2').text('헤어라인에서부터 정수리까지의 모발이 매우 가늘어졌으며 밀도도 줄어든 것이 육안으로 인지될 수 있습니다.');
+                    $('#HairlossType_Basic-text').text('집중관리');
+                }
+
+
             } else {
                 //$('#HairlossType_Basic').hide();
                 // console.log("HairlossType_Basic44 : ", HairlossType_Basic);
                 $('#HairlossType_Basic').remove();
+                $('#HairlossType_Basic_1-img').hide();
+                $('#HairlossType_Basic_2-img').hide();
             }
+
 
             if (HairlossType_Center !== null) {
                 console.log("HairlossType_Center33 : ", HairlossType_Center);
                 $('#HairlossType_Center').text(HairlossType_Center);
+
+                if (localStorage.getItem('custom_sex') === "F") {
+                    $('#HairlossType_Center_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Center + '_f.PNG');
+                    $('#HairlossType_Center_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Center + '_s.PNG');
+                } else {
+                    $('#HairlossType_Center_1-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Center + '_f.PNG');
+                    $('#HairlossType_Center_2-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_Center + '_s.PNG');
+                }
+
+
+                if (HairlossType_Center === 'M0') {
+                    $('#HairlossType_Center-text2').text('탈모는 진행되고 있지 않지만 헤어라인 모양이 M자형으로 예측됩니다.');
+                    $('#HairlossType_Center-text').text('관심필요');
+                }
+                if (HairlossType_Center === 'M1') {
+                    $('#HairlossType_Center-text2').text('헤어라인이 M자 형태로 물러나기 시작하여 이마가 도드라져 보일 수 있습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'M2') {
+                    $('#HairlossType_Center-text2').text('헤어라인이 M자 형태로 물러나 보일 수 있으며 이마 헤어라인의 모발 또한 가늘어 보일 수 있습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'M3') {
+                    $('#HairlossType_Center-text2').text('헤어라인이 M자 형태로 물러난 양상이 가중되어 보이며 양쪽 이마 헤어라인이 비어 보일 수 있습니다.');
+                    $('#HairlossType_Center-text').text('집중관리');
+                }
+                if (HairlossType_Center === 'C0') {
+                    $('#HairlossType_Center-text2').text('탈모는 진행되고 있지 않지만 헤어라인 모양이 C자형으로 예측됩니다.');
+                    $('#HairlossType_Center-text').text('관심필요');
+                }
+                if (HairlossType_Center === 'C1') {
+                    $('#HairlossType_Center-text2').text('헤어라인이 C자 형태로 물러나기 시작하여 이마가 도드라져 보일 수 있습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'C2') {
+                    $('#HairlossType_Center-text2').text('헤어라인이 C자 형태로 물러나 보일 수 있으며 이마 헤어라인의 모발 또한 가늘어 보일 수 있습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'C3') {
+                    $('#HairlossType_Center-text2').text('헤어라인이 C자 형태로 물러난 양상이 가중되어 보이며 이마 헤어라인이 비어 보일 수 있습니다.');
+                    $('#HairlossType_Center-text').text('집중관리');
+                }
+                if (HairlossType_Center === 'U1') {
+                    $('#HairlossType_Center-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 1/3 지점까지 탈모가 진행되었습니다.');
+                    $('#HairlossType_Center-text').text('관심필요');
+                }
+                if (HairlossType_Center === 'U2') {
+                    $('#HairlossType_Center-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 2/3 지점까지 탈모가 진행되었습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'U3') {
+                    $('#HairlossType_Center-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 2/3 지점 이상 탈모가 진행되었습니다.');
+                    $('#HairlossType_Center-text').text('집중관리');
+                }
+
+                if (HairlossType_Center === 'V1') {
+                    $('#HairlossType_Center-text2').text('머리의 정점에서 머리카락이 가늘어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_Center-text').text('관심필요');
+                }
+                if (HairlossType_Center === 'V2') {
+                    $('#HairlossType_Center-text2').text('머리의 정점에서 머리카락이 가늘어지고 면적이 넓어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'V3') {
+                    $('#HairlossType_Center-text2').text('머리의 정점에 머리카락이 드물고 그 면적이 넓어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_Center-text').text('집중관리');
+                }
+
+
+                if (HairlossType_Center === 'F1') {
+                    $('#HairlossType_Center-text2').text('헤어라인에서부터 정수리까지의 모발이 가늘어지는 형태가 예상됩니다.');
+                    $('#HairlossType_Center-text').text('관심필요');
+                }
+                if (HairlossType_Center === 'F2') {
+                    $('#HairlossType_Center-text2').text('헤어라인에서부터 정수리까지의 모발이 가늘어지는 것이 육안으로도 인지될 수 있습니다.');
+                    $('#HairlossType_Center-text').text('주의요망');
+                }
+                if (HairlossType_Center === 'F3') {
+                    $('#HairlossType_Center-text2').text('헤어라인에서부터 정수리까지의 모발이 매우 가늘어졌으며 밀도도 줄어든 것이 육안으로 인지될 수 있습니다.');
+                    $('#HairlossType_Center-text').text('집중관리');
+                }
+
             } else {
                 //$('#HairlossType_Center').hide();
                 console.log("HairlossType_Center44 : ", HairlossType_Center);
                 $('#HairlossType_Center').remove();
+                $('#HairlossType_Center_1-img').hide();
+                $('#HairlossType_Center_2-img').hide();
             }
+
+
 
             if (HairlossType_FrontCenter !== null) {
                 $('#HairlossType_FrontCenter').text(HairlossType_FrontCenter);
+
+                if (localStorage.getItem('custom_sex') === "F") {
+                    $('#HairlossType_FrontCenter_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_FrontCenter + '_f.PNG');
+                    $('#HairlossType_FrontCenter_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_FrontCenter + '_s.PNG');
+                } else {
+                    $('#HairlossType_FrontCenter_1-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_FrontCenter + '_f.PNG');
+                    $('#HairlossType_FrontCenter_2-img').attr('src', "./resource/images/scalp/LossTypes/M/" + HairlossType_FrontCenter + '_s.PNG');
+                }
+
+                if (HairlossType_FrontCenter === 'M0') {
+                    $('#HairlossType_FrontCenter-text2').text('탈모는 진행되고 있지 않지만 헤어라인 모양이 M자형으로 예측됩니다.');
+                    $('#HairlossType_FrontCenter-text').text('관심필요');
+                }
+                if (HairlossType_FrontCenter === 'M1') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인이 M자 형태로 물러나기 시작하여 이마가 도드라져 보일 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'M2') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인이 M자 형태로 물러나 보일 수 있으며 이마 헤어라인의 모발 또한 가늘어 보일 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'M3') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인이 M자 형태로 물러난 양상이 가중되어 보이며 양쪽 이마 헤어라인이 비어 보일 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('집중관리');
+                }
+                if (HairlossType_FrontCenter === 'C0') {
+                    $('#HairlossType_FrontCenter-text2').text('탈모는 진행되고 있지 않지만 헤어라인 모양이 C자형으로 예측됩니다.');
+                    $('#HairlossType_FrontCenter-text').text('관심필요');
+                }
+                if (HairlossType_FrontCenter === 'C1') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인이 C자 형태로 물러나기 시작하여 이마가 도드라져 보일 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'C2') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인이 C자 형태로 물러나 보일 수 있으며 이마 헤어라인의 모발 또한 가늘어 보일 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'C3') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인이 C자 형태로 물러난 양상이 가중되어 보이며 이마 헤어라인이 비어 보일 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('집중관리');
+                }
+                if (HairlossType_FrontCenter === 'U1') {
+                    $('#HairlossType_FrontCenter-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 1/3 지점까지 탈모가 진행되었습니다.');
+                    $('#HairlossType_FrontCenter-text').text('관심필요');
+                }
+                if (HairlossType_FrontCenter === 'U2') {
+                    $('#HairlossType_FrontCenter-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 2/3 지점까지 탈모가 진행되었습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'U3') {
+                    $('#HairlossType_FrontCenter-text2').text('정수리에서 후두부 융기까지를 3등분 하였을 때, 2/3 지점 이상 탈모가 진행되었습니다.');
+                    $('#HairlossType_FrontCenter-text').text('집중관리');
+                }
+
+                if (HairlossType_FrontCenter === 'V1') {
+                    $('#HairlossType_FrontCenter-text2').text('머리의 정점에서 머리카락이 가늘어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('관심필요');
+                }
+                if (HairlossType_FrontCenter === 'V2') {
+                    $('#HairlossType_FrontCenter-text2').text('머리의 정점에서 머리카락이 가늘어지고 면적이 넓어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'V3') {
+                    $('#HairlossType_FrontCenter-text2').text('머리의 정점에 머리카락이 드물고 그 면적이 넓어지고 있음을 인지할 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('집중관리');
+                }
+
+
+                if (HairlossType_FrontCenter === 'F1') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인에서부터 정수리까지의 모발이 가늘어지는 형태가 예상됩니다.');
+                    $('#HairlossType_FrontCenter-text').text('관심필요');
+                }
+                if (HairlossType_FrontCenter === 'F2') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인에서부터 정수리까지의 모발이 가늘어지는 것이 육안으로도 인지될 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('주의요망');
+                }
+                if (HairlossType_FrontCenter === 'F3') {
+                    $('#HairlossType_FrontCenter-text2').text('헤어라인에서부터 정수리까지의 모발이 매우 가늘어졌으며 밀도도 줄어든 것이 육안으로 인지될 수 있습니다.');
+                    $('#HairlossType_FrontCenter-text').text('집중관리');
+                }
+
+
             } else {
                 //$('#HairlossType_FrontCenter').hide();
                 $('#HairlossType_FrontCenter').remove();
+                $('#HairlossType_FrontCenter_1-img').hide();
+                $('#HairlossType_FrontCenter_2-img').hide();
             }
 
 
@@ -489,59 +746,62 @@ $(document).ready(function () {
 var fnGetVisitCount = function () {
     var visit_count = 0; //프로그램별 방문회차 카운트
     $.ajax({
-      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
-  
-      type: 'GET',
-      success: function (response) {
-        console.log('=====================');
-        console.log('리스트 별 고객검색 결과 성공 : ', response);
-  
-  
-        //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-        var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-        var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
-  
-        select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-  
-        select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
-          && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-  
-  
-        console.log("select_visit1_1 : ", select_visit1_1);
-        console.log("select_visit1_2 : ", select_visit1_2);
-  
-        var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-        var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
-  
-        select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
-          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-  
-        select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
-          && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-          && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-  
-        console.log("select_visit2_1 : ", select_visit2_1);
-        console.log("select_visit2_2 : ", select_visit2_2);
-  
-        visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
-        console.log("방문 회차 : visitCount > ", visitCount);
-  
-        $('#visitCount').text(visitCount);
-  
-  
-  
-      },
-  
-      error: function (xhr, status, error) {
-        console.error('리스트 별 고객검색 결과  에러 : ', error);
-      }
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
+
+        type: 'GET',
+        success: function (response) {
+            console.log('=====================');
+            console.log('리스트 별 고객검색 결과 성공 : ', response);
+
+
+            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+            var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
+
+            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+            select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+
+            console.log("select_visit1_1 : ", select_visit1_1);
+            console.log("select_visit1_2 : ", select_visit1_2);
+
+            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+            var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
+
+            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+            select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+            console.log("select_visit2_1 : ", select_visit2_1);
+            console.log("select_visit2_2 : ", select_visit2_2);
+
+            visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+            console.log("방문 회차 : visitCount > ", visitCount);
+
+            $('#visitCount').text(visitCount);
+
+        },
+
+        error: function (xhr, status, error) {
+            console.error('리스트 별 고객검색 결과  에러 : ', error);
+        }
     })
-  
-  
-  }
-  
+
+
+}
+
+
 
 
 
@@ -735,14 +995,21 @@ var scatterData = {
     datasets: [{
         label: '',
         data: [
-            { x: 0.077, y: 50, label: '① 좌' },
-            { x: 0.065, y: 90, label: '② 앞' },
-            { x: 0.06, y: 70, label: '③ 우' },
-            { x: 0.065, y: 40, label: '④ 중앙' },
-            { x: 0.07, y: 75, label: '⑤ 정수리' },
-            { x: 0.07, y: 75, label: '⑥ 후두부' }
+            { x: 0.08, y: 120, label: '① 좌' },
+            { x: 0.08, y: 120, label: '② 앞' },
+            { x: 0.08, y: 120, label: '③ 우' },
+            { x: 0.08, y: 120, label: '④ 앞중앙' },
+            { x: 0.08, y: 120, label: '⑤ 정수리' },
+            { x: 0.08, y: 120, label: '⑥ 후두부' }
         ],
-        backgroundColor: 'rgba(159, 159, 159, 0.5)', // 데이터 포인트 색상
+        backgroundColor: [
+            '#e5b9d5',
+            '#f17229',
+            '#fbca36',
+            '#6abe9f',
+            '#a9e5fb',
+            '#8749a0'
+        ], // 데이터 포인트 색상
         pointRadius: 5,
         pointHoverRadius: 10
     }]

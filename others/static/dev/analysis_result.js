@@ -997,66 +997,55 @@ $('#analysis_result_save').on('click', function (event) {
 var fnGetVisitCount = function () {
   var visit_count = 0; //프로그램별 방문회차 카운트
   $.ajax({
-    url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
+      type: 'GET',
+      success: function (response) {
+          console.log('=====================');
+          console.log('리스트 별 고객검색 결과 성공 : ', response);
 
-    
-    type: 'GET',
-    success: function (response) {
-      console.log('=====================');
-      console.log('리스트 별 고객검색 결과 성공 : ', response);
+          var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
+              && item.cancelYN !== "3"
+              && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+          var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
+              && item.cancelYN !== "3"
+              && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+          var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
+              && item.cancelYN !== "3"
+              && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+              && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+          var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
+              && item.cancelYN !== "3"
+              && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+              && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+              
+          const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
+              .filter(item => item.m_surveyNo !== null)
+              .sort((a, b) => {
+                  const dateComparison = new Date(b.rsvn_date).getTime() - new Date(a.rsvn_date).getTime();
+                  if (dateComparison !== 0) return dateComparison;
+                  return b.rsvn_time.localeCompare(a.rsvn_time);
+              });
 
-      //프로그램별 히스토리 조회 - 1.userkey, surveyNo 조회
-      var select_visit1_1_data = 0 //다른날짜 - 마이스킨솔루션
-      var select_visit1_2_data = 0 //다른날짜 - 피부측정프로그램
+          console.log("정렬된 데이터: ", finalCombinedData);
 
-      select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
-        && item.cancelYN !== "3"
-        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+          const extractedValues = finalCombinedData.map(item => ({surveyNo: item.m_surveyNo, userkey: item.m_userkey}));
+          const selectedValues = extractedValues.slice(0, 4);
 
-      select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
-        && item.cancelYN !== "3"
-        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+          console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
+          console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
 
-
-      console.log("select_visit1_1_data : ", select_visit1_1_data);
-      console.log("select_visit1_2_data : ", select_visit1_2_data);
-
-      var select_visit2_1_data = 0 //같은날짜 - 마이스킨솔루션
-      var select_visit2_2_data = 0 //같은날짜 - 피부측정프로그램
-
-      select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
-        && item.cancelYN !== "3"
-        && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
-      select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
-        && item.cancelYN !== "3"
-        && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
-      console.log("select_visit2_1_data : ", select_visit2_1_data);
-      console.log("select_visit2_2_data : ", select_visit2_2_data);
-
-      //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
-      const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
-      const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
-      const finalCombinedData_merge = [...combinedData1, ...combinedData2];
-      console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
-      $('#visitCount').text(finalCombinedData_merge.length);
+          //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
+          const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
+          const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
+          const finalCombinedData_merge = [...combinedData1, ...combinedData2];
+          $('#visitCount').text(finalCombinedData_merge.length);
 
 
-      let finalCombinedData = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
-      console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData);
-
-    },
-
-    error: function (xhr, status, error) {
-      console.error('리스트 별 고객검색 결과  에러 : ', error);
-    }
-  })
- 
-
-
+      },
+      error: function (xhr, status, error) {
+          console.error('리스트 별 고객검색 결과 에러 : ', error);
+      }
+  });
 }
 
 

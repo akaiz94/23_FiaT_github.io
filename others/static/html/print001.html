@@ -68,7 +68,7 @@
                         style="transform: scale(1.6); margin-left: 37px;">
                 </div>
                 <div class="date-box">
-                    <span id="visitDate" style="font-size: 11px;">2024. 01. 22</span>
+                    <span id="visitDate" style="font-size: 11px;"></span>
                     <div class="round-item" style="font-weight: bold;"> <span id="visitCount"></span>회차 </div>
                 </div>
             </header>
@@ -92,9 +92,9 @@
                         </div>
                         <div class="col-3 paddingLeftRight line-right ">
                             <h3 class="font-size40 font-color-gray3" style="font-weight: 600;">관리 항목</h3>
-                            <div class="font-size60 font-color-black font-bold flexJustifyCenter height100 marginTop30">
-                                <span>
-                                    <em style="font-size: 16px; " id="selected_subdata"></em>,
+                            <div class="font-size60 font-color-black flexJustifyCenter height100 marginTop30">
+                                <span style="text-align: center;">
+                                    <em style="font-size: 16px; " id="selected_subdata"></em><br>
                                     <em style="font-size: 16px; " id="selected_subdata2"></em>
 
                                 </span>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="col-6 paddingLeftRight ">
                             <h3 class="font-size40 font-color-gray3" style="font-weight: 600;">현재 상태</h3>
-                            <ul id="skinScoreList" class="flexWrapper gap28 marginTop30">
+                            <ul id="skinScoreList" class="flexWrapper gap28 marginTop50">
                                 <li class="item-box" data-range="0-20">집중관리</li>
                                 <li class="item-box" data-range="20-40">관심필요</li>
                                 <li class="item-box" data-range="40-60">보통</li>
@@ -189,15 +189,14 @@
                         <div class="col-2_5">
                             <div class="paddingLeftRight20 ">
                                 <h3 class="font-size40 font-color-gray3" style="margin-left: 65px; font-weight: 600;">Sensitivity</h3>
-                                <canvas class="canvas2" width="150" height="180" id="sensitivity_chart" style="image-rendering: crisp-edges;"></canvas>
+                                <canvas class="canvas2" width="140" height="180" id="sensitivity_chart" style="image-rendering: crisp-edges;"></canvas>
                                 <!-- <div class="graph-item height520 ">
                                     <img src="./resource/images/print/graph-005.svg" alt="Sensitivity 그래프">
                                 </div> -->
                             </div>
-                            <p class="font-size26 marginTop30" style="margin-left: 20px;">
+                            <p class="font-size26 marginTop30" style="margin-left: 15px;">
                                 <em class="font-bold">경피수분손실도</em> : 피부 수분 증발의 손실
-                                <br>정도를 나타냄. 값이 낮을수록 건조, <br>피부
-                                장벽 손상, 민감성 피부를 나타냄
+                                정도를 나타냄. 값이 낮을수록 건조, 피부 장벽 손상, 민감성 피부를 나타냄
                             </p>
                         </div>
                         <div class="col-2_4 ">
@@ -215,17 +214,20 @@
                             </p>
                         </div>
                         <div class="col-2_3 paddingLeftRight">
-                            <h3 class="font-size40 font-color-gray3">
+                            <h3 class="font-size40 font-color-gray3" style="margin-left: 3px; font-weight: 600; text-align: center;">
                                 Score
                                 <span class="subtext">Categorization</span>
                             </h3>
-                            <ul class="level-list marginTop50">
+                            <!-- <ul class="level-list marginTop50">
                                 <li class="level-color1" style="font-size: 10px;">매우 좋음(80~100)</li>
                                 <li class="level-color2" style="font-size: 10px;">좋음(60~80)</li>
                                 <li class="level-color3" style="font-size: 10px;">보통(40~60)</li>
                                 <li class="level-color4" style="font-size: 10px;">관심 필요(20~40)</li>
                                 <li class="level-color5" style="font-size: 10px;">집중 관리(0~20)</li>
-                            </ul>
+                            </ul> -->
+                            <div>
+                                <img  style="width: 100px; height: 180px;" src="./resource/images/print/skin-score-categorization-print.png">
+                            </div>
                         </div>
 
                     </div>

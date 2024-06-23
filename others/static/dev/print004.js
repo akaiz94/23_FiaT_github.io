@@ -378,83 +378,23 @@ var fnGetVisitCount = function () {
 
 
             //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-            var select_visit1_2 = 0 //다른날짜 - 두피측정프로그램
+            var select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013" && item.cancelYN !== "3" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010" && item.cancelYN !== "3" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013" && item.cancelYN !== "3" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+            var select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010" && item.cancelYN !== "3" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
 
-            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-
-            select_visit1_2 = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-
-
-            // console.log("select_visit1_1 : ", select_visit1_1);
-            // console.log("select_visit1_2 : ", select_visit1_2);
-
-            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-            var select_visit2_2 = 0 //같은날짜 - 두피측정프로그램
-
-            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-            select_visit2_2 = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-            // console.log("select_visit2_1 : ", select_visit2_1);
-            // console.log("select_visit2_2 : ", select_visit2_2);
-
-            visitCount = select_visit1_1 + select_visit1_2 + select_visit2_1 + select_visit2_2;
+            visitCount = select_visit1_1.length + select_visit1_2.length + select_visit2_1.length + select_visit2_2.length;
             console.log("방문 회차 : visitCount > ", visitCount);
-
             $('#visitCount').text(visitCount);
 
-
-
-            //===========================
-
-            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-            var select_visit1_1_data = 0 //다른날짜 - 마이스킨솔루션
-            var select_visit1_2_data = 0 //다른날짜 - 두피측정프로그램
-
-            select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-
-            select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-
-
-            console.log("select_visit1_1_data : ", select_visit1_1_data);
-            console.log("select_visit1_2_data : ", select_visit1_2_data);
-
-            var select_visit2_1_data = 0 //같은날짜 - 마이스킨솔루션
-            var select_visit2_2_data = 0 //같은날짜 - 두피측정프로그램
-
-            select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
-            select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001010"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
-            console.log("select_visit2_1_data : ", select_visit2_1_data);
-            console.log("select_visit2_2_data : ", select_visit2_2_data);
-
-
-
             //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기     
-            const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
-            const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
+            const combinedData1 = [...select_visit1_1, ...select_visit1_2];
+            const combinedData2 = [...select_visit2_1, ...select_visit2_2];
             const finalCombinedData_merge = [...combinedData1, ...combinedData2];
             console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
-            
-        
-            let finalCombinedData = finalCombinedData_merge.filter(item => item.m_surveyNo !== null );
+
+            let finalCombinedData = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
             console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData);
-
-
 
             //프로그램별 히스토리 조회 - 3.rsvn_date 값을 기준으로 정렬 (내림차순 정렬 - 최신 날짜순) 
             finalCombinedData.sort((a, b) => new Date(b.rsvn_date).getTime() - new Date(a.rsvn_date).getTime());
@@ -468,25 +408,14 @@ var fnGetVisitCount = function () {
             // 정렬된 데이터 출력
             console.log("정렬된 데이터: ", finalCombinedData);
 
-
             // 프로그램별 히스토리 조회 - 4. userkey와 surveyNo 값을 추출하여 새로운 배열로 저장
-            const extractedValues = finalCombinedData.map(item => {
+            const selectedValues = finalCombinedData.map(item => {
                 return {
                     userkey: item.m_userkey,
                     surveyNo: item.m_surveyNo
                 };
             });
-            // 추출된 값 출력
-            console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
 
-            // 첫 번째부터 네 번째까지 값을 추출하여 새로운 배열로 저장
-            const selectedValues = extractedValues.slice(0, 4);
-
-            // 추출된 값 출력
-            console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
-
-            console.log('selectedValues 의 길이 : ', selectedValues.length);
-            console.log("1111: ", selectedValues[0].surveyNo);
 
 
 

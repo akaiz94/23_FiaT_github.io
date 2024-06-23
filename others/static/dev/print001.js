@@ -356,7 +356,7 @@ var aging_data = {
     labels: ['탄력', '주름', '미래주름'],
     datasets: [{
         label: '', // 범례 레이블 없음
-        data: [24, 50, 100],
+        data: [0, 0, 0],
         backgroundColor: function (context) {
             return context.raw < 60 ? '#e7c1da' : '#d98cbf';
         },
@@ -392,7 +392,7 @@ var aging_chart = new Chart(ctx3, {
                         return value === 110 ? '' : value;
                     },
                     font: {
-                        size: 10 // 폰트 크기 조절
+                        size: 9 // 폰트 크기 조절
                     }
                 },
                 grid: {
@@ -422,14 +422,14 @@ var aging_chart = new Chart(ctx3, {
                 align: 'top',
                 color: '#333',
                 font: {
-                    weight: 'bold'
+                    weight: 'medium'
                 },
                 formatter: function (value, context) {
                     return value;
                 }
             }
         },
-        barThickness: 25
+        barThickness: 20
 
     }
 });
@@ -455,7 +455,7 @@ var pigmentation_data = {
     labels: ['색소침착', '멜라닌'],
     datasets: [{
         label: '', // 범례 레이블 없음
-        data: [24, 50],
+        data: [0, 0],
         backgroundColor: function (context) {
             return context.raw < 60 ? '#e7c1da' : '#d98cbf';
         },
@@ -485,7 +485,7 @@ var pigmentation_chart = new Chart(ctx4, {
                         return value === 110 ? '' : value;
                     },
                     font: {
-                        size: 10 // 폰트 크기 조절
+                        size: 9 // 폰트 크기 조절
                     }
 
                 },
@@ -516,14 +516,14 @@ var pigmentation_chart = new Chart(ctx4, {
                 align: 'top',
                 color: '#333',
                 font: {
-                    weight: 'bold'
+                    weight: 'light'
                 },
                 formatter: function (value, context) {
                     return value;
                 }
             }
         },
-        barThickness: 30
+        barThickness: 20
 
     }
 });
@@ -578,7 +578,7 @@ var sensitivity_chart = new Chart(ctx_sensitivity, {
                         return value === 110 ? '' : value;
                     },
                     font: {
-                        size: 10 // 폰트 크기 조절
+                        size: 9 // 폰트 크기 조절
                     }
                 },
                 grid: {
@@ -608,14 +608,14 @@ var sensitivity_chart = new Chart(ctx_sensitivity, {
                 align: 'top',
                 color: '#333',
                 font: {
-                    weight: 'bold'
+                    weight: 'lighy'
                 },
                 formatter: function (value, context) {
                     return value;
                 }
             }
         },
-        barThickness: 30
+        barThickness: 20
     }
 });
 
@@ -666,7 +666,7 @@ var sebum_chart = new Chart(ctx_sebum, {
                         return value === 110 ? '' : value;
                     },
                     font: {
-                        size: 10 // 폰트 크기 조절
+                        size: 9 // 폰트 크기 조절
                     }
                 },
                 grid: {
@@ -696,14 +696,14 @@ var sebum_chart = new Chart(ctx_sebum, {
                 align: 'top',
                 color: '#333',
                 font: {
-                    weight: 'bold'
+                    weight: 'lighy'
                 },
                 formatter: function (value, context) {
                     return value;
                 }
             }
         },
-        barThickness: 30
+        barThickness: 20
     }
 });
 
@@ -730,19 +730,27 @@ function updateSebumData(data1, data2) {
 var fnGetVisitCount = function () {
     var visit_count = 0; //프로그램별 방문회차 카운트
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
-
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
         type: 'GET',
         success: function (response) {
             console.log('=====================');
             console.log('리스트 별 고객검색 결과 성공 : ', response);
 
-
-            var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-            var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014" && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-            var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-            var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014" && localStorage.getItem('raw_rsvn_date') === item.rsvn_date && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-
+            var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+            var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+            var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+                
             const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
                 .filter(item => item.m_surveyNo !== null)
                 .sort((a, b) => {
@@ -753,34 +761,24 @@ var fnGetVisitCount = function () {
 
             console.log("정렬된 데이터: ", finalCombinedData);
 
-            const extractedValues = finalCombinedData.map(item => ({ userkey: item.m_userkey, surveyNo: item.m_surveyNo }));
+            const extractedValues = finalCombinedData.map(item => ({surveyNo: item.m_surveyNo, userkey: item.m_userkey}));
             const selectedValues = extractedValues.slice(0, 4);
 
             console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
             console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
 
+       
 
             //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
             const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
             const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
             const finalCombinedData_merge = [...combinedData1, ...combinedData2];
-            console.log("최종 합쳐진 데이터: ", finalCombinedData_merge);
-
-
-            let finalCombinedData_afterMarge = finalCombinedData_merge.filter(item => item.m_surveyNo !== null);
-            console.log("최종 합쳐진 데이터(null 제외): ", finalCombinedData_afterMarge);
-
-
-            $('#visitCount').text(finalCombinedData_afterMarge.length);
+            $('#visitCount').text(finalCombinedData_merge.length);
 
 
         },
-
         error: function (xhr, status, error) {
-            console.error('리스트 별 고객검색 결과  에러 : ', error);
+            console.error('리스트 별 고객검색 결과 에러 : ', error);
         }
-    })
-
-
+    });
 }
-
