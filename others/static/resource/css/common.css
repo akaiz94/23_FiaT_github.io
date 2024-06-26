@@ -136,6 +136,10 @@
 .site-header .login-button:hover{color:var(--white-op-100);border-color: var(--default-font-color);background-color: var(--default-font-color)}
 .site-header .user-name{font-family: var(--Arita-kr);font-size: var(--font-size-15);font-weight: var(--font-weight-bold);color: var(--default-font-color);transition-duration: 0.3s;transition-property: color;}
 .site-header .user-name::after{content:'님';}
+
+.site-header .user-name2{font-family: var(--Arita-kr);font-size: var(--font-size-15);font-weight: var(--font-weight-bold);color: var(--default-font-color);transition-duration: 0.3s;transition-property: color;}
+.site-header .user-name2::after{content:'';}
+
 .site-header .logout-button{width: 90px;font-family: var(--Arita-kr);font-size: var(--font-size-15);color: var(--default-font-color);text-align: center;transition-duration: 0.3s;transition-property: color;}
 
 .site-header.submenu-open .menu-box::after,.site-header.submenu-open .menu-box::before{opacity: 1;}

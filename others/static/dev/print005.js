@@ -1,6 +1,7 @@
 var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
 var SkinSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/skin/';
 var ResultSkinConcern_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
+var MySKin_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/myskin/';
 
 var first_s3_0 = 0; // 0.나이
 var first_s3_1 = 0; // 1.자외선
@@ -27,6 +28,7 @@ $(document).ready(function () {
 
     fnGetSkinSurvey(); //스킨 문진 
     fnGetResultSkinConcern(); // 현재점수  및 미래점수(초기)
+    fnGetMySkinResut() //마이스킨솔루션 comment 가져오기
 
     $('#manager_name').text(localStorage.getItem('manager_name'));
     $('#custom_name').text(localStorage.getItem('custom_name'));
@@ -45,43 +47,21 @@ $(document).ready(function () {
 });
 
 
-
 /*
 *
-*24. 06. 14 방문회차 카운트 함수
+*24. 06. 24 마이스킨솔루션 comment값 가져오기
 *
 */
-var fnGetVisitCount = function () {
-    var visit_count = 0; //프로그램별 방문회차 카운트
+
+var fnGetMySkinResut = function () {  
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+        url: MySKin_API_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
 
         type: 'GET',
         success: function (response) {
             console.log('=====================');
-            console.log('리스트 별 고객검색 결과 성공 : ', response);
-
-
-            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
-
-            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
-            console.log("select_visit1_1 : ", select_visit1_1);
-
-            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
-            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
-                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
-
-            console.log("select_visit2_1 : ", select_visit2_1);
-
-            visitCount = select_visit1_1 + select_visit2_1;
-            console.log("방문 회차 : visitCount > ", visitCount);
-
-            $('#visitCount').text(visitCount);
-
-
+            console.log('마이스킨솔루션 결과 가져오기 : ', response);
+            $('#comment01_main').text(response[0].specialtip_memo);
 
         },
 
@@ -93,6 +73,59 @@ var fnGetVisitCount = function () {
 
 }
 
+/*
+*
+*24. 06. 14 방문회차 카운트 함수
+*
+*/
+
+var fnGetVisitCount = function () {
+    var visitCount = 0; //프로그램별 방문회차 카운트
+    $.ajax({
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
+
+        type: 'GET',
+        success: function (response) {
+            console.log('=====================');
+            console.log('리스트 별 고객검색 결과 성공 : ', response);
+
+
+            //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+            var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+       
+
+            select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+
+            console.log("select_visit1_1 : ", select_visit1_1);
+        
+
+            var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+        
+
+            select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
+                && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+                && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
+
+            console.log("select_visit2_1 : ", select_visit2_1);       
+
+            visitCount = select_visit1_1 + select_visit2_1;
+            console.log("방문 회차 : visitCount > ", visitCount);
+
+            $('#visitCount').text(visitCount);
+
+        },
+
+        error: function (xhr, status, error) {
+            console.error('리스트 별 고객검색 결과  에러 : ', error);
+        }
+    })
+
+
+}
 
 
 
@@ -192,17 +225,20 @@ var fnGetResultSkinConcern = function () {
 
             sensitivity_score = parseInt(response[0].redness); // 민감 (붉은기)
             pigment_score = parseInt(response[0].pigmentation); // 색소침착
-            elasticity_score = parseInt(response[0].elasticity); // 탄력
+            wrinkle_score = parseInt(response[0].wrinkle); // 주름
+            elasticity_score = parseInt(response[0].elasticity); //탄력
+
             oiliness_score = parseInt(response[0].uZone_Oilskin); // 유분
             dryness_score = parseInt(response[0].uZone_Moisture); //수분
+       
 
             // 값들을 배열로 만듦
             const values = [
                 { name: '민감', score: sensitivity_score },
                 { name: '색소침착', score: pigment_score },
-                { name: '탄력', score: elasticity_score },
-                { name: '유분', score: oiliness_score },
-                { name: '수분', score: dryness_score }
+                { name: '주름', score: wrinkle_score },
+                { name: '유분', score: (oiliness_score * 100 / 40) },
+                { name: '수분', score: (dryness_score * 100 / 60) }
             ];
 
             // 값을 점수(score) 기준으로 오름차순으로 정렬
@@ -217,9 +253,9 @@ var fnGetResultSkinConcern = function () {
             $('#Low_second').text(secondLowestValue);
 
             //방사형(레이더)차트 업데이트 (현재점수)
-            updateRadarData(0, [(dryness_score * 100 / 60).toFixed(0), (oiliness_score * 100 / 40).toFixed(0), sensitivity_score, pigment_score, elasticity_score]); //현재 피부 데이터 
+            updateRadarData(0, [(dryness_score * 100 / 60).toFixed(0), (oiliness_score * 100 / 40).toFixed(0), sensitivity_score, pigment_score, wrinkle_score]); //현재 피부 데이터 
             //막대(my)차트 업데이트 (현재점수)
-            updateBarData(0, [(dryness_score * 100 / 60).toFixed(0), (oiliness_score * 100 / 40).toFixed(0), sensitivity_score, pigment_score, elasticity_score]); //현재 피부 데이터 
+            updateBarData(0, [(dryness_score * 100 / 60).toFixed(0), (oiliness_score * 100 / 40).toFixed(0), sensitivity_score, pigment_score, wrinkle_score]); //현재 피부 데이터 
 
 
 
@@ -236,9 +272,6 @@ var fnGetResultSkinConcern = function () {
 
 
 }
-
-
-
 
 // #5 미래점수 값 가져오기 (초기)
 var fnGetFutureScore_first = function () {
@@ -260,9 +293,30 @@ var fnGetFutureScore_first = function () {
     // var after_s3_2 = s3_2 + 1
     // var after_s3_3 = s3_3 + 1
     // var after_s3_4 = s3_4 + 1
- 
 
-    if(elasticity_score > -1 && sensitivity_score > -1 && pigment_score > -1 && oiliness_score > -1 && dryness_score){
+    //점수 초기값이 0이면 안됨 (범위 1 ~ 100)
+    if (elasticity_score === 0){
+        elasticity_score += 1;
+    }
+
+    if (sensitivity_score === 0){
+        sensitivity_score += 1;
+    }
+
+    if (pigment_score === 0){
+        pigment_score += 1;
+    }
+
+    if (oiliness_score === 0){
+        oiliness_score += 1;
+    }
+
+    if (dryness_score === 0){
+        dryness_score += 1;
+    }
+
+
+    if (elasticity_score > 0 && sensitivity_score > 0 && pigment_score > 0 && oiliness_score > 0 && dryness_score>0) {
         $.ajax({
             //운영
             url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_first_s3_1}&modified_smoke=${after_first_s3_2}&modified_stress=${after_first_s3_3}&modified_sleep=${after_first_s3_4}`,

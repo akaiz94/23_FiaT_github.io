@@ -1,5 +1,4 @@
 var hairSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/hair/';
-
 var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
 var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/progress_flg/';
 
@@ -9,8 +8,37 @@ let surveyDate = moment().format('YYYY/MM/DD');
 $(document).ready(function () {
 
     console.log('solution_questionnaire2 page start -> ')
+    
+    if (localStorage.getItem('custom_surveyNo') === null) {
+        console.log("고객 정보 확인불가.");
+        $("#noData_text").html('고객이 선택되지 않았습니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
+    if (localStorage.getItem('ProgramCode') === 'PC001014') {
+        console.log("피부프로그램");
+        $("#noData_text").html('피부 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
 
 
+    
 
 
     //#4th. 문진(두피) 요청

@@ -62,9 +62,10 @@ var visit_rsvn_date = null;
 var raw_rsvn_date = null;
 var raw_rsvn_time = null;
 
+
 var fnGetVisitList = function (param) {
-    console.log('## fnGetVisitList call')
-    $('#visit-list > tr').remove()
+    console.log('## fnGetVisitList call');
+    $('#visit-list > tr').remove();
 
     ajax.get(API_URL + '?rsvn_date=' + search_date, param, function (result) {
 
@@ -75,25 +76,26 @@ var fnGetVisitList = function (param) {
             // Convert rsvn_time to comparable format (24-hour time)
             let timeA = a.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
             let timeB = b.rsvn_time.padStart(4, '0'); // Ensure it is 4 characters
-            return timeA.localeCompare(timeB);
+            return timeB.localeCompare(timeA);
         });
 
         console.log("fnGetVisitList 의 result(list): ", list);
         console.log("list개수 : ", list.length);
 
+        // 비동기 요청을 추적하기 위한 배열
+        var promises = [];
+
         $.each(list, function (idx, data) {
             console.log("고객 리스트별 data 값 : ", data);
 
-            // page_param.totalCount = data.total_count
-
-             //시간에 세미콜론 추가
-             let rsvn_time_colon = ''
-             if (data.rsvn_time.length === 4) {
+            //시간에 세미콜론 추가
+            let rsvn_time_colon = ''
+            if (data.rsvn_time.length === 4) {
                 rsvn_time_colon = data.rsvn_time.slice(0, 2) + ':' + data.rsvn_time.slice(2);
-             } else {
+            } else {
                 rsvn_time_colon = data.rsvn_time;
-             }
-             data.rsvn_time_colon = rsvn_time_colon;
+            }
+            data.rsvn_time_colon = rsvn_time_colon;
 
             //핸드폰 번호 뒷자리만
             var lastPhonNum = '';
@@ -130,8 +132,6 @@ var fnGetVisitList = function (param) {
             // 상담 진행 구분
             var progress_check = '';
             switch (data.progress_flg) {
-
-                // **이전 버전
                 case '0':
                     progress_check = '대기';
                     break;
@@ -162,11 +162,9 @@ var fnGetVisitList = function (param) {
                 case '9':
                     progress_check = '연구원 상담';
                     break;
-
-                // **리뉴얼 이후 버전      
                 case '10':
                     progress_check = '상담 완료';
-                    break;                     
+                    break;
                 case '101':
                     progress_check = '피부 문진';
                     break;
@@ -179,12 +177,6 @@ var fnGetVisitList = function (param) {
                 case '104':
                     progress_check = '두피 측정';
                     break;
-                // case '105':
-                //     progress_check = '피부 측정 완료';
-                //     break;
-                // case '106':
-                //     progress_check = '두피 측정 완료';
-                //     break;
                 case '107':
                     progress_check = '피부 상담';
                     break;
@@ -200,9 +192,6 @@ var fnGetVisitList = function (param) {
                 case '111':
                     progress_check = '마이 스킨 솔루션';
                     break;
-                // case '10':
-                //     progress_check = '완료';
-                //     break;    
                 default:
                     progress_check = '확인 필요';
                     break;
@@ -210,64 +199,76 @@ var fnGetVisitList = function (param) {
             data.progress_check = progress_check;
             console.log("data.progress_check : ", data.progress_check);
 
+            // 비동기 요청을 Promise 배열에 저장
+            var promise = new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000',
+                    type: 'GET',
+                    success: function (response) {
+                        console.log('=====================');
+                        console.log('리스트 별 고객검색 결과 성공 : ', response);
+                        //해당고객 방문 날짜   
+                        visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');
 
-            var visit_count = 0; //프로그램별 방문회차 카운트
-            $.ajax({
-                url: API_URL + '?name=' + data.name + '&phone=' + data.phone + '&pageSize=1000',
-               
-                type: 'GET',
-                success: function (response) {
-                    console.log('=====================');
-                    console.log('리스트 별 고객검색 결과 성공 : ', response);
-                    //해당고객 방문 날짜   
-                    visit_rsvn_date = data.rsvn_date.substring(0, 10).replace('-', '. ').replace('-', '. ');
-                    
-                    // 프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
-                    let select_visit1 = 0; // 다른날짜
-                    select_visit1 = response.filter(item => 
-                        item.ProgramCode === data.ProgramCode && 
-                        data.rsvn_date > item.rsvn_date && 
-                        item.cancelYN !== "3"
-                    ).length;
-                    console.log("select_visit1 데이터 값 : ", response.filter(item => 
-                        item.ProgramCode === data.ProgramCode && 
-                        data.rsvn_date > item.rsvn_date && 
-                        item.cancelYN !== "3"
-                    ));
-                    
-                    let select_visit2 = 0; // 같은날짜
-                    select_visit2 = response.filter(item => 
-                        item.ProgramCode === data.ProgramCode && 
-                        data.rsvn_date === item.rsvn_date && 
-                        data.rsvn_time >= item.rsvn_time && 
-                        item.cancelYN !== "3"
-                    ).length;
-                    console.log("select_visit2 데이터 값 : ", response.filter(item => 
-                        item.ProgramCode === data.ProgramCode && 
-                        data.rsvn_date === item.rsvn_date && 
-                        data.rsvn_time >= item.rsvn_time && 
-                        item.cancelYN !== "3"
-                    ));
-                    
-                    data.visitCount = select_visit1 + select_visit2;
+                        // 프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
+                        let select_visit1 = 0; // 다른날짜
+                        select_visit1 = response.filter(item =>
+                            item.ProgramCode === data.ProgramCode &&
+                            data.rsvn_date > item.rsvn_date &&
+                            item.cancelYN !== "3"
+                        ).length;
+                        console.log("select_visit1 데이터 값 : ", response.filter(item =>
+                            item.ProgramCode === data.ProgramCode &&
+                            data.rsvn_date > item.rsvn_date &&
+                            item.cancelYN !== "3"
+                        ));
 
-                    //비동기적으로 html을 로드
-                    template.prepend($('#visit-item'), $('#visit-list'), data, function () {
-                        // todo define
-                    });
+                        let select_visit2 = 0; // 같은날짜
+                        select_visit2 = response.filter(item =>
+                            item.ProgramCode === data.ProgramCode &&
+                            data.rsvn_date === item.rsvn_date &&
+                            data.rsvn_time >= item.rsvn_time &&
+                            item.cancelYN !== "3"
+                        ).length;
+                        console.log("select_visit2 데이터 값 : ", response.filter(item =>
+                            item.ProgramCode === data.ProgramCode &&
+                            data.rsvn_date === item.rsvn_date &&
+                            data.rsvn_time >= item.rsvn_time &&
+                            item.cancelYN !== "3"
+                        ));
 
-                },
+                        data.visitCount = select_visit1 + select_visit2;
+                        resolve(data); // 비동기 작업 완료 시 resolve
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('리스트 별 고객검색 결과 에러 : ', error);
+                        reject(error); // 비동기 작업 실패 시 reject
+                    }
+                });
+            });
 
-                error: function (xhr, status, error) {
-                    console.error('리스트 별 고객검색 결과  에러 : ', error);
-                }
-            })
+            promises.push(promise); // Promise 배열에 추가
+        });
 
-        })
-        // fnSetUI('list');
-        fnAddPagenation();
+        // 모든 비동기 작업이 완료된 후 데이터 추가
+        Promise.all(promises).then(function (results) {
+            results.forEach(function (data) {
+                template.prepend($('#visit-item'), $('#visit-list'), data, function () {
+                    // todo define
+                });
+            });
+
+
+
+
+            // fnSetUI('list');
+            fnAddPagenation();
+        }).catch(function (error) {
+            console.error('Error processing visit list:', error);
+        });
     });
 }
+
 
 var fnGetVisitDetail = function (visitkey, skey) {
     document.getElementById('info-popup').style.display = 'block';
@@ -433,6 +434,9 @@ function openMsgLayer(name, phone, birthdate, sex, userkey, surveyNo, email, vst
 
 
     const visitDate = currentTime.substring(0, 4) + ". " + currentTime.substring(5, 7) + ". " + currentTime.substring(8, 10);
+
+    //생년월일 - 있을경우 제거
+    birthdate = birthdate.replace(/-/g, "");
 
     const birth_year = birthdate.substring(0, 4);
     const birth_month = birthdate.substring(4, 6);
@@ -619,6 +623,288 @@ function checkRadioButton(vst_path) {
 }
 
 
+let Layer2_birthYear ='';
+let Layer2_birthMonth ='';
+let Layer2_birthDay ='';
+
+function openMsgLayer2(name, phone, birthdate, sex, userkey, surveyNo, email, vst_path, ucstmid, rsvn_date, rsvn_time, ProgramCode, visitkey, skey, ProgramCode, progress_flg) {
+    // 여기에서 msg-layer를 열거나 필요한 작업을 수행하세요.
+
+    console.log("===========================");
+
+
+    localStorage.removeItem('custom_sex');
+    localStorage.removeItem('custom_name');
+    localStorage.removeItem('custom_userkey');
+    localStorage.removeItem('custom_surveyNo');
+    localStorage.removeItem('visitDate');
+
+    localStorage.removeItem('AgeReal');
+    localStorage.removeItem('custom_ucstmid');
+    localStorage.removeItem('custom_sex');
+    localStorage.removeItem('custom_phone');
+ 
+    localStorage.removeItem('visit_rsvn_date');
+    localStorage.removeItem('raw_rsvn_date');
+    localStorage.removeItem('raw_rsvn_time');
+    localStorage.removeItem('ProgramCode');
+    localStorage.removeItem('visitkey');
+    localStorage.removeItem('skey');
+    localStorage.removeItem('ProgramCode');
+    localStorage.removeItem('progress_flg');
+
+    localStorage.removeItem('custom_markvu');
+    localStorage.removeItem('custom_antera');
+    localStorage.removeItem('custom_cutometer');
+    localStorage.removeItem('custom_vapometer');
+    localStorage.removeItem('custom_asm');
+
+    localStorage.removeItem('custom_skinResult');
+    localStorage.removeItem('custom_sculpResult');
+
+    
+    localStorage.removeItem('analysis2_result-backgroundCanvas');
+    localStorage.removeItem('analysis2_result-opinionCanvas');
+    localStorage.removeItem('analysis2_result-comment01');
+    localStorage.removeItem('analysis2_result-comment02');
+    localStorage.removeItem('analysis2_result-comment03');
+
+    localStorage.removeItem('analysis_result-backgroundCanvas');
+    localStorage.removeItem('analysis_result-opinionCanvas');
+    localStorage.removeItem('analysis_result-comment01');
+    localStorage.removeItem('analysis_result-comment02');
+    localStorage.removeItem('analysis_result-comment03');
+    
+    
+
+
+
+
+
+
+    let registerButton_add = document.querySelector('.button[data-target=".msg-layer-add"]');
+
+    registerButton_add.click();
+    // console.log('custom_name : ', name);
+    // console.log('phone :', phone);
+    // console.log('birthdate : ', birthdate);
+    // console.log('sex : ', sex);
+    // console.log('surveyNo : ', surveyNo);
+    // console.log('userkey : ', userkey);
+    // console.log('ucstmid : ', ucstmid);
+
+    var find_info = list.find(item => item.m_surveyno === surveyNo && item.m_userkey === userkey);
+    console.log("find_info : ", find_info);
+
+    var AgeReal = calculateAge(birthdate);
+    console.log("진짜 나이는 : ", AgeReal);
+
+
+    const visitDate = currentTime.substring(0, 4) + ". " + currentTime.substring(5, 7) + ". " + currentTime.substring(8, 10);
+
+    //생년월일 - 있을경우 제거
+    birthdate = birthdate.replace(/-/g, "");
+
+    const birth_year = birthdate.substring(0, 4);
+    const birth_month = birthdate.substring(4, 6);
+    const birth_date = birthdate.substring(6, 8);
+
+    
+    Layer2_birthYear =birth_year;
+    Layer2_birthMonth =birth_month;
+    Layer2_birthDay = birth_date;
+
+
+    // $("#birth_year-add").text(birth_year);
+    // $("#birth_month-add").text(birth_month);
+    // $("#birth_day-add").text(birth_day);
+
+    // console.log("birth_year : ",birth_year);
+    // console.log("birth_month : ",birth_month);
+    // console.log("birth_date : ",birth_date);  
+
+    const phone_first = phone.substring(0, 3);
+    const phone_middle = phone.substring(3, 7);
+    const phone_last = phone.substring(7, 11);
+
+
+    
+
+
+
+    if (name !== null) {
+        document.getElementById('custom_name-add').value = name;
+    }
+
+    if (birthdate !== null) {
+        document.getElementById('birth_year-add').text = birth_year;
+        document.getElementById('birth_month-add').text = birth_month;
+        document.getElementById('birth_day-add').text = birth_date;
+    }
+
+
+
+    if (phone !== null) {
+        document.getElementById('phone_first-add').text = phone_first;
+        document.getElementById('phone_middle-add').value = phone_middle;
+        document.getElementById('phone_last-add').value = phone_last;
+    }
+
+    if (sex === 'F') {
+        document.getElementById('gender_02-add').checked = true;
+    } else if (sex === 'M') {
+        document.getElementById('gender_01-add').checked = true;
+    }
+
+    console.log("email : ", email);
+    console.log("vst_path : ", vst_path);
+
+
+    $("#email-add").val(email);
+
+    checkRadioButton(vst_path);
+
+
+
+
+
+    $('#custom_info_saveButton').click(function () {
+        console.log("고객정보 저장버튼 클릭!");
+
+        // console.log("앞 번호 : ", document.getElementById('phone_first').text);
+        // console.log("가운데 번호 : ", document.getElementById('phone_middle').value);
+        localStorage.setItem('custom_sex', sex);
+        localStorage.setItem('custom_name', name);
+        localStorage.setItem('custom_userkey', userkey);
+        localStorage.setItem('custom_surveyNo', surveyNo);
+        localStorage.setItem('visitDate', visitDate);
+
+        localStorage.setItem('AgeReal', AgeReal);
+        localStorage.setItem('custom_ucstmid', ucstmid);
+        localStorage.setItem('custom_sex', sex);
+        localStorage.setItem('custom_phone', phone);
+        localStorage.setItem('visit_rsvn_date', visit_rsvn_date);
+
+        localStorage.setItem('raw_rsvn_date', rsvn_date);
+        localStorage.setItem('raw_rsvn_time', rsvn_time);
+        localStorage.setItem('ProgramCode', ProgramCode);
+        localStorage.setItem('visitkey', visitkey);
+        localStorage.setItem('skey', skey);
+        localStorage.setItem('ProgramCode', ProgramCode);
+        localStorage.setItem('progress_flg', progress_flg);
+
+
+
+
+        console.log("이름 : ", $("#custom_name").val());
+
+        console.log("생일(년도) : ", $("#birth_year").val());
+        console.log("생일(월) : ", $("#birth_month").val());
+        console.log("생일(일) : ", $("#birth_day").val());
+
+        selectedYear = $("#birth_year").val();
+        selectedMonth = $("#birth_month").val();
+        selectedDay = $("#birth_day").val();
+
+        console.log("생년 : ", selectedYear);
+        console.log("월 : ", selectedMonth);
+        console.log("일 : ", selectedDay);
+
+        console.log("앞 번호 : ", $("#phone_first").val());
+        console.log("가운데 번호 : ", $("#phone_middle").val());
+        console.log("뒷 번호 : ", $("#phone_last").val());
+
+        console.log("국적 : ", $("#nation").val());
+        console.log("인종 : ", $("#race").val());
+        console.log("이메일 : ", $("#email").val());
+
+        console.log("방문경로 체크숫자 : ", selectValue);
+        console.log("체크숫자 : ", $('input[name="learned"]:checked').length);
+
+
+
+
+
+        if ($("#custom_name").val() === "") {
+            $("#custom_detail").html("'성명'을");
+            showErrorModal();
+        } else if ($("#birth_year").val() === "" || $("#birth_month").val() === "" || $("#birth_day").val() === "") {
+            $("#custom_detail").html("'생년월일'을");
+            showErrorModal();
+        } else if ($("#phone_first").val() === "" || $("#phone_middle").val() === "" || $("#phone_last").val() === "") {
+            $("#custom_detail").html("'핸드폰 번호'를");
+            showErrorModal();
+        }
+        // else if ($("#email").val() === "") {
+        //     $("#custom_detail").html("'이메일'을");
+        //     showErrorModal();
+        // } 
+        else if ($('input[name="learned"]:checked').length === 0) {
+            $("#custom_detail").html("'방문경로'를");
+            showErrorModal();
+        }
+        else {
+            console.log("선택 완료");
+            $("#custom_detail_main").html(`'${name}' 고객님 환영합니다.`);
+            showErrorModal();
+
+            $('.user-modify-layer').removeClass('open');
+
+            // setTimeout(function () {
+            //     window.location.href = './solution_reservation.html';;
+            // }, 1000); // 2초 
+        }
+
+
+    })
+}
+
+//방문경로 체크 로직
+function checkRadioButton(vst_path) {
+    var radioId = '';
+    console.log(vst_path);
+
+    switch (vst_path) {
+        case '0':
+            radioId = 'learned_001';
+            break;
+        case '1':
+            radioId = 'learned_002';
+            break;
+        case '2':
+            radioId = 'learned_003';
+            break;
+        case '3':
+            radioId = 'learned_004';
+            break;
+        case '4':
+            radioId = 'learned_005';
+            break;
+        case '5':
+            radioId = 'learned_006';
+            break;
+        case '6':
+            radioId = 'learned_007';
+            break;
+        case '7':
+            radioId = 'learned_008';
+            break;
+        case '8':
+            radioId = 'learned_009';
+            break;
+        case '9':
+            radioId = 'learned_010';
+            break;
+    }
+    console.log('radioId : ', radioId);
+    if (radioId) {
+        document.getElementById(radioId).checked = true;
+    }
+}
+
+
+
+
 
 
 $('#custom_searchButton').click(function () {
@@ -659,11 +945,16 @@ $('#custom_searchButton').click(function () {
 
                     $('.search-custom-layer').addClass('open');
 
+                    let response_deduplication = response.filter((record, index, self) => {
+                        return self.findIndex((r) => r.name === record.name && r.phone === record.phone && r.birthdate === record.birthdate) === index;
+                    });                   
+                   
 
-                    $.each(response.reverse(), function (idx, data) {
+
+                    $.each(response_deduplication.reverse(), function (idx, data) {
                         page_param.totalCount = data.total_count
                         // data.index = idx + 1;
-                        data.index = response.length - idx; //배열 revers, idx도 역순으로
+                        data.index = response_deduplication.length - idx; //배열 revers, idx도 역순으로
 
                         const birthdate_after = data.birthdate.substring(0, 4) + "-" + data.birthdate.substring(4, 6) + "-" + data.birthdate.substring(6, 8);
                         data.birthdate = birthdate_after;
@@ -701,7 +992,7 @@ $('#custom_searchButton').click(function () {
                     $('.search-layer').removeClass('open');
                     $('.search-result-layer').removeClass('open');
 
-                    $('.search-custom-layer').addClass('open');
+                    $('.search-custom-layer').addClass('open');                    
 
                     $.each(response.reverse(), function (idx, data) {
                         page_param.totalCount = data.total_count
@@ -711,6 +1002,8 @@ $('#custom_searchButton').click(function () {
                         const birthdate_after = data.birthdate.substring(0, 4) + "-" + data.birthdate.substring(4, 6) + "-" + data.birthdate.substring(6, 8);
                         data.birthdate = birthdate_after;
 
+
+                        
 
                         template.prepend($('#visit-item2'), $('#visit-list2'), data, function () {
                             // todo define
@@ -734,6 +1027,10 @@ var selectedYear_add = "";
 var selectedMonth_add = "";
 var selectedDay_add = "";
 
+
+
+
+
 $('select[name="custom_year-add').on('change', function () {
     selectedYear_add = $(this).val();
 });
@@ -748,6 +1045,7 @@ $('select[name="custom_day-add').on('change', function () {
 $('#custom_info_saveButton-add').click(function () {
 
     // const currentTime = new Date();        
+    console.log("======================");
     console.log("고객정보-add 저장버튼 클릭!");
 
     // console.log("앞 번호 : ", document.getElementById('phone_first').text);
@@ -766,11 +1064,28 @@ $('#custom_info_saveButton-add').click(function () {
         gender = "F"; // 여성 선택 시
     }
 
-    console.log("성별: " + gender);
 
-    console.log("생년 : ", selectedYear_add);
-    console.log("월 : ", selectedMonth_add);
-    console.log("일 : ", selectedDay_add);
+
+    console.log("add 저장 성별: " + gender);
+
+    console.log("add 저장 / 생년 : ", selectedYear_add);
+    console.log("add 저장 / 월 : ", selectedMonth_add);
+    console.log("add 저장 / 일 : ", selectedDay_add);
+
+    if(selectedYear_add.length === 0){
+        selectedYear_add = Layer2_birthYear
+    }
+    if(selectedMonth_add.length === 0){
+        selectedMonth_add =  Layer2_birthMonth
+    }
+    if(selectedDay_add.length === 0){
+        selectedDay_add =  Layer2_birthDay
+    } 
+
+        
+
+
+
 
 
     console.log("앞 번호 : ", $("#phone_first-add").val());
@@ -840,7 +1155,7 @@ $('#custom_info_saveButton-add').click(function () {
             "ucstmid": null,
             "userkey": null,
             "surveyNo": null,
-            "progress_flg": "0", // 진행상태
+            "progress_flg": "1", // 진행상태
             "vst_path": String(selectValue_add),
             "vst_txt": "",
             "email": String($("#email-add").val()),
@@ -961,21 +1276,21 @@ $('#checkDuplicate-add').click(function (event) {
                 $("#custom_detail_main").html("신규 고객입니다.");
                 showErrorModal();
 
-                $("#custom_name-add").val("");
+                // $("#custom_name-add").val("");
 
-                const birth_year = ""
-                const birth_month = ""
-                const birth_day = ""
-                $("#birth_year-add").text("");
-                $("#birth_month-add").text("");
-                $("#birth_day-add").text("");
+                // const birth_year = ""
+                // const birth_month = ""
+                // const birth_day = ""
+                // $("#birth_year-add").text("");
+                // $("#birth_month-add").text("");
+                // $("#birth_day-add").text("");
 
-                selectedYear_add = "";
-                selectedMonth_add = "";
-                selectedDay_add = "";
-                $("#gender_01-add").prop("checked", false);
-                $("#gender_02-add").prop("checked", false);
-                $("#email-add").val("");
+                // selectedYear_add = "";
+                // selectedMonth_add = "";
+                // selectedDay_add = "";
+                // $("#gender_01-add").prop("checked", false);
+                // $("#gender_02-add").prop("checked", false);
+                // $("#email-add").val("");
 
             }
 
@@ -984,6 +1299,8 @@ $('#checkDuplicate-add').click(function (event) {
                 showErrorModal();
 
                 $("#custom_name-add").val(response[0].name);
+                console.log('직접고객 등록창에서 response : ', response);
+
 
                 const birth_year = response[0].birthdate.substring(0, 4);
                 const birth_month = response[0].birthdate.substring(4, 6);

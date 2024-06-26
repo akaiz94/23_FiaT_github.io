@@ -20,6 +20,7 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     
 
     <style>
@@ -199,6 +200,9 @@
                             <a class="button radius w200 colorWithe" href="./analysis3_result.html" style="font-weight: bold; background-color : #e7c1da; color: white">MY SKIN DNA</a>
                         </li>
                         <li class="submenu2-item">
+                            <a class="button radius w150 colorWithe" id="custom_info_saveButton" target="_blank">저장</a>
+                        </li>
+                        <li class="submenu2-item">
                             <a class="button radius w150 colorWithe" href="./print005.html" target="_blank">출력</a>
                         </li>
                     </div>
@@ -210,6 +214,25 @@
 </body>
 
 </html>
+
+
+
+<div class="search-result-layer-error layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">알림</h2>
+        </header>
+        <div class="layer-content">
+            <span id="custom_detail_main" style="font-size: 25px;">
+                <span id="custom_detail" style="font-weight: bold;"></span> 입력해주세요.
+            </span>
+        </div>
+    </div>
+</div>
+
+
 
 
 <!--페이지 스크립트-->

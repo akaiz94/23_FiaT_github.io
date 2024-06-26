@@ -55,7 +55,7 @@
                         </div>
                     </header>
                     <div class="tab-box marginTop50 ajax-tab">
-                        <button class="tab-item active" data-db="0">피부</button>
+                        <button class="tab-item active" data-db="0" id="skin_click">피부</button>
                         <button class="tab-item" data-db="1">모발</button>
                         <button class="tab-item" data-db="2">영양과 대사</button>
                         <button class="tab-item" data-db="3">운동</button>
@@ -75,12 +75,13 @@
                                 <!--랜더 모델 -->
                                 <div class="gauge-item">
                                     <div class="gauge-category">
-                                        <div class="gauge-name">베타민</div>
-                                        <div class="gauge-rank">81등</div>
+                                        <div class="gauge-name"></div>
+                                        <div class="gauge-rank"></div>
                                     </div>
                                     <div class="gauge-bar">
                                         <div class="gauge-bar-bg">
-                                            <span class="gauge-bar-value" style="width:19%;"></span>
+                                            <!-- <span class="gauge-bar-value" style="width:19%;"></span> -->
+                                            <span class="gauge-bar-value"></span> 
                                         </div>
                                     </div>
                                 </div>
@@ -101,6 +102,31 @@
 
 </body>
 </html>
+
+
+
+  <!--메시지 박스 레이어 공통-->
+  <div class="msg-layer-noData layer-wrap">
+    <div class="layer-container">
+        <button class="close-button">닫기</button>
+        <header class="layer-header">
+            <h3 class="site-title">AMORE CITY LAB</h3>
+            <h2 class="layer-title">알림</h2>
+        </header>
+        <div class="layer-content">
+            <span id="noData_text" style="font-size: 30px;"></span><br>
+            <span id="noData_text2" style="font-size: 20px;"></span>
+
+        </div>
+       
+    </div>
+</div>
+<!--메시지 박스 레이어 공통-->
+
+
+
+
+
 
 <!--페이지 스크립트-->
 <script type="text/javascript" src="/dev/analysis3_result.js"></script>

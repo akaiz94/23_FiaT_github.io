@@ -8,6 +8,36 @@ $(document).ready(function () {
     window.scrollTo(0, 200);
     console.log('analysis page start -> ');
 
+    if (localStorage.getItem('custom_surveyNo') === null) {
+        console.log("고객 정보 확인불가.");
+        $("#noData_text").html('고객이 선택되지 않았습니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
+    if (localStorage.getItem('ProgramCode') === 'PC001014') {
+        console.log("피부프로그램");
+        $("#noData_text").html('피부 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
+    
+
     //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
     if (localStorage.getItem('progress_flg') !== '10') {
         //직접 방문 고객의 상담 진행률

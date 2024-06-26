@@ -127,7 +127,8 @@ const menu = {
                         <a href="./login.html" class="login-button" style="color : black;">로그인</a>
                         <!--로그인 후-->
                         
-                    <span class="user-name" style="display: none; color : black;">홍길동</span>
+                    <span class="user-name" id='customer_name' style="display: block; color : black; margin-right: 13px">홍김똥</span>
+                    <span class="user-name2" id='manager_name' style="display: none; color : black;">홍길동</span>
                     <a href="./login.html" class="logout-button" style="display: none; color : black;">로그아웃</a>
                   
                     </div>
@@ -137,19 +138,32 @@ const menu = {
         $("#top_menu").html(header);
 
         const managerName = localStorage.getItem('manager_name');
-        if(managerName !== null){
-            $(".user-name").text(managerName).show();
+        if (managerName !== null) {
+            $("#manager_name").text(managerName).show();
             $(".logout-button").show();
-            $(".login-button").hide();            
+            $(".login-button").hide();
         }
 
-        else if(managerName === null){
+        else if (managerName === null) {
+            $("#manager_name").hide();
             $(".logout-button").hide();
-            $(".user-name").hide();
             $(".login-button").show();
         }
 
-        $(".logout-button").on("click", function(){
+        const customerName = localStorage.getItem('custom_name');
+        if (customerName !== null) {
+            $("#customer_name").text(customerName).show();
+        }
+
+        else if (customerName === null) {
+            $("#customer_name").hide();
+        }
+
+
+
+
+
+        $(".logout-button").on("click", function () {
             // localStorage.removeItem('manager_name');   
             localStorage.clear();
         });

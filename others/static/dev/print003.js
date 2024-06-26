@@ -280,6 +280,7 @@ $(document).ready(function () {
                 $('#HairlossType_Basic').remove();
                 $('#HairlossType_Basic_1-img').hide();
                 $('#HairlossType_Basic_2-img').hide();
+                $('#HairlossType_Basic-div').css('display', 'none');
             }
 
 
@@ -374,6 +375,7 @@ $(document).ready(function () {
                 $('#HairlossType_Center').remove();
                 $('#HairlossType_Center_1-img').hide();
                 $('#HairlossType_Center_2-img').hide();
+                $('#HairlossType_Center-div').css('display', 'none');
             }
 
 
@@ -467,6 +469,7 @@ $(document).ready(function () {
                 $('#HairlossType_FrontCenter').remove();
                 $('#HairlossType_FrontCenter_1-img').hide();
                 $('#HairlossType_FrontCenter_2-img').hide();
+                $('#HairlossType_FrontCenter-div').css('display', 'none');
             }
 
 

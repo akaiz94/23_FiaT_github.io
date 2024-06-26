@@ -17,58 +17,86 @@ const surveyDate = moment().format('YYYY/MM/DD');
 var page_param = {
     totalCount: 5,
     currentPage: 1,
-    pageSize: 5,
+    pageSize: 1000,
     startIndex: 0,
 }
 
 $(document).ready(function () {
-    
     window.scrollTo(0, 200);
+    console.log('analysis page start -> ')
+
+    if (localStorage.getItem('custom_surveyNo') === null) {
+        console.log("고객 정보 확인불가.");
+        $("#noData_text").html('고객이 선택되지 않았습니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
+    if (localStorage.getItem('ProgramCode') === 'PC001010') {
+        console.log("두피프로그램");
+        $("#noData_text").html('두피 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
     const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-    console.log('analysis page start -> ')
 
     //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
     if (localStorage.getItem('progress_flg') !== '10') {
-    //직접 방문 고객의 상담 진행률
-    if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
-        console.log("직방 고객 상담 진행률 체크")
-        $.ajax({
-            url: DirectCustom_API_URL + localStorage.getItem('skey'),
-            type: 'PATCH',
-            data: JSON.stringify({ "progress_flg": "103" }), //피부측정 진행중
-            contentType: 'application/json', 
+        //직접 방문 고객의 상담 진행률
+        if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
+            console.log("직방 고객 상담 진행률 체크")
+            $.ajax({
+                url: DirectCustom_API_URL + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "103" }), //피부측정 진행중
+                contentType: 'application/json',
 
-            success: function (response) {
-                console.log('=====================');
-                console.log('피부 측정 인입 성공 : ', response);
-            },
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('피부 측정 인입 성공 : ', response);
+                },
 
-            error: function (xhr, status, error) {
-                console.error('피부 측정 인입 에러 : ', error);
-            }
-        })
+                error: function (xhr, status, error) {
+                    console.error('피부 측정 인입 에러 : ', error);
+                }
+            })
+        }
+        //예약 방문 고객의 상담 진행률
+        else if (localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
+            console.log("예약 고객 상담 진행률 체크")
+            $.ajax({
+                url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
+                type: 'PATCH',
+                data: JSON.stringify({ "progress_flg": "103" }), //피부문진 진행중
+                contentType: 'application/json',
+
+                success: function (response) {
+                    console.log('=====================');
+                    console.log('피부 문진 인입 성공 : ', response);
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('피부 문진 인입 에러 : ', error);
+                }
+            })
+        }
     }
-    //예약 방문 고객의 상담 진행률
-    else if(localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_skinResult') !== 'ok' ){
-        console.log("예약 고객 상담 진행률 체크")
-        $.ajax({
-            url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' +localStorage.getItem('skey'),
-            type: 'PATCH',
-            data: JSON.stringify({ "progress_flg": "103" }), //피부문진 진행중
-            contentType: 'application/json', 
-
-            success: function (response) {
-                console.log('=====================');
-                console.log('피부 문진 인입 성공 : ', response);
-            },
-
-            error: function (xhr, status, error) {
-                console.error('피부 문진 인입 에러 : ', error);
-            }
-        })
-    }
-}
 
 
     console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
@@ -98,7 +126,7 @@ $(document).ready(function () {
 
         $.ajax({
             // url: SkinSurvey_API_URL + surveyNo,
-            url: ResultMarkvu_API_URL +  '?surveyNo=' +surveyNo, //실제 데이터 인입
+            url: ResultMarkvu_API_URL + '?surveyNo=' + surveyNo, //실제 데이터 인입
             // url: ResultMarkvu_API_URL + '?surveyNo=' + 2277,
 
             type: 'GET',
@@ -112,8 +140,8 @@ $(document).ready(function () {
                     $("#custom_detail").html("마크뷰 데이터 조회 완료");
                     showErrorModal();
 
-                    localStorage.setItem('custom_markvu', 'ok');  
-                    $('.analysis-layer').removeClass('open');                   
+                    localStorage.setItem('custom_markvu', 'ok');
+                    $('.analysis-layer').removeClass('open');
                 }
 
             }, error: function (xhr, status, error) {
@@ -183,7 +211,7 @@ $(document).ready(function () {
             "C_right": String(dull_Right),
             "create_dt": currentTime
         }
-   
+
         console.log("antera requestData : ", requestData);
 
         if (Object.values(requestData).some(value => value === "undefined" || value === "")) {
@@ -197,15 +225,15 @@ $(document).ready(function () {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(requestData),
-    
+
                 success: function (response) {
                     console.log("antera_API_URL 응답값 : ", response);
                     $("#custom_detail").html("안테라 측정값 저장 완료");
-                    showErrorModal();       
+                    showErrorModal();
 
-                    localStorage.setItem('custom_antera', 'ok');  
-                    $('.analysis-layer').removeClass('open');         
-    
+                    localStorage.setItem('custom_antera', 'ok');
+                    $('.analysis-layer').removeClass('open');
+
                 }, error: function (xhr, status, error) {
                     console.error('antera_API_URL 오류 : ', error);
                     $("#custom_detail").html("안테라 측정값 저장 실패");
@@ -262,16 +290,16 @@ $(document).ready(function () {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(requestData),
-    
+
                 success: function (response) {
                     console.log("cutometer_API_URL 응답값 : ", response);
                     $("#custom_detail").html("큐토미터 측정값 저장 완료");
                     showErrorModal();
 
-                    localStorage.setItem('custom_cutometer', 'ok');  
+                    localStorage.setItem('custom_cutometer', 'ok');
                     $('.analysis-layer').removeClass('open');
-    
-    
+
+
                 }, error: function (xhr, status, error) {
                     console.error('cutometer_API_URL 오류 : ', error);
                     $("#custom_detail").html("큐토미터 측정값 저장 실패");
@@ -279,7 +307,7 @@ $(document).ready(function () {
                 }
             })
         }
-        
+
     })
 
 
@@ -299,7 +327,7 @@ $(document).ready(function () {
     });
 
 
-    $('#vapometer_saveButton').click(function () {      
+    $('#vapometer_saveButton').click(function () {
         var requestData = {
             "surveyNo": localStorage.getItem('custom_surveyNo'),
             "userKey": localStorage.getItem('custom_userkey'),
@@ -327,15 +355,15 @@ $(document).ready(function () {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(requestData),
-    
+
                 success: function (response) {
                     console.log("vapometer_API_URL 응답값 : ", response);
                     $("#custom_detail").html("바포미터 측정값 저장 완료");
                     showErrorModal();
 
-                    localStorage.setItem('custom_vapometer', 'ok');  
+                    localStorage.setItem('custom_vapometer', 'ok');
                     $('.analysis-layer').removeClass('open');
-                        
+
                 }, error: function (xhr, status, error) {
                     console.error('vapometer_API_URL 오류 : ', error);
                     $("#custom_detail").html("바포미터 측정값 저장 실패");
@@ -343,7 +371,7 @@ $(document).ready(function () {
                 }
             })
         }
-        
+
 
 
 

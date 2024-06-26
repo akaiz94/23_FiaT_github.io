@@ -1,22 +1,51 @@
 var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
 var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/progress_flg/';
-
-
 var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
+var hair_result_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairResult/';
+var hair_image_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairImage/';
+var hairSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/hair/';
 
 const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 const surveyDate = moment().format('YYYY/MM/DD');
 
-var hair_result_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairResult/';
 
-var hair_image_URL = 'https://amore-citylab.amorepacific.com:8000/v1/hairImage/';
-
-
+let hair_result_opinionsImage = '';
+let hair_result_backgroundImage = '';
 
 
 $(document).ready(function () {
     window.scrollTo(0, 470);
     console.log('analysis2_result page start -> ')
+    console.log ("hair_result_backgroundImage 길이 : ", hair_result_backgroundImage.length);
+    
+    if(localStorage.getItem('custom_surveyNo') === null){
+        console.log("고객 정보 확인불가.");
+            $("#noData_text").html('고객이 선택되지 않았습니다.');
+            $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+            $('.msg-layer-noData').addClass('open');
+    
+            setTimeout(function () {
+              $('.layer-wrap-noData').removeClass('open');
+              window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+            }, 2000); // 2초 
+    
+            return;
+      }
+
+      if (localStorage.getItem('ProgramCode') === 'PC001014') {
+        console.log("피부프로그램");
+        $("#noData_text").html('피부 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+    
 
     //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
     if (localStorage.getItem('progress_flg') !== '10') {
@@ -101,6 +130,14 @@ $(document).ready(function () {
 
 
 
+    // 두피데이터 있는지 확인 함수 호출
+    getAllDataCheck(surveyNo,userkey);
+
+
+
+
+
+
     /*
     *
     *24. 05. 25 opinion 클릭 이벤트
@@ -136,87 +173,13 @@ $(document).ready(function () {
     var backgroundImage = new Image();
 
 
-
-    // ###opinion 쪽 이미지 보여지는 코드!!!!
-    if (typeof (localStorage.getItem('analysis2_result-opinionCanvas')) === 'string') {
-        console.log("stinrg이야")
-        $('#opinionsImage').attr('src', localStorage.getItem('analysis2_result-opinionCanvas')); //(페이지) 이미지
-        $('#backgroundImage').attr('src', localStorage.getItem('analysis2_result-backgroundCanvas'));//(페이지) 백그라운드 이미지
-
-        opinionImage.src = localStorage.getItem('analysis2_result-opinionCanvas'); //(모달창) 캔버스(이미지)
-        backgroundImage.src = localStorage.getItem('analysis2_result-backgroundCanvas'); //(모달창) 캔버스(이미지)
-    } else {
-        console.log("stinrg이 아니래")
-        $('#opinionsImage').attr('src', './resource/images/img-report002.png');
-        $('#backgroundImage').attr('src', '');
-        backgroundImage.src = './resource/images/img-report002.png';
-
-        //#0-2 두피 결과   
-        $.ajax({
-            url: hair_result_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo') + '&userkey=' + localStorage.getItem('custom_userkey'),
-            type: 'GET',
-            success: function (response) {
-                console.log('### hair_result_URL 응답 : ', response);
-
-                $('#comment01_main').text(response[0].specialtip_memo);
-                $('#comment02_main').text(response[0].specialtip_memo2);
-
-
-
-                
-                if (response.length === 0) {
-                    console.log("DB내, 이미지,코멘트 데이터가 존재하지않음")
-                    //DB내, 데이터가 존재하지않음
-                  
-          
-                  } else {
-                    console.log("DB내, 이미지,코멘트 데이터가 존재함")
-                    //DB내, 데이터가 존재
-                    $('#opinionsImage').attr('src', response[0].specialtip_stoke_img); //(페이지) 이미지
-                    $('#backgroundImage').attr('src', response[0].specialtip_img);//(페이지) 백그라운드 이미지
-          
-                    localStorage.setItem('analysis2_result-opinionCanvas', response[0].specialtip_stoke_img)//(페이지) 이미지
-                    localStorage.setItem('analysis2_result-backgroundCanvas', response[0].specialtip_img)//(페이지) 백그라운드이미지
-          
-                    localStorage.setItem('analysis2_result-comment01',response[0].specialtip_memo);
-                    localStorage.setItem('analysis2_result-comment02',response[0].specialtip_memo2);
-                    localStorage.setItem('analysis2_result-comment03',response[0].specialtip_memo3);          
-          
-                    $('#comment01_main').val(localStorage.getItem('analysis2_result-comment01'));
-                    $('#comment02_main').val(localStorage.getItem('analysis2_result-comment02'));
-                    $('#comment03_main').val(localStorage.getItem('analysis2_result-comment03'));
-             
-          
-                  }
-
-
-
-
-
-
-
-
-
-
-
-            },
-            error: function (xhr, status, error) {
-
-                console.error('### hair_result_URL 에러 : ', error);
-            }
-        })
-
-
-
-
-
-    }
-
-
+    
+    console.log ("hair_result_backgroundImage 길이22 : ", hair_result_backgroundImage.length);
     opinionImage.onload = function () {
         // 배경 이미지를 캔버스에 그립니다
         opinion_ctx.drawImage(opinionImage, 0, 0, opinionCanvas.width, opinionCanvas.height);
     };
+
 
     backgroundImage.onload = function () {
         // 배경 이미지를 캔버스에 그립니다
@@ -572,8 +535,8 @@ $(document).ready(function () {
 
             if (HairlossType_Basic !== null) {
                 $('#HairlossType_Basic').text(HairlossType_Basic);
-                console.log('*****************HairlossType_Basic 값 > ', HairlossType_Basic);                
-                
+                console.log('*****************HairlossType_Basic 값 > ', HairlossType_Basic);
+
                 if (localStorage.getItem('custom_sex') === "F") {
                     $('#HairlossType_Basic_1-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_f.PNG');
                     $('#HairlossType_Basic_2-img').attr('src', "./resource/images/scalp/LossTypes/W/" + HairlossType_Basic + '_s.PNG');
@@ -655,7 +618,7 @@ $(document).ready(function () {
                 }
 
 
-            } else {              
+            } else {
                 $('#HairlossType_Basic').parent().remove();
 
                 $('#HairlossType_Basic_1-img').hide();
@@ -1101,8 +1064,8 @@ $(document).ready(function () {
 
 
 
-     // 7. 모발 이미지 넣기
-     $.ajax({
+    // 7. 모발 이미지 넣기
+    $.ajax({
         url: hair_image_URL + '?surveyNo=' + surveyNo,
         type: 'GET',
         success: function (response) {
@@ -1130,6 +1093,161 @@ $(document).ready(function () {
         }
     })
 });
+
+
+
+//surveyNo함수를 직접 사용하진않음,,
+async function getAllDataCheck(surveyNo,userkey) {
+    try {
+        const [get_hairSurvey, get_hairResult] = await Promise.all([
+            fnGetHairSurvey(surveyNo,userkey),
+            fnGetHairResult(surveyNo,userkey),
+           
+        ]);
+
+        if (!get_hairSurvey) {
+            console.log("두피(문진) 결과값 확인 불가.");
+            $("#noData_text").html('문진(두피)를 먼저 작성해야합니다.');
+            $("#noData_text2").html('잠시후 문진(두피) 페이지로 이동합니다.');
+            $('.msg-layer-noData').addClass('open');
+
+            setTimeout(function () {
+                $('.layer-wrap-noData').removeClass('open');
+                window.location.href = './solution_questionnaire2.html';;   // 문진(두피) 페이지로 이동
+            }, 2000); // 2초 
+
+            return;
+        }
+        
+        if (!get_hairResult) {
+            console.log("두피측정 결과값 확인 불가.");
+            $("#noData_text").html('두피/모발 측정이 완료되지 않았습니다.');
+            $("#noData_text2").html('잠시후 두피/모발 측정 페이지로 이동합니다.');
+            $('.msg-layer-noData').addClass('open');
+
+            setTimeout(function () {
+                $('.layer-wrap-noData').removeClass('open');
+                window.location.href = './analysis2.html';;   // 두피측정 페이지로 이동
+            }, 2000); // 2초 
+
+            return;
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+//#0-2 두피 결과
+function fnGetHairResult(surveyNo,userKey) {
+    return new Promise((resolve, reject) => {
+
+        $.ajax({
+            url: hair_result_URL + '?surveyNo=' + surveyNo + '&userkey=' + userKey,
+            type: 'GET',
+            success: function (response) {
+                const hairResult = response[0];
+                console.log('### hair_result_URL 응답 : ', hairResult);
+                console.log(('### hair_result_URL 길이 : ', Object.keys(hairResult).length))
+
+
+                if (hairResult === undefined) {
+                    console.log("DB내, 두피결과 데이터가 존재하지않음")
+                    //DB내, 데이터가 존재하지않음
+
+                    if(localStorage.getItem('ProgramCode') === 'PC001013'){
+                        $('#backgroundImage').attr('src',"./resource/images/img-report002.png"); //(두피) 이미지
+                        $('#backgroundCanvas').attr('src',"./resource/images/img-report002.png"); //(두피) 이미지 (팝업창)
+
+                        resolve(true);
+                    } else if(localStorage.getItem('ProgramCode') === 'PC001010'){
+                        $('#backgroundImage').attr('src',"./resource/images/img-report002.png"); //(두피) 이미지
+                        $('#backgroundCanvas').attr('src',"./resource/images/img-report002.png"); //(두피) 이미지 (팝업창)
+
+                        resolve(true);
+                    } else{
+
+
+                        resolve(false);
+                    }
+              
+
+                } else {
+                    console.log("DB내, 두피결과 데이터가  존재함")
+                    $('#comment01_main').text(hairResult.specialtip_memo);
+                    $('#comment02_main').text(hairResult.specialtip_memo2);
+
+                    //DB내, 데이터가 존재                    
+                    $('#opinionsImage').attr('src',"data:image/jpeg;base64," + hairResult.specialtip_stoke_img); //(페이지) 이미지
+                    $('#backgroundImage').attr('src',"data:image/jpeg;base64," +  hairResult.specialtip_img);//(페이지) 백그라운드 이미지
+
+                    hair_result_opinionsImage = hairResult.specialtip_stoke_img;
+                    hair_result_backgroundImage = hairResult.specialtip_img;
+
+                    console.log ("hair_result_backgroundImage 길이 33: ", hair_result_backgroundImage.length);
+
+
+                    localStorage.setItem('analysis2_result-opinionCanvas', hairResult.specialtip_stoke_img)//(페이지) 이미지
+                    localStorage.setItem('analysis2_result-backgroundCanvas', hairResult.specialtip_img)//(페이지) 백그라운드이미지
+
+                    localStorage.setItem('analysis2_result-comment01', hairResult.specialtip_memo);
+                    localStorage.setItem('analysis2_result-comment02', hairResult.specialtip_memo2);
+                    localStorage.setItem('analysis2_result-comment03', hairResult.specialtip_memo3);
+
+                    $('#comment01_main').val(localStorage.getItem('analysis2_result-comment01'));
+                    $('#comment02_main').val(localStorage.getItem('analysis2_result-comment02'));
+                    $('#comment03_main').val(localStorage.getItem('analysis2_result-comment03'));
+
+                    resolve(hairResult);
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+                console.error('### hair_result_URL 에러 : ', error);
+                reject(error);
+            }
+        })
+    });
+}
+
+
+//#4th. 문진(두피) 요청
+function fnGetHairSurvey(surveyNo,userKey) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            // url: SkinSurvey_API_URL + surveyNo,
+            url: hairSurvey_API_URL + '?surveyNo=' + surveyNo,
+            type: 'GET',
+            success: function (data) {
+                const scalpSurvey = data[0];
+                console.log("hairSurvey_API_URL 응답값 : ", scalpSurvey);
+
+                if (scalpSurvey === undefined) {
+                    console.log('문진(두피) 데이터가 없습니다.');
+                    resolve(false);
+                  } else {
+                    resolve(scalpSurvey);
+                  }
+        
+        
+            }, error: function (xhr, status, error) {        
+                console.error('hairSurvey_API_URL 오류 : ', error);
+                reject(error);
+            }
+        })        
+
+
+    });
+}
+
+
+
+
+
+
 
 
 

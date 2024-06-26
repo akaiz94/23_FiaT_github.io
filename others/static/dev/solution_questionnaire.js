@@ -12,6 +12,35 @@ $(document).ready(function () {
 
     console.log('solution_questionnaire page start -> ')
 
+    
+    if (localStorage.getItem('custom_surveyNo') === null) {
+        console.log("고객 정보 확인불가.");
+        $("#noData_text").html('고객이 선택되지 않았습니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
+    if (localStorage.getItem('ProgramCode') === 'PC001010') {
+        console.log("두피프로그램");
+        $("#noData_text").html('두피 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
     //#4th. 문진(피부) 요청
     $.ajax({
         // url: SkinSurvey_API_URL + surveyNo,

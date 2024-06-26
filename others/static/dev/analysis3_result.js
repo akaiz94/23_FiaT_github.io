@@ -7,14 +7,56 @@ var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/mer
 var page_param = {
     totalCount: 5,
     currentPage: 1,
-    pageSize: 5,
+    pageSize: 1000,
     startIndex: 0,
 }
 
 $(document).ready(function () {
     window.scrollTo(0, 470);
-
     console.log('analysis3_result page start -> ')
+
+    if(localStorage.getItem('custom_surveyNo') === null){
+        console.log("고객 정보 확인불가.");
+            $("#noData_text").html('고객이 선택되지 않았습니다.');
+            $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+            $('.msg-layer-noData').addClass('open');
+    
+            setTimeout(function () {
+              $('.layer-wrap-noData').removeClass('open');
+              window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+            }, 2000); // 2초 
+    
+            return;
+      }
+
+      if (localStorage.getItem('ProgramCode') === 'PC001014') {
+        console.log("피부프로그램");
+        $("#noData_text").html('피부 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+
+    if (localStorage.getItem('ProgramCode') === 'PC001010') {
+        console.log("두피프로그램");
+        $("#noData_text").html('두피 프로그램에서 이용할 수 없는 페이지입니다.');
+        $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+    }
+    
 
     //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
     if (localStorage.getItem('progress_flg') !== '10') {
@@ -80,10 +122,19 @@ $(document).ready(function () {
     console.log("ucstmid : ", ucstmid);
 
 
-    if(localStorage.getItem('custom_ucstmid') === undefined){
-        alert('해당고객은 유전자검사를 하지 않았습니다.')        
+    if(ucstmid.length === 0){        
+        console.log("유전자검사 결과값 확인 불가.");
+        $("#noData_text").html('유전자검사를 하지 않았습니다.');
+        $("#noData_text2").html('잠시후 피부 측정 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+        setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            window.location.href = './analysis.html';;   // 피부측정 페이지로 이동
+        }, 2000); // 2초 
+
     } else {
         fnGetDNA(ucstmid);
+        console.log('fnGetDNA 함수 실행');
     }
 
 });
@@ -139,6 +190,9 @@ function fnGetDNA(ucstmid){
 
             console.log("항목 구분 후, DNA_data : ", DNA_data);
             console.log("jsonData : ", jsonData);
+
+             // 피부 버튼 클릭 (초기 렌더링 설정)
+            $("#skin_click").click();
 
         },
 
@@ -350,10 +404,11 @@ function transformName(name) {
 *24. 06. 14 방문회차 카운트 함수
 *
 */
+
 var fnGetVisitCount = function () {
-    var visit_count = 0; //프로그램별 방문회차 카운트
+    var visitCount = 0; //프로그램별 방문회차 카운트
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
 
         type: 'GET',
         success: function (response) {
@@ -363,24 +418,30 @@ var fnGetVisitCount = function () {
 
             //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
             var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
+       
 
             select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+
             console.log("select_visit1_1 : ", select_visit1_1);
+        
 
             var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+        
+
             select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
                 && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
 
-            console.log("select_visit2_1 : ", select_visit2_1);
+            console.log("select_visit2_1 : ", select_visit2_1);       
 
             visitCount = select_visit1_1 + select_visit2_1;
             console.log("방문 회차 : visitCount > ", visitCount);
 
             $('#visitCount').text(visitCount);
-
-
 
         },
 

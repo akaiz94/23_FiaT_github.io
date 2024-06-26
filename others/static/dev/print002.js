@@ -1,6 +1,6 @@
 var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
 
-var ResultSkinConcenr_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
+var ResultSkinConcenrn_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
 var SkinResult_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/result/';
 
 
@@ -58,7 +58,7 @@ var fnGetVisitCount = function () {
                 && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
                 && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-                
+
             const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
                 .filter(item => item.m_surveyNo !== null)
                 .sort((a, b) => {
@@ -69,7 +69,7 @@ var fnGetVisitCount = function () {
 
             console.log("정렬된 데이터: ", finalCombinedData);
 
-            const extractedValues = finalCombinedData.map(item => ({surveyNo: item.m_surveyNo, userkey: item.m_userkey}));
+            const extractedValues = finalCombinedData.map(item => ({ surveyNo: item.m_surveyNo, userkey: item.m_userkey }));
             const selectedValues = extractedValues.slice(0, 4);
 
             console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
@@ -100,10 +100,10 @@ async function SkinConcernResults(extractedValues) {
                 return;
             }
             const response = await $.ajax({
-                url: ResultSkinConcenr_API_URL + '?surveyNo=' + surveyNo,
+                url: ResultSkinConcenrn_API_URL + '?surveyNo=' + surveyNo,
                 type: 'GET',
                 contentType: 'application/json',
-                success: function(response){
+                success: function (response) {
                     console.log('SkinConcernResults의 response 값 : ', response);
 
                 }
@@ -142,6 +142,33 @@ async function SkinConcernResults(extractedValues) {
             updateRednessData(resultArray[0].redness);
             updateTZoneData(resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
             updateUZoneData(resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+
+
+           // 피부점수값 추출 (가장최근)
+           const valuesToSort = [
+            { name: "모공", value: resultArray[0].pore },
+            { name: "주름", value: resultArray[0].wrinkle },
+            { name: "미래주름", value: resultArray[0].futurewrinkles },
+            { name: "색소침착", value: resultArray[0].pigmentation },
+            { name: "멜라닌", value: resultArray[0].melanin },
+            { name: "경피수분손실도", value: resultArray[0].transdermal },
+            { name: "붉은기", value: resultArray[0].redness },
+            { name: "포피린", value: resultArray[0].porphyrin },
+            { name: "탄력", value: resultArray[0].elasticity }
+        ];
+
+        let smallestValues = sortAndReturnSmallestTwo(valuesToSort);
+        console.log('smallestValues : ', smallestValues);
+     
+        $("#skinGomin_text").text(smallestValues[0].name).css("color", "#e7c1da");
+        $("#skinGomin_text2").text(smallestValues[1].name).css("color", "#e7c1da");
+        $('#skinGomin-1').addClass('active');
+
+
+
+
+
+
         } else if (resultArray.length === 2) {
             updatePoreData(resultArray[1].pore, resultArray[0].pore);
             updateElasticityData(resultArray[1].elasticity, resultArray[0].elasticity);
@@ -154,6 +181,52 @@ async function SkinConcernResults(extractedValues) {
             updateRednessData(resultArray[1].redness, resultArray[0].redness);
             updateTZoneData(resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
             updateUZoneData(resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+
+
+          
+            const valuesToSort = [
+                { name: "모공", value: resultArray[1].pore },
+                { name: "주름", value: resultArray[1].wrinkle },
+                { name: "미래주름", value: resultArray[1].futurewrinkles },
+                { name: "색소침착", value: resultArray[1].pigmentation },
+                { name: "멜라닌", value: resultArray[1].melanin },
+                { name: "경피수분손실도", value: resultArray[1].transdermal },
+                { name: "붉은기", value: resultArray[1].redness },
+                { name: "포피린", value: resultArray[1].porphyrin },
+                { name: "탄력", value: resultArray[1].elasticity }
+            ];
+
+            let smallestValues = sortAndReturnSmallestTwo(valuesToSort);
+            console.log('smallestValues : ', smallestValues);
+            // smallestValues 배열에서 name 값을 추출
+         
+            $("#skinGomin_text").text(smallestValues[0].name);
+            $("#skinGomin_text2").text(smallestValues[1].name);
+
+
+            // 피부점수값 추출 (가장최근)
+            const valuesToSort_2 = [
+                { name: "모공", value: resultArray[0].pore },
+                { name: "주름", value: resultArray[0].wrinkle },
+                { name: "미래주름", value: resultArray[0].futurewrinkles },
+                { name: "색소침착", value: resultArray[0].pigmentation },
+                { name: "멜라닌", value: resultArray[0].melanin },
+                { name: "경피수분손실도", value: resultArray[0].transdermal },
+                { name: "붉은기", value: resultArray[0].redness },
+                { name: "포피린", value: resultArray[0].porphyrin },
+                { name: "탄력", value: resultArray[0].elasticity }
+            ];
+
+            let smallestValues_2 = sortAndReturnSmallestTwo(valuesToSort_2);
+            console.log('smallestValues_2 : ', smallestValues_2);
+
+            $("#skinGomin_text-2").text(smallestValues_2[0].name).css("color", "#e7c1da");
+            $("#skinGomin_text2-2").text(smallestValues_2[1].name).css("color", "#e7c1da");
+            $('#skinGomin-2').addClass('active');
+
+
+
+
         } else if (resultArray.length === 3) {
             updatePoreData(resultArray[2].pore, resultArray[1].pore, resultArray[0].pore);
             updateElasticityData(resultArray[2].elasticity, resultArray[1].elasticity, resultArray[0].elasticity);
@@ -166,6 +239,71 @@ async function SkinConcernResults(extractedValues) {
             updateRednessData(resultArray[2].redness, resultArray[1].redness, resultArray[0].redness);
             updateTZoneData(resultArray[2].tZone_Moisture, resultArray[2].tZone_Oilskin, resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
             updateUZoneData(resultArray[2].uZone_Moisture, resultArray[2].uZone_Oilskin, resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+        
+        
+          
+            const valuesToSort = [
+                { name: "모공", value: resultArray[2].pore },
+                { name: "주름", value: resultArray[2].wrinkle },
+                { name: "미래주름", value: resultArray[2].futurewrinkles },
+                { name: "색소침착", value: resultArray[2].pigmentation },
+                { name: "멜라닌", value: resultArray[2].melanin },
+                { name: "경피수분손실도", value: resultArray[2].transdermal },
+                { name: "붉은기", value: resultArray[2].redness },
+                { name: "포피린", value: resultArray[2].porphyrin },
+                { name: "탄력", value: resultArray[2].elasticity }
+            ];
+
+            let smallestValues = sortAndReturnSmallestTwo(valuesToSort);
+            console.log('smallestValues : ', smallestValues);
+            // smallestValues 배열에서 name 값을 추출
+         
+            $("#skinGomin_text").text(smallestValues[0].name);
+            $("#skinGomin_text2").text(smallestValues[1].name);
+
+   
+            const valuesToSort_2 = [
+                { name: "모공", value: resultArray[1].pore },
+                { name: "주름", value: resultArray[1].wrinkle },
+                { name: "미래주름", value: resultArray[1].futurewrinkles },
+                { name: "색소침착", value: resultArray[1].pigmentation },
+                { name: "멜라닌", value: resultArray[1].melanin },
+                { name: "경피수분손실도", value: resultArray[1].transdermal },
+                { name: "붉은기", value: resultArray[1].redness },
+                { name: "포피린", value: resultArray[1].porphyrin },
+                { name: "탄력", value: resultArray[1].elasticity }
+            ];
+
+            let smallestValues_2 = sortAndReturnSmallestTwo(valuesToSort_2);
+            console.log('smallestValues_2 : ', smallestValues_2);
+
+            $("#skinGomin_text-2").text(smallestValues_2[0].name);
+            $("#skinGomin_text2-2").text(smallestValues_2[1].name);
+        
+
+
+            // 피부점수값 추출 (가장최근)
+            const valuesToSort_3 = [
+                { name: "모공", value: resultArray[0].pore },
+                { name: "주름", value: resultArray[0].wrinkle },
+                { name: "미래주름", value: resultArray[0].futurewrinkles },
+                { name: "색소침착", value: resultArray[0].pigmentation },
+                { name: "멜라닌", value: resultArray[0].melanin },
+                { name: "경피수분손실도", value: resultArray[0].transdermal },
+                { name: "붉은기", value: resultArray[0].redness },
+                { name: "포피린", value: resultArray[0].porphyrin },
+                { name: "탄력", value: resultArray[0].elasticity }
+            ];
+
+            let smallestValues_3 = sortAndReturnSmallestTwo(valuesToSort_3);
+            console.log('smallestValues_3 : ', smallestValues_3);
+
+            $("#skinGomin_text-3").text(smallestValues_3[0].name).css("color", "#e7c1da");
+            $("#skinGomin_text2-3").text(smallestValues_3[1].name).css("color", "#e7c1da");
+            $('#skinGomin-3').addClass('active');
+
+        
+        
         } else if (resultArray.length === 4) {
             updatePoreData(resultArray[3].pore, resultArray[2].pore, resultArray[1].pore, resultArray[0].pore);
             updateElasticityData(resultArray[3].elasticity, resultArray[2].elasticity, resultArray[1].elasticity, resultArray[0].elasticity);
@@ -178,6 +316,87 @@ async function SkinConcernResults(extractedValues) {
             updateRednessData(resultArray[3].redness, resultArray[2].redness, resultArray[1].redness, resultArray[0].redness);
             updateTZoneData(resultArray[3].tZone_Moisture, resultArray[3].tZone_Oilskin, resultArray[2].tZone_Moisture, resultArray[2].tZone_Oilskin, resultArray[1].tZone_Moisture, resultArray[1].tZone_Oilskin, resultArray[0].tZone_Moisture, resultArray[0].tZone_Oilskin);
             updateUZoneData(resultArray[3].uZone_Moisture, resultArray[3].uZone_Oilskin, resultArray[2].uZone_Moisture, resultArray[2].uZone_Oilskin, resultArray[1].uZone_Moisture, resultArray[1].uZone_Oilskin, resultArray[0].uZone_Moisture, resultArray[0].uZone_Oilskin);
+        
+        
+            const valuesToSort = [
+                { name: "모공", value: resultArray[3].pore },
+                { name: "주름", value: resultArray[3].wrinkle },
+                { name: "미래주름", value: resultArray[3].futurewrinkles },
+                { name: "색소침착", value: resultArray[3].pigmentation },
+                { name: "멜라닌", value: resultArray[3].melanin },
+                { name: "경피수분손실도", value: resultArray[3].transdermal },
+                { name: "붉은기", value: resultArray[3].redness },
+                { name: "포피린", value: resultArray[3].porphyrin },
+                { name: "탄력", value: resultArray[3].elasticity }
+            ];
+
+            let smallestValues = sortAndReturnSmallestTwo(valuesToSort);
+            console.log('smallestValues : ', smallestValues);
+            // smallestValues 배열에서 name 값을 추출
+         
+            $("#skinGomin_text").text(smallestValues[0].name);
+            $("#skinGomin_text2").text(smallestValues[1].name);
+
+   
+            const valuesToSort_2 = [
+                { name: "모공", value: resultArray[2].pore },
+                { name: "주름", value: resultArray[2].wrinkle },
+                { name: "미래주름", value: resultArray[2].futurewrinkles },
+                { name: "색소침착", value: resultArray[2].pigmentation },
+                { name: "멜라닌", value: resultArray[2].melanin },
+                { name: "경피수분손실도", value: resultArray[2].transdermal },
+                { name: "붉은기", value: resultArray[2].redness },
+                { name: "포피린", value: resultArray[2].porphyrin },
+                { name: "탄력", value: resultArray[2].elasticity }
+            ];
+
+            let smallestValues_2 = sortAndReturnSmallestTwo(valuesToSort_2);
+            console.log('smallestValues_2 : ', smallestValues_2);
+
+            $("#skinGomin_text-2").text(smallestValues_2[0].name);
+            $("#skinGomin_text2-2").text(smallestValues_2[1].name);
+        
+         
+            const valuesToSort_3 = [
+                { name: "모공", value: resultArray[1].pore },
+                { name: "주름", value: resultArray[1].wrinkle },
+                { name: "미래주름", value: resultArray[1].futurewrinkles },
+                { name: "색소침착", value: resultArray[1].pigmentation },
+                { name: "멜라닌", value: resultArray[1].melanin },
+                { name: "경피수분손실도", value: resultArray[1].transdermal },
+                { name: "붉은기", value: resultArray[1].redness },
+                { name: "포피린", value: resultArray[1].porphyrin },
+                { name: "탄력", value: resultArray[1].elasticity }
+            ];
+
+            let smallestValues_3 = sortAndReturnSmallestTwo(valuesToSort_3);
+            console.log('smallestValues_3 : ', smallestValues_3);
+
+            $("#skinGomin_text-3").text(smallestValues_3[0].name);
+            $("#skinGomin_text2-3").text(smallestValues_3[1].name);
+           
+        
+
+            // 피부점수값 추출 (가장최근)
+            const valuesToSort_4 = [
+                { name: "모공", value: resultArray[0].pore },
+                { name: "주름", value: resultArray[0].wrinkle },
+                { name: "미래주름", value: resultArray[0].futurewrinkles },
+                { name: "색소침착", value: resultArray[0].pigmentation },
+                { name: "멜라닌", value: resultArray[0].melanin },
+                { name: "경피수분손실도", value: resultArray[0].transdermal },
+                { name: "붉은기", value: resultArray[0].redness },
+                { name: "포피린", value: resultArray[0].porphyrin },
+                { name: "탄력", value: resultArray[0].elasticity }
+            ];
+
+            let smallestValues_4 = sortAndReturnSmallestTwo(valuesToSort_4);
+            console.log('smallestValues_4 : ', smallestValues_4);
+
+            $("#skinGomin_text-4").text(smallestValues_4[0].name).css("color", "#e7c1da");
+            $("#skinGomin_text2-4").text(smallestValues_4[1].name).css("color", "#e7c1da");
+            $('#skinGomin-4').addClass('active');
+        
         }
     } catch (error) {
         console.error('SkinConcernResults 차트 반영 오류 : ', error);
@@ -234,14 +453,14 @@ async function SkinConcernResults2(extractedValues) {
             $('#t_zone_result-2').append(resultArray2[0].t_zone_result).addClass('active');
             $('#u_zone_result-1').append(resultArray2[1].u_zone_result);
             $('#u_zone_result-2').append(resultArray2[0].u_zone_result).addClass('active');
-            
+
         } else if (resultArray2.length === 3) {
             updateskinScoreData(resultArray2[2], resultArray2[1], resultArray2[0]);
             $('#t_zone_result-1 .date').text(resultArray2[2].create_dt.slice(0, 10));
             $('#t_zone_result-2 .date').text(resultArray2[1].create_dt.slice(0, 10));
             $('#t_zone_result-3 .date').text(resultArray2[0].create_dt.slice(0, 10));
 
-        
+
 
             $('#t_zone_result-1').append(resultArray2[2].t_zone_result);
             $('#t_zone_result-2').append(resultArray2[1].t_zone_result);
@@ -274,8 +493,13 @@ async function SkinConcernResults2(extractedValues) {
 }
 
 
+// 값들을 점수 순으로 정렬
+function sortAndReturnSmallestTwo(valuesToSort) {
+    const sortedValues = valuesToSort.sort((a, b) => a.value - b.value);
 
 
+    return [sortedValues[0], sortedValues[1]];
+}
 
 
 
@@ -287,6 +511,10 @@ function calculateAverage(values) {
     const average = sum / values.length;
     return average;
 }
+
+
+
+
 
 
 var first_day = '2024-12-11';
@@ -436,7 +664,7 @@ function updateskinScoreData(...skin_scores) {
 var t_zone_data = {
     datasets: [{
         data: [], // 초기 데이터는 빈 배열
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
         }
     }]
@@ -513,7 +741,7 @@ var t_zone_chart = new Chart(ctx, {
             }
         },
         pointRadius: 6,
-        pointBackgroundColor: function(context) {
+        pointBackgroundColor: function (context) {
             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
         }
     }
@@ -537,7 +765,7 @@ function updateTZoneData(ts1, tu1, ts2, tu2, ts3, tu3, ts4, tu4) {
 var u_zone_data = {
     datasets: [{
         data: [], // 초기 데이터는 빈 배열
-        backgroundColor: function(context) {
+        backgroundColor: function (context) {
             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
         }
     }]
@@ -603,7 +831,7 @@ var u_zone_chart = new Chart(ctx2, {
             }
         },
         pointRadius: 6,
-        pointBackgroundColor: function(context) {
+        pointBackgroundColor: function (context) {
             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
         }
     }
@@ -641,7 +869,7 @@ var pore_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -775,7 +1003,7 @@ var elasticity_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -908,7 +1136,7 @@ var wrinkle_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -1042,7 +1270,7 @@ var futurewrinkles_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -1176,7 +1404,7 @@ var melanin_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -1308,7 +1536,7 @@ var pigmentation_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -1439,7 +1667,7 @@ var transdermal_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -1568,7 +1796,7 @@ var porphyrin_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,
@@ -1698,7 +1926,7 @@ var redness_data = {
     labels: [1, 2, 3, 4],
     datasets: [{
         label: '',
-        data: [0, ], // 데이터 포인트 값
+        data: [0,], // 데이터 포인트 값
         fill: false,
         borderColor: ['#cccccc', '#e7c1da'], // 라인 색상
         borderWidth: 2,

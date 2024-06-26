@@ -450,34 +450,32 @@
         <div class="layer-content autoScroll">
             <form class="form-box">
                 <!-- <h4 class="group-title" style="font-size: 25px;">SPECIAL TIP</h4> -->
-                <div class="group-box-container">
+                <div class="group-box-container" style="margin-top: -30px;">
                     <div class="group-box-left">
                         <!-- 왼쪽 내용 -->
                          <div>
-                            <span>측정 이미지</span>                           
+                            <span style="font-size: 25px;">측정 이미지</span>                           
                          </div>
-                         <div  style="margin-top: 10px;">
-                            <img src='./resource/images/skin/ConcernFaceArea.jpg'
-                                                    alt="피부 부위">
+                         <div  style="margin-top: 5px;">
+                            <img src='./resource/images/skin/ConcernFaceArea.jpg' id="markvu_img" style="width: 300px; height: 250px;" alt="피부 부위">
                          </div>       
                     </div>
                     <div class="group-box-right">
                         <!-- 오른쪽 내용 -->
                         <div>
-                            <span>피부 부위</span>                           
+                            <span style="font-size: 25px;">피부 부위</span>                           
                          </div>
-                         <div style="margin-top: 10px;">                   
-                            <img src='./resource/images/skin/ConcernFaceArea.jpg'
-                                                    alt="피부 부위">
+                         <div style="margin-top: 5px;">                   
+                            <img src='./resource/images/skin/ConcernFaceArea.jpg' style="width: 300px; height: 250px;" alt="피부 부위">
                          </div>    
                     </div>
                
                 </div>
 
                 <div class="group-box" style="margin-top: 0px;">
-                    <h4 class="group-title" style="font-size: 25px;">SKIN SCORE (<span id="markvu_gubun">주름</span>)</h4>
+                    <h4 class="group-title" style="font-size: 20px;">SKIN SCORE (<span id="markvu_gubun"></span>)</h4>
                     <div class="row-group marginTop30">
-                        <canvas class="canvas2" width="1100" height="290" id="aging_chart2"></canvas>
+                        <canvas class="canvas2" width="1100" height="220" id="aging_chart2"></canvas>
 
                     </div>
                 </div>
@@ -525,6 +523,26 @@
 </div>
 
 
+
+
+
+    <!--메시지 박스 레이어 공통-->
+    <div class="msg-layer-noData layer-wrap">
+        <div class="layer-container">
+            <button class="close-button">닫기</button>
+            <header class="layer-header">
+                <h3 class="site-title">AMORE CITY LAB</h3>
+                <h2 class="layer-title">알림</h2>
+            </header>
+            <div class="layer-content">
+                <span id="noData_text" style="font-size: 30px;"></span><br>
+                <span id="noData_text2" style="font-size: 20px;"></span>
+
+            </div>
+           
+        </div>
+    </div>
+    <!--메시지 박스 레이어 공통-->
 
 
 

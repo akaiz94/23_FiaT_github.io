@@ -284,7 +284,9 @@
                         <script id="visit-item2" type="text/x-handlebars-template">
                             <tr>
                                 <td>{{ this.index }}</td>  
-                                <td>{{ this.name }}</td>   
+                                <td><a href="javascript:fnGetVisitDetail({{ this.visitkey }}, {{ this.skey }})" 
+                                    onclick="openMsgLayer2('{{this.name}}','{{this.phone}}','{{this.birthdate}}','{{this.sex}}', '{{this.m_userkey}}', '{{this.m_surveyNo}}', '{{this.email}}' , '{{this.vst_path}}','{{this.ucstmid}}' 
+                                    ,'{{this.rsvn_date}}','{{this.rsvn_time}}' ,'{{this.ProgramCode}}' ,'{{this.visitkey}}' ,'{{this.skey}}' ,'{{this.ProgramCode}}'  ,'{{this.progress_flg}}' )">{{this.name}}</a></td>
                                 <td>{{ this.sex }}</td>
                                 <td>{{ this.birthdate }}</td>  
                                 <td>{{ this.phone }}</td>                                 
@@ -795,7 +797,7 @@
 
 
 
-
+z
 </body>
 
 </html>

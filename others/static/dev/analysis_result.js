@@ -12,6 +12,7 @@ var SkinSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/ski
 var skin_result_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/result/';
 var ResultSkinConcern_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
 
+var SkinMarkvuCapture_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/markvu/capture/';
 
 const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 const surveyDate = moment().format('YYYY/MM/DD');
@@ -41,62 +42,86 @@ var u_zone_position_num_input = 0; // U존 위치
 
 $(document).ready(function () {
   window.scrollTo(0, 470);
-
   console.log('analysis_result page start -> ')
 
-  //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
-  if (localStorage.getItem('progress_flg') !== '10') {
-    //직접 방문 고객의 상담 진행률
-    if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
-      console.log("직방 고객 상담 진행률 체크")
-      $.ajax({
-        url: DirectCustom_API_URL + localStorage.getItem('skey'),
-        type: 'PATCH',
-        data: JSON.stringify({ "progress_flg": "107" }), //피부상담 진행중
-        contentType: 'application/json',
+  if (localStorage.getItem('custom_surveyNo') === null) {
+    console.log("고객 정보 확인불가.");
+    $("#noData_text").html('고객이 선택되지 않았습니다.');
+    $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+    $('.msg-layer-noData').addClass('open');
 
-        success: function (response) {
-          console.log('=====================');
-          console.log('피부상담 인입 성공 : ', response);
-        },
+    setTimeout(function () {
+      $('.layer-wrap-noData').removeClass('open');
+      window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+    }, 2000); // 2초 
 
-        error: function (xhr, status, error) {
-          console.error('피부상담 인입 에러 : ', error);
-        }
-      })
-    }
-    //예약 방문 고객의 상담 진행률
-    else if (localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
-      console.log("예약 고객 상담 진행률 체크")
-      $.ajax({
-        url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
-        type: 'PATCH',
-        data: JSON.stringify({ "progress_flg": "107" }), //피부문진 진행중
-        contentType: 'application/json',
-
-        success: function (response) {
-          console.log('=====================');
-          console.log('피부 문진 인입 성공 : ', response);
-        },
-
-        error: function (xhr, status, error) {
-          console.error('피부 문진 인입 에러 : ', error);
-        }
-      })
-    }
+    return;
   }
+
+  if (localStorage.getItem('ProgramCode') === 'PC001010') {
+    console.log("두피프로그램");
+    $("#noData_text").html('두피 프로그램에서 이용할 수 없는 페이지입니다.');
+    $("#noData_text2").html('잠시후 예약확인 페이지로 이동합니다.');
+    $('.msg-layer-noData').addClass('open');
+
+    setTimeout(function () {
+      $('.layer-wrap-noData').removeClass('open');
+      window.location.href = './solution_reservation.html';;   // 문진(피부) 측정 페이지로 이동
+    }, 2000); // 2초 
+
+    return;
+  }
+
+  //상담 완료가 아닐경우 (상담완료는 진행률 이미 100%)
+  // if (localStorage.getItem('progress_flg') !== '10') {
+  //   //직접 방문 고객의 상담 진행률
+  //   if (localStorage.getItem('visitkey') === '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
+  //     console.log("직방 고객 상담 진행률 체크")
+  //     $.ajax({
+  //       url: DirectCustom_API_URL + localStorage.getItem('skey'),
+  //       type: 'PATCH',
+  //       data: JSON.stringify({ "progress_flg": "107" }), //피부상담 진행중
+  //       contentType: 'application/json',
+
+  //       success: function (response) {
+  //         console.log('=====================');
+  //         console.log('피부상담 인입 성공 : ', response);
+  //       },
+
+  //       error: function (xhr, status, error) {
+  //         console.error('피부상담 인입 에러 : ', error);
+  //       }
+  //     })
+  //   }
+  //   //예약 방문 고객의 상담 진행률
+  //   else if (localStorage.getItem('visitkey') !== '0' && localStorage.getItem('custom_skinResult') !== 'ok') {
+  //     console.log("예약 고객 상담 진행률 체크")
+  //     $.ajax({
+  //       url: ReservedCustom_API_URL + localStorage.getItem('visitkey') + '/' + localStorage.getItem('skey'),
+  //       type: 'PATCH',
+  //       data: JSON.stringify({ "progress_flg": "107" }), //피부문진 진행중
+  //       contentType: 'application/json',
+
+  //       success: function (response) {
+  //         console.log('=====================');
+  //         console.log('피부 문진 인입 성공 : ', response);
+  //       },
+
+  //       error: function (xhr, status, error) {
+  //         console.error('피부 문진 인입 에러 : ', error);
+  //       }
+  //     })
+  //   }
+  // }
 
 
 
   $('#visitDate').text(localStorage.getItem('visit_rsvn_date'));
 
-  console.log("custom_userkey : ", localStorage.getItem('custom_userkey'));
-  console.log("custom_surveyNo : ", localStorage.getItem('custom_surveyNo'));
-  console.log("custom_sex : ", localStorage.getItem('custom_sex'));
-  console.log("manager_name : ", localStorage.getItem('manager_name'));
-  console.log("custom_name : ", localStorage.getItem('custom_name'));
+
 
   fnGetVisitCount();//방문회차 카운트 함수
+  fnGetMarkvuCapture(localStorage.getItem('custom_surveyNo')); //마크뷰 캡처 이미지 함수
 
 
   var surveyNo = localStorage.getItem('custom_surveyNo');
@@ -123,64 +148,86 @@ $(document).ready(function () {
   $('#comment03').val(localStorage.getItem('analysis_result-comment03'));
 
 
+  async function getAllDataAndSetSkinScore(surveyNo) {
+    try {
+      const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
+        fnGetMarkvu(surveyNo),
+        fnGetVapometer(surveyNo),
+        fnGetCutometer(surveyNo),
+        fnGetSkinSurvey(surveyNo)
+      ]);
+      localStorage.getItem('ProgramCode')
 
-  // async function getAllDataAndSetSkinScore(surveyNo) {
-  //   try {
-  //     const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
-  //       fnGetMarkvu(surveyNo),
-  //       fnGetVapometer(surveyNo),
-  //       fnGetCutometer(surveyNo),
-  //       fnGetSkinSurvey(surveyNo)
-  //     ]);
+      if (!get_skinsurvey) {
+        console.log("문진(피부) 데이터 확인불가.");
+        $("#noData_text").html('문진(피부)를 먼저 작성해야합니다.');
+        $("#noData_text2").html('잠시후 문진(피부) 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
 
-  //     setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }
-async function getAllDataAndSetSkinScore(surveyNo) {
-  try {
-    const [get_makvu, get_vapometer, get_cutometer, get_skinsurvey] = await Promise.all([
-      fnGetMarkvu(surveyNo),
-      fnGetVapometer(surveyNo),
-      fnGetCutometer(surveyNo),
-      fnGetSkinSurvey(surveyNo)
-    ]);
-    localStorage.getItem('ProgramCode')
+        setTimeout(function () {
+          $('.layer-wrap-noData').removeClass('open');
+          // window.location.href = './solution_questionnaire.html';;   // 문진(피부) 측정 페이지로 이동
+        }, 2000); // 2초 
 
-    if (!get_skinsurvey) {
-      alert("피부 문진이 완료되지 않았습니다.");
-      window.location.href = './solution_questionnaire.html';  // 피부 문진 화면으로 이동
-      return;
-    }
-
-
-    if (!get_makvu) {
-      alert("마크뷰 측정이 완료되지 않았습니다.");
-      window.location.href = './analysis.html';  // 마크뷰 측정 페이지로 이동
-      return;
-    }
-
-    if (!get_vapometer) {
-      alert("바포미터 측정이 완료되지 않았습니다.");
-      window.location.href = './analysis.html';  // 바포미터 측정 페이지로 이동
-      return;
-    }
-    
-    if (!get_cutometer) {
-      const programCode = localStorage.getItem('ProgramCode');
-      if (programCode === "PC001013") {
-        alert("큐토미터 측정이 완료되지 않았습니다.");
-        window.location.href = './analysis.html';  // 큐토미터 측정 페이지로 이동
         return;
       }
-    }
 
-    setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
-  } catch (error) {
-    console.error('Error:', error);
+
+      if (!get_makvu) {
+        console.log("마크뷰 데이터 확인불가.");
+        $("#noData_text").html('MARK-VU 측정이 완료되지 않았습니다.');
+        $("#noData_text2").html('잠시후 피부 측정 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+          $('.layer-wrap-noData').removeClass('open');
+          // window.location.href = './analysis.html';;   // 피부측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+      }
+
+      if (!get_vapometer) {
+        console.log("바포미터 데이터 확인불가.");
+        $("#noData_text").html('Vapometer 측정이 완료되지 않았습니다.');
+        $("#noData_text2").html('잠시후 피부 측정 페이지로 이동합니다.');
+        $('.msg-layer-noData').addClass('open');
+
+        setTimeout(function () {
+          $('.layer-wrap-noData').removeClass('open');
+          // window.location.href = './analysis.html';;   // 피부측정 페이지로 이동
+        }, 2000); // 2초 
+
+        return;
+      }
+
+      if (!get_cutometer) {
+        const programCode = localStorage.getItem('ProgramCode');
+        if (programCode === "PC001013") {
+          console.log("큐토미터 데이터 확인불가.");
+          $("#noData_text").html('Cutometer 측정이 완료되지 않았습니다.');
+          $("#noData_text2").html('잠시후 피부 측정 페이지로 이동합니다.');
+          $('.msg-layer-noData').addClass('open');
+
+          setTimeout(function () {
+            $('.layer-wrap-noData').removeClass('open');
+            // window.location.href = './analysis.html';;   // 피부측정 페이지로 이동
+          }, 2000); // 2초 
+
+
+
+
+          alert("큐토미터 측정이 완료되지 않았습니다.");
+          // window.location.href = './analysis.html';  // 큐토미터 측정 페이지로 이동
+          return;
+        }
+      }
+
+      setSkinScore(get_makvu, get_vapometer, get_cutometer, get_skinsurvey, 'I');
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
-}
   // 함수 호출
   getAllDataAndSetSkinScore(surveyNo);
 
@@ -240,50 +287,58 @@ async function getAllDataAndSetSkinScore(surveyNo) {
       backgroundImage.src = './resource/images/img-report001-M.png';
 
     }
-
-    $.ajax({
-      url: skin_result_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
-      type: 'GET',
-      contentType: 'application/json',
-
-      success: function (response) {
-        console.log("skin_result_URL 응답값 : ", response);
-        console.log("skin_result_URL  길이 : ", response.length);
-
-        if (response.length === 0) {
-          console.log("DB내, 이미지,코멘트 데이터가 존재하지않음")
-          //DB내, 데이터가 존재하지않음      
-
-
-        } else {
-          console.log("DB내, 이미지,코멘트 데이터가 존재함")
-          //DB내, 데이터가 존재
-          $('#opinionsImage').attr('src', response[0].specialtip_stoke_img); //(페이지) 이미지
-          $('#backgroundImage').attr('src', response[0].specialtip_img);//(페이지) 백그라운드 이미지
-
-          localStorage.setItem('analysis_result-opinionCanvas', response[0].specialtip_stoke_img)//(페이지) 이미지
-          localStorage.setItem('analysis_result-backgroundCanvas', response[0].specialtip_img)//(페이지) 백그라운드이미지
-
-          localStorage.setItem('analysis_result-comment01', response[0].specialtip_memo);
-          localStorage.setItem('analysis_result-comment02', response[0].specialtip_memo2);
-          localStorage.setItem('analysis_result-comment03', response[0].specialtip_memo3);
-
-          $('#comment01_main').val(localStorage.getItem('analysis_result-comment01'));
-          $('#comment02_main').val(localStorage.getItem('analysis_result-comment02'));
-          $('#comment03_main').val(localStorage.getItem('analysis_result-comment03'));
-
-
-        }
-
-      }, error: function (xhr, status, error) {
-        console.error('skin_result_URL 오류 : ', error);
-      }
-    })
-
-
   }
 
+  $.ajax({
+    url: skin_result_URL + '?surveyNo=' + localStorage.getItem('custom_surveyNo'),
+    type: 'GET',
+    contentType: 'application/json',
 
+    success: function (response) {
+      console.log("skin_result_URL 응답값 : ", response);
+      console.log("skin_result_URL  길이 : ", response.length);
+
+      if (response.length === 0) {
+        console.log("DB내, 이미지,코멘트 데이터가 존재하지않음")
+        //DB내, 데이터가 존재하지않음      
+
+
+      } else {
+        console.log("DB내, 이미지,코멘트 데이터가 존재함")
+        //DB내, 데이터가 존재
+
+        console.log('response[0].specialtip_img : ', response[0].specialtip_img);
+
+        $('#backgroundImage').attr('src',"data:image/jpeg;base64," +  response[0].specialtip_img);//(페이지) 백그라운드 이미지
+        $('#opinionsImage').attr('src',"data:image/jpeg;base64," +  response[0].specialtip_stoke_img); //(페이지) 이미지
+       
+
+        localStorage.setItem('analysis_result-opinionCanvas', response[0].specialtip_stoke_img)//(페이지) 이미지
+        localStorage.setItem('analysis_result-backgroundCanvas', response[0].specialtip_img)//(페이지) 백그라운드이미지
+
+        localStorage.setItem('analysis_result-comment01', response[0].specialtip_memo);
+        localStorage.setItem('analysis_result-comment02', response[0].specialtip_memo2);
+        localStorage.setItem('analysis_result-comment03', response[0].specialtip_memo3);
+
+        $('#comment01_main').val(localStorage.getItem('analysis_result-comment01'));
+        $('#comment02_main').val(localStorage.getItem('analysis_result-comment02'));
+        $('#comment03_main').val(localStorage.getItem('analysis_result-comment03'));
+
+
+
+
+      }
+
+    }, error: function (xhr, status, error) {
+      console.error('skin_result_URL 오류 : ', error);
+    }
+  })
+
+
+
+
+
+ 
   opinionImage.onload = function () {
     // 배경 이미지를 캔버스에 그립니다
     opinion_ctx.drawImage(opinionImage, 0, 0, opinionCanvas.width, opinionCanvas.height);
@@ -770,6 +825,37 @@ function fnGetMarkvu(surveyNo) {
   });
 }
 
+
+
+let get_markvu_capture = [];
+
+//마크뷰 이미지 가져오기
+function fnGetMarkvuCapture(surveyNo) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: SkinMarkvuCapture_API_URL + '?surveyNo=' + surveyNo + '&pageSize=1000',
+      type: 'GET',
+      contentType: 'application/json',
+
+      success: function (response) {
+        console.log("SkinMarkvuCapture_API_URL 응답값 : ", response);
+        console.log("SkinMarkvuCapture_API_URL  길이 : ", response.length);
+
+
+        get_markvu_capture = response;
+        console.log('get_markvu_capture : ', get_markvu_capture);
+
+
+      }, error: function (xhr, status, error) {
+        console.error('SkinMarkvuCapture_API_URL 오류 : ', error);
+      }
+    });
+  })
+}
+
+
+
+
 //#2nd. 바포미터 요청(경피수분손실도 값)
 function fnGetVapometer(surveyNo) {
   return new Promise((resolve, reject) => {
@@ -997,54 +1083,54 @@ $('#analysis_result_save').on('click', function (event) {
 var fnGetVisitCount = function () {
   var visit_count = 0; //프로그램별 방문회차 카운트
   $.ajax({
-      url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
-      type: 'GET',
-      success: function (response) {
-          console.log('=====================');
-          console.log('리스트 별 고객검색 결과 성공 : ', response);
+    url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
+    type: 'GET',
+    success: function (response) {
+      console.log('=====================');
+      console.log('리스트 별 고객검색 결과 성공 : ', response);
 
-          var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
-              && item.cancelYN !== "3"
-              && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-          var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
-              && item.cancelYN !== "3"
-              && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
-          var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
-              && item.cancelYN !== "3"
-              && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-              && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-          var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
-              && item.cancelYN !== "3"
-              && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
-              && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
-              
-          const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
-              .filter(item => item.m_surveyNo !== null)
-              .sort((a, b) => {
-                  const dateComparison = new Date(b.rsvn_date).getTime() - new Date(a.rsvn_date).getTime();
-                  if (dateComparison !== 0) return dateComparison;
-                  return b.rsvn_time.localeCompare(a.rsvn_time);
-              });
+      var select_visit1_1_data = response.filter(item => item.ProgramCode === "PC001013"
+        && item.cancelYN !== "3"
+        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+      var select_visit1_2_data = response.filter(item => item.ProgramCode === "PC001014"
+        && item.cancelYN !== "3"
+        && localStorage.getItem('raw_rsvn_date') > item.rsvn_date);
+      var select_visit2_1_data = response.filter(item => item.ProgramCode === "PC001013"
+        && item.cancelYN !== "3"
+        && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
+      var select_visit2_2_data = response.filter(item => item.ProgramCode === "PC001014"
+        && item.cancelYN !== "3"
+        && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
+        && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time);
 
-          console.log("정렬된 데이터: ", finalCombinedData);
+      const finalCombinedData = [...select_visit1_1_data, ...select_visit1_2_data, ...select_visit2_1_data, ...select_visit2_2_data]
+        .filter(item => item.m_surveyNo !== null)
+        .sort((a, b) => {
+          const dateComparison = new Date(b.rsvn_date).getTime() - new Date(a.rsvn_date).getTime();
+          if (dateComparison !== 0) return dateComparison;
+          return b.rsvn_time.localeCompare(a.rsvn_time);
+        });
 
-          const extractedValues = finalCombinedData.map(item => ({surveyNo: item.m_surveyNo, userkey: item.m_userkey}));
-          const selectedValues = extractedValues.slice(0, 4);
+      console.log("정렬된 데이터: ", finalCombinedData);
 
-          console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
-          console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
+      const extractedValues = finalCombinedData.map(item => ({ surveyNo: item.m_surveyNo, userkey: item.m_userkey }));
+      const selectedValues = extractedValues.slice(0, 4);
 
-          //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
-          const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
-          const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
-          const finalCombinedData_merge = [...combinedData1, ...combinedData2];
-          $('#visitCount').text(finalCombinedData_merge.length);
+      console.log("추출 값 (userkey, surveyNo) : ", extractedValues);
+      console.log("첫 번째부터 네 번째까지 값: ", selectedValues);
+
+      //프로그램별 히스토리 조회 - 2.각각의 조회된 배열 합치기 / m_surveyNo값 null 제외   
+      const combinedData1 = [...select_visit1_1_data, ...select_visit1_2_data];
+      const combinedData2 = [...select_visit2_1_data, ...select_visit2_2_data];
+      const finalCombinedData_merge = [...combinedData1, ...combinedData2];
+      $('#visitCount').text(finalCombinedData_merge.length);
 
 
-      },
-      error: function (xhr, status, error) {
-          console.error('리스트 별 고객검색 결과 에러 : ', error);
-      }
+    },
+    error: function (xhr, status, error) {
+      console.error('리스트 별 고객검색 결과 에러 : ', error);
+    }
   });
 }
 
@@ -1076,6 +1162,11 @@ $('#results_score-wrinkle').click(function () {
 
   $('.markvu-popup-layer').addClass('open');
   updateAgingData2(labels, [markvu.FWrinkle_A.toFixed(0), markvu.FWrinkle_C.toFixed(0), markvu.FWrinkle_D.toFixed(0), markvu.FWrinkle_E.toFixed(0), markvu.FWrinkle_F.toFixed(0), FWrinkle_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].C.toFixed(0), filtering[0].D.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+  console.log('get_markvu_capture  주름 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'NL');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
 });
 
 
@@ -1094,6 +1185,12 @@ $('#results_score-futurewrinkles').click(function () {
   $('.markvu-popup-layer').addClass('open');
 
   updateAgingData2(labels, [markvu.FFutureWrinkle_A.toFixed(0), markvu.FFutureWrinkle_E.toFixed(0), markvu.FFutureWrinkle_F.toFixed(0), markvu.FFutureWrinkle_G.toFixed(0), markvu.FFutureWrinkle_H.toFixed(0), FFuturewrinkles_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+  console.log('get_markvu_capture  미래주름 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'SL');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
+  
 });
 
 
@@ -1111,6 +1208,12 @@ $('#results_score-pigmentation').click(function () {
   $('.markvu-popup-layer').addClass('open');
 
   updateAgingData2(labels, [markvu.FPigmentation_A.toFixed(0), markvu.FPigmentation_B.toFixed(0), markvu.FPigmentation_E.toFixed(0), markvu.FPigmentation_F.toFixed(0), markvu.FPigmentation_G.toFixed(0), markvu.FPigmentation_H.toFixed(0), FPigmentation_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+  
+  console.log('get_markvu_capture  색소침착 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'PL');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
 });
 
 
@@ -1130,6 +1233,12 @@ $('#results_score-melanin').click(function () {
   $('.markvu-popup-layer').addClass('open');
 
   updateAgingData2(labels, [markvu.FMelanin_A.toFixed(0), markvu.FMelanin_B.toFixed(0), markvu.FMelanin_E.toFixed(0), markvu.FMelanin_F.toFixed(0), markvu.FMelanin_G.toFixed(0), markvu.FMelanin_H.toFixed(0), FMelanin_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+  console.log('get_markvu_capture  멜라닌 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'UV');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
+
 });
 
 
@@ -1148,6 +1257,14 @@ $('#results_score-redness').click(function () {
   $('.markvu-popup-layer').addClass('open');
 
   updateAgingData2(labels, [markvu.FRedness_A.toFixed(0), markvu.FRedness_B.toFixed(0), markvu.FRedness_E.toFixed(0), markvu.FRedness_F.toFixed(0), markvu.FRedness_G.toFixed(0), markvu.FRedness_H.toFixed(0), Redness_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].E.toFixed(0), filtering[0].F.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+
+  
+  console.log('get_markvu_capture  붉은기 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'PL');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
+
 });
 
 
@@ -1167,6 +1284,11 @@ $('#results_score-pore').click(function () {
   $('.markvu-popup-layer').addClass('open');
 
   updateAgingData2(labels, [markvu.FPore_A.toFixed(0), markvu.FPore_B.toFixed(0), markvu.FPore_G.toFixed(0), markvu.FPore_H.toFixed(0), FPore_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+  console.log('get_markvu_capture  모공 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'NL');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
 });
 
 
@@ -1186,6 +1308,12 @@ $('#results_score-porphyrin').click(function () {
   $('.markvu-popup-layer').addClass('open');
 
   updateAgingData2(labels, [markvu.FPorphyrin_A.toFixed(0), markvu.FPorphyrin_B.toFixed(0), markvu.FPorphyrin_G.toFixed(0), markvu.FPorphyrin_H.toFixed(0), FPorphyrin_Avg.toFixed(0)], [filtering[0].A.toFixed(0), filtering[0].B.toFixed(0), filtering[0].G.toFixed(0), filtering[0].H.toFixed(0), filtering[0].AVG.toFixed(0)]);
+
+  console.log('get_markvu_capture  포피린 : ', get_markvu_capture );
+  filter_image = get_markvu_capture.filter(item => item.Side==='F' && item.LED === 'UV');
+  $("#markvu_img").attr("src", "data:image/jpeg;base64," + filter_image[0].ImageData);
+
+
 });
 
 
@@ -1199,16 +1327,6 @@ $('#markvu-popup-close').click(function () {
 
   $('.markvu-popup-layer').removeClass('open');
 });
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2087,22 +2205,6 @@ function setSensitiveType(survey) {
   // console.log("sensitiveAllResult : ", sensitiveAllResult);
   return sensitiveAllResult;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

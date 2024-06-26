@@ -434,130 +434,130 @@ var t_zone_data = {
     }]
 };
 
+// //  버전3 : 선표시 및 라벨 보임
+// var ctx = document.getElementById('t_zone_chart').getContext('2d');
+// var t_zone_chart = new Chart(ctx, {
+//     type: 'scatter',
+//     data: t_zone_data,
+//     options: {
+//         scales: {
+//             x: {
+//                 type: 'linear',
+//                 position: 'bottom',
+//                 min: 0,
+//                 max: 60,
+//                 grid: {
+//                     color: 'rgba(0, 0, 0, 0.1)', // grid 색상
+//                     borderDash: [5, 5],
+//                     display: true,
+//                 },
+//                 scaleLabel: {
+//                     display: true,
+//                     labelString: '수분'
+//                 },
+//                 ticks: {
+//                     stepSize: 20
+//                 },
+//                 title: {
+//                     display: true,
+//                     text: '수분',
+//                     font: {
+//                         size: 20
+//                     }
+//                 }
+//             },
+//             y: {
+//                 type: 'linear',
+//                 position: 'left',
+//                 min: 0,
+//                 max: 60,
+//                 grid: {
+//                     color: 'rgba(0, 0, 0, 0.1)', // grid 색상
+//                     display: true,
+//                     borderDash: [5, 5]
+//                 },
+//                 ticks: {
+//                     stepSize: 20
+//                 },
+//                 title: {
+//                     display: true,
+//                     text: '유분',
+//                     font: {
+//                         size: 20
+//                     }
+//                 }
+//             }
+//         },
+//         plugins: {
+//             legend: {
+//                 display: false // 범례 숨기기
+//             }
+//         },
+//         pointRadius: 6,
 
-var ctx = document.getElementById('t_zone_chart').getContext('2d');
-var t_zone_chart = new Chart(ctx, {
-    type: 'scatter',
-    data: t_zone_data,
-    options: {
-        scales: {
-            x: {
-                type: 'linear',
-                position: 'bottom',
-                min: 0,
-                max: 60,
-                grid: {
-                    color: 'rgba(0, 0, 0, 0.1)', // grid 색상
-                    borderDash: [5, 5],
-                    display: true,
-                },
-                scaleLabel: {
-                    display: true,
-                    labelString: '수분'
-                },
-                ticks: {
-                    stepSize: 20
-                },
-                title: {
-                    display: true,
-                    text: '수분',
-                    font: {
-                        size: 20
-                    }
-                }
-            },
-            y: {
-                type: 'linear',
-                position: 'left',
-                min: 0,
-                max: 60,
-                grid: {
-                    color: 'rgba(0, 0, 0, 0.1)', // grid 색상
-                    display: true,
-                    borderDash: [5, 5]
-                },
-                ticks: {
-                    stepSize: 20
-                },
-                title: {
-                    display: true,
-                    text: '유분',
-                    font: {
-                        size: 20
-                    }
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                display: false // 범례 숨기기
-            }
-        },
-        pointRadius: 6,
+//         pointBackgroundColor: function(context) {
+//             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
+//         }
+//     },
+//     plugins: [{
+//         id: 'pointLabels',
+//         afterDatasetsDraw: function (chart) {
+//             const ctx = chart.ctx;
+//             const offset = 10;
+//             const labelPadding = 5;
+//             const labelWidth = 50; // 대략적인 라벨 너비
+//             const labelHeight = 12; // 라벨 높이
 
-        pointBackgroundColor: function(context) {
-            return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
-        }
-    },
-    plugins: [{
-        id: 'pointLabels',
-        afterDatasetsDraw: function (chart) {
-            const ctx = chart.ctx;
-            const offset = 10;
-            const labelPadding = 5;
-            const labelWidth = 50; // 대략적인 라벨 너비
-            const labelHeight = 12; // 라벨 높이
+//             chart.data.datasets.forEach(function (dataset) {
+//                 dataset.data.forEach(function (point, index) {
+//                     const x = chart.scales.x.getPixelForValue(point.x);
+//                     const y = chart.scales.y.getPixelForValue(point.y);
+//                     let labelX = x + offset;
+//                     let labelY = y - offset;
 
-            chart.data.datasets.forEach(function (dataset) {
-                dataset.data.forEach(function (point, index) {
-                    const x = chart.scales.x.getPixelForValue(point.x);
-                    const y = chart.scales.y.getPixelForValue(point.y);
-                    let labelX = x + offset;
-                    let labelY = y - offset;
+//                     // Check for overlap with other points
+//                     let overlap = false;
+//                     dataset.data.forEach(function (otherPoint, otherIndex) {
+//                         if (index !== otherIndex) {
+//                             const otherX = chart.scales.x.getPixelForValue(otherPoint.x);
+//                             const otherY = chart.scales.y.getPixelForValue(otherPoint.y);
+//                             if (labelX < otherX + labelWidth && labelX + labelWidth > otherX &&
+//                                 labelY < otherY + labelHeight && labelY + labelHeight > otherY) {
+//                                 overlap = true;
+//                             }
+//                         }
+//                     });
 
-                    // Check for overlap with other points
-                    let overlap = false;
-                    dataset.data.forEach(function (otherPoint, otherIndex) {
-                        if (index !== otherIndex) {
-                            const otherX = chart.scales.x.getPixelForValue(otherPoint.x);
-                            const otherY = chart.scales.y.getPixelForValue(otherPoint.y);
-                            if (labelX < otherX + labelWidth && labelX + labelWidth > otherX &&
-                                labelY < otherY + labelHeight && labelY + labelHeight > otherY) {
-                                overlap = true;
-                            }
-                        }
-                    });
+//                     // If overlap, place label on the left
+//                     if (overlap) {
+//                         labelX = x - labelWidth - offset;
+//                     }
 
-                    // If overlap, place label on the left
-                    if (overlap) {
-                        labelX = x - labelWidth - offset;
-                    }
+//                     // Draw line from point to label
+//                     ctx.beginPath();
+//                     ctx.moveTo(x, y);
+//                     ctx.lineTo(labelX, labelY);
+//                     ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+//                     ctx.stroke();
 
-                    // Draw line from point to label
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(labelX, labelY);
-                    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-                    ctx.stroke();
+//                     // Draw label
+//                     ctx.fillStyle = 'black';
+//                     ctx.font = '12px Arial';
+//                     ctx.fillText(`수분/유분: ${point.x}/${point.y}`, labelX, labelY);
+//                 });
+//             });
+//         }
+//     }]
+// });
 
-                    // Draw label
-                    ctx.fillStyle = 'black';
-                    ctx.font = '12px Arial';
-                    ctx.fillText(`수분/유분: ${point.x}/${point.y}`, labelX, labelY);
-                });
-            });
-        }
-    }]
-});
+// function updateTZoneData(ts1, tu1, ts2, tu2, ts3, tu3, ts4, tu4) {
+//     t_zone_data.datasets[0].data[0] = { x: ts1, y: tu1 };
+//     t_zone_data.datasets[0].data[1] = { x: ts2, y: tu2 };
+//     t_zone_data.datasets[0].data[2] = { x: ts3, y: tu3 };
+//     t_zone_data.datasets[0].data[3] = { x: ts4, y: tu4 };
 
-function updateTZoneData(ts1, tu1, ts2, tu2, ts3, tu3, ts4, tu4) {
-    t_zone_data.datasets[0].data[0] = { x: ts1, y: tu1 };
-    t_zone_data.datasets[0].data[1] = { x: ts2, y: tu2 };
-    t_zone_data.datasets[0].data[2] = { x: ts3, y: tu3 };
-    t_zone_data.datasets[0].data[3] = { x: ts4, y: tu4 };
-
-    t_zone_chart.update();
-}
+//     t_zone_chart.update();
+// }
 
 
 
@@ -650,6 +650,84 @@ function updateTZoneData(ts1, tu1, ts2, tu2, ts3, tu3, ts4, tu4) {
 // }
 
 
+//  버전1 : 점만표시
+var ctx = document.getElementById('t_zone_chart').getContext('2d');
+var t_zone_chart = new Chart(ctx, {
+    type: 'scatter',
+    data: t_zone_data,
+    options: {
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+                min: 0,
+                max: 60,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)', // grid 색상
+                    borderDash: [5, 5],
+                    display: true,
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: '수분'
+                },
+                ticks: {
+                    stepSize: 20
+                },
+                title: {
+                    display: true,
+                    text: '수분',
+                    font: {
+                        size: 20
+                    }
+                }
+            },
+            y: {
+                type: 'linear',
+                position: 'left',
+                min: 0,
+                max: 60,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.1)', // grid 색상
+                    display: true,
+                    borderDash: [5, 5]
+                },
+                ticks: {
+                    stepSize: 20
+                },
+                title: {
+                    display: true,
+                    text: '유분',
+                    font: {
+                        size: 20
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // 범례 숨기기
+            }
+        },
+        pointRadius: 6,
+
+        pointBackgroundColor: function(context) {
+            return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
+        }
+    },
+  
+});
+
+function updateTZoneData(ts1, tu1, ts2, tu2, ts3, tu3, ts4, tu4) {
+    t_zone_data.datasets[0].data[0] = { x: ts1, y: tu1 };
+    t_zone_data.datasets[0].data[1] = { x: ts2, y: tu2 };
+    t_zone_data.datasets[0].data[2] = { x: ts3, y: tu3 };
+    t_zone_data.datasets[0].data[3] = { x: ts4, y: tu4 };
+
+    t_zone_chart.update();
+}
+
+
 
 
 
@@ -666,6 +744,130 @@ var u_zone_data = {
         }
     }]
 };
+
+// //  버전3 : 선표시 및 라벨 보임
+// var ctx2 = document.getElementById('u_zone_chart').getContext('2d');
+// var u_zone_chart = new Chart(ctx2, {
+//     type: 'scatter',
+//     data: u_zone_data,
+//     options: {
+//         scales: {
+//             x: {
+//                 type: 'linear',
+//                 position: 'bottom',
+//                 min: 0,
+//                 max: 60,
+//                 grid: {
+//                     color: 'rgba(0, 0, 0, 0.1)', // grid 색상
+//                     display: true
+//                 },
+//                 ticks: {
+//                     stepSize: 20
+//                 },
+//                 title: {
+//                     display: true,
+//                     text: '수분',
+//                     font: {
+//                         size: 20
+//                     }
+//                 }
+//             },
+//             y: {
+//                 type: 'linear',
+//                 position: 'left',
+//                 min: 0,
+//                 max: 60,
+//                 grid: {
+//                     color: 'rgba(0, 0, 0, 0.1)', // grid 색상
+//                     display: true
+//                 },
+//                 ticks: {
+//                     stepSize: 20
+//                 },
+//                 title: {
+//                     display: true,
+//                     text: '유분',
+//                     font: {
+//                         size: 20
+//                     }
+//                 }
+//             }
+//         },
+//         plugins: {
+//             legend: {
+//                 display: false // 범례 숨기기
+//             }
+//         },
+//         pointRadius: 6,
+
+//         pointBackgroundColor: function(context) {
+//             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
+//         }
+//     },
+//     plugins: [{
+//         id: 'pointLabels',
+//         afterDatasetsDraw: function (chart) {
+//             const ctx = chart.ctx;
+//             const offset = 10;
+//             const labelPadding = 5;
+//             const labelWidth = 50; // 대략적인 라벨 너비
+//             const labelHeight = 12; // 라벨 높이
+
+//             chart.data.datasets.forEach(function (dataset) {
+//                 dataset.data.forEach(function (point, index) {
+//                     const x = chart.scales.x.getPixelForValue(point.x);
+//                     const y = chart.scales.y.getPixelForValue(point.y);
+//                     let labelX = x + offset;
+//                     let labelY = y - offset;
+
+//                     // Check for overlap with other points
+//                     let overlap = false;
+//                     dataset.data.forEach(function (otherPoint, otherIndex) {
+//                         if (index !== otherIndex) {
+//                             const otherX = chart.scales.x.getPixelForValue(otherPoint.x);
+//                             const otherY = chart.scales.y.getPixelForValue(otherPoint.y);
+//                             if (labelX < otherX + labelWidth && labelX + labelWidth > otherX &&
+//                                 labelY < otherY + labelHeight && labelY + labelHeight > otherY) {
+//                                 overlap = true;
+//                             }
+//                         }
+//                     });
+
+//                     // If overlap, place label on the left
+//                     if (overlap) {
+//                         labelX = x - labelWidth - offset;
+//                     }
+
+//                     // Draw line from point to label
+//                     ctx.beginPath();
+//                     ctx.moveTo(x, y);
+//                     ctx.lineTo(labelX, labelY);
+//                     ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+//                     ctx.stroke();
+
+//                     // Draw label
+//                     ctx.fillStyle = 'black';
+//                     ctx.font = '12px Arial';
+//                     ctx.fillText(`수분/유분: ${point.x}/${point.y}`, labelX, labelY);
+//                 });
+//             });
+//         }
+//     }]
+// });
+
+// function updateUZoneData(us1, uu1, us2, uu2, us3, uu3, us4, uu4) {
+//     u_zone_data.datasets[0].data[0] = { x: us1, y: uu1 };
+//     u_zone_data.datasets[0].data[1] = { x: us2, y: uu2 };
+//     u_zone_data.datasets[0].data[2] = { x: us3, y: uu3 };
+//     u_zone_data.datasets[0].data[3] = { x: us4, y: uu4 };
+
+//     u_zone_chart.update();
+// }
+
+
+
+
+//버전1 : 점 표시만 보임
 
 var ctx2 = document.getElementById('u_zone_chart').getContext('2d');
 var u_zone_chart = new Chart(ctx2, {
@@ -720,60 +922,10 @@ var u_zone_chart = new Chart(ctx2, {
             }
         },
         pointRadius: 6,
-
         pointBackgroundColor: function(context) {
             return context.dataIndex === 0 ? '#e7c1da' : '#cccccc';
         }
-    },
-    plugins: [{
-        id: 'pointLabels',
-        afterDatasetsDraw: function (chart) {
-            const ctx = chart.ctx;
-            const offset = 10;
-            const labelPadding = 5;
-            const labelWidth = 50; // 대략적인 라벨 너비
-            const labelHeight = 12; // 라벨 높이
-
-            chart.data.datasets.forEach(function (dataset) {
-                dataset.data.forEach(function (point, index) {
-                    const x = chart.scales.x.getPixelForValue(point.x);
-                    const y = chart.scales.y.getPixelForValue(point.y);
-                    let labelX = x + offset;
-                    let labelY = y - offset;
-
-                    // Check for overlap with other points
-                    let overlap = false;
-                    dataset.data.forEach(function (otherPoint, otherIndex) {
-                        if (index !== otherIndex) {
-                            const otherX = chart.scales.x.getPixelForValue(otherPoint.x);
-                            const otherY = chart.scales.y.getPixelForValue(otherPoint.y);
-                            if (labelX < otherX + labelWidth && labelX + labelWidth > otherX &&
-                                labelY < otherY + labelHeight && labelY + labelHeight > otherY) {
-                                overlap = true;
-                            }
-                        }
-                    });
-
-                    // If overlap, place label on the left
-                    if (overlap) {
-                        labelX = x - labelWidth - offset;
-                    }
-
-                    // Draw line from point to label
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(labelX, labelY);
-                    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-                    ctx.stroke();
-
-                    // Draw label
-                    ctx.fillStyle = 'black';
-                    ctx.font = '12px Arial';
-                    ctx.fillText(`수분/유분: ${point.x}/${point.y}`, labelX, labelY);
-                });
-            });
-        }
-    }]
+    }
 });
 
 function updateUZoneData(us1, uu1, us2, uu2, us3, uu3, us4, uu4) {
@@ -782,80 +934,9 @@ function updateUZoneData(us1, uu1, us2, uu2, us3, uu3, us4, uu4) {
     u_zone_data.datasets[0].data[2] = { x: us3, y: uu3 };
     u_zone_data.datasets[0].data[3] = { x: us4, y: uu4 };
 
+    // console.log("updateTZoneData IN tzone_subun_result : ",uzone_subun_result)
     u_zone_chart.update();
 }
-
-
-
-
-// 버전1 : 점 표시만 보임
-
-// var ctx2 = document.getElementById('u_zone_chart').getContext('2d');
-// var u_zone_chart = new Chart(ctx2, {
-//     type: 'scatter',
-//     data: u_zone_data,
-//     options: {
-//         scales: {
-//             x: {
-//                 type: 'linear',
-//                 position: 'bottom',
-//                 min: 0,
-//                 max: 60,
-//                 grid: {
-//                     color: 'rgba(0, 0, 0, 0.1)', // grid 색상
-//                     display: true
-//                 },
-//                 ticks: {
-//                     stepSize: 20
-//                 },
-//                 title: {
-//                     display: true,
-//                     text: '수분',
-//                     font: {
-//                         size: 20
-//                     }
-//                 }
-//             },
-//             y: {
-//                 type: 'linear',
-//                 position: 'left',
-//                 min: 0,
-//                 max: 60,
-//                 grid: {
-//                     color: 'rgba(0, 0, 0, 0.1)', // grid 색상
-//                     display: true
-//                 },
-//                 ticks: {
-//                     stepSize: 20
-//                 },
-//                 title: {
-//                     display: true,
-//                     text: '유분',
-//                     font: {
-//                         size: 20
-//                     }
-//                 }
-//             }
-//         },
-//         plugins: {
-//             legend: {
-//                 display: false // 범례 숨기기
-//             }
-//         },
-//         pointRadius: 6,
-//         pointBackgroundColor: '#e7c1da'
-//     }
-// });
-
-// function updateUZoneData(us1, uu1, us2, uu2, us3, uu3, us4, uu4) {
-//     u_zone_data.datasets[0].data[0] = { x: us1, y: uu1 };
-//     u_zone_data.datasets[0].data[1] = { x: us2, y: uu2 };
-//     u_zone_data.datasets[0].data[2] = { x: us3, y: uu3 };
-//     u_zone_data.datasets[0].data[3] = { x: us4, y: uu4 };
-
-//     // console.log("updateTZoneData IN tzone_subun_result : ",uzone_subun_result)
-//     u_zone_chart.update();
-// }
 
 
 

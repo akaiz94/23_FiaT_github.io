@@ -1,11 +1,13 @@
 var ReservedCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/progress_flg/';
-var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000//v1/sch/direct/progress_flg/';
-
+var DirectCustom_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/direct/progress_flg/';
 var Main_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/sch/visit/merged/list'; //방문회차 카운트
-
 var SkinSurvey_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/svy/skin/';
 var ResultSkinConcern_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/concern/';
+var MySKin_API_URL = 'https://amore-citylab.amorepacific.com:8000/v1/skin/myskin/';
 
+
+const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+const surveyDate = moment().format('YYYY/MM/DD');
 
 var first_s3_0 = 0; // 0.나이
 var first_s3_1 = 0; // 1.자외선
@@ -100,10 +102,11 @@ $(document).ready(function () {
 *24. 06. 14 방문회차 카운트 함수
 *
 */
+
 var fnGetVisitCount = function () {
-    var visit_count = 0; //프로그램별 방문회차 카운트
+    var visitCount = 0; //프로그램별 방문회차 카운트
     $.ajax({
-        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone') + '&pageSize=30',
+        url: Main_API_URL + '?name=' + localStorage.getItem('custom_name') + '&phone=' + localStorage.getItem('custom_phone'),
 
         type: 'GET',
         success: function (response) {
@@ -114,12 +117,20 @@ var fnGetVisitCount = function () {
             //프로그램별 방문회차 카운트 입력2 (같은날짜, 시간대 고려)
             var select_visit1_1 = 0 //다른날짜 - 마이스킨솔루션
 
+
             select_visit1_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') > item.rsvn_date).length;
+
+
             console.log("select_visit1_1 : ", select_visit1_1);
 
+
             var select_visit2_1 = 0 //같은날짜 - 마이스킨솔루션
+
+
             select_visit2_1 = response.filter(item => item.ProgramCode === "PC001013"
+                && item.cancelYN !== "3"
                 && localStorage.getItem('raw_rsvn_date') === item.rsvn_date
                 && localStorage.getItem('raw_rsvn_time') >= item.rsvn_time).length;
 
@@ -130,8 +141,6 @@ var fnGetVisitCount = function () {
 
             $('#visitCount').text(visitCount);
 
-
-
         },
 
         error: function (xhr, status, error) {
@@ -141,7 +150,6 @@ var fnGetVisitCount = function () {
 
 
 }
-
 
 
 
@@ -365,7 +373,7 @@ var fnGetResultSkinConcern = function () {
 
             oiliness_score = parseInt(response[0].uZone_Oilskin); // 유분
             dryness_score = parseInt(response[0].uZone_Moisture); //수분
-       
+
 
             // 값들을 배열로 만듦
             const values = [
@@ -426,36 +434,61 @@ var fnGetFutureScore = function () {
     var after_s3_3 = s3_3 + 1
     var after_s3_4 = s3_4 + 1
 
-    $.ajax({
-        //운영
-        // url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${age}&sunscreen=${sunscreen}&smoke=${smoke}&stress=${stress}&sleep=${sleep}&modified_age=${modified_age}&modified_sunscreen=${modified_sunscreen}&modified_smoke=${modified_smoke}&modified_stress=${modified_stress}&modified_sleep=${modified_sleep}`,
-        //테스트
-        url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_s3_1}&modified_smoke=${after_s3_2}&modified_stress=${after_s3_3}&modified_sleep=${after_s3_4}`,
+    //점수 초기값이 0이면 안됨 (범위 1 ~ 100)
+    if (elasticity_score === 0) {
+        elasticity_score += 1;
+    }
 
-        type: 'GET',
+    if (sensitivity_score === 0) {
+        sensitivity_score += 1;
+    }
 
-        success: function (response) {
-            console.log("fnGetFutureScore 응답값 : ", response);
+    if (pigment_score === 0) {
+        pigment_score += 1;
+    }
 
-            let pred_sensitivity_score = parseInt(response.result.pred_sensitivity_score); // 민감 (붉은기)
-            let pred_pigment_score = parseInt(response.result.pred_pigment_score); // 색소침착
-            let pred_elasticity_score = parseInt(response.result.pred_elasticity_score); // 탄력
-            let pred_oiliness_score = parseInt(response.result.pred_oiliness_score); // 유분
-            let pred_dryness_score = parseInt(response.result.pred_dryness_score); //수분
+    if (oiliness_score === 0) {
+        oiliness_score += 1;
+    }
 
-
-            //방사형(레이더)차트 업데이트
-            updateRadarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
-
-            //막대(my)차트 업데이트
-            updateBarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+    if (dryness_score === 0) {
+        dryness_score += 1;
+    }
 
 
+    if (elasticity_score > 0 && sensitivity_score > 0 && pigment_score > 0 && oiliness_score > 0 && dryness_score >0) {
 
-        }, error: function (xhr, status, error) {
-            console.error('fnGetFutureScore 오류 : ', error);
-        }
-    })
+        $.ajax({
+            //운영
+            // url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${age}&sunscreen=${sunscreen}&smoke=${smoke}&stress=${stress}&sleep=${sleep}&modified_age=${modified_age}&modified_sunscreen=${modified_sunscreen}&modified_smoke=${modified_smoke}&modified_stress=${modified_stress}&modified_sleep=${modified_sleep}`,
+            //테스트
+            url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_s3_1}&modified_smoke=${after_s3_2}&modified_stress=${after_s3_3}&modified_sleep=${after_s3_4}`,
+
+            type: 'GET',
+
+            success: function (response) {
+                console.log("fnGetFutureScore 응답값 : ", response);
+
+                let pred_sensitivity_score = parseInt(response.result.pred_sensitivity_score); // 민감 (붉은기)
+                let pred_pigment_score = parseInt(response.result.pred_pigment_score); // 색소침착
+                let pred_elasticity_score = parseInt(response.result.pred_elasticity_score); // 탄력
+                let pred_oiliness_score = parseInt(response.result.pred_oiliness_score); // 유분
+                let pred_dryness_score = parseInt(response.result.pred_dryness_score); //수분
+
+
+                //방사형(레이더)차트 업데이트
+                updateRadarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+
+                //막대(my)차트 업데이트
+                updateBarData(1, [(pred_dryness_score * 100 / 60).toFixed(0), (pred_oiliness_score * 100 / 40).toFixed(0), pred_sensitivity_score, pred_pigment_score, pred_elasticity_score]); //현재 피부 데이터 
+
+
+
+            }, error: function (xhr, status, error) {
+                console.error('fnGetFutureScore 오류 : ', error);
+            }
+        })
+    }
 }
 
 
@@ -464,7 +497,7 @@ var fnGetFutureScore = function () {
 var fnGetFutureScore_first = function () {
     var ucstmid = localStorage.getItem('custom_ucstmid'); //운영
     // var ucstmid = 204677883 // 테스트
-    
+
 
     console.log('first_s3_1 : ', first_s3_1);
     console.log('first_s3_2 : ', first_s3_2);
@@ -481,8 +514,29 @@ var fnGetFutureScore_first = function () {
     // var after_s3_3 = s3_3 + 1
     // var after_s3_4 = s3_4 + 1
 
+    //점수 초기값이 0이면 안됨 (범위 1 ~ 100)
+    if (elasticity_score === 0) {
+        elasticity_score += 1;
+    }
 
-    if (elasticity_score > -1 && sensitivity_score > -1 && pigment_score > -1 && oiliness_score > -1 && dryness_score) {
+    if (sensitivity_score === 0) {
+        sensitivity_score += 1;
+    }
+
+    if (pigment_score === 0) {
+        pigment_score += 1;
+    }
+
+    if (oiliness_score === 0) {
+        oiliness_score += 1;
+    }
+
+    if (dryness_score === 0) {
+        dryness_score += 1;
+    }
+
+
+    if (elasticity_score > 0 && sensitivity_score > 0 && pigment_score > 0 && oiliness_score > 0 && dryness_score >0) {
         $.ajax({
             //운영
             url: `https://citylab.amorepacific.com/gpiopeApi/genoFuture?btCustIdNo=${ucstmid}&btCustIdNoClassifiCode=01&elasticity_score=${elasticity_score}&sensitivity_score=${sensitivity_score}&pigment_score=${pigment_score}&oiliness_score=${oiliness_score}&dryness_score=${dryness_score}&age=${first_s3_0}&sunscreen=${after_first_s3_1}&smoke=${after_first_s3_2}&stress=${after_first_s3_3}&sleep=${after_first_s3_4}&modified_age=${s3_0}&modified_sunscreen=${after_first_s3_1}&modified_smoke=${after_first_s3_2}&modified_stress=${after_first_s3_3}&modified_sleep=${after_first_s3_4}`,
@@ -525,6 +579,50 @@ var fnGetFutureScore_first = function () {
 
 
 
+
+
+$('#custom_info_saveButton').on('click', function (event) {
+
+    console.log("마이스킨솔루션 저장버튼 클릭");
+    console.log("코멘트 1 값 : ", $('#comment01').val());
+
+    var requestData = {        
+        "userKey": parseInt(localStorage.getItem('custom_userkey')),
+        "surveyNo": parseInt(localStorage.getItem('custom_surveyNo')),
+        "surveyDate": surveyDate,
+        "name": localStorage.getItem('custom_name'),     
+        "specialtip_memo": $('#comment01').val(),
+        "specialtip_memo2": '',
+        "specialtip_memo3": '',
+        "manager_value": localStorage.getItem('manager_name'),
+        "createDt": currentTime,
+        "updateDt": currentTime,  
+    }
+
+    console.log("MySKin_API_URL requestData : ", requestData);
+
+
+    $.ajax({
+        url: MySKin_API_URL,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(requestData),
+
+        success: function (response) {
+            console.log("MySKin_API_URL 응답값 : ", response);
+            $("#custom_detail_main").html("마이 스킨 솔루션 결과 저장완료");
+            showErrorModal();
+
+
+        }, error: function (xhr, status, error) {
+            console.error('hair_result_URL 오류 : ', error);
+            $("#custom_detail_main").html("마이 스킨 솔루션 결과  저장 실패");
+            showErrorModal();
+        }
+    })
+
+
+})
 
 
 
@@ -718,4 +816,13 @@ function GetAgeArea(_age) {
     } else {
         return 70;
     }
+}
+
+
+
+
+
+function showErrorModal() {
+    $('.search-result-layer-error').addClass('open');
+    // console.log("에러 모달창");
 }
