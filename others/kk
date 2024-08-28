@@ -49,3 +49,7 @@ Decrypted Password: 2020
 #8 DATABASE_DIALECT=mssql+pyodbc
 Encrypted Password: 94fs4cAJCKfxtUkz2R2SneJdzZq5+JGAMFN9Ig==
 Decrypted Password: mssql+pyodbc
+
+#8 DATABASE_DRIVER=ODBC+Driver+17+for+SQL+Server
+Encrypted Password: 1bDd04dmCrfotFl7tpQ3iBPFGiUhssCr97Ttdkx1hRVSshf7oGTonbkDtIo2
+Decrypted Password: ODBC+Driver+17+for+SQL+Server
