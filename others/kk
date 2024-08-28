@@ -1,0 +1,44 @@
+Key: +iFYdTfI5eTGzZQNlt7euE53AEBLOa516LB5JUdNdPQ=
+Nonce: 9t/2sYVUKcpZNMZH
+
+#1 DATABASE_HOSTNAME=ctprd-comm-ms-02.cpufhzuamh8y.ap-northeast-2.rds.amazonaws.com
+Encrypted Password: +YDv4sgPG7HzvAY99I4s3FLUQQMWlpGN86vzK0dHd2GUj5ElnfzU7nwdEbaEmND/4UrqAFeTgaZ8eCyilxKdrMdpKm7+5je/AmMnwQV3
+Decrypted Password: ctprd-comm-ms-02.cpufhzuamh8y.ap-northeast-2.rds.amazonaws.com
+
+#2 DATABASE_NAME=BioLab
+Encrypted Password: 2J3w3M1AHPtpKdyhfuX5jukCU78EPg==
+Decrypted Password: BioLab
+
+
+#2 DATABASE_PASSWORD=1q2w3e4r5t!
+Encrypted Password: q4Wt559HTKyrpQrxEDf2k07lQsJTNhV/VG6K
+Decrypted Password: 1q2w3e4r5t!
+
+
+#4 DATABASE_USERNAME=BioLabAdminUser
+Encrypted Password: 2J3w3M1AObrzuEUF9MZueNLh8xJPDUkMGbtMYQ/FNQ==
+Decrypted Password: BioLabAdminUser
+
+
+#5 TOKEN_SECRET_KEY=amore-secret-key
+Encrypted Password: +5nw4skPC7v9o04kqsh5l55iTaE7MAEFl4F0gTIPYIk=
+Decrypted Password: amore-secret-key
+
+
+#6 DATABASE_HOSTNAME=ctstg-iopel-ms-01.cxdgflc6nxpv.ap-northeast-2.rds.amazonaws.com
+Encrypted Password: +YDs5MsPEbHutEd96tAx3k2ZUg4UmY2U8fD1a04fOHDJzJA4m+DZ6m4aSKmYxMbovAXmDEyGgKlqfHHvmxAUHmpnO3Yz5H7Sw3Sni6mM5Q==
+Decrypted Password: ctstg-iopel-ms-01.cxdgflc6nxpv.ap-northeast-2.rds.amazonaws.com
+
+
+#7 DATABASE_HOSTNAME=ctdev-iopel-ms-01.caizqquwbw1r.ap-northeast-2.rds.amazonaws.com
+Encrypted Password: +YD79doPEbHutEd96tAx3k2ZUhcZhJqJ57H5ZA8bOHDJzJA4m+DZ6m4aSKmYxMbovAXmDEyGgKlqfHHvmxAU21yLnW/vg4x0UXERk1ARFg==
+Decrypted Password: ctdev-iopel-ms-01.caizqquwbw1r.ap-northeast-2.rds.amazonaws.com
+
+
+#8 DATABASE_NAME=BioLab_Dev
+Encrypted Password: 2J3w3M1AJ5r7p3TIXcHGLXd1YvrwggArGzY=
+Decrypted Password: BioLab_Dev
+
+
+
+
