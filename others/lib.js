@@ -124,12 +124,12 @@ const menu = {
                 <div class="member-box">
                     <div class="member-box">
                         <!--로그인 전-->
-                        <a href="./login.html" class="login-button" style="color : black;">로그인</a>
+                        <a href="https://stg-amore-citylab.amorepacific.com/sso/sso.jsp" class="login-button" style="color : black;">로그인</a>
                         <!--로그인 후-->
                         
-                    <span class="user-name" id='customer_name' style="display: block; color : black; margin-right: 13px">홍김똥</span>
-                    <span class="user-name2" id='manager_name' style="display: none; color : black;">홍길동</span>
-                    <a href="./login.html" class="logout-button" style="display: none; color : black;">로그아웃</a>
+                    <span class="user-name" id='customer_name' style="display: block; color : black; margin-right: 13px"></span>
+                    <span class="user-name2" id='manager_name' style="display: none; color : black;"></span>
+                    <a href="https://stg-amore-citylab.amorepacific.com/sso/logout.jsp" class="logout-button" style="display: none; color : black;">로그아웃</a>
                   
                     </div>
                 </div>
@@ -137,14 +137,16 @@ const menu = {
     `;
         $("#top_menu").html(header);
 
-        const managerName = localStorage.getItem('manager_name');
-        if (managerName !== null) {
-            $("#manager_name").text(managerName).show();
+        // const managerName = localStorage.getItem('manager_name');
+        if (sessionStorage.getItem('isLoggedIn') !== null) {
+            console.log('로그인세션 있음 : ', sessionStorage.getItem('isLoggedIn'));
+            $("#manager_name").text('현승').show();
             $(".logout-button").show();
             $(".login-button").hide();
         }
 
-        else if (managerName === null) {
+        else if (sessionStorage.getItem('isLoggedIn') === null) {
+            console.log('로그인세션 없음 : ', sessionStorage.getItem('isLoggedIn'));
             $("#manager_name").hide();
             $(".logout-button").hide();
             $(".login-button").show();
@@ -159,13 +161,10 @@ const menu = {
             $("#customer_name").hide();
         }
 
-
-
-
-
         $(".logout-button").on("click", function () {
             // localStorage.removeItem('manager_name');   
             localStorage.clear();
+            // window.location.href = `${ AmoreCityLab_sso_URL }/sso/logout.jsp`;           
         });
     },
     isLogin: function () {
