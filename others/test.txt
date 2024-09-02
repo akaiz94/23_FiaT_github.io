@@ -1,4 +1,4 @@
 Key: +iFYdTfI5eTGzZQNlt7euE53AEBLOa516LB5JUdNdPQ=
 Nonce: 9t/2sYVUKcpZNMZH
-Encrypted Password: +5nw4skPC7v9o04kqsh5l55iTaE7MAEFl4F0gTIPYIk=
-Decrypted Password: amore-secret-key
+Encrypted Password: 85n+98VMHbj/sl8/9doxhgXSXhgDm56W9a36fVlEd3zWk5t6iv3F9mMIXqnZj9f+ql+qCkiFHNKJhKalfSb0kVcLVwQObA==
+Decrypted Password: imaginefactory-hyeonseungkang-amore-citylab-secret-key
